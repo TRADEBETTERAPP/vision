@@ -24,8 +24,9 @@ Use this skill for app scaffold work, navigation, roadmap and mindmap UI, immers
 5. If the feature touches roadmap or visual surfaces, verify desktop, narrow/mobile layout, keyboard interaction, and reduced-motion or fallback behavior.
 6. Run focused tests during iteration, then run the manifest commands for `lint`, `typecheck`, `test`, and `build`.
 7. Use `agent-browser` to exercise the changed flows at `http://127.0.0.1:3100`. Record exactly what you clicked, what changed, and what state labels or destinations you observed.
-8. If the feature includes deployment or release work, validate the production-like output after build and use `gh` or `npx vercel` only when the feature explicitly requires it.
-9. Stop every process you started. In your handoff, include the exact browser checks, viewport/fallback checks, and any remaining environment blocker.
+8. For browser validation, prefer one stable `agent-browser` session per flow: open the page, wait for the target surface, use explicit interactions for navigation/scroll/focus, and only fall back to eval-style helpers when normal interaction commands cannot reliably reach the intended state.
+9. If the feature includes deployment or release work, validate the production-like output after build and use `gh` or `npx vercel` only when the feature explicitly requires it.
+10. Stop every process you started. In your handoff, include the exact browser checks, viewport/fallback checks, and any remaining environment blocker.
 
 ## Example Handoff
 
