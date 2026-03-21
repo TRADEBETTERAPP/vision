@@ -19,6 +19,24 @@ export const metadata: Metadata = {
   title: "BETTER — Vision & Ecosystem Roadmap",
   description:
     "The canonical future-state artifact for the BETTER ecosystem: roadmap, tokenomics, architecture, and interactive strategy atlas.",
+  metadataBase: new URL("https://better-vision.vercel.app"),
+  openGraph: {
+    title: "BETTER — Vision & Ecosystem Roadmap",
+    description:
+      "Interactive roadmap, whale-first tokenomics, architecture deep-dives, and scenario projections for the BETTER prediction-market intelligence ecosystem.",
+    siteName: "BETTER Vision",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "BETTER — Vision & Ecosystem Roadmap",
+    description:
+      "Interactive roadmap, whale-first tokenomics, architecture deep-dives, and scenario projections for the BETTER ecosystem.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
