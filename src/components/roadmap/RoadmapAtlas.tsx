@@ -217,32 +217,63 @@ export default function RoadmapAtlas() {
   }, []);
 
   // -------------------------------------------------------------------
-  // Scroll-linked sync: IntersectionObserver on branch sections
+  // Scroll-linked sync: scroll event listener that recomputes the
+  // topmost visible branch section on every scroll.  This replaces the
+  // previous IntersectionObserver approach which broke when branch
+  // sections had widely varying heights (collapsed ≈ 58 px vs
+  // expanded ≈ 900 px), causing rigid threshold + rootMargin
+  // combinations to miss transitions.
+  //
+  // Algorithm: on every scroll, find the first (topmost) branch section
+  // whose *bottom* is still below the "activation line" — a point 25 %
+  // down from the viewport top.  This ensures:
+  //   • Forward scrolling: as a section's bottom scrolls above the line,
+  //     the next section becomes active.
+  //   • Backward scrolling: the moment a higher section's bottom
+  //     re-enters below the line, it immediately reclaims active status.
+  //
   // Guarded by scrollSyncLockedRef to prevent layout-shift noise from
   // overriding explicit user interactions (VAL-ROADMAP-003).
   // -------------------------------------------------------------------
   useEffect(() => {
-    const observers: IntersectionObserver[] = [];
-    const refs = branchSectionRefs.current;
+    let rafId: number | null = null;
 
-    refs.forEach((ref, index) => {
-      if (!ref) return;
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting && !scrollSyncLockedRef.current) {
-              dispatch({ type: "SET_ACTIVE_FAMILY", index });
-            }
-          });
-        },
-        { threshold: 0.3, rootMargin: "-20% 0px -60% 0px" }
-      );
-      observer.observe(ref);
-      observers.push(observer);
-    });
+    const syncActiveFamily = () => {
+      if (scrollSyncLockedRef.current) return;
+
+      const refs = branchSectionRefs.current;
+      const activationLine = window.innerHeight * 0.25;
+      let bestIndex = -1;
+
+      for (let i = 0; i < refs.length; i++) {
+        const el = refs[i];
+        if (!el) continue;
+        const rect = el.getBoundingClientRect();
+        // A section "owns" the scroll position when its bottom is still
+        // below the activation line (it hasn't scrolled past).
+        if (rect.bottom > activationLine) {
+          bestIndex = i;
+          break;
+        }
+      }
+
+      if (bestIndex >= 0) {
+        dispatch({ type: "SET_ACTIVE_FAMILY", index: bestIndex });
+      }
+    };
+
+    const onScroll = () => {
+      if (rafId !== null) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(syncActiveFamily);
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    // Run once on mount so the initial scroll position is reflected
+    syncActiveFamily();
 
     return () => {
-      observers.forEach((o) => o.disconnect());
+      window.removeEventListener("scroll", onScroll);
+      if (rafId !== null) cancelAnimationFrame(rafId);
     };
   }, []);
 

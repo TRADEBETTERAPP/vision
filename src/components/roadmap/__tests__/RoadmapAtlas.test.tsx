@@ -519,3 +519,216 @@ describe("RoadmapAtlas", () => {
     expect(infraBranch).toHaveAttribute("aria-expanded", "true");
   });
 });
+
+// ---------------------------------------------------------------------------
+// Regression: Backward scroll-sync reconciliation (VAL-ROADMAP-003)
+//
+// These tests mock getBoundingClientRect on each branch section to simulate
+// scroll positions, then fire a scroll event. The scroll handler in
+// RoadmapAtlas finds the topmost section whose bottom is below the
+// activation line (25% of viewport height) and sets it as active.
+//
+// This verifies that backward scrolling correctly returns to earlier
+// families like Product Evolution instead of retaining a stale later one.
+// ---------------------------------------------------------------------------
+describe("RoadmapAtlas backward scroll-sync", () => {
+  /** jsdom viewport height (default 768); activation line = 25% = 192 */
+  const VIEWPORT_HEIGHT = 768;
+
+  beforeEach(() => {
+    window.location.hash = "";
+    history.replaceState(null, "", window.location.pathname);
+    Element.prototype.scrollIntoView = jest.fn();
+    // Ensure jsdom has a known innerHeight
+    Object.defineProperty(window, "innerHeight", { value: VIEWPORT_HEIGHT, writable: true });
+    // Mock requestAnimationFrame to fire synchronously in tests
+    jest.spyOn(window, "requestAnimationFrame").mockImplementation((cb) => { cb(0); return 0; });
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  /**
+   * Helper: mock getBoundingClientRect for each branch section to simulate
+   * a scroll position. Each entry in `layouts` defines { top, bottom } for
+   * that section index.
+   */
+  function mockSectionLayouts(
+    sections: HTMLElement[],
+    layouts: { top: number; bottom: number }[]
+  ) {
+    sections.forEach((el, i) => {
+      const layout = layouts[i] ?? { top: 0, bottom: 0 };
+      el.getBoundingClientRect = () =>
+        ({
+          top: layout.top,
+          bottom: layout.bottom,
+          left: 0,
+          right: 800,
+          width: 800,
+          height: layout.bottom - layout.top,
+          x: 0,
+          y: layout.top,
+          toJSON() {},
+        } as DOMRect);
+    });
+  }
+
+  /** Fire a scroll event and flush the rAF-based handler */
+  function fireScroll() {
+    act(() => {
+      window.dispatchEvent(new Event("scroll"));
+    });
+  }
+
+  it("selects the topmost visible section when scrolling backward", () => {
+    render(<RoadmapAtlas />);
+    const sections = screen.getAllByTestId("roadmap-branch-section");
+
+    // Forward scroll: section 0 is above viewport, section 2 straddles activation line
+    mockSectionLayouts(sections, [
+      { top: -500, bottom: -100 },  // 0: fully above
+      { top: -100, bottom: 0 },     // 1: above
+      { top: 0, bottom: 400 },      // 2: bottom=400 > 192 → first match
+      { top: 400, bottom: 768 },    // 3: below section 2
+      { top: 768, bottom: 1200 },   // 4: off-screen below
+    ]);
+    fireScroll();
+
+    let storyPanels = screen.getAllByTestId("roadmap-story-panel");
+    expect(storyPanels[2]).toHaveAttribute("data-active", "true");
+
+    // Backward scroll: section 0 re-enters, its bottom is now below activation line
+    mockSectionLayouts(sections, [
+      { top: -50, bottom: 300 },    // 0: bottom=300 > 192 → first match
+      { top: 300, bottom: 400 },    // 1
+      { top: 400, bottom: 800 },    // 2: still visible but lower
+      { top: 800, bottom: 1200 },   // 3
+      { top: 1200, bottom: 1600 },  // 4
+    ]);
+    fireScroll();
+
+    storyPanels = screen.getAllByTestId("roadmap-story-panel");
+    expect(storyPanels[0]).toHaveAttribute("data-active", "true");
+    expect(storyPanels[2]).toHaveAttribute("data-active", "false");
+  });
+
+  it("tracks scroll position and always picks the topmost qualifying section", () => {
+    render(<RoadmapAtlas />);
+    const sections = screen.getAllByTestId("roadmap-branch-section");
+
+    // Sections 1, 2, 3 all span the activation line; topmost (1) wins
+    mockSectionLayouts(sections, [
+      { top: -300, bottom: 50 },    // 0: bottom < activation → scrolled past
+      { top: 50, bottom: 300 },     // 1: bottom=300 > 192 → first match
+      { top: 300, bottom: 500 },    // 2
+      { top: 500, bottom: 700 },    // 3
+      { top: 700, bottom: 900 },    // 4
+    ]);
+    fireScroll();
+
+    let storyPanels = screen.getAllByTestId("roadmap-story-panel");
+    expect(storyPanels[1]).toHaveAttribute("data-active", "true");
+
+    // Backward scroll: section 0 comes back into play
+    mockSectionLayouts(sections, [
+      { top: 100, bottom: 500 },    // 0: bottom=500 > 192 → first match
+      { top: 500, bottom: 700 },    // 1
+      { top: 700, bottom: 900 },    // 2
+      { top: 900, bottom: 1100 },   // 3
+      { top: 1100, bottom: 1300 },  // 4
+    ]);
+    fireScroll();
+
+    storyPanels = screen.getAllByTestId("roadmap-story-panel");
+    expect(storyPanels[0]).toHaveAttribute("data-active", "true");
+  });
+
+  it("advances to later sections as earlier ones scroll past", () => {
+    render(<RoadmapAtlas />);
+    const sections = screen.getAllByTestId("roadmap-branch-section");
+
+    // Section 0 is active initially
+    mockSectionLayouts(sections, [
+      { top: 50, bottom: 400 },     // 0: bottom > 192 → active
+      { top: 400, bottom: 500 },    // 1
+      { top: 500, bottom: 600 },    // 2
+      { top: 600, bottom: 700 },    // 3
+      { top: 700, bottom: 800 },    // 4
+    ]);
+    fireScroll();
+
+    let storyPanels = screen.getAllByTestId("roadmap-story-panel");
+    expect(storyPanels[0]).toHaveAttribute("data-active", "true");
+
+    // Scroll forward: section 0 scrolls past, section 4 becomes topmost qualifying
+    mockSectionLayouts(sections, [
+      { top: -800, bottom: -400 },  // 0: scrolled past
+      { top: -400, bottom: -300 },  // 1: scrolled past
+      { top: -300, bottom: -200 },  // 2: scrolled past
+      { top: -200, bottom: 100 },   // 3: bottom=100 < 192 → scrolled past
+      { top: 100, bottom: 700 },    // 4: bottom=700 > 192 → active
+    ]);
+    fireScroll();
+
+    storyPanels = screen.getAllByTestId("roadmap-story-panel");
+    expect(storyPanels[4]).toHaveAttribute("data-active", "true");
+    expect(storyPanels[0]).toHaveAttribute("data-active", "false");
+  });
+
+  it("returns to Product Evolution after full forward-then-backward scroll sequence", () => {
+    render(<RoadmapAtlas />);
+    const sections = screen.getAllByTestId("roadmap-branch-section");
+
+    // Step 1: Section 0 is active at the top
+    mockSectionLayouts(sections, [
+      { top: 50, bottom: 400 },
+      { top: 400, bottom: 500 },
+      { top: 500, bottom: 600 },
+      { top: 600, bottom: 700 },
+      { top: 700, bottom: 800 },
+    ]);
+    fireScroll();
+    let storyPanels = screen.getAllByTestId("roadmap-story-panel");
+    expect(storyPanels[0]).toHaveAttribute("data-active", "true");
+
+    // Step 2: Forward — scroll to section 2
+    mockSectionLayouts(sections, [
+      { top: -600, bottom: -200 },
+      { top: -200, bottom: -100 },
+      { top: -100, bottom: 300 },   // 2: first with bottom > 192
+      { top: 300, bottom: 500 },
+      { top: 500, bottom: 700 },
+    ]);
+    fireScroll();
+    storyPanels = screen.getAllByTestId("roadmap-story-panel");
+    expect(storyPanels[2]).toHaveAttribute("data-active", "true");
+
+    // Step 3: Forward — scroll to section 4
+    mockSectionLayouts(sections, [
+      { top: -1400, bottom: -1000 },
+      { top: -1000, bottom: -900 },
+      { top: -900, bottom: -500 },
+      { top: -500, bottom: 100 },   // 3: bottom=100 < 192
+      { top: 100, bottom: 700 },    // 4: first with bottom > 192
+    ]);
+    fireScroll();
+    storyPanels = screen.getAllByTestId("roadmap-story-panel");
+    expect(storyPanels[4]).toHaveAttribute("data-active", "true");
+
+    // Step 4: Backward — scroll ALL the way back to section 0
+    mockSectionLayouts(sections, [
+      { top: 80, bottom: 480 },     // 0: bottom=480 > 192 → first match
+      { top: 480, bottom: 580 },
+      { top: 580, bottom: 980 },
+      { top: 980, bottom: 1480 },
+      { top: 1480, bottom: 2080 },
+    ]);
+    fireScroll();
+
+    // Product Evolution (index 0) must be active
+    storyPanels = screen.getAllByTestId("roadmap-story-panel");
+    expect(storyPanels[0]).toHaveAttribute("data-active", "true");
+  });
+});
