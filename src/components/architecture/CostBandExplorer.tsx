@@ -14,7 +14,7 @@ import React, { useState, useCallback } from "react";
 import MaturityBadge from "@/components/MaturityBadge";
 import EvidenceHook from "@/components/EvidenceHook";
 import CaveatFrame from "@/components/CaveatFrame";
-import { COST_BAND_MODELS, type CostBandModel, type CostBandPhase } from "@/content";
+import { COST_BAND_MODELS, getPhaseLabel, type CostBandModel, type CostBandPhase } from "@/content";
 
 function formatCurrency(value: number): string {
   if (value >= 1_000_000) {
@@ -203,7 +203,7 @@ function PhaseCard({ phase, index }: { phase: CostBandPhase; index: number }) {
       {phase.dependencies.length > 0 && (
         <p className="mb-2 text-xs text-muted" data-testid="phase-dependency">
           <span className="font-terminal font-medium">Requires:</span>{" "}
-          {phase.dependencies.join(", ")}
+          {phase.dependencies.map((depId) => getPhaseLabel(depId)).join(", ")}
         </p>
       )}
 

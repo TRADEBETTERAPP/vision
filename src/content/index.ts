@@ -71,6 +71,9 @@ export {
   COST_BAND_MODELS,
   getCostBandModel,
   getTotalInfraRange,
+  getPhaseLabel,
+  getPhaseById,
+  getAllPhaseIds,
 } from "./cost-bands";
 
 // Narrative blocks

@@ -77,7 +77,7 @@ const FLYWHEEL_NODES: FlywheelNode[] = [
     id: "fw-product-agents",
     title: "Strategy Agents & Vaults",
     category: "product",
-    status: "in_progress",
+    status: "planned",
     summary:
       "Autonomous agents and social vaults create managed-strategy products for all user tiers.",
     detail:

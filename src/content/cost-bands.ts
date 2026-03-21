@@ -37,6 +37,7 @@ const scenarioSource: SourceCue = {
 
 const aiRlPhases: CostBandPhase[] = [
   {
+    id: "cb-ai-rl-phase1",
     name: "Phase 1: Foundation Models",
     status: "live",
     costLow: 50_000,
@@ -54,6 +55,7 @@ const aiRlPhases: CostBandPhase[] = [
     },
   },
   {
+    id: "cb-ai-rl-phase2",
     name: "Phase 2: Proprietary Training",
     status: "planned",
     costLow: 500_000,
@@ -62,10 +64,11 @@ const aiRlPhases: CostBandPhase[] = [
       "Dedicated GPU cluster lease (6–12 months) for training on accumulated prediction-market data.",
     capabilityUnlock:
       "Differentiated models trained on BETTER's proprietary data — not replicable by competitors without equivalent data accumulation.",
-    dependencies: ["Phase 1: Foundation Models"],
+    dependencies: ["cb-ai-rl-phase1"],
     source: scenarioSource,
   },
   {
+    id: "cb-ai-rl-phase3",
     name: "Phase 3: Full-Stack Intelligence",
     status: "speculative",
     costLow: 2_000_000,
@@ -74,7 +77,7 @@ const aiRlPhases: CostBandPhase[] = [
       "Large-scale compute for multi-domain models, LLM fine-tuning, and inference infrastructure at scale.",
     capabilityUnlock:
       "BETTER as a platform intelligence provider: LLM credits, inference marketplace, and cross-market AI capabilities.",
-    dependencies: ["Phase 2: Proprietary Training"],
+    dependencies: ["cb-ai-rl-phase2"],
     source: illustrativeSource,
   },
 ];
@@ -85,6 +88,7 @@ const aiRlPhases: CostBandPhase[] = [
 
 const polygonPhases: CostBandPhase[] = [
   {
+    id: "cb-polygon-phase1",
     name: "Phase 1: Full Node Operations",
     status: "planned",
     costLow: 20_000,
@@ -97,6 +101,7 @@ const polygonPhases: CostBandPhase[] = [
     source: scenarioSource,
   },
   {
+    id: "cb-polygon-phase2",
     name: "Phase 2: Validator Operations",
     status: "speculative",
     costLow: 100_000,
@@ -105,7 +110,7 @@ const polygonPhases: CostBandPhase[] = [
       "Staking capital requirement plus operational overhead for running Polygon validators. Range depends on stake size.",
     capabilityUnlock:
       "Validator staking rewards, protocol-level influence, and deeper network reliability.",
-    dependencies: ["Phase 1: Full Node Operations"],
+    dependencies: ["cb-polygon-phase1"],
     source: illustrativeSource,
   },
 ];
@@ -116,6 +121,7 @@ const polygonPhases: CostBandPhase[] = [
 
 const lowLatencyPhases: CostBandPhase[] = [
   {
+    id: "cb-low-latency-phase1",
     name: "Phase 1: Co-Location",
     status: "planned",
     costLow: 100_000,
@@ -128,6 +134,7 @@ const lowLatencyPhases: CostBandPhase[] = [
     source: scenarioSource,
   },
   {
+    id: "cb-low-latency-phase2",
     name: "Phase 2: FPGA Acceleration",
     status: "speculative",
     costLow: 500_000,
@@ -136,7 +143,7 @@ const lowLatencyPhases: CostBandPhase[] = [
       "FPGA hardware, custom firmware development, and integration with co-located infrastructure.",
     capabilityUnlock:
       "HFT-grade ultra-low-latency execution — structural speed advantage for BETTER's entire agent fleet.",
-    dependencies: ["Phase 1: Co-Location"],
+    dependencies: ["cb-low-latency-phase1"],
     source: illustrativeSource,
   },
 ];
@@ -147,6 +154,7 @@ const lowLatencyPhases: CostBandPhase[] = [
 
 const hyperEvmPhases: CostBandPhase[] = [
   {
+    id: "cb-hyperevm-phase1",
     name: "Phase 1: Contract Deployment",
     status: "in_progress",
     costLow: 30_000,
@@ -164,6 +172,7 @@ const hyperEvmPhases: CostBandPhase[] = [
     },
   },
   {
+    id: "cb-hyperevm-phase2",
     name: "Phase 2: Full Cross-Chain Execution",
     status: "planned",
     costLow: 100_000,
@@ -172,7 +181,7 @@ const hyperEvmPhases: CostBandPhase[] = [
       "Cross-chain bridge infrastructure, multi-chain order routing, and ongoing audit costs.",
     capabilityUnlock:
       "Seamless cross-chain execution between Polygon, HyperEVM, and future chains.",
-    dependencies: ["Phase 1: Contract Deployment"],
+    dependencies: ["cb-hyperevm-phase1"],
     source: scenarioSource,
   },
 ];
@@ -183,6 +192,7 @@ const hyperEvmPhases: CostBandPhase[] = [
 
 const dataPipelinePhases: CostBandPhase[] = [
   {
+    id: "cb-data-pipeline-phase1",
     name: "Phase 1: Core Collection",
     status: "live",
     costLow: 20_000,
@@ -200,6 +210,7 @@ const dataPipelinePhases: CostBandPhase[] = [
     },
   },
   {
+    id: "cb-data-pipeline-phase2",
     name: "Phase 2: Enterprise-Grade Pipeline",
     status: "planned",
     costLow: 200_000,
@@ -208,7 +219,7 @@ const dataPipelinePhases: CostBandPhase[] = [
       "Institutional-grade data pipeline: SLA monitoring, audit trails, API gateway, and scale-out storage.",
     capabilityUnlock:
       "Institutional-quality data products for B2B licensing and enterprise API access.",
-    dependencies: ["Phase 1: Core Collection"],
+    dependencies: ["cb-data-pipeline-phase1"],
     source: scenarioSource,
   },
 ];
@@ -261,6 +272,29 @@ export function getCostBandModel(
   subsystem: InfraSubsystem
 ): CostBandModel | undefined {
   return COST_BAND_MODELS.find((m) => m.subsystem === subsystem);
+}
+
+/** Resolve a cost-band phase ID to its human-readable name */
+export function getPhaseLabel(phaseId: string): string {
+  for (const model of COST_BAND_MODELS) {
+    const phase = model.phases.find((p) => p.id === phaseId);
+    if (phase) return phase.name;
+  }
+  return phaseId;
+}
+
+/** Get a cost-band phase by its stable ID */
+export function getPhaseById(phaseId: string): CostBandPhase | undefined {
+  for (const model of COST_BAND_MODELS) {
+    const phase = model.phases.find((p) => p.id === phaseId);
+    if (phase) return phase;
+  }
+  return undefined;
+}
+
+/** Get all phase IDs across all cost-band models */
+export function getAllPhaseIds(): string[] {
+  return COST_BAND_MODELS.flatMap((m) => m.phases.map((p) => p.id));
 }
 
 /** Get the total infrastructure investment range across all subsystems */

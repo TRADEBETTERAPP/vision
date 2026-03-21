@@ -220,3 +220,51 @@ describe("ArchitectureSection (VAL-VISUAL-008)", () => {
     }
   });
 });
+
+// ---------------------------------------------------------------------------
+// Regression: Stable-ID dependency modeling in cost bands
+// ---------------------------------------------------------------------------
+
+describe("ArchitectureSection — Stable-ID Dependencies", () => {
+  it("cost-band dependency labels render as readable phase names, not raw IDs", async () => {
+    const user = userEvent.setup();
+    render(<ArchitectureSection />);
+    // Expand all subsystems to reveal phases with dependencies
+    const toggles = screen.getAllByTestId("cost-band-toggle");
+    for (const toggle of toggles) {
+      await user.click(toggle);
+    }
+    const depLabels = screen.getAllByTestId("phase-dependency");
+    for (const el of depLabels) {
+      const text = el.textContent || "";
+      // Should contain "Phase" (from readable name) and NOT raw "cb-" prefixed IDs
+      expect(text).not.toMatch(/cb-[a-z]+-phase\d/);
+      expect(text).toMatch(/Phase \d/);
+    }
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Regression: Cross-surface Strategy Agents maturity consistency
+// ---------------------------------------------------------------------------
+
+describe("ArchitectureSection — Strategy Agents Maturity Consistency", () => {
+  it("flywheel Strategy Agents & Vaults renders with 'Planned' status", async () => {
+    const user = userEvent.setup();
+    render(<ArchitectureSection />);
+    // Find and click the Strategy Agents & Vaults flywheel node
+    const flywheelNodes = screen.getAllByTestId("flywheel-node");
+    const agentNode = flywheelNodes.find((el) =>
+      el.textContent?.includes("Strategy Agents & Vaults")
+    );
+    expect(agentNode).toBeDefined();
+    // Click it to see details
+    await user.click(agentNode!);
+    const detail = screen.getByTestId("flywheel-detail");
+    // The detail should show a "Planned" badge, not "In Progress"
+    const badges = within(detail).getAllByTestId("maturity-badge");
+    const statusValues = badges.map((b) => b.getAttribute("data-status"));
+    expect(statusValues).toContain("planned");
+    expect(statusValues).not.toContain("in_progress");
+  });
+});

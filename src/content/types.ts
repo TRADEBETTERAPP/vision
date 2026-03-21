@@ -274,6 +274,8 @@ export const INFRA_SUBSYSTEM_LABELS: Record<InfraSubsystem, string> = {
  * A single phase within a subsystem's cost evolution.
  */
 export interface CostBandPhase {
+  /** Stable unique identifier for referential integrity */
+  id: string;
   /** Phase name (e.g. "Phase 1: Foundation") */
   name: string;
   /** Maturity status of this phase */
@@ -286,7 +288,7 @@ export interface CostBandPhase {
   assumptionBasis: string;
   /** What capability this phase unlocks */
   capabilityUnlock: string;
-  /** IDs of phases this depends on */
+  /** Stable phase IDs this depends on (resolved to readable labels in the UI) */
   dependencies: string[];
   /** Source cue for the cost estimate */
   source: SourceCue;
