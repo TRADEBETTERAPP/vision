@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
+import MobileNav from "@/components/MobileNav";
+import { NAV_ITEMS } from "@/components/nav-items";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -38,10 +40,19 @@ export default function RootLayout({
   );
 }
 
+/**
+ * Desktop + mobile navigation header.
+ * Satisfies VAL-NARR-004: clear paths to what BETTER is, what is live,
+ * roadmap, tokenomics, evidence/sources, and risks/caveats.
+ * Satisfies VAL-NARR-005: labels are understandable without insider context.
+ */
 function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
-      <nav className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+      <nav
+        className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8"
+        aria-label="Primary navigation"
+      >
         <Link
           href="/"
           className="font-terminal text-lg font-bold tracking-wider text-accent"
@@ -49,56 +60,28 @@ function Header() {
         >
           BETTER<span className="text-muted">_</span>
         </Link>
-        <div className="hidden items-center gap-6 text-sm font-medium text-secondary sm:flex">
-          <a href="#vision" className="transition-colors hover:text-foreground">
-            Vision
-          </a>
-          <a
-            href="#roadmap"
-            className="transition-colors hover:text-foreground"
-          >
-            Roadmap
-          </a>
-          <a
-            href="#tokenomics"
-            className="transition-colors hover:text-foreground"
-          >
-            Tokenomics
-          </a>
-          <a
-            href="#architecture"
-            className="transition-colors hover:text-foreground"
-          >
-            Architecture
-          </a>
+
+        {/* Desktop navigation */}
+        <div
+          className="hidden items-center gap-6 text-sm font-medium text-secondary sm:flex"
+          data-testid="desktop-nav"
+        >
+          {NAV_ITEMS.map((item) => (
+            <a
+              key={item.href}
+              href={item.href}
+              className="transition-colors hover:text-foreground"
+              data-testid="desktop-nav-link"
+            >
+              {item.label}
+            </a>
+          ))}
         </div>
-        <MobileMenuButton />
+
+        {/* Mobile navigation (client component) */}
+        <MobileNav />
       </nav>
     </header>
-  );
-}
-
-function MobileMenuButton() {
-  return (
-    <button
-      type="button"
-      className="inline-flex items-center justify-center rounded-md p-2 text-secondary hover:text-foreground sm:hidden"
-      aria-label="Open navigation menu"
-    >
-      <svg
-        className="h-5 w-5"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-        />
-      </svg>
-    </button>
   );
 }
 

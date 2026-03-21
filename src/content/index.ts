@@ -72,3 +72,10 @@ export {
   getCostBandModel,
   getTotalInfraRange,
 } from "./cost-bands";
+
+// Narrative blocks
+export {
+  NARRATIVE_BLOCKS,
+  getBlocksBySurface,
+  getBlockById,
+} from "./narrative";
