@@ -245,26 +245,46 @@ describe("ArchitectureSection — Stable-ID Dependencies", () => {
 });
 
 // ---------------------------------------------------------------------------
-// Regression: Cross-surface Strategy Agents maturity consistency
+// Regression: Cross-surface Strategy Agents & Social Vaults maturity consistency
 // ---------------------------------------------------------------------------
 
-describe("ArchitectureSection — Strategy Agents Maturity Consistency", () => {
-  it("flywheel Strategy Agents & Vaults renders with 'Planned' status", async () => {
+describe("ArchitectureSection — Flywheel Maturity Consistency", () => {
+  it("flywheel Autonomous Strategy Agents renders with 'Planned' status", async () => {
     const user = userEvent.setup();
     render(<ArchitectureSection />);
-    // Find and click the Strategy Agents & Vaults flywheel node
     const flywheelNodes = screen.getAllByTestId("flywheel-node");
     const agentNode = flywheelNodes.find((el) =>
-      el.textContent?.includes("Strategy Agents & Vaults")
+      el.textContent?.includes("Autonomous Strategy Agents")
     );
     expect(agentNode).toBeDefined();
-    // Click it to see details
     await user.click(agentNode!);
     const detail = screen.getByTestId("flywheel-detail");
-    // The detail should show a "Planned" badge, not "In Progress"
     const badges = within(detail).getAllByTestId("maturity-badge");
     const statusValues = badges.map((b) => b.getAttribute("data-status"));
     expect(statusValues).toContain("planned");
-    expect(statusValues).not.toContain("in_progress");
+  });
+
+  it("flywheel Social Vaults & vBETTER renders with 'In Progress' status", async () => {
+    const user = userEvent.setup();
+    render(<ArchitectureSection />);
+    const flywheelNodes = screen.getAllByTestId("flywheel-node");
+    const vaultNode = flywheelNodes.find((el) =>
+      el.textContent?.includes("Social Vaults")
+    );
+    expect(vaultNode).toBeDefined();
+    await user.click(vaultNode!);
+    const detail = screen.getByTestId("flywheel-detail");
+    const badges = within(detail).getAllByTestId("maturity-badge");
+    const statusValues = badges.map((b) => b.getAttribute("data-status"));
+    expect(statusValues).toContain("in_progress");
+  });
+
+  it("does not render a combined Strategy Agents & Vaults node", () => {
+    render(<ArchitectureSection />);
+    const flywheelNodes = screen.getAllByTestId("flywheel-node");
+    const combinedNode = flywheelNodes.find((el) =>
+      el.textContent?.includes("Strategy Agents & Vaults")
+    );
+    expect(combinedNode).toBeUndefined();
   });
 });

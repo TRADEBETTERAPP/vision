@@ -38,7 +38,7 @@ const FLYWHEEL_NODES: FlywheelNode[] = [
       "Foundation models generate prediction signals. Proprietary training improves signal quality over time.",
     detail:
       "Accumulated prediction-market data creates a compounding data moat. Better models attract more users, who generate more data, further improving models. This creates a self-reinforcing intelligence advantage that competitors cannot easily replicate without equivalent data accumulation.",
-    feedsInto: ["fw-product-terminal", "fw-product-agents"],
+    feedsInto: ["fw-product-terminal", "fw-product-vaults", "fw-product-agents"],
   },
   {
     id: "fw-infra-execution",
@@ -49,7 +49,7 @@ const FLYWHEEL_NODES: FlywheelNode[] = [
       "Co-location and FPGA acceleration provide structural speed advantages for BETTER agents.",
     detail:
       "Low-latency execution allows BETTER agents to capture opportunities before competitors. Speed advantages compound with intelligence advantages — fast execution of better signals produces superior returns, attracting more capital and users to the ecosystem.",
-    feedsInto: ["fw-product-agents", "fw-revenue-whale"],
+    feedsInto: ["fw-product-vaults", "fw-product-agents", "fw-revenue-whale"],
   },
   {
     id: "fw-infra-chain",
@@ -74,14 +74,25 @@ const FLYWHEEL_NODES: FlywheelNode[] = [
     feedsInto: ["fw-revenue-consumer", "fw-token-demand"],
   },
   {
+    id: "fw-product-vaults",
+    title: "Social Vaults & vBETTER",
+    category: "product",
+    status: "in_progress",
+    summary:
+      "Community-managed vaults with vBETTER staking create social trading layers and performance-fee revenue.",
+    detail:
+      "Social vaults let users deposit into community-managed pools. Vault managers earn performance fees aligned with depositor outcomes, creating a social coordination loop. More capital under management attracts better vault managers, who create better strategies, attracting more capital — a product-level flywheel within the broader ecosystem. vBETTER staking adds community engagement mechanics.",
+    feedsInto: ["fw-product-agents", "fw-revenue-whale", "fw-token-demand"],
+  },
+  {
     id: "fw-product-agents",
-    title: "Strategy Agents & Vaults",
+    title: "Autonomous Strategy Agents",
     category: "product",
     status: "planned",
     summary:
-      "Autonomous agents and social vaults create managed-strategy products for all user tiers.",
+      "AI agents that execute prediction-market strategies autonomously with user-defined risk parameters.",
     detail:
-      "Agents automate complex trading strategies. Social vaults let users deposit into managed pools. Both create performance-fee revenue streams. More capital under management attracts better vault managers and agent developers, who create better strategies, attracting more capital — a product-level flywheel within the broader ecosystem.",
+      "Agents automate complex trading strategies using AI-driven signals and user-defined risk parameters. Agent bonds and delegation mechanics create new fee streams. Better agents attract more capital, which funds better models, which produce better agents — a compounding intelligence-and-capital loop. Depends on vault infrastructure and agent safety frameworks being production-ready.",
     feedsInto: ["fw-revenue-whale", "fw-token-demand", "fw-revenue-enterprise"],
   },
   {
