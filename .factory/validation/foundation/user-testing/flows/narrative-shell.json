@@ -1,0 +1,183 @@
+{
+  "groupId": "narrative-shell",
+  "surface": "browser",
+  "testedAt": "2026-03-21T12:11:15Z",
+  "isolation": {
+    "appUrl": "http://127.0.0.1:3100",
+    "session": "92f5d2fea0c6__narrative",
+    "missionDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83",
+    "evidenceDir": "foundation/narrative-shell"
+  },
+  "assertionsTested": [
+    "VAL-NARR-001",
+    "VAL-NARR-002",
+    "VAL-NARR-003",
+    "VAL-NARR-004",
+    "VAL-NARR-005",
+    "VAL-NARR-006",
+    "VAL-NARR-007",
+    "VAL-NARR-008",
+    "VAL-NARR-009",
+    "VAL-NARR-010"
+  ],
+  "toolsUsed": [
+    "agent-browser"
+  ],
+  "assertionResults": [
+    {
+      "id": "VAL-NARR-001",
+      "status": "pass",
+      "reason": "The first screen gives a plain-language explanation: 'BETTER is a prediction-market intelligence platform that combines AI-powered signal discovery with one-click copy trading on Polymarket,' which is understandable without insider context.",
+      "evidence": {
+        "screenshots": [
+          "foundation/narrative-shell/hero.png"
+        ],
+        "copiedHeroText": "BETTER is a prediction-market intelligence platform that combines AI-powered signal discovery with one-click copy trading on Polymarket. It gives traders \u2014 from curious newcomers to committed whales \u2014 faster access to market-moving predictions and automated execution, all gated by BETTER token holdings.",
+        "consoleErrors": "none"
+      }
+    },
+    {
+      "id": "VAL-NARR-002",
+      "status": "pass",
+      "reason": "Above the fold, the hero separates 'Live Today' from 'The Vision Ahead' with distinct maturity labels and copy, so current reality and future ambition are visibly split before the user scrolls.",
+      "evidence": {
+        "screenshots": [
+          "foundation/narrative-shell/hero.png",
+          "foundation/narrative-shell/desktop-hero-annotated.png"
+        ],
+        "consoleErrors": "none"
+      }
+    },
+    {
+      "id": "VAL-NARR-003",
+      "status": "pass",
+      "reason": "The early live section states concrete live scope (closed-beta Terminal, Lite Mode, token gate + FDV ratchet, trading tax revenue, community signal sharing) and includes freshness framing: 'Status as of 2026-Q1 \u00b7 Source: BETTER Docs \u00b7 docs.betteragent.ai.'",
+      "evidence": {
+        "screenshots": [
+          "foundation/narrative-shell/live-now.png"
+        ],
+        "consoleErrors": "none"
+      }
+    },
+    {
+      "id": "VAL-NARR-004",
+      "status": "pass",
+      "reason": "Desktop navigation exposes What is BETTER, Live Now, Roadmap, Tokenomics, Evidence & Sources, and Risks & Caveats. Desktop clicks recorded clean anchor navigation, and mobile navigation opened from the hamburger menu, exposed the same destinations, then closed cleanly after selecting Roadmap (observed at #roadmap with aria-expanded=false and body overflow restored).",
+      "evidence": {
+        "screenshots": [
+          "foundation/narrative-shell/desktop-nav.png",
+          "foundation/narrative-shell/mobile-nav-open-annotated.png",
+          "foundation/narrative-shell/mobile-roadmap-destination.png"
+        ],
+        "recordings": [
+          "foundation/narrative-shell/nav-destination-flow.webm",
+          "foundation/narrative-shell/mobile-nav-flow-2.webm"
+        ],
+        "observedDestinations": {
+          "desktop": [
+            "#what-is-better",
+            "#live-now",
+            "#roadmap",
+            "#tokenomics",
+            "#evidence",
+            "#risks"
+          ],
+          "mobile": [
+            "#roadmap"
+          ]
+        },
+        "consoleErrors": "none"
+      }
+    },
+    {
+      "id": "VAL-NARR-005",
+      "status": "pass",
+      "reason": "Navigation and section labels are newcomer-readable: 'What is BETTER,' 'Live Now,' 'Roadmap,' 'Tokenomics,' 'Evidence & Sources,' and 'Risks & Caveats' do not rely on BETTER-specific jargon to understand where they lead.",
+      "evidence": {
+        "screenshots": [
+          "foundation/narrative-shell/desktop-nav.png",
+          "foundation/narrative-shell/full-page.png"
+        ],
+        "consoleErrors": "none"
+      }
+    },
+    {
+      "id": "VAL-NARR-006",
+      "status": "pass",
+      "reason": "The narrative shell visibly uses maturity labels across the hero, live section, and roadmap cards, including Live, In Progress, Planned, and Speculative badges directly on relevant claims/cards.",
+      "evidence": {
+        "screenshots": [
+          "foundation/narrative-shell/hero.png",
+          "foundation/narrative-shell/roadmap-maturity-labels.png"
+        ],
+        "consoleErrors": "none"
+      }
+    },
+    {
+      "id": "VAL-NARR-007",
+      "status": "pass",
+      "reason": "A dedicated 'Understanding Maturity Labels' block explains each label: Live, In Progress, Planned, and Speculative, so users can interpret shipping status versus exploratory ideas.",
+      "evidence": {
+        "screenshots": [
+          "foundation/narrative-shell/maturity-explainer.png"
+        ],
+        "consoleErrors": "none"
+      }
+    },
+    {
+      "id": "VAL-NARR-008",
+      "status": "pass",
+      "reason": "Narrative-shell claims expose obvious source cues: live/current claims in the hero and live section show a visible 'BETTER Docs as of 2026-Q1' hook, and the Evidence & Sources section explains how canonical, scenario-based, illustrative, and external claims are sourced.",
+      "evidence": {
+        "screenshots": [
+          "foundation/narrative-shell/live-now.png",
+          "foundation/narrative-shell/evidence-section.png"
+        ],
+        "sourceCues": [
+          "BETTER Docs as of 2026-Q1 -> https://docs.betteragent.ai",
+          "Evidence & Sources legend: Canonical / Scenario-Based / Illustrative / External"
+        ],
+        "consoleErrors": "none"
+      }
+    },
+    {
+      "id": "VAL-NARR-009",
+      "status": "pass",
+      "reason": "Future-facing narrative copy carries nearby non-guarantee framing: the hero's 'The Vision Ahead' card says ambitions are directional and depend on market conditions, technical execution, and adoption; roadmap cards repeat caveats; and the Risks & Caveats section reinforces that roadmap items and projections are not guarantees.",
+      "evidence": {
+        "screenshots": [
+          "foundation/narrative-shell/hero.png",
+          "foundation/narrative-shell/roadmap-maturity-labels.png",
+          "foundation/narrative-shell/risks-section.png"
+        ],
+        "consoleErrors": "none"
+      }
+    },
+    {
+      "id": "VAL-NARR-010",
+      "status": "pass",
+      "reason": "Primary CTAs are honest about both destination and maturity. 'Explore the Roadmap' lands on #roadmap, 'See What's Live Now' lands on #live-now, docs links point to docs.betteragent.ai, and the Tokenomics section explicitly says the explorer is 'coming soon' and 'not a live trading interface.'",
+      "evidence": {
+        "screenshots": [
+          "foundation/narrative-shell/hero.png",
+          "foundation/narrative-shell/cta-roadmap-destination.png",
+          "foundation/narrative-shell/cta-live-now-destination.png"
+        ],
+        "observedDestinations": {
+          "Explore the Roadmap": "http://127.0.0.1:3100/#roadmap",
+          "See What's Live Now": "http://127.0.0.1:3100/#live-now",
+          "BETTER Docs as of 2026-Q1": "https://docs.betteragent.ai"
+        },
+        "consoleErrors": "none"
+      }
+    }
+  ],
+  "frictions": [],
+  "blockers": [],
+  "summary": {
+    "pass": 10,
+    "fail": 0,
+    "blocked": 0,
+    "note": "All 10 assigned narrative-shell assertions passed. No browser runtime errors were observed; the dev console only showed React DevTools/HMR informational logs."
+  }
+}

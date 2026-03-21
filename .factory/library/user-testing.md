@@ -25,3 +25,12 @@ Core flows to validate:
 - **Max concurrent browser validators: 1**
 - Non-browser validators such as lint, typecheck, test, or build may run alongside one browser session when needed
 - Use `http://127.0.0.1:3100` as the primary validation target
+
+## Flow Validator Guidance: browser
+
+- Use `agent-browser` for all browser validation against `http://127.0.0.1:3100`.
+- Stay inside the assigned assertion scope and treat the running local Next.js app as shared infrastructure; do not restart it unless the parent validator explicitly asks.
+- Use a non-default browser session name and close it before finishing.
+- Capture concrete evidence for every assertion you evaluate: visible copy, destination behavior, and any console/runtime issues.
+- For this mission, run only one browser validator at a time because the visual layer can increase runtime cost.
+- Do not modify application code or mission state files from a flow validator; write only the assigned flow report and evidence artifacts.
