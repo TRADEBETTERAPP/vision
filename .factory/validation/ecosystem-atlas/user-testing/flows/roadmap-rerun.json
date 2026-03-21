@@ -1,0 +1,88 @@
+{
+  "groupId": "roadmap-rerun",
+  "surface": "browser",
+  "testedAt": "2026-03-21T15:33:27Z",
+  "isolation": {
+    "appUrl": "http://127.0.0.1:3100",
+    "session": "47a5dc6a37c5__u1",
+    "missionDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83",
+    "evidenceDir": "ecosystem-atlas/roadmap-rerun"
+  },
+  "assertionsTested": [
+    "VAL-ROADMAP-003",
+    "VAL-ROADMAP-004",
+    "VAL-ROADMAP-006"
+  ],
+  "toolsUsed": [
+    "agent-browser"
+  ],
+  "assertionResults": [
+    {
+      "id": "VAL-ROADMAP-003",
+      "status": "fail",
+      "reason": "Roadmap scroll-sync still drifts. After scrolling down to later roadmap branches and then back to the top of the atlas branch list, the active story panel remained on a later family instead of returning to Product Evolution.",
+      "evidence": {
+        "screenshots": [
+          "ecosystem-atlas/roadmap-rerun/VAL-ROADMAP-003-active-roadmap-state.png"
+        ],
+        "recordings": [
+          "ecosystem-atlas/roadmap-rerun/VAL-ROADMAP-003-scroll-sync-forward-back.webm"
+        ],
+        "observedState": [
+          "At scrollY 3073, the Product Evolution branch section was highest in view (top 671px) but the active story panel remained 'Token Utility & Access Tiers'.",
+          "A forward-then-back scroll sequence from Social & Agent Ecosystem back to Product Evolution never restored the active story panel to Product Evolution during the retest."
+        ],
+        "consoleErrors": "none"
+      }
+    },
+    {
+      "id": "VAL-ROADMAP-004",
+      "status": "pass",
+      "reason": "Branch behavior was stable in the rerun. Product Evolution and Technical Infrastructure stayed expanded together after selecting 'Autonomous Strategy Agents', and collapsing Product Evolution later left the unrelated Technical Infrastructure branch expanded.",
+      "evidence": {
+        "screenshots": [
+          "ecosystem-atlas/roadmap-rerun/VAL-ROADMAP-004-expanded-state.png",
+          "ecosystem-atlas/roadmap-rerun/VAL-ROADMAP-004-collapsed-state.png"
+        ],
+        "recordings": [
+          "ecosystem-atlas/roadmap-rerun/VAL-ROADMAP-004-expand-collapse-flow.webm"
+        ],
+        "observedState": [
+          "After selecting 'Autonomous Strategy Agents', Product Evolution and Technical Infrastructure both still reported aria-expanded=true.",
+          "After collapsing Product Evolution, Technical Infrastructure still reported aria-expanded=true, showing unrelated branch state was preserved.",
+          "Leaf nodes exposed selection arrows only; no extra branch-expansion chevrons appeared on the leaf items that were tested."
+        ],
+        "consoleErrors": "none"
+      }
+    },
+    {
+      "id": "VAL-ROADMAP-006",
+      "status": "pass",
+      "reason": "Valid deep linking now restores a visible roadmap detail state on first load and after refresh. Opening `#node-pe-strategy-agents` surfaced the 'Autonomous Strategy Agents' detail panel with Product Evolution active, and the same state remained visible after reload without runtime issues.",
+      "evidence": {
+        "screenshots": [
+          "ecosystem-atlas/roadmap-rerun/VAL-ROADMAP-006-valid-deep-link-state.png",
+          "ecosystem-atlas/roadmap-rerun/VAL-ROADMAP-006-after-refresh.png"
+        ],
+        "recordings": [
+          "ecosystem-atlas/roadmap-rerun/VAL-ROADMAP-006-refresh-valid-deep-link.webm"
+        ],
+        "observedState": [
+          "Direct navigation to `http://127.0.0.1:3100/#node-pe-strategy-agents` kept Product Evolution active and showed the 'Autonomous Strategy Agents' detail panel in view.",
+          "After refresh, the URL stayed on `#node-pe-strategy-agents` and the same detail panel remained visible at scrollY 3582.",
+          "No browser errors were captured during the direct-load or refresh rerun; the request log showed only local document/static asset requests with no failing entries."
+        ],
+        "consoleErrors": "none",
+        "network": "GET / and local _next static assets observed during load/refresh; no failing requests captured."
+      }
+    }
+  ],
+  "frictions": [],
+  "blockers": [],
+  "summary": {
+    "pass": 2,
+    "fail": 1,
+    "blocked": 0,
+    "note": "Rerun results: VAL-ROADMAP-004 and VAL-ROADMAP-006 passed. VAL-ROADMAP-003 still failed because the active roadmap story panel stayed on a later family after scrolling back toward Product Evolution. No runtime/browser errors were observed in the rerun."
+  }
+}
