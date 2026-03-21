@@ -1,0 +1,138 @@
+{
+  "groupId": "roadmap-core",
+  "surface": "browser",
+  "testedAt": "2026-03-21T14:36:38Z",
+  "isolation": {
+    "appUrl": "http://127.0.0.1:3100",
+    "session": "roadmap-core-validator",
+    "missionDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83",
+    "evidenceDir": "ecosystem-atlas/roadmap-core"
+  },
+  "assertionsTested": [
+    "VAL-ROADMAP-001",
+    "VAL-ROADMAP-002",
+    "VAL-ROADMAP-003",
+    "VAL-ROADMAP-004",
+    "VAL-ROADMAP-005",
+    "VAL-ROADMAP-010"
+  ],
+  "toolsUsed": [
+    "agent-browser"
+  ],
+  "assertionResults": [
+    {
+      "id": "VAL-ROADMAP-001",
+      "status": "pass",
+      "reason": "The roadmap first view reads as interactive immediately: the atlas shows a selected roadmap tab, a visible 'Collapse all branches' control, and clickable branch buttons before any extra exploration is required.",
+      "evidence": {
+        "screenshots": [
+          "ecosystem-atlas/roadmap-core/VAL-ROADMAP-001-roadmap-first-view-annotated.png",
+          "ecosystem-atlas/roadmap-core/VAL-ROADMAP-001-roadmap-first-view.png"
+        ],
+        "consoleErrors": "none"
+      }
+    },
+    {
+      "id": "VAL-ROADMAP-002",
+      "status": "pass",
+      "reason": "The atlas stays recoverable through a visible focal state and reset affordance: switching tabs moves focus between branch families, and the persistent 'Collapse all branches' control restores a clean overview after navigating around the graph.",
+      "evidence": {
+        "screenshots": [
+          "ecosystem-atlas/roadmap-core/VAL-ROADMAP-002-roadmap-wayfinding-annotated.png"
+        ],
+        "recordings": [
+          "ecosystem-atlas/roadmap-core/VAL-ROADMAP-002-recenter-or-breadcrumb-flow.webm"
+        ],
+        "observedWayfinding": [
+          "Active tab highlight indicates the current focal branch family.",
+          "'Collapse all branches' reset the atlas back to its default overview after moving through Technical Infrastructure and Social & Agent Ecosystem."
+        ],
+        "consoleErrors": "none"
+      }
+    },
+    {
+      "id": "VAL-ROADMAP-003",
+      "status": "fail",
+      "reason": "Scroll-linked storytelling and atlas state drift out of sync in both directions. With atlas narrative headings for Product/Token/Revenue visible, the selected tab often remained on a later branch ('Social & Agent Ecosystem'), and scrolling back upward later snapped the selected tab to 'Revenue Expansion' instead of the visible earlier branch.",
+      "evidence": {
+        "screenshots": [
+          "ecosystem-atlas/roadmap-core/VAL-ROADMAP-003-active-roadmap-state.png",
+          "ecosystem-atlas/roadmap-core/token-utility-scroll-check.png"
+        ],
+        "recordings": [
+          "ecosystem-atlas/roadmap-core/VAL-ROADMAP-003-scroll-sync-forward-back.webm"
+        ],
+        "observedMismatches": [
+          "At the atlas scroll position where 'Token Utility & Access Tiers' was visible, the selected roadmap tab remained 'Social & Agent Ecosystem'.",
+          "When scrolling back upward toward the earlier atlas headings, the selected roadmap tab snapped to 'Revenue Expansion' instead of the visible Product/Token state."
+        ],
+        "consoleErrors": "none"
+      }
+    },
+    {
+      "id": "VAL-ROADMAP-004",
+      "status": "fail",
+      "reason": "Branch state is not stable under interaction. After expanding both Product Evolution and Technical Infrastructure, selecting the Product child node 'Autonomous Strategy Agents' collapsed unrelated branch state and left the atlas focused on the wrong family, so changing one branch corrupted unrelated roadmap state even though leaf nodes themselves did not expose fake expand toggles.",
+      "evidence": {
+        "screenshots": [
+          "ecosystem-atlas/roadmap-core/branch-product-expanded-annotated.png",
+          "ecosystem-atlas/roadmap-core/VAL-ROADMAP-004-expanded-and-collapsed-states.png"
+        ],
+        "recordings": [
+          "ecosystem-atlas/roadmap-core/VAL-ROADMAP-004-expand-collapse-flow-2.webm"
+        ],
+        "observedStateChange": [
+          "Product Evolution and Technical Infrastructure could both be expanded at once before node selection.",
+          "Selecting the Product node 'Autonomous Strategy Agents' collapsed the unrelated Technical Infrastructure branch and left 'Social & Agent Ecosystem' selected."
+        ],
+        "consoleErrors": "none"
+      }
+    },
+    {
+      "id": "VAL-ROADMAP-005",
+      "status": "pass",
+      "reason": "Selecting 'Autonomous Strategy Agents' opened the correct detail surface and showed the required visible status framing: title, 'Planned' maturity badge, a plain-language summary, and future-facing unlock/dependency/caveat text ('Unlocks', 'Requires', and 'Depends on').",
+      "evidence": {
+        "screenshots": [
+          "ecosystem-atlas/roadmap-core/node-autonomous-strategy-agents-detail-annotated.png",
+          "ecosystem-atlas/roadmap-core/VAL-ROADMAP-005-node-detail.png"
+        ],
+        "recordings": [
+          "ecosystem-atlas/roadmap-core/VAL-ROADMAP-005-node-selection-3.webm"
+        ],
+        "detailCopy": "Planned · Autonomous Strategy Agents · AI agents that execute prediction-market strategies autonomously with user-defined risk parameters. Unlocks: 24/7 autonomous trading, agent-native fee streams, and delegation mechanics. Requires: Terminal Open Access, Social Vaults & vBETTER. Caveat: Depends on Terminal open access, vault infrastructure, and agent safety frameworks.",
+        "consoleErrors": "none"
+      }
+    },
+    {
+      "id": "VAL-ROADMAP-010",
+      "status": "pass",
+      "reason": "The roadmap visibly covers all required BETTER domain families. The atlas exposes Product Evolution, Token Utility & Access Tiers, Revenue Expansion, Technical Infrastructure, and Social & Agent Ecosystem as first-class branch families.",
+      "evidence": {
+        "screenshots": [
+          "ecosystem-atlas/roadmap-core/VAL-ROADMAP-010-full-roadmap-overview.png",
+          "ecosystem-atlas/roadmap-core/VAL-ROADMAP-010-roadmap-branch-list-annotated.png"
+        ],
+        "observedBranches": [
+          "Product Evolution",
+          "Token Utility & Access Tiers",
+          "Revenue Expansion",
+          "Technical Infrastructure",
+          "Social & Agent Ecosystem"
+        ],
+        "consoleErrors": "none"
+      }
+    }
+  ],
+  "frictions": [
+    "Atlas tab selection does not reliably track the visible roadmap story headings during forward/backward scrolling.",
+    "Selecting a node can collapse unrelated open branches and switch the apparent focal family, which makes multi-branch exploration feel unstable."
+  ],
+  "blockers": [],
+  "summary": {
+    "pass": 4,
+    "fail": 2,
+    "blocked": 0,
+    "note": "Four assigned roadmap assertions passed (001, 002, 005, 010) and two failed (003, 004). No browser console/runtime errors were observed during the validation flows."
+  }
+}

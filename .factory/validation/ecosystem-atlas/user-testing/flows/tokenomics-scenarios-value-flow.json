@@ -1,0 +1,166 @@
+{
+  "groupId": "tokenomics-scenarios-value-flow",
+  "testedAt": "2026-03-21T14:57:55.602010+00:00",
+  "isolation": {
+    "surface": "browser",
+    "appUrl": "http://127.0.0.1:3100",
+    "missionDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83",
+    "browserSession": "tokenomics-scenarios-vf"
+  },
+  "toolsUsed": [
+    "agent-browser"
+  ],
+  "assertionResults": [
+    {
+      "id": "VAL-TOKEN-007",
+      "title": "Scenario switching updates assumptions and preserves user inputs",
+      "status": "pass",
+      "reason": "With a sample position of 500000 BETTER and a $10000 vault deposit, the same input values remained in place while Conservative, Base, and Upside updated all five assumption dimensions plus the dependent projection cards/table together.",
+      "steps": [
+        {
+          "action": "Open #tokenomics and enter 500000 BETTER plus a $10000 vault deposit in Scenario Projections",
+          "expected": "The UI should show the user's tier/allocation preview and keep those values available during scenario changes.",
+          "observed": "The page resolved the sample balance to Whale, showed 1.6\u00d7 tier weight and $16000 effective allocation, and kept both inputs visible in the form."
+        },
+        {
+          "action": "Switch Base \u2192 Conservative",
+          "expected": "Assumptions and dependent outputs update together while the entered inputs persist.",
+          "observed": "Prediction Markets changed from 15B to 5B, Annualized Protocol Revenue changed from $8.5M to $1.2M, and the 500000 / $10000 inputs stayed unchanged."
+        },
+        {
+          "action": "Switch Conservative \u2192 Upside \u2192 Base",
+          "expected": "The other scenario assumptions should appear for Hyperliquid/HyperEVM, social vaults, AI-agent tooling, and enterprise rails without clearing the user's inputs.",
+          "observed": "Upside showed 50B prediction-market volume, 12% Hyperliquid share, $100M vault AUM, 5000 agents, and $15M enterprise revenue; returning to Base restored the base assumptions while preserving the same inputs."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "ecosystem-atlas/tokenomics-scenarios-value-flow/VAL-TOKEN-007-assumptions-panel.png"
+        ],
+        "recordings": [
+          "ecosystem-atlas/tokenomics-scenarios-value-flow/VAL-TOKEN-007-scenario-switch.webm"
+        ],
+        "consoleErrors": "none",
+        "network": "No requests were captured after clearing logs; the scenario updates were client-side."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-TOKEN-008",
+      "title": "Scenario outputs remain logically coherent",
+      "status": "pass",
+      "reason": "The comparison table stayed monotonic for every displayed output, so there were no unexplained inverse metrics across conservative, base, and upside.",
+      "steps": [
+        {
+          "action": "Review the Cross-Scenario Comparison table using the same sample inputs",
+          "expected": "Outputs should remain logically ordered or explicitly explain inverse metrics.",
+          "observed": "All visible metrics increased from Conservative to Base to Upside with no inverse case shown."
+        },
+        {
+          "action": "Compare all listed projection rows",
+          "expected": "Major projection rows should not contradict the scenario ordering.",
+          "observed": "Annualized Protocol Revenue $1.2M < $8.5M < $45M; Monthly Active Terminal Users 2000 < 15000 < 80000; Total Vault AUM $5M < $25M < $100M; Active Autonomous Agents 50 < 500 < 5000; Enterprise Revenue $500K < $3M < $15M."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "ecosystem-atlas/tokenomics-scenarios-value-flow/VAL-TOKEN-008-cross-scenario-output.png"
+        ],
+        "calculationNotes": "All five displayed outputs were strictly ordered Conservative < Base < Upside; no inverse metric required an explanatory note.",
+        "consoleErrors": "none"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-TOKEN-009",
+      "title": "Fee-stack examples and value-flow mapping are both explicit",
+      "status": "pass",
+      "reason": "The tokenomics flow separated each fee line with worked examples and then mapped Consumer, Pro / Prosumer, Whale, and Enterprise flows to explicit destinations with maturity badges.",
+      "steps": [
+        {
+          "action": "Inspect Fee Stack Breakdown",
+          "expected": "Trading tax, Lite Mode fees, vault performance fees, whale premium fee advantage, and future revenue lines should be individually explained with examples.",
+          "observed": "The section listed Trading Tax (Buy/Sell), Lite Mode Per-Fill Fee, Vault Performance Fee, Whale Premium Fee Advantage, Agent Transaction Fees, and Enterprise Data & API Licensing, each with a worked example and Live/In Progress/Planned badge."
+        },
+        {
+          "action": "Inspect Revenue & Value-Flow Mapping",
+          "expected": "Consumer, pro/prosumer, whale, and enterprise revenue flows should map to treasury/sinks/reinvestment with explicit maturity labels.",
+          "observed": "Consumer mapped to Protocol treasury, Pro / Prosumer to Treasury + vault manager rewards + token sinks, Whale to Treasury + reinvestment pool + burn mechanics, and Enterprise to Treasury + infrastructure reinvestment, each with a visible status label."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "ecosystem-atlas/tokenomics-scenarios-value-flow/VAL-TOKEN-009-fee-breakdown.png",
+          "ecosystem-atlas/tokenomics-scenarios-value-flow/VAL-TOKEN-009-worked-fee-example.png",
+          "ecosystem-atlas/tokenomics-scenarios-value-flow/VAL-TOKEN-009-value-flow-diagram.png"
+        ],
+        "consoleErrors": "none"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-TOKEN-010",
+      "title": "The roadmap token utility surface covers the required agent-native mechanics",
+      "status": "pass",
+      "reason": "The utility surface covered every required mechanic and attached maturity labels plus caveats/dependencies to the future-facing items.",
+      "steps": [
+        {
+          "action": "Inspect Agent-Native Token Utility cards",
+          "expected": "The surface should cover strategy agents, bonded quality controls, delegation/backing, research/data bounties, premium API or agent lanes, LLM/inference credits, and whale-exclusive products where applicable.",
+          "observed": "The section showed Strategy Agents, Bonded Agent Registry, Agent Delegation & Backing, Research & Data Bounties, Premium API & Agent Lanes, LLM & Inference Credits, and Whale Exclusive Products."
+        },
+        {
+          "action": "Review each card's framing",
+          "expected": "Future-facing utility should expose maturity status and dependency/caveat framing.",
+          "observed": "Cards visibly used Planned or Speculative badges and included caveats such as infrastructure readiness, slashing-rule design, and dependence on Full-Stack AI Intelligence or the whale-first tier ladder."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "ecosystem-atlas/tokenomics-scenarios-value-flow/VAL-TOKEN-010-token-utility-surface.png",
+          "ecosystem-atlas/tokenomics-scenarios-value-flow/VAL-TOKEN-010-agent-native-utility-details.png"
+        ],
+        "consoleErrors": "none"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-TOKEN-011",
+      "title": "Key token and projection numbers expose source or assumption cues",
+      "status": "pass",
+      "reason": "Supply math, tier thresholds, and projection cards all showed visible evidence hooks that identify whether a number is canonical, doc-backed, or scenario-based.",
+      "steps": [
+        {
+          "action": "Inspect token supply/allocation and threshold surfaces",
+          "expected": "Key supply math and threshold numbers should show a source or assumption cue.",
+          "observed": "The allocation table paired rows like Community & Ecosystem 40% / 400000000 with BETTER Tokenomics source hooks, and tier cards such as Lite \u2265 50000 BETTER showed BETTER Docs as of 2026-Q1."
+        },
+        {
+          "action": "Inspect projection cards inside Scenario Projections",
+          "expected": "Major projection numbers should disclose that they are scenario-based or illustrative.",
+          "observed": "Projection cards such as Annualized Protocol Revenue $8.5M and Enterprise Revenue $3M were labeled with BETTER Scenario Model hooks, while the user allocation preview used a Your Inputs illustrative cue."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "ecosystem-atlas/tokenomics-scenarios-value-flow/VAL-TOKEN-011-token-number-with-source-or-assumption.png",
+          "ecosystem-atlas/tokenomics-scenarios-value-flow/VAL-TOKEN-011-projection-number-with-assumption.png"
+        ],
+        "consoleErrors": "none"
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [
+    {
+      "description": "agent-browser recording runs in a fresh capture context, so after saving the scenario-switch recording I re-entered the sample inputs in the main session before taking the final verification screenshots.",
+      "resolved": true,
+      "resolution": "Repeated the fill-and-switch flow outside the recording context and confirmed the same 500000 BETTER / $10000 values persisted across Conservative, Base, and Upside.",
+      "affectedAssertions": [
+        "VAL-TOKEN-007"
+      ]
+    }
+  ],
+  "blockers": [],
+  "summary": "Tested 5 assigned browser assertions for tokenomics scenarios/value flow: 5 passed, 0 failed, 0 blocked. Scenario switching preserved entered inputs while updating the five assumption dimensions, the comparison table stayed monotonic, and the fee/value-flow, utility, and source-cue surfaces were all explicit and maturity-labeled."
+}

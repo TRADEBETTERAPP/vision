@@ -1,0 +1,159 @@
+{
+  "groupId": "architecture-flywheel",
+  "testedAt": "2026-03-21T15:05:36.540686Z",
+  "isolation": {
+    "surface": "browser",
+    "appUrl": "http://127.0.0.1:3100",
+    "browserSession": "arch-flywheel-33dae310",
+    "missionDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83",
+    "evidenceDir": "ecosystem-atlas/architecture-flywheel"
+  },
+  "toolsUsed": [
+    "agent-browser"
+  ],
+  "assertionResults": [
+    {
+      "id": "VAL-VISUAL-005",
+      "title": "Architecture storytelling surfaces the required BETTER stack layers",
+      "status": "pass",
+      "reason": "The architecture section explicitly names Hyperliquid/HyperEVM, OpenServ/BRAID, proprietary AI/RL models, Polygon node/validator operations, and low-latency/colo/FPGA execution, with plain-language role copy for each layer.",
+      "steps": [
+        {
+          "action": "Open the local app and navigate to #architecture",
+          "expected": "The architecture section is visible with stack-layer storytelling",
+          "observed": "Technical Architecture loaded with BETTER Stack Architecture content and layer cards"
+        },
+        {
+          "action": "Review the stack-layer cards and section copy",
+          "expected": "All required BETTER layers and their plain-language roles are surfaced",
+          "observed": "The section copy and cards described Hyperliquid/HyperEVM, OpenServ/BRAID, AI/RL, Polygon node/validator ops, and low-latency/colo/FPGA roles"
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "ecosystem-atlas/architecture-flywheel/VAL-VISUAL-005-architecture-heading.png",
+          "ecosystem-atlas/architecture-flywheel/VAL-VISUAL-005-architecture-section.png"
+        ],
+        "consoleErrors": "none",
+        "network": "No assertion-specific API/XHR requests were triggered during this read-only section review."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-VISUAL-006",
+      "title": "Architecture layers show maturity and dependency sequencing",
+      "status": "pass",
+      "reason": "Layer cards visibly show Live, In Progress, Planned, and Speculative badges, and later-stage layers include explicit dependency text such as Polygon depending on Hyperliquid/HyperEVM and low-latency execution depending on earlier infrastructure.",
+      "steps": [
+        {
+          "action": "Inspect the architecture layer cards",
+          "expected": "Users can distinguish layer maturity states",
+          "observed": "Cards showed visible status badges including In Progress, Live, Planned, and Speculative"
+        },
+        {
+          "action": "Check later-stage layer cards for dependency cues",
+          "expected": "Dependency sequencing is visible",
+          "observed": "Polygon Node & Validator Operations listed 'Depends on: Hyperliquid / HyperEVM' and Low-Latency / Colo / FPGA Execution listed both Polygon and Hyperliquid dependencies"
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "ecosystem-atlas/architecture-flywheel/VAL-VISUAL-006-status-dependencies.png"
+        ],
+        "consoleErrors": "none",
+        "network": "No assertion-specific API/XHR requests were triggered while inspecting architecture status/dependency copy."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-VISUAL-007",
+      "title": "Cost bands show assumption hooks and capability unlocks",
+      "status": "pass",
+      "reason": "Expanded cost-band phases use rough ranges instead of exact budgets and each phase exposes an assumption basis, capability unlock, and dependency hook where applicable.",
+      "steps": [
+        {
+          "action": "Expand the infrastructure cost-band accordions",
+          "expected": "Subsystems reveal phased ranges for each stage",
+          "observed": "All five subsystem accordions expanded and showed multi-phase cost ranges"
+        },
+        {
+          "action": "Inspect expanded cost-phase details",
+          "expected": "Each phase shows estimate framing and what the spend unlocks",
+          "observed": "Phases displayed Cost Range, Assumption Basis, Capability Unlock, and readable Requires dependencies"
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "ecosystem-atlas/architecture-flywheel/VAL-VISUAL-007-cost-band-section.png",
+          "ecosystem-atlas/architecture-flywheel/VAL-VISUAL-007-cost-phase-detail.png"
+        ],
+        "consoleErrors": "none",
+        "network": "No assertion-specific API/XHR requests were triggered during cost-band exploration."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-VISUAL-008",
+      "title": "Heavy visuals degrade gracefully under constrained conditions",
+      "status": "pass",
+      "reason": "Under iPhone 14 emulation with reduced motion enabled, the hero and architecture sections remained readable, navigation to #architecture still worked, and architecture interactions remained usable without console errors.",
+      "steps": [
+        {
+          "action": "Emulate a constrained/mobile environment (iPhone 14 + reduced motion) and load the page",
+          "expected": "The site preserves readable copy and usable controls",
+          "observed": "The hero remained readable with visible menu structure and no broken overlays"
+        },
+        {
+          "action": "Navigate to the architecture section and interact with architecture controls",
+          "expected": "Architecture content stays usable on constrained/mobile conditions",
+          "observed": "The architecture heading and first layer card remained legible, accordion toggles remained tappable, and interaction recording completed without runtime errors"
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "ecosystem-atlas/architecture-flywheel/VAL-VISUAL-008-constrained-visual-state.png",
+          "ecosystem-atlas/architecture-flywheel/VAL-VISUAL-008-constrained-architecture-section.png"
+        ],
+        "recordings": [
+          "ecosystem-atlas/architecture-flywheel/VAL-VISUAL-008-interaction-under-load-2.webm"
+        ],
+        "consoleErrors": "none",
+        "network": "No assertion-specific API/XHR requests were triggered during constrained/mobile validation."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-VISUAL-009",
+      "title": "Infrastructure evolution and BETTER flywheel storytelling are explorable",
+      "status": "pass",
+      "reason": "The flywheel area renders as an explorable grid of infrastructure, product, revenue, and token nodes, and selecting nodes opens a detail panel with maturity, explanatory copy, and feed relationships.",
+      "steps": [
+        {
+          "action": "Scroll to the BETTER Flywheel section",
+          "expected": "An explorable flywheel surface is present",
+          "observed": "The page showed categorized infrastructure/product/revenue/token nodes under 'The BETTER Flywheel'"
+        },
+        {
+          "action": "Click flywheel nodes and review the detail state",
+          "expected": "Users can explore node details and relationships",
+          "observed": "Clicking nodes such as Social Vaults & vBETTER and Autonomous Strategy Agents opened a detail panel with maturity, explanatory copy, and feeds-into/fed-by relationships"
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "ecosystem-atlas/architecture-flywheel/VAL-VISUAL-009-flywheel-surface.png",
+          "ecosystem-atlas/architecture-flywheel/VAL-VISUAL-009-flywheel-detail.png"
+        ],
+        "recordings": [
+          "ecosystem-atlas/architecture-flywheel/VAL-VISUAL-009-flywheel-exploration.webm"
+        ],
+        "consoleErrors": "none",
+        "network": "No assertion-specific API/XHR requests were triggered during flywheel exploration."
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 5 assigned architecture/flywheel assertions in a single agent-browser session: 5 passed, 0 failed, 0 blocked. The architecture section, cost-band explorer, and flywheel surface were all present and usable, including under mobile/reduced-motion emulation."
+}

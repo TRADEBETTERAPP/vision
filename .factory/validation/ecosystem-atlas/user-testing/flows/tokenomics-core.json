@@ -1,0 +1,143 @@
+{
+  "groupId": "tokenomics-core",
+  "surface": "browser",
+  "testedAt": "2026-03-21T14:51:33Z",
+  "isolation": {
+    "appUrl": "http://127.0.0.1:3100",
+    "session": "tokenomics-core-validator",
+    "missionDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83",
+    "evidenceDir": "ecosystem-atlas/tokenomics-core"
+  },
+  "assertionsTested": [
+    "VAL-TOKEN-001",
+    "VAL-TOKEN-002",
+    "VAL-TOKEN-003",
+    "VAL-TOKEN-004",
+    "VAL-TOKEN-005",
+    "VAL-TOKEN-006"
+  ],
+  "toolsUsed": [
+    "agent-browser"
+  ],
+  "assertionResults": [
+    {
+      "id": "VAL-TOKEN-001",
+      "status": "pass",
+      "reason": "The rendered supply math reconciles cleanly. The token allocation table shows 40% + 20% + 15% + 15% + 10% = 100% and 400,000,000 + 200,000,000 + 150,000,000 + 150,000,000 + 100,000,000 = 1,000,000,000, matching the stated total supply and the visible '\u2713 Reconciled' total row.",
+      "evidence": {
+        "screenshots": [
+          "ecosystem-atlas/tokenomics-core/VAL-TOKEN-001-token-allocation-table.png",
+          "ecosystem-atlas/tokenomics-core/VAL-TOKEN-001-allocation-summary.png"
+        ],
+        "calculationNotes": [
+          "Community & Ecosystem: 40% of 1,000,000,000 = 400,000,000.",
+          "Team & Advisors: 20% = 200,000,000; Treasury: 15% = 150,000,000; Liquidity: 15% = 150,000,000; Strategic Partnerships: 10% = 100,000,000.",
+          "Visible total row reports 100% and 1,000,000,000 with a reconciled status.",
+          "No separate cumulative raise or funding table was rendered in the tested tokenomics section, so no conflicting funding arithmetic was present in this browser flow."
+        ],
+        "consoleErrors": "none",
+        "network": "No assertion-specific network requests were captured for this static tokenomics flow."
+      }
+    },
+    {
+      "id": "VAL-TOKEN-002",
+      "status": "pass",
+      "reason": "The ladder renders in ascending whale-first order and each tier exposes the required qualification and benefit data. The visible order is Explorer, Lite, Standard, Whale, Apex Whale with thresholds None, \u226550,000, \u2265100,000, \u2265500,000, and \u22652,000,000 BETTER, and each card shows qualification basis, access priority, allocation priority, preview priority, agent slots, fee treatment, and exclusive products where applicable.",
+      "evidence": {
+        "screenshots": [
+          "ecosystem-atlas/tokenomics-core/VAL-TOKEN-002-token-tier-ladder-annotated.png",
+          "ecosystem-atlas/tokenomics-core/VAL-TOKEN-002-tier-comparison.png"
+        ],
+        "observedTierOrder": [
+          "Explorer \u2014 no minimum",
+          "Lite \u2014 \u2265 50,000 BETTER",
+          "Standard \u2014 \u2265 100,000 BETTER",
+          "Whale \u2014 \u2265 500,000 BETTER",
+          "Apex Whale \u2014 \u2265 2,000,000 BETTER"
+        ],
+        "consoleErrors": "none"
+      }
+    },
+    {
+      "id": "VAL-TOKEN-003",
+      "status": "pass",
+      "reason": "Whale advantages are explicit and monotonic across adjacent tiers. The ladder copy states that no tier silently loses lower-tier privileges, while the visible benefit values rise from access priority 1\u21925, allocation priority 1\u21922\u21923\u21925\u21927, preview priority none\u21921\u21922\u21923\u21925, agent slots 0\u21921\u21922\u21925\u219210, and fee treatment standard\u219215% reduction\u219225% reduction; premium features also expand from Whale to Apex Whale.",
+      "evidence": {
+        "screenshots": [
+          "ecosystem-atlas/tokenomics-core/VAL-TOKEN-003-whale-benefit-matrix.png",
+          "ecosystem-atlas/tokenomics-core/VAL-TOKEN-003-adjacent-tier-comparison.png"
+        ],
+        "observedProgression": [
+          "Whale adds Level 4 access, Level 5 allocation priority, Level 3 preview priority, 5 agent slots, and 15% fee reduction.",
+          "Apex Whale increases those to Level 5 access, Level 7 allocation priority, Level 5 preview priority, 10 agent slots, and 25% fee reduction.",
+          "Exclusive premium products escalate from Whale features like priority vault allocation and early strategy previews to Apex-only items such as private alpha signals, OTC facilitation access, and premium API lanes."
+        ],
+        "consoleErrors": "none"
+      }
+    },
+    {
+      "id": "VAL-TOKEN-004",
+      "status": "pass",
+      "reason": "The scarcity explainer makes oversubscription resolution explicit with concrete scenarios and ordering rules. It spells out that vault deposits resolve Apex Whale \u2192 Whale \u2192 Standard \u2192 Lite \u2192 Explorer, preview slots go first to Apex/Whale before lower tiers, agent scarcity respects per-tier slot limits, and the limited OTC channel is Apex-only with tie-break logic stated.",
+      "evidence": {
+        "screenshots": [
+          "ecosystem-atlas/tokenomics-core/VAL-TOKEN-004-scarcity-or-priority-explainer.png",
+          "ecosystem-atlas/tokenomics-core/VAL-TOKEN-004-vault-allocation-example.png"
+        ],
+        "observedRules": [
+          "Vault example: $2M capacity versus $5M pending deposits resolved by tier-priority order and first-come-first-served within a tier.",
+          "Preview example: 50 slots for 200 interested users resolved by preview-priority tiers, with Explorer explicitly ineligible.",
+          "OTC example: only Apex Whale qualifies, with tenure, historical activity, and allocation-priority scores used when demand exceeds supply."
+        ],
+        "consoleErrors": "none"
+      }
+    },
+    {
+      "id": "VAL-TOKEN-005",
+      "status": "pass",
+      "reason": "The FDV ratchet is explained in plain language and backed by boundary examples that include both threshold drops and the permanent-lower-threshold behavior after FDV declines. The worked example shows 100,000 BETTER at $10M FDV, dropping to 75,000 at $25M, 50,000 at $50M, staying at 50,000 through $30M and $15M declines, and dropping again to 35,000 at a new $75M high.",
+      "evidence": {
+        "screenshots": [
+          "ecosystem-atlas/tokenomics-core/VAL-TOKEN-005-ratchet-explainer.png",
+          "ecosystem-atlas/tokenomics-core/VAL-TOKEN-005-ratchet-worked-example.png"
+        ],
+        "observedRatchetSequence": [
+          "$10M FDV \u2192 100,000 BETTER threshold",
+          "$25M new ATH \u2192 75,000 BETTER threshold",
+          "$50M new ATH \u2192 50,000 BETTER threshold",
+          "$30M decline and $15M further decline both keep the threshold at 50,000 BETTER",
+          "$75M new ATH \u2192 35,000 BETTER threshold"
+        ],
+        "consoleErrors": "none"
+      }
+    },
+    {
+      "id": "VAL-TOKEN-006",
+      "status": "pass",
+      "reason": "The non-linear allocation logic is clearly explained with a visible formula and worked examples across multiple tiers and deposit sizes. The section states Effective Allocation = Deposit \u00d7 Tier Weight and then shows Explorer/Lite/Standard/Whale/Apex examples such as $10,000 \u00d7 1.6 = $16,000 for Whale and $25,000 \u00d7 2.0 = $50,000 for Apex Whale.",
+      "evidence": {
+        "screenshots": [
+          "ecosystem-atlas/tokenomics-core/VAL-TOKEN-006-allocation-explainer.png",
+          "ecosystem-atlas/tokenomics-core/VAL-TOKEN-006-allocation-worked-examples.png"
+        ],
+        "observedExamples": [
+          "Explorer: $1,000 deposit at 1.0\u00d7 weight \u2192 $1,000 effective allocation.",
+          "Standard: $5,000 deposit at 1.25\u00d7 weight \u2192 $6,250 effective allocation.",
+          "Whale: $10,000 deposit at 1.6\u00d7 weight \u2192 $16,000 effective allocation.",
+          "Apex Whale: $25,000 deposit at 2.0\u00d7 weight \u2192 $50,000 effective allocation."
+        ],
+        "consoleErrors": "none"
+      }
+    }
+  ],
+  "frictions": [
+    "agent-browser's network request log did not capture the initial local asset requests for this static page flow, so network evidence is limited to noting that no assertion-specific requests were captured."
+  ],
+  "blockers": [],
+  "summary": {
+    "pass": 6,
+    "fail": 0,
+    "blocked": 0,
+    "note": "All six assigned tokenomics-core assertions passed in a single non-default browser session. No browser console errors were observed during the tested flows."
+  }
+}
