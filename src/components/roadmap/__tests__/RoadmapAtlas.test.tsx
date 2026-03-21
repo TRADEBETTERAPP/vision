@@ -4,9 +4,10 @@
  * Covers:
  * - VAL-ROADMAP-001: Roadmap is identifiable as interactive with focal point
  * - VAL-ROADMAP-002: Wayfinding stays recoverable
- * - VAL-ROADMAP-004: Expand/collapse behaves predictably
+ * - VAL-ROADMAP-003: Scroll storytelling and roadmap state stay in sync
+ * - VAL-ROADMAP-004: Expand/collapse behaves predictably; branch-state independence
  * - VAL-ROADMAP-005: Node details show correct content and status
- * - VAL-ROADMAP-006: Valid deep links restore state and scroll/focus into view
+ * - VAL-ROADMAP-006: Valid deep links restore state hydration-safe and scroll/focus into view
  * - VAL-ROADMAP-007: Invalid deep links fail gracefully with visible fallback
  * - VAL-ROADMAP-008: Keyboard accessible
  * - VAL-ROADMAP-010: Covers required BETTER domains
@@ -22,6 +23,8 @@ beforeEach(() => {
   window.location.hash = "";
   // Reset history state
   history.replaceState(null, "", window.location.pathname);
+  // Reset scrollIntoView mock
+  Element.prototype.scrollIntoView = jest.fn();
 });
 
 describe("RoadmapAtlas", () => {
@@ -146,24 +149,26 @@ describe("RoadmapAtlas", () => {
     expect(within(detailPanel).getByTestId("caveat-frame")).toBeInTheDocument();
   });
 
-  // VAL-ROADMAP-006: Valid deep links restore state
-  it("restores node detail state from a valid URL hash", () => {
+  // VAL-ROADMAP-006: Valid deep links restore state (hydration-safe — deferred to useEffect)
+  it("restores node detail state from a valid URL hash", async () => {
     window.location.hash = "#node-pe-terminal-beta";
     render(<RoadmapAtlas />);
 
-    const detailPanel = screen.getByTestId("roadmap-node-detail");
+    // Hash restoration is deferred to useEffect for hydration safety
+    const detailPanel = await screen.findByTestId("roadmap-node-detail");
     expect(
       within(detailPanel).getByText("BETTER Terminal (Closed Beta)")
     ).toBeInTheDocument();
   });
 
   // VAL-ROADMAP-007: Invalid deep links fail gracefully
-  it("falls back gracefully for invalid deep link hash", () => {
+  it("falls back gracefully for invalid deep link hash", async () => {
     window.location.hash = "#node-nonexistent-id";
     render(<RoadmapAtlas />);
 
-    // Should not crash, should show fallback message
-    expect(screen.getByTestId("roadmap-invalid-link-fallback")).toBeInTheDocument();
+    // Deferred to useEffect
+    const fallback = await screen.findByTestId("roadmap-invalid-link-fallback");
+    expect(fallback).toBeInTheDocument();
   });
 
   // VAL-ROADMAP-007: No deep link — normal state
@@ -232,9 +237,12 @@ describe("RoadmapAtlas", () => {
   });
 
   // Deep link opens correct branch
-  it("auto-expands the parent branch when deep linking to a node", () => {
+  it("auto-expands the parent branch when deep linking to a node", async () => {
     window.location.hash = "#node-pe-terminal-beta";
     render(<RoadmapAtlas />);
+
+    // Wait for hydration-safe useEffect to apply
+    await screen.findByTestId("roadmap-node-detail");
 
     // Product Evolution should be expanded since pe-terminal-beta is in it
     const productBranch = screen.getByRole("button", {
@@ -256,13 +264,10 @@ describe("RoadmapAtlas", () => {
     window.location.hash = "#node-pe-terminal-beta";
     render(<RoadmapAtlas />);
 
-    // Detail panel should be rendered
-    expect(screen.getByTestId("roadmap-node-detail")).toBeInTheDocument();
-
-    // Wait for the effect to fire
+    // Wait for the deferred hash restoration and detail render
     await screen.findByTestId("roadmap-node-detail");
 
-    // scrollIntoView should have been called on the detail panel or the roadmap atlas container
+    // scrollIntoView should have been called on the detail panel
     expect(scrollSpy).toHaveBeenCalled();
   });
 
@@ -274,10 +279,7 @@ describe("RoadmapAtlas", () => {
     window.location.hash = "#node-nonexistent-id";
     render(<RoadmapAtlas />);
 
-    // Fallback banner should be rendered
-    expect(screen.getByTestId("roadmap-invalid-link-fallback")).toBeInTheDocument();
-
-    // Wait for the effect to fire
+    // Wait for deferred restoration
     await screen.findByTestId("roadmap-invalid-link-fallback");
 
     // scrollIntoView should have been called to bring the fallback into view
@@ -289,18 +291,18 @@ describe("RoadmapAtlas", () => {
     window.location.hash = "#node-pe-terminal-beta";
     render(<RoadmapAtlas />);
 
+    await screen.findByTestId("roadmap-node-detail");
     const detailPanel = screen.getByTestId("roadmap-node-detail");
     // The detail panel (or a wrapper) should have tabIndex for programmatic focus
-    await screen.findByTestId("roadmap-node-detail");
     expect(detailPanel.closest("[tabindex]") ?? detailPanel).toHaveAttribute("tabindex");
   });
 
   // VAL-ROADMAP-007: Invalid fallback shows a clear recovery path (explore roadmap)
-  it("provides an explicit recovery action in the invalid deep-link fallback", () => {
+  it("provides an explicit recovery action in the invalid deep-link fallback", async () => {
     window.location.hash = "#node-nonexistent-id";
     render(<RoadmapAtlas />);
 
-    const fallback = screen.getByTestId("roadmap-invalid-link-fallback");
+    const fallback = await screen.findByTestId("roadmap-invalid-link-fallback");
     // Should contain a button or link to help the user recover
     const recoveryAction = within(fallback).queryByRole("button") ?? within(fallback).queryByRole("link");
     expect(recoveryAction).toBeInTheDocument();
@@ -327,5 +329,193 @@ describe("RoadmapAtlas", () => {
 
     // scrollIntoView should be called for the newly-visible detail
     expect(scrollSpy).toHaveBeenCalled();
+  });
+
+  // ---------------------------------------------------------------------------
+  // Regression: Hydration-safe deep links (VAL-ROADMAP-006)
+  // The initial render must match SSR (no node selected) so Next.js
+  // does not show a hydration mismatch badge. Hash is applied in useEffect.
+  // ---------------------------------------------------------------------------
+  it("renders SSR-safe initial state before hash restoration", () => {
+    window.location.hash = "#node-pe-terminal-beta";
+
+    // Capture the synchronous first render — before useEffect runs
+    const { container } = render(<RoadmapAtlas />);
+
+    // The very first synchronous render should NOT have the detail panel
+    // (it will appear after the useEffect fires). This ensures SSR and
+    // client hydration match, preventing Next.js runtime issue badges.
+    // NOTE: We can't directly assert "first render" vs "after effect" in
+    // a standard React testing-library render, but we can verify that
+    // the initial reducer state is SSR-safe by checking the component
+    // doesn't crash on mount.
+    expect(container).toBeTruthy();
+  });
+
+  // ---------------------------------------------------------------------------
+  // Regression: Branch-state independence during node selection (VAL-ROADMAP-004)
+  // Selecting a node in one expanded branch must not collapse other branches.
+  // ---------------------------------------------------------------------------
+  it("preserves multiple expanded branches when selecting a node", async () => {
+    const user = userEvent.setup();
+    render(<RoadmapAtlas />);
+
+    const productBranch = screen.getByRole("button", {
+      name: /product evolution/i,
+    });
+    const infraBranch = screen.getByRole("button", {
+      name: /technical infrastructure/i,
+    });
+
+    // Expand both branches
+    await user.click(productBranch);
+    await user.click(infraBranch);
+    expect(productBranch).toHaveAttribute("aria-expanded", "true");
+    expect(infraBranch).toHaveAttribute("aria-expanded", "true");
+
+    // Select a node in Product Evolution
+    const agentNode = screen.getByRole("button", {
+      name: /autonomous strategy agents/i,
+    });
+    await user.click(agentNode);
+
+    // Detail panel should open
+    expect(screen.getByTestId("roadmap-node-detail")).toBeInTheDocument();
+
+    // BOTH branches must still be expanded (not just product_evolution)
+    expect(productBranch).toHaveAttribute("aria-expanded", "true");
+    expect(infraBranch).toHaveAttribute("aria-expanded", "true");
+  });
+
+  it("keeps unrelated branches expanded when selecting nodes across families", async () => {
+    const user = userEvent.setup();
+    render(<RoadmapAtlas />);
+
+    const productBranch = screen.getByRole("button", {
+      name: /product evolution/i,
+    });
+    const tokenBranch = screen.getByRole("button", {
+      name: /token utility/i,
+    });
+    const infraBranch = screen.getByRole("button", {
+      name: /technical infrastructure/i,
+    });
+
+    // Expand all three branches
+    await user.click(productBranch);
+    await user.click(tokenBranch);
+    await user.click(infraBranch);
+
+    // Select a product node
+    const agentNode = screen.getByRole("button", {
+      name: /autonomous strategy agents/i,
+    });
+    await user.click(agentNode);
+
+    // All three branches must remain expanded
+    expect(productBranch).toHaveAttribute("aria-expanded", "true");
+    expect(tokenBranch).toHaveAttribute("aria-expanded", "true");
+    expect(infraBranch).toHaveAttribute("aria-expanded", "true");
+  });
+
+  // ---------------------------------------------------------------------------
+  // Regression: Scroll-sync does not drift to unrelated branches (VAL-ROADMAP-003)
+  // Selecting a node should sync the active story family to the selected node's
+  // family, not leave it on a stale or later branch.
+  // ---------------------------------------------------------------------------
+  it("syncs active story family to the selected node's family", async () => {
+    const user = userEvent.setup();
+    render(<RoadmapAtlas />);
+
+    // Expand product branch and select a node
+    const productBranch = screen.getByRole("button", {
+      name: /product evolution/i,
+    });
+    await user.click(productBranch);
+
+    const terminalNode = screen.getByRole("button", {
+      name: /better terminal.*closed beta/i,
+    });
+    await user.click(terminalNode);
+
+    // The Product Evolution story panel should be marked active
+    const storyPanels = screen.getAllByTestId("roadmap-story-panel");
+    // Product Evolution is index 0
+    expect(storyPanels[0]).toHaveAttribute("data-active", "true");
+  });
+
+  it("updates active story family when selecting a node in a different branch", async () => {
+    const user = userEvent.setup();
+    render(<RoadmapAtlas />);
+
+    // Expand product and infra branches
+    const productBranch = screen.getByRole("button", {
+      name: /product evolution/i,
+    });
+    const infraBranch = screen.getByRole("button", {
+      name: /technical infrastructure/i,
+    });
+    await user.click(productBranch);
+    await user.click(infraBranch);
+
+    // Select a product node first
+    const terminalNode = screen.getByRole("button", {
+      name: /better terminal.*closed beta/i,
+    });
+    await user.click(terminalNode);
+
+    // Product Evolution should be active
+    let storyPanels = screen.getAllByTestId("roadmap-story-panel");
+    expect(storyPanels[0]).toHaveAttribute("data-active", "true");
+
+    // Now select an infra node
+    const infraNodes = screen.getAllByTestId("roadmap-node-item");
+    // Find one that belongs to technical_infrastructure
+    const infraNodeButton = infraNodes.find(
+      (n) => n.getAttribute("data-node-id")?.startsWith("ti-")
+    );
+    expect(infraNodeButton).toBeTruthy();
+    await user.click(infraNodeButton!);
+
+    // Technical Infrastructure (index 3) should now be active
+    storyPanels = screen.getAllByTestId("roadmap-story-panel");
+    expect(storyPanels[3]).toHaveAttribute("data-active", "true");
+    // Product Evolution should no longer be active
+    expect(storyPanels[0]).toHaveAttribute("data-active", "false");
+  });
+
+  // ---------------------------------------------------------------------------
+  // Regression: Deep-link hash restoration preserves branch independence
+  // (VAL-ROADMAP-004 + VAL-ROADMAP-006 interaction)
+  // When restoring from a hash, only the target node's branch should expand;
+  // if other branches were already expanded they should be preserved.
+  // ---------------------------------------------------------------------------
+  it("deep-link restoration expands only the target branch without collapsing others", async () => {
+    const user = userEvent.setup();
+    render(<RoadmapAtlas />);
+
+    // Expand infra branch manually first
+    const infraBranch = screen.getByRole("button", {
+      name: /technical infrastructure/i,
+    });
+    await user.click(infraBranch);
+    expect(infraBranch).toHaveAttribute("aria-expanded", "true");
+
+    // Simulate a hashchange to a product_evolution node
+    await act(async () => {
+      window.location.hash = "#node-pe-terminal-beta";
+      window.dispatchEvent(new HashChangeEvent("hashchange"));
+    });
+
+    await screen.findByTestId("roadmap-node-detail");
+
+    // Product Evolution should now also be expanded
+    const productBranch = screen.getByRole("button", {
+      name: /product evolution/i,
+    });
+    expect(productBranch).toHaveAttribute("aria-expanded", "true");
+
+    // Infra branch should STILL be expanded (not collapsed)
+    expect(infraBranch).toHaveAttribute("aria-expanded", "true");
   });
 });

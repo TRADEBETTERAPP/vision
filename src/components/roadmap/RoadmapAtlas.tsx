@@ -21,36 +21,6 @@ function getNodeIdFromHash(hash: string): string | null {
   return null;
 }
 
-/** Compute initial state from URL hash (lazy initializer for useState) */
-function computeHashState(): {
-  selectedNodeId: string | null;
-  expandedBranches: Record<string, boolean>;
-  invalidDeepLink: boolean;
-  activeFamilyIndex: number;
-} {
-  if (typeof window === "undefined") {
-    return { selectedNodeId: null, expandedBranches: {}, invalidDeepLink: false, activeFamilyIndex: 0 };
-  }
-  const hash = window.location.hash;
-  const nodeId = getNodeIdFromHash(hash);
-
-  if (nodeId) {
-    const node = getNodeById(nodeId);
-    if (node) {
-      const familyIndex = FAMILY_KEYS.indexOf(node.family);
-      return {
-        selectedNodeId: nodeId,
-        expandedBranches: { [node.family]: true },
-        invalidDeepLink: false,
-        activeFamilyIndex: familyIndex >= 0 ? familyIndex : 0,
-      };
-    }
-    // Invalid deep link
-    return { selectedNodeId: null, expandedBranches: {}, invalidDeepLink: true, activeFamilyIndex: 0 };
-  }
-  return { selectedNodeId: null, expandedBranches: {}, invalidDeepLink: false, activeFamilyIndex: 0 };
-}
-
 /**
  * Interactive Roadmap Atlas — the core roadmap exploration surface.
  *
@@ -75,7 +45,7 @@ interface RoadmapUIState {
 }
 
 type RoadmapAction =
-  | { type: "INIT_FROM_HASH" }
+  | { type: "RESTORE_HASH"; hash: string }
   | { type: "TOGGLE_BRANCH"; family: string }
   | { type: "SELECT_NODE"; nodeId: string }
   | { type: "CLOSE_DETAIL" }
@@ -84,8 +54,26 @@ type RoadmapAction =
 
 function roadmapReducer(state: RoadmapUIState, action: RoadmapAction): RoadmapUIState {
   switch (action.type) {
-    case "INIT_FROM_HASH":
-      return computeHashState();
+    case "RESTORE_HASH": {
+      const nodeId = getNodeIdFromHash(action.hash);
+      if (nodeId) {
+        const node = getNodeById(nodeId);
+        if (node) {
+          const familyIndex = FAMILY_KEYS.indexOf(node.family);
+          return {
+            ...state,
+            selectedNodeId: nodeId,
+            // Preserve existing expanded branches; also expand the target family
+            expandedBranches: { ...state.expandedBranches, [node.family]: true },
+            invalidDeepLink: false,
+            activeFamilyIndex: familyIndex >= 0 ? familyIndex : state.activeFamilyIndex,
+          };
+        }
+        // Invalid deep link
+        return { ...state, selectedNodeId: null, invalidDeepLink: true };
+      }
+      return state;
+    }
     case "TOGGLE_BRANCH":
       return {
         ...state,
@@ -94,8 +82,22 @@ function roadmapReducer(state: RoadmapUIState, action: RoadmapAction): RoadmapUI
           [action.family]: !state.expandedBranches[action.family],
         },
       };
-    case "SELECT_NODE":
-      return { ...state, selectedNodeId: action.nodeId, invalidDeepLink: false };
+    case "SELECT_NODE": {
+      // When selecting a node, also sync the active family index
+      // and ensure the node's branch stays expanded — but preserve
+      // all other expanded branches (VAL-ROADMAP-004).
+      const node = getNodeById(action.nodeId);
+      const familyIndex = node ? FAMILY_KEYS.indexOf(node.family) : state.activeFamilyIndex;
+      return {
+        ...state,
+        selectedNodeId: action.nodeId,
+        invalidDeepLink: false,
+        activeFamilyIndex: familyIndex >= 0 ? familyIndex : state.activeFamilyIndex,
+        expandedBranches: node
+          ? { ...state.expandedBranches, [node.family]: true }
+          : state.expandedBranches,
+      };
+    }
     case "CLOSE_DETAIL":
       return { ...state, selectedNodeId: null };
     case "COLLAPSE_ALL":
@@ -113,6 +115,7 @@ function roadmapReducer(state: RoadmapUIState, action: RoadmapAction): RoadmapUI
   }
 }
 
+/** SSR-safe initial state — hash is read after mount via useEffect */
 const INITIAL_STATE: RoadmapUIState = {
   expandedBranches: {},
   selectedNodeId: null,
@@ -121,14 +124,13 @@ const INITIAL_STATE: RoadmapUIState = {
 };
 
 export default function RoadmapAtlas() {
-  const [state, dispatch] = React.useReducer(
-    roadmapReducer,
-    INITIAL_STATE,
-    // Lazy initializer: runs on the client to read URL hash
-    () => computeHashState()
-  );
+  const [state, dispatch] = React.useReducer(roadmapReducer, INITIAL_STATE);
 
   const { expandedBranches, selectedNodeId, invalidDeepLink, activeFamilyIndex } = state;
+
+  // Track whether the initial hash has been applied (hydration-safe).
+  // Uses a ref instead of state to avoid triggering a cascading render.
+  const hasMountedRef = useRef(false);
 
   // Ref for scroll observation
   const branchSectionRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -136,6 +138,33 @@ export default function RoadmapAtlas() {
   // Refs for deep-link visibility: scroll & focus targets
   const detailPanelRef = useRef<HTMLDivElement | null>(null);
   const fallbackRef = useRef<HTMLDivElement | null>(null);
+
+  // Guard: when true, the IntersectionObserver scroll-sync is temporarily
+  // suppressed to prevent layout-shift-driven observer firings from
+  // overriding an explicit user interaction (node selection, tab click).
+  const scrollSyncLockedRef = useRef(false);
+  const scrollSyncTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  /** Lock scroll-sync for a brief window after explicit interactions */
+  const lockScrollSync = useCallback(() => {
+    scrollSyncLockedRef.current = true;
+    if (scrollSyncTimerRef.current) clearTimeout(scrollSyncTimerRef.current);
+    scrollSyncTimerRef.current = setTimeout(() => {
+      scrollSyncLockedRef.current = false;
+    }, 600);
+  }, []);
+
+  // -------------------------------------------------------------------
+  // Hydration-safe hash restoration: read the hash ONLY after mount
+  // so the server and client initial renders match (VAL-ROADMAP-006).
+  // -------------------------------------------------------------------
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash) {
+      dispatch({ type: "RESTORE_HASH", hash });
+    }
+    hasMountedRef.current = true;
+  }, []);
 
   // -------------------------------------------------------------------
   // Deep-link visibility: scroll & focus the detail panel or fallback
@@ -154,21 +183,34 @@ export default function RoadmapAtlas() {
   // -------------------------------------------------------------------
   // URL hash sync when node is selected/deselected
   // -------------------------------------------------------------------
+  // Track whether we are programmatically setting the hash so the
+  // hashchange listener can ignore self-triggered events.
+  const selfHashChangeRef = useRef(false);
   const prevSelectedRef = useRef(selectedNodeId);
   useEffect(() => {
     // Only update hash when selection changed after initial mount
-    if (prevSelectedRef.current !== selectedNodeId && selectedNodeId) {
+    if (hasMountedRef.current && prevSelectedRef.current !== selectedNodeId && selectedNodeId) {
+      selfHashChangeRef.current = true;
       window.location.hash = `node-${selectedNodeId}`;
+      // Reset the flag after the current event-loop tick
+      requestAnimationFrame(() => {
+        selfHashChangeRef.current = false;
+      });
     }
     prevSelectedRef.current = selectedNodeId;
   }, [selectedNodeId]);
 
   // -------------------------------------------------------------------
   // Listen for hashchange events (e.g., browser back/forward, external links)
+  // Ignore self-triggered hash changes to avoid resetting branch state.
   // -------------------------------------------------------------------
   useEffect(() => {
     const handler = () => {
-      dispatch({ type: "INIT_FROM_HASH" });
+      if (selfHashChangeRef.current) return;
+      const hash = window.location.hash;
+      if (hash) {
+        dispatch({ type: "RESTORE_HASH", hash });
+      }
     };
     window.addEventListener("hashchange", handler);
     return () => window.removeEventListener("hashchange", handler);
@@ -176,6 +218,8 @@ export default function RoadmapAtlas() {
 
   // -------------------------------------------------------------------
   // Scroll-linked sync: IntersectionObserver on branch sections
+  // Guarded by scrollSyncLockedRef to prevent layout-shift noise from
+  // overriding explicit user interactions (VAL-ROADMAP-003).
   // -------------------------------------------------------------------
   useEffect(() => {
     const observers: IntersectionObserver[] = [];
@@ -186,7 +230,7 @@ export default function RoadmapAtlas() {
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
-            if (entry.isIntersecting) {
+            if (entry.isIntersecting && !scrollSyncLockedRef.current) {
               dispatch({ type: "SET_ACTIVE_FAMILY", index });
             }
           });
@@ -210,8 +254,9 @@ export default function RoadmapAtlas() {
   }, []);
 
   const selectNode = useCallback((nodeId: string) => {
+    lockScrollSync();
     dispatch({ type: "SELECT_NODE", nodeId });
-  }, []);
+  }, [lockScrollSync]);
 
   const closeDetail = useCallback(() => {
     dispatch({ type: "CLOSE_DETAIL" });
@@ -230,6 +275,7 @@ export default function RoadmapAtlas() {
 
   const handleStoryFamilyChange = useCallback(
     (index: number) => {
+      lockScrollSync();
       const family = FAMILY_KEYS[index];
       dispatch({ type: "SET_ACTIVE_FAMILY", index, expandFamily: family });
       // Scroll the branch section into view
@@ -238,7 +284,7 @@ export default function RoadmapAtlas() {
         ref.scrollIntoView({ behavior: "smooth", block: "nearest" });
       }
     },
-    []
+    [lockScrollSync]
   );
 
   // Handle Escape key for closing detail panel
