@@ -5,6 +5,7 @@ import NarrativeCard from "@/components/NarrativeCard";
 import EvidenceHook from "@/components/EvidenceHook";
 import CaveatFrame from "@/components/CaveatFrame";
 import { RoadmapAtlas } from "@/components/roadmap";
+import { TokenomicsSection } from "@/components/tokenomics";
 
 export default function Home() {
   const heroBlocks = getBlocksBySurface("hero");
@@ -167,23 +168,17 @@ export default function Home() {
       </section>
 
       {/* ---------------------------------------------------------------- */}
-      {/* Tokenomics placeholder */}
+      {/* Tokenomics — VAL-TOKEN-001 through VAL-TOKEN-011 */}
       {/* ---------------------------------------------------------------- */}
       <section id="tokenomics" className="border-t border-border px-4 py-24">
         <div className="mx-auto max-w-5xl">
           <SectionHeading
             label="Tokenomics"
             title="Whale-First Tokenomics"
-            description="Access priority, allocation ladders, fee advantages, and agent-native utility."
+            description="Reconciled supply math, whale-first tier ladders, fee advantages, scenario projections, and agent-native utility. Content is exploration-only — not a live trading interface."
           />
-          <div className="mt-12 rounded-lg border border-border bg-surface p-12 text-center">
-            <p className="font-terminal text-sm text-muted">
-              [ Tokenomics explorer coming soon ]
-            </p>
-            <p className="mt-2 text-xs text-muted">
-              This section will present detailed token tier ladders, scenario switching,
-              and projection modeling. Content is exploration-only — not a live trading interface.
-            </p>
+          <div className="mt-12">
+            <TokenomicsSection />
           </div>
         </div>
       </section>
