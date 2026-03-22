@@ -9,13 +9,16 @@ Primary validation surface: **browser**
 Required tool: **agent-browser**
 
 Core flows to validate:
+- BETTER logotype asset rendering in the header, hero, and mobile overlay
+- graph-first mindmap shell entry, node selection, orientation recovery, and non-scroll-first navigation feel
 - redesign hero hierarchy, brand dominance, proof visibility, and CTA focus
 - direct use of both Radiant and Hermes ASCII-video source material in the shipped visual system
 - visibly moving Radiant background motion and visibly moving ASCII structure in the enhanced state
+- site-wide persistence of the immersive background treatment beyond the hero
 - hero comprehension and live-vs-vision framing
 - desktop and mobile navigation destinations
 - roadmap exploration, detail panels, deep links, and history restoration
-- tokenomics tier clarity, whale-first utilities, and scenario switching
+- tokenomics tier clarity, minted-supply presentation, first-vault qualification/cap math, whale-first utilities, referral incentives, revenue-return modeling, and scenario switching
 - architecture and cost-band storytelling
 - reduced-motion behavior and runtime visual fallbacks
 - CTA honesty and official external exits
@@ -40,7 +43,11 @@ Core flows to validate:
 - Use a non-default browser session name and close it before finishing.
 - Capture concrete evidence for every assertion you evaluate: visible copy, destination behavior, and any console/runtime issues.
 - Explicitly note whether the first viewport reads as one composition, whether BETTER branding is unmistakable, and whether shader/ascii layers improve the surface without obscuring readability.
+- For the graph-first overhaul, explicitly note whether the experience feels like an explorable mindmap rather than a standard stacked scroll page, and capture the orientation-recovery method the user can rely on.
 - When validating the immersive system, record which concrete Radiant and Hermes ASCII-video source resources are present in the shipped implementation and how they show up on the page.
+- Validate that the global atmospheric layer remains visibly present after the hero and across major graph/detail states.
+- Validate that token supply is presented as the minted `709,001,940 BETTER` figure from the new Base contract, and that first-vault examples clearly show the `100,000 BETTER` minimum plus the baseline `$25,000` cap.
+- Validate that higher-tier whale-product gates, referral incentives, and per-product revenue-return modeling are visibly explained and clearly framed as canonical versus modeled where applicable.
 - Capture evidence that the enhanced state is materially different from the static fallback state; a faint or barely changing background should fail.
 - When an immersive feature exposes both `fallback` and `reduced-motion` visual states, validate them separately; reduced motion is not sufficient evidence for failure-fallback behavior.
 - For this mission, run only one browser validator at a time because the visual layer can increase runtime cost.

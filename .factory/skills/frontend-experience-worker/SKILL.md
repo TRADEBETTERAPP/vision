@@ -19,19 +19,22 @@ Use this skill for app scaffold work, navigation, roadmap and mindmap UI, immers
 
 1. Read `mission.md`, mission `AGENTS.md`, and the relevant `.factory/library/*.md` files before making changes.
 2. Inspect the existing app structure, scripts, components, and content/data contracts. Reuse the established patterns instead of inventing parallel ones.
-3. If the feature changes the landing page, hero, or immersive visual system, review `.factory/library/design-system.md` and the reference screenshots in `.factory/research/screenshots/` before making changes. Treat them as hierarchy and atmosphere guardrails, not as assets to clone literally.
+3. If the feature changes the landing page, hero, shell, or immersive visual system, review `.factory/library/design-system.md` and the reference screenshots in `.factory/research/screenshots/` before making changes. Treat them as hierarchy and atmosphere guardrails, not as assets to clone literally.
+4. If the feature touches tradebetter-led theme parity, use the approved extraction workflow before implementation: `FetchUrl` for Framer HTML/CSS/theme tokens, `pinchtab` for live rendered screenshots/text, and `agent-browser` for runtime/computed-style verification when needed. Cite the extracted tokens or findings you actually used.
 4. If the feature touches the immersive layer, you must directly adapt concrete implementation resources from both `radiant-shaders.com` and `https://github.com/NousResearch/hermes-agent/tree/main/skills/creative/ascii-video`; handoff notes must cite the exact URLs/files used and how BETTER adapted them.
 5. The approved immersive implementation path is specific: use a vendored real Radiant background asset and a real-time Hermes-derived ASCII canvas renderer. Do not satisfy this requirement with a custom approximation shader plus a synthetic DOM text grid.
-6. Write failing tests first for the changed component or behavior. Cover navigation, interaction, accessibility, and state logic before implementation. In your handoff, cite at least one newly failing test expectation you wrote before the implementation change.
-7. Implement the feature with the BETTER visual language in mind: tradebetter-led hierarchy, premium dark terminal feel, restrained card use, honest CTAs, and resilient fallback states.
-8. If the feature touches the hero or immersive visuals, keep the first viewport as one dominant composition with BETTER as the loudest signal and 2-3 intentional motions at most.
-9. If the feature touches roadmap or visual surfaces, verify desktop, narrow/mobile layout, keyboard interaction, and reduced-motion or fallback behavior.
-10. Run focused tests during iteration, then run the manifest commands for `lint`, `typecheck`, `test`, and `build`.
-11. Use `agent-browser` to exercise the changed flows at `http://127.0.0.1:3100`. Record exactly what you clicked, what changed, and what state labels or destinations you observed.
-12. For browser validation, prefer one stable `agent-browser` session per flow: open the page, wait for the target surface, use explicit interactions for navigation/scroll/focus, and only fall back to eval-style helpers when normal interaction commands cannot reliably reach the intended state.
-13. For major visual rewrites, include at least one check that explicitly evaluates hero composition, brand dominance, proof visibility, unmistakable moving shader/ascii background behavior, and whether the enhanced state is materially stronger than the static fallback. Also cite the screenshot paths or public source references you reviewed.
-14. If the feature includes deployment or release work, validate the production-like output after build and use `gh` or `npx vercel` only when the feature explicitly requires it.
-15. Stop every process you started. In your handoff, include the exact browser checks, viewport/fallback checks, the cited screenshot/source evidence, and any remaining environment blocker.
+6. If the feature changes the shell or navigation model, build toward a graph-first explorable mindmap experience rather than another section-anchor scroll page. Orientation recovery, focus state, and node-first exploration are required concerns, not optional polish.
+7. If the feature touches BETTER branding, use the provided logotype asset in the required header, hero, and mobile-overlay surfaces instead of text-only placeholders.
+8. Write failing tests first for the changed component or behavior. Cover navigation, interaction, accessibility, and state logic before implementation. In your handoff, cite at least one newly failing test expectation you wrote before the implementation change.
+9. Implement the feature with the BETTER visual language in mind: tradebetter-led hierarchy, premium dark terminal feel, restrained card use, honest CTAs, site-wide atmosphere, and resilient fallback states.
+10. If the feature touches the hero, shell, or immersive visuals, keep the first viewport as one dominant composition with BETTER as the loudest signal and 2-3 intentional motions at most.
+11. If the feature touches roadmap, shell, or visual surfaces, verify desktop, narrow/mobile layout, keyboard interaction, and reduced-motion or fallback behavior.
+12. Run focused tests during iteration, then run the manifest commands for `lint`, `typecheck`, `test`, and `build`.
+13. Use `agent-browser` to exercise the changed flows at `http://127.0.0.1:3100`. Record exactly what you clicked, what changed, and what state labels or destinations you observed.
+14. For browser validation, prefer one stable `agent-browser` session per flow: open the page, wait for the target surface, use explicit interactions for navigation/scroll/focus, and only fall back to eval-style helpers when normal interaction commands cannot reliably reach the intended state.
+15. For major visual or shell rewrites, include at least one check that explicitly evaluates hero composition, brand dominance, graph-first exploration feel, unmistakable moving shader/ascii background behavior across the full site, and whether the enhanced state is materially stronger than the static fallback. Also cite the screenshot paths or public source references you reviewed.
+16. If the feature includes deployment or release work, validate the production-like output after build and use `gh` or `npx vercel` only when the feature explicitly requires it. Do not resume release/deployment work until the `graph-first-shell-and-token-policy` milestone has passed validation.
+17. Stop every process you started. In your handoff, include the exact browser checks, viewport/fallback checks, the cited screenshot/source evidence, and any remaining environment blocker.
 
 ## Example Handoff
 

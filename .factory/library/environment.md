@@ -15,9 +15,12 @@ Environment variables, external dependencies, and setup notes.
 - `gh` is authenticated and may be used for repository creation/push
 - Global `vercel` CLI is not installed; use `npx vercel` if deployment requires it
 - Playwright CLI is available via `npx playwright` and has already been used to capture redesign reference screenshots
+- `pinchtab` and Chrome are available locally for live public-page scraping/screenshot capture
+- `agent-browser` is the required browser validator and may also be used for runtime/computed-style inspection when public reference parity requires more than screenshots
 - Required external design-source inputs for the redesign:
   - `https://radiant-shaders.com`
   - `https://github.com/NousResearch/hermes-agent/tree/main/skills/creative/ascii-video`
+  - `https://tradebetter.app`
 - Environment note for the Hermes requirement: system `ffmpeg` is not available and local Python is 3.9.x, so the approved direct-source path is a real-time ASCII canvas renderer rather than an offline ffmpeg-based video pipeline.
 - BETTER reference sources are read-only:
   - `/Users/test/tradebetter-docs`
@@ -28,3 +31,5 @@ Environment variables, external dependencies, and setup notes.
   - `radiant-hero.png`
 - User-provided favicon source asset (read-only, import into repo as needed):
   - `/Users/test/Downloads/Better_Design/Logo/Better_Isotype_Light.svg`
+- User-provided BETTER logotype source asset (read-only, import into repo as needed):
+  - `/Users/test/Downloads/Better_Design/Logo/Better_Logotype_Light.svg`

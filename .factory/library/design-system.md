@@ -18,6 +18,15 @@ BETTER should feel like a premium terminal-native market weapon: darker, sharper
 - `https://github.com/NousResearch/hermes-agent/tree/main/skills/creative/ascii-video` — atmospheric ASCII/video system concepts and production-safe pipeline ideas
 - OpenAI delightful frontends guidance — one-composition hero, brand first, fewer cards, one job per section, 2-3 intentional motions
 
+## Approved Extraction Workflow
+
+For the live `tradebetter.app` Framer site, use this exact Droid-side tool stack when workers need source-of-truth style parity:
+- `FetchUrl` — first pass for Framer HTML/CSS/theme tokens, breakpoints, asset URLs, and text structure
+- `pinchtab` — rendered screenshots/text capture of the live surface
+- `agent-browser` — final runtime/computed-style and interaction verification when `pinchtab` cannot inspect the hydrated DOM deeply enough
+
+`FetchUrl` alone is not sufficient for exact Framer parity because it does not prove final computed styles, spacing, motion timing, or responsive runtime behavior.
+
 ## Hard Source Requirement
 
 - The redesign is not acceptable unless the shipped implementation uses concrete resources adapted from **both** Radiant and the Hermes ASCII-video skill.
@@ -56,6 +65,24 @@ Recommended section jobs:
 - Typography: terminal/mono identity with one restrained supporting sans at most
 - Surfaces: reduce bordered-card repetition; favor layout, spacing, dividers, and large modules
 
+## Tradebetter Theme Signals To Translate
+
+Extracted live guardrails from `tradebetter.app`:
+- Background base: near-black (`#101010` family)
+- Primary accent: tradebetter electric blue (`#455eff` family)
+- Primary UI/body typography: `IBM Plex Mono`
+- Restrained display typography: `Helvetica Neue Medium`
+- Surface language: hard edges, thin borders, large modules, sparse white CTA planes, mono labels, and left-rail orientation cues
+
+Translate these signals into BETTER-specific execution rather than cloning Framer layouts literally.
+
+## Global Shell Direction
+
+- The site should now read as one explorable BETTER environment rather than a hero plus stacked sections.
+- The immersive Radiant/Hermes atmosphere must remain visible across the full site, not just the hero.
+- The shell should feel graph-first and mindmap-led: users should navigate through focal nodes, detail states, and orientation aids rather than reading a normal section-anchor document.
+- Use the BETTER logotype asset in the header, hero, and mobile-overlay brand surfaces.
+
 ## Tooling Direction
 
 - Core implementation candidates: `motion`, `lenis`, `ogl`, `class-variance-authority`, `tailwind-merge`
@@ -70,6 +97,7 @@ Recommended section jobs:
 - Radiant: vendor a real Radiant shader asset/file into the hero/background stack
 - Hermes: implement moving ASCII with a canvas renderer rooted in multi-grid composition, glyph mapping, tonemap, feedback, and visible temporal motion
 - The enhanced state must look materially stronger than the static fallback state in headed browser testing
+- Keep the same atmospheric family active beyond the hero so the whole site stays inside the same visual world
 
 ## Anti-Patterns
 

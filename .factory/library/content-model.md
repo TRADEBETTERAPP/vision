@@ -24,6 +24,11 @@ Each roadmap or economics item should have typed fields for:
 - evidence/source or assumption cue
 - confidence framing when future-facing
 
+## Graph-shell model expectations
+- The site shell should be driven by a typed graph model, not only stacked section data.
+- Core BETTER surfaces such as identity, proof, roadmap, token policy, architecture, evidence, and risks should be representable as connected nodes or clusters with stable IDs.
+- The model should support focal-node selection, orientation recovery, deep-linkable detail states, and clear parent/child or dependency relationships.
+
 ## Dependency conventions
 - Narrative `ConfidenceFrame.dependencies` values are rendered directly to users, so they must stay as readable user-facing notes rather than internal IDs.
 - Roadmap node `dependencies` are typed as stable roadmap-node IDs and should be resolved to readable labels in the UI.
@@ -52,3 +57,11 @@ Each tier should capture:
 - agent limits
 - fee advantage
 - exclusive products or capabilities
+
+## Token policy extensions
+In addition to tier data, the content model should support:
+- canonical contract facts with per-field provenance (contract address, minted supply, decimals, migration/source notes)
+- first-vault qualification rules (minimum BETTER threshold, deposit cap, oversubscription logic, worked examples)
+- modeled higher-tier whale-product gates (social vaults, personal AI-crafted vaults, related premium surfaces)
+- referral-incentive policy fields (reward source, caps, anti-abuse framing, maturity/source cues)
+- revenue-return pathways mapping major product offerings back into the broader BETTER ecosystem
