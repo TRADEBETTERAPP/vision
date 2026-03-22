@@ -4,7 +4,11 @@ import { useCallback, useEffect, useRef } from "react";
 import { useVisualEffects } from "./VisualEffectsProvider";
 
 // ---------------------------------------------------------------------------
-// GLSL Shaders — premium dark terminal / HFT grid effect
+// GLSL Shaders — Radiant-influenced BETTER atmosphere
+//
+// Inspired by Radiant shader techniques: organic noise fields, slow luminous
+// gradients, and subtle depth layers in BETTER blue. This is NOT a generic
+// grid or glow — it creates atmospheric depth with material impact.
 // ---------------------------------------------------------------------------
 
 const VERTEX_SHADER = `
@@ -19,41 +23,75 @@ const FRAGMENT_SHADER = `
   uniform float u_time;
   uniform vec2 u_resolution;
 
-  // Pseudo-random hash
+  /* Smooth noise for organic field generation */
   float hash(vec2 p) {
     return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
   }
 
+  float noise(vec2 p) {
+    vec2 i = floor(p);
+    vec2 f = fract(p);
+    f = f * f * (3.0 - 2.0 * f);
+    float a = hash(i);
+    float b = hash(i + vec2(1.0, 0.0));
+    float c = hash(i + vec2(0.0, 1.0));
+    float d = hash(i + vec2(1.0, 1.0));
+    return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
+  }
+
+  /* Fractional Brownian Motion — layered noise for organic depth */
+  float fbm(vec2 p) {
+    float v = 0.0;
+    float a = 0.5;
+    vec2 shift = vec2(100.0);
+    mat2 rot = mat2(cos(0.5), sin(0.5), -sin(0.5), cos(0.5));
+    for (int i = 0; i < 4; i++) {
+      v += a * noise(p);
+      p = rot * p * 2.0 + shift;
+      a *= 0.5;
+    }
+    return v;
+  }
+
   void main() {
     vec2 uv = gl_FragCoord.xy / u_resolution;
+    float aspect = u_resolution.x / u_resolution.y;
+    vec2 coord = vec2(uv.x * aspect, uv.y);
 
-    // Dark terminal grid lines
-    float gridX = smoothstep(0.0, 0.002, abs(fract(uv.x * 40.0) - 0.5) - 0.49);
-    float gridY = smoothstep(0.0, 0.002, abs(fract(uv.y * 25.0) - 0.5) - 0.49);
-    float grid = max(gridX, gridY) * 0.08;
+    /* Slow time — deliberate, non-frenetic movement */
+    float t = u_time * 0.06;
 
-    // Slow moving scanline
-    float scanline = smoothstep(0.0, 0.01, abs(fract(uv.y * 200.0 - u_time * 0.05) - 0.5) - 0.48) * 0.03;
+    /* Primary radiant field — large-scale luminous structure */
+    float field1 = fbm(coord * 2.0 + vec2(t * 0.3, t * 0.2));
+    float field2 = fbm(coord * 3.0 + vec2(-t * 0.2, t * 0.4) + field1 * 0.5);
 
-    // Subtle data flow — moving dots along grid
-    float flowX = hash(floor(vec2(uv.x * 40.0, uv.y * 25.0)) + floor(u_time * 0.3));
-    float flow = step(0.97, flowX) * 0.15;
+    /* Secondary depth layer — creates Radiant-style light caustics */
+    float caustic = fbm(coord * 4.5 + vec2(field2 * 0.8, field1 * 0.6) + t * 0.15);
+    caustic = smoothstep(0.3, 0.7, caustic);
 
-    // Vignette: darken edges
-    float vignette = 1.0 - length((uv - 0.5) * 1.4);
-    vignette = smoothstep(0.0, 0.7, vignette);
+    /* BETTER blue palette — three tones for depth */
+    vec3 deepBlue   = vec3(0.0, 0.10, 0.22);   /* Deep oceanic base */
+    vec3 midBlue    = vec3(0.0, 0.28, 0.55);    /* Mid radiance */
+    vec3 brightBlue = vec3(0.0, 0.667, 1.0);    /* BETTER blue #00aaff */
 
-    // Accent color: BETTER green (#00ff88) → rgb(0, 1, 0.533)
-    vec3 accentColor = vec3(0.0, 1.0, 0.533);
+    /* Compose: layered radiant depth from dark to bright */
+    vec3 color = deepBlue;
+    color = mix(color, midBlue, field1 * 0.6);
+    color = mix(color, brightBlue * 0.4, caustic * 0.35);
 
-    // Compose: dark base with green accent grid, scanlines, and data flow
-    vec3 color = vec3(0.039, 0.039, 0.059); // ~#0a0a0f
-    color += accentColor * grid;
-    color += accentColor * scanline;
-    color += accentColor * flow;
+    /* Subtle luminous highlights — Radiant influence */
+    float highlight = smoothstep(0.55, 0.85, field2 + caustic * 0.3);
+    color += brightBlue * highlight * 0.12;
+
+    /* Vignette: atmospheric fade toward edges */
+    float vignette = 1.0 - length((uv - 0.5) * vec2(1.8, 2.2));
+    vignette = smoothstep(0.0, 0.6, vignette);
     color *= vignette;
 
-    // Very low opacity — this is a subtle background, not overpowering
+    /* Vertical gradient: darker at top/bottom for text readability zones */
+    float vertFade = smoothstep(0.0, 0.25, uv.y) * smoothstep(1.0, 0.75, uv.y);
+    color *= 0.5 + vertFade * 0.5;
+
     gl_FragColor = vec4(color, 1.0);
   }
 `;
@@ -109,7 +147,8 @@ export function HeroShaderCanvas() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+    const gl =
+      canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
     if (!gl) {
       triggerFallback();
       return;
@@ -198,7 +237,7 @@ export function HeroShaderCanvas() {
       data-testid="hero-shader-canvas"
       aria-hidden="true"
       className="absolute inset-0 h-full w-full"
-      style={{ opacity: 0.6 }}
+      style={{ opacity: 0.85 }}
     />
   );
 }

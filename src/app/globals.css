@@ -98,22 +98,29 @@ body {
   font-family: var(--font-mono), "Fira Code", "JetBrains Mono", monospace;
 }
 
-/* Subtle scanline overlay for terminal aesthetic */
+/* -----------------------------------------------------------------------
+   Scanline overlay — terminal texture
+   ----------------------------------------------------------------------- */
+
 .scanline-overlay {
   pointer-events: none;
   background: repeating-linear-gradient(
     0deg,
     transparent,
     transparent 2px,
-    rgba(0, 0, 0, 0.03) 2px,
-    rgba(0, 0, 0, 0.03) 4px
+    rgba(0, 0, 0, 0.04) 2px,
+    rgba(0, 0, 0, 0.04) 4px
   );
 }
 
-/* Glow effect for accent elements — BETTER blue */
+/* -----------------------------------------------------------------------
+   Glow effects — BETTER blue accent
+   ----------------------------------------------------------------------- */
+
 .glow-accent {
-  text-shadow: 0 0 10px rgba(0, 170, 255, 0.4),
-    0 0 30px rgba(0, 170, 255, 0.15);
+  text-shadow: 0 0 12px rgba(0, 170, 255, 0.5),
+    0 0 40px rgba(0, 170, 255, 0.2),
+    0 0 80px rgba(0, 170, 255, 0.05);
 }
 
 /* Green accent glow (for live-status highlights) */
@@ -123,12 +130,39 @@ body {
 }
 
 /* -----------------------------------------------------------------------
-   ASCII-video-inspired background treatment
+   Radiant fallback gradient — CSS-only, always visible
+   Provides atmospheric BETTER blue depth even before WebGL loads or
+   when WebGL is unavailable. Replaces the old grid-pattern layer.
+   ----------------------------------------------------------------------- */
+
+.hero-radiant-fallback {
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse 120% 80% at 50% 60%,
+      rgba(0, 60, 140, 0.35) 0%,
+      rgba(0, 30, 80, 0.15) 40%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 60% 50% at 30% 40%,
+      rgba(0, 100, 180, 0.12) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 50% 60% at 70% 50%,
+      rgba(0, 80, 160, 0.08) 0%,
+      transparent 55%
+    );
+}
+
+/* -----------------------------------------------------------------------
+   Hermes-inspired ASCII terminal atmosphere
    ----------------------------------------------------------------------- */
 
 .ascii-background {
   pointer-events: none;
-  z-index: 0;
+  z-index: 2;
 }
 
 .ascii-background .ascii-text {
@@ -138,60 +172,56 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   width: max-content;
+  /* Materially visible BETTER blue tint — not faint noise */
+  color: rgba(0, 170, 255, 0.12);
 }
 
-/* Animated state: subtle pulse effect */
+/* Animated state: no constant pulse — the character transitions ARE the motion */
 .ascii-bg-animated .ascii-text {
-  animation: ascii-pulse 4s ease-in-out infinite;
+  /* No CSS animation; animation happens via sparse JS character transitions */
 }
 
-/* Static state: no animation, slightly dimmer */
+/* Static state: slightly dimmer but still clearly visible */
 .ascii-bg-static .ascii-text {
-  opacity: 0.5;
+  opacity: 0.65;
 }
 
-@keyframes ascii-pulse {
-  0%,
-  100% {
-    opacity: 1;
+/* -----------------------------------------------------------------------
+   Vignette gradient for hero text readability
+   ----------------------------------------------------------------------- */
+
+.hero-vignette {
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 100% 100% at 50% 50%, transparent 25%, var(--bg-primary) 100%),
+    linear-gradient(to bottom, var(--bg-primary) 0%, transparent 12%, transparent 88%, var(--bg-primary) 100%);
+}
+
+/* -----------------------------------------------------------------------
+   Hero entrance animation — Motion M3 (one-shot fade+lift)
+   ----------------------------------------------------------------------- */
+
+.hero-entrance {
+  animation: hero-enter 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+
+@keyframes hero-enter {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
   }
-  50% {
-    opacity: 0.7;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
 /* -----------------------------------------------------------------------
-   Premium dark terminal / HFT grid pattern
+   Reduced motion support
    ----------------------------------------------------------------------- */
 
-/* CSS-only grid pattern: visible immediately, no JS dependency — BETTER blue */
-.hero-grid-pattern {
-  pointer-events: none;
-  background-image:
-    linear-gradient(
-      rgba(0, 170, 255, 0.04) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      90deg,
-      rgba(0, 170, 255, 0.04) 1px,
-      transparent 1px
-    );
-  background-size: 60px 40px;
-  mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 30%, transparent 100%);
-  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 30%, transparent 100%);
-}
-
-/* Vignette gradient for hero text readability */
-.hero-vignette {
-  pointer-events: none;
-  background:
-    radial-gradient(ellipse 100% 100% at 50% 50%, transparent 30%, var(--bg-primary) 100%),
-    linear-gradient(to bottom, var(--bg-primary) 0%, transparent 15%, transparent 85%, var(--bg-primary) 100%);
-}
-
-/* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
+  /* Kill all animations and transitions globally */
   *,
   *::before,
   *::after {
@@ -200,12 +230,15 @@ body {
     transition-duration: 0.01ms !important;
   }
 
-  .ascii-bg-animated .ascii-text {
+  /* Hero entrance: skip animation, show immediately */
+  .hero-entrance {
     animation: none;
-    opacity: 0.5;
+    opacity: 1;
+    transform: none;
   }
 
-  /* Force static state styling in reduced-motion */
+  /* ASCII: force static dim state */
+  .ascii-bg-animated .ascii-text,
   .ascii-background .ascii-text {
     opacity: 0.5;
   }

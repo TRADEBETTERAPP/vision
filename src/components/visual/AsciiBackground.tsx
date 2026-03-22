@@ -4,42 +4,139 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useVisualEffects } from "./VisualEffectsProvider";
 
 // ---------------------------------------------------------------------------
-// ASCII character palette — terminal / HFT / data-stream aesthetic
+// Hermes-inspired ASCII atmosphere
+//
+// A materially visible terminal-texture layer that reads as an intentional
+// BETTER visual system. Uses structured block-character patterns with sparse
+// data-stream highlights, arranged in a centered terminal-viewport layout.
+//
+// This is NOT a faint background noise — it's a visible atmospheric texture
+// that supports the Radiant shader layer and reinforces the terminal aesthetic.
 // ---------------------------------------------------------------------------
 
-const ASCII_CHARS = "01▓░▒│─┌┐└┘├┤┬┴┼●◆◇$>_";
-const COLS = 80;
-const ROWS = 24;
+/** Terminal block-art characters for structure (includes shading blocks) */
+const STRUCTURE_CHARS = "░▒▓│─┌┐└┘├┤┬┴┼";
+/** Data-stream characters for highlights */
+const DATA_CHARS = "01$>_●◆";
+/** Empty space character */
+const SPACE = " ";
 
-/** Generate a static grid of ASCII characters */
-function generateStaticGrid(): string[] {
+const COLS = 100;
+const ROWS = 32;
+
+/** Deterministic pseudo-random from two seeds */
+function hash(a: number, b: number): number {
+  return Math.abs(Math.sin(a * 127.1 + b * 311.7) * 43758.5453) % 1;
+}
+
+/** Separate hash for character index selection (avoids correlation with density hash) */
+function charHash(a: number, b: number): number {
+  return Math.abs(Math.sin(a * 269.3 + b * 183.1) * 29173.7137) % 1;
+}
+
+/**
+ * Generate a structured ASCII grid with intentional layout.
+ * Creates a terminal-viewport feel with border framing, sparse data regions,
+ * and structured block patterns rather than random character soup.
+ */
+function generateStructuredGrid(seed: number = 0): string[] {
   const grid: string[] = [];
+
   for (let r = 0; r < ROWS; r++) {
     let line = "";
     for (let c = 0; c < COLS; c++) {
-      // Use a deterministic pattern for the static grid
-      const idx = (r * COLS + c) % ASCII_CHARS.length;
-      line += ASCII_CHARS[idx];
+      // Deterministic pseudo-random for placement
+      const h = hash(r + seed, c);
+      // Separate hash for character index (uncorrelated)
+      const ci = charHash(r + seed, c);
+
+      // Top and bottom border rows — terminal frame
+      if (r === 0 || r === ROWS - 1) {
+        if (c === 0) line += "┌";
+        else if (c === COLS - 1) line += "┐";
+        else line += h > 0.7 ? "┬" : "─";
+        continue;
+      }
+
+      // Left/right border columns
+      if (c === 0 || c === COLS - 1) {
+        line += "│";
+        continue;
+      }
+
+      // Central data region — structured blocks with sparse highlights
+      const distFromCenter =
+        Math.abs(c - COLS / 2) / (COLS / 2) +
+        Math.abs(r - ROWS / 2) / (ROWS / 2);
+
+      // Density falls off from center — creates depth
+      const density = Math.max(0, 1.0 - distFromCenter * 0.8);
+
+      if (h > 1.0 - density * 0.4) {
+        // Block structure characters — visible terminal texture
+        // Use the uncorrelated charHash for index to ensure full character coverage
+        const si = Math.floor(ci * STRUCTURE_CHARS.length) % STRUCTURE_CHARS.length;
+        line += STRUCTURE_CHARS[si];
+      } else if (h > 0.88 && density > 0.25) {
+        // Sparse data highlights — occasional terminal data glyphs
+        const di = Math.floor(ci * DATA_CHARS.length) % DATA_CHARS.length;
+        line += DATA_CHARS[di];
+      } else {
+        // Structured empty space with occasional dots for depth
+        line += h > 0.82 ? "·" : SPACE;
+      }
     }
     grid.push(line);
   }
+
   return grid;
 }
 
-/** Generate a single frame with time-varying characters */
-function generateAnimatedFrame(time: number): string[] {
+/**
+ * Generate a single animated frame with slow, deliberate character transitions.
+ * Only a small fraction of characters change per frame — creating a living
+ * terminal feel without constant noise.
+ */
+function generateAnimatedFrame(
+  baseGrid: string[],
+  time: number
+): string[] {
   const grid: string[] = [];
-  for (let r = 0; r < ROWS; r++) {
+  // Slow cycle — characters shift every ~2 seconds
+  const cycle = Math.floor(time * 0.5);
+
+  for (let r = 0; r < baseGrid.length; r++) {
+    const baseLine = baseGrid[r];
     let line = "";
-    for (let c = 0; c < COLS; c++) {
-      // Pseudo-random index that shifts with time
-      const hash =
-        Math.sin(r * 127.1 + c * 311.7 + time * 0.8) * 43758.5453;
-      const idx = Math.abs(Math.floor(hash)) % ASCII_CHARS.length;
-      line += ASCII_CHARS[idx];
+    for (let c = 0; c < baseLine.length; c++) {
+      const baseChar = baseLine[c];
+
+      // Only mutate interior characters, not borders
+      if (
+        r === 0 ||
+        r === baseGrid.length - 1 ||
+        c === 0 ||
+        c === baseLine.length - 1
+      ) {
+        line += baseChar;
+        continue;
+      }
+
+      // Sparse mutation: ~5% of characters shift per cycle
+      const h = hash(r * 31 + cycle * 7, c * 17 + cycle * 3);
+
+      if (h > 0.95 && baseChar !== SPACE && baseChar !== "·") {
+        // Swap to a different structure or data character
+        const pool = h > 0.975 ? DATA_CHARS : STRUCTURE_CHARS;
+        const idx = Math.floor(charHash(r + cycle, c + cycle) * pool.length) % pool.length;
+        line += pool[idx];
+      } else {
+        line += baseChar;
+      }
     }
     grid.push(line);
   }
+
   return grid;
 }
 
@@ -48,13 +145,17 @@ function generateAnimatedFrame(time: number): string[] {
 // ---------------------------------------------------------------------------
 
 export function AsciiBackground() {
-  const { reducedMotion, fallback } = useVisualEffects();
+  const { reducedMotion } = useVisualEffects();
   const animFrameRef = useRef<number>(0);
-  const [lines, setLines] = useState<string[]>(() => generateStaticGrid());
+  const lastUpdateRef = useRef<number>(0);
+  const [lines, setLines] = useState<string[]>(() => generateStructuredGrid());
 
-  const isStatic = reducedMotion || fallback;
+  // ASCII is DOM-based and independent of WebGL — it only stops for reduced motion,
+  // not because the shader canvas failed. This keeps the ASCII atmosphere alive
+  // even when WebGL is unavailable.
+  const isStatic = reducedMotion;
 
-  const staticGrid = useMemo(() => generateStaticGrid(), []);
+  const staticGrid = useMemo(() => generateStructuredGrid(), []);
 
   useEffect(() => {
     if (isStatic) return;
@@ -63,13 +164,19 @@ export function AsciiBackground() {
 
     const animate = () => {
       const elapsed = (performance.now() - startTime) / 1000;
-      setLines(generateAnimatedFrame(elapsed));
+
+      // Throttle to ~4fps — deliberate, not frenetic
+      if (elapsed - lastUpdateRef.current > 0.25) {
+        lastUpdateRef.current = elapsed;
+        setLines(generateAnimatedFrame(staticGrid, elapsed));
+      }
+
       animFrameRef.current = requestAnimationFrame(animate);
     };
 
     animFrameRef.current = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(animFrameRef.current);
-  }, [isStatic]);
+  }, [isStatic, staticGrid]);
 
   // Use static grid when in reduced-motion or fallback mode
   const displayLines = isStatic ? staticGrid : lines;
@@ -82,7 +189,10 @@ export function AsciiBackground() {
         isStatic ? "ascii-bg-static" : "ascii-bg-animated"
       }`}
     >
-      <pre className="ascii-text font-terminal text-[8px] leading-[10px] sm:text-[10px] sm:leading-[12px] text-accent/[0.04] whitespace-pre pointer-events-none">
+      <pre
+        className="ascii-text font-terminal leading-[12px] text-[10px] sm:text-[11px] sm:leading-[14px] whitespace-pre pointer-events-none"
+        data-testid="ascii-text-content"
+      >
         {displayLines.join("\n")}
       </pre>
     </div>

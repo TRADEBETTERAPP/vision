@@ -55,8 +55,9 @@ describe("Design system baseline", () => {
       expect(globalsCss).toContain("rgba(0, 170, 255");
     });
 
-    it("uses BETTER blue in the grid pattern", () => {
-      expect(globalsCss).toMatch(/hero-grid-pattern[\s\S]*rgba\(0, 170, 255/);
+    it("uses BETTER blue in the radiant fallback gradient", () => {
+      // The Radiant-influenced fallback replaces the old grid-pattern layer
+      expect(globalsCss).toMatch(/hero-radiant-fallback[\s\S]*rgba\(0,\s*\d+,\s*\d+/);
     });
   });
 

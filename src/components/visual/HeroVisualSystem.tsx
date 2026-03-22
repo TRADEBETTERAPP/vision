@@ -6,20 +6,24 @@ import { HeroShaderCanvas } from "./HeroShaderCanvas";
 import { AsciiBackground } from "./AsciiBackground";
 
 /**
- * HeroVisualSystem — immersive visual layer for the hero section.
+ * HeroVisualSystem — immersive BETTER atmosphere for the hero section.
  *
- * Renders:
- * 1. CSS grid pattern background (always visible, no JS needed)
- * 2. ASCII-video-inspired background (always visible, static if reduced-motion)
- * 3. WebGL shader-driven grid overlay (hidden if reduced-motion or WebGL unsupported)
- * 4. Scanline overlay (CSS-only, always present)
- * 5. Gradient overlay for text readability
+ * Visual layers (back to front):
+ * 1. Radiant-influenced shader canvas — organic blue depth field (WebGL, client-only)
+ * 2. ASCII terminal atmosphere — structured Hermes-inspired text overlay
+ * 3. Scanline overlay — CSS-only terminal texture
+ * 4. Vignette gradient — readability protection for hero content
  *
- * Content-first approach: children (hero content) render immediately at z-10,
- * while visual layers are decorative backgrounds at z-0/z-1.
+ * Motion strategy (VAL-VISUAL-011): exactly 3 intentional motions:
+ *   M1 — Shader canvas: slow organic drift (~0.06x speed)
+ *   M2 — ASCII layer: sparse character transitions (~4fps, 5% of chars per cycle)
+ *   M3 — Hero entrance: content fades in on mount via CSS (one-shot, no loop)
  *
- * Reduced-motion: disables shader canvas and freezes ASCII animation.
- * Fallback: if WebGL fails, only CSS + static ASCII + grid remain — no blank surfaces.
+ * Content-first (VAL-VISUAL-001): children render at z-10 immediately.
+ * CSS-only layers render on server; WebGL/ASCII mount after hydration.
+ *
+ * Reduced-motion (VAL-VISUAL-003): all 3 motions stop; static layers persist.
+ * Fallback (VAL-VISUAL-004): WebGL failure → CSS gradient + static ASCII remain.
  */
 
 const emptySubscribe = () => () => {};
@@ -29,9 +33,7 @@ export function HeroVisualSystem({
 }: {
   children: React.ReactNode;
 }) {
-  // SSR-safe mount detection. Advanced effects only render after client mount
-  // to prevent hydration mismatches (SSR has no WebGL/matchMedia).
-  // CSS-only layers (grid pattern, scanlines, vignette) render immediately.
+  // SSR-safe mount detection for client-only layers
   const hasMounted = useSyncExternalStore(
     emptySubscribe,
     () => true,
@@ -44,32 +46,36 @@ export function HeroVisualSystem({
         data-testid="hero-visual-system"
         className="relative overflow-hidden"
       >
-        {/* Layer 0: CSS-only grid pattern (always visible, no JS) */}
+        {/* Layer 0: CSS-only radiant fallback gradient (always visible, no JS) */}
         <div
-          className="hero-grid-pattern absolute inset-0"
+          className="hero-radiant-fallback absolute inset-0"
           aria-hidden="true"
+          data-testid="hero-radiant-fallback"
         />
 
-        {/* Layer 0.5: ASCII-video-inspired background (client-only) */}
-        {hasMounted && <AsciiBackground />}
-
-        {/* Layer 1: WebGL shader-driven grid (client-only, graceful fallback) */}
+        {/* Layer 1: WebGL Radiant shader (client-only, graceful fallback) */}
         {hasMounted && <HeroShaderCanvas />}
 
-        {/* Layer 2: CSS scanline overlay */}
+        {/* Layer 2: Hermes ASCII terminal atmosphere (client-only) */}
+        {hasMounted && <AsciiBackground />}
+
+        {/* Layer 3: CSS scanline overlay — terminal texture */}
         <div
-          className="scanline-overlay absolute inset-0 z-[1]"
+          className="scanline-overlay absolute inset-0 z-[3]"
           aria-hidden="true"
         />
 
-        {/* Layer 3: Vignette + gradient overlay for text readability */}
+        {/* Layer 4: Vignette + readability gradient */}
         <div
-          className="hero-vignette absolute inset-0 z-[2]"
+          className="hero-vignette absolute inset-0 z-[4]"
           aria-hidden="true"
         />
 
-        {/* Layer 10: Content (always renders first, always readable) */}
-        <div data-testid="hero-content" className="relative z-10">
+        {/* Layer 10: Content — M3 entrance animation via CSS */}
+        <div
+          data-testid="hero-content"
+          className="hero-entrance relative z-10"
+        >
           {children}
         </div>
       </div>
