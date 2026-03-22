@@ -21,6 +21,7 @@ Intended application architecture and implementation patterns for this mission.
 - Use actual proof surfaces near the top of the page: product/product-like imagery, workflow framing, evidence hooks, trust signals, or market proof should appear before heavy roadmap density.
 - The shell should now be a full graph-first mindmap surface with clear focal-node selection, orientation recovery, and detail panels; ordinary vertical sections may support the experience, but they should not be the primary navigation model.
 - Prefer one unified graph/content model that can represent hero identity, proof, roadmap, token policy, architecture, evidence, and risks as connected BETTER domains.
+- Current quirk: flywheel node/status data still lives inline in `src/components/architecture/FlywheelExplorer.tsx`, so consistency tests must currently render the component instead of importing a shared typed flywheel content model.
 - It is acceptable to introduce graph/layout/pan-zoom tooling if it materially supports the approved shell rewrite.
 - The BETTER logotype asset should replace the current text wordmarks in the header, hero, and mobile-overlay surfaces.
 - Extend the Radiant/Hermes atmospheric stack across the whole site so the experience reads as one continuous world, not a hero-only treatment.

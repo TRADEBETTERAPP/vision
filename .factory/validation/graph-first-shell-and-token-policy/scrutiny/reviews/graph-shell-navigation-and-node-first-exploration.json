@@ -1,0 +1,28 @@
+{
+  "featureId": "graph-shell-navigation-and-node-first-exploration",
+  "reviewedAt": "2026-03-22T08:17:18Z",
+  "commitId": "29b15a4305a8435c73c03b770a23358bfba54522",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "fail",
+  "codeReview": {
+    "summary": "The feature delivers a substantial graph-first shell with focus states, related-node traversal, deep-link restoration/fallback, and mobile/keyboard support, but it does not fully replace the remaining section-anchor browsing model.",
+    "issues": [
+      {
+        "file": "src/app/page.tsx",
+        "line": 103,
+        "severity": "blocking",
+        "description": "The hero's primary \"See What's Live\" CTA still links to `#proof` instead of a graph destination such as `#graph-proof`. That leaves a prominent legacy anchor-scroll path in place, so the feature does not fully satisfy the requirement to replace the remaining section-anchor browsing model with graph destinations and focus states."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "skills",
+      "observation": "The `frontend-experience-worker` procedure should explicitly require verification of hero and CTA destinations when shell/navigation work claims to replace section-anchor browsing. This feature's tests cover `NAV_ITEMS` and `GraphShell` behavior, but they missed a remaining hero CTA that still targets `#proof`.",
+      "evidence": "`src/components/graph/__tests__/GraphShell.test.tsx` validates the shell in isolation and `src/app/page.tsx:101-113` still contains a primary CTA with `href=\"#proof\"`."
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "Fail: the graph shell itself is strong, but a prominent hero CTA still uses the legacy `#proof` section anchor instead of opening a graph focus state, so section-anchor browsing was not fully replaced."
+}

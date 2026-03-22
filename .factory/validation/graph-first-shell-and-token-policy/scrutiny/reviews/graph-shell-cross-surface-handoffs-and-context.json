@@ -1,0 +1,40 @@
+{
+  "featureId": "graph-shell-cross-surface-handoffs-and-context",
+  "reviewedAt": "2026-03-22T08:17:13.914921+00:00",
+  "commitId": "b532c10a4bf2c5280f9af4c679a7ab6243df9b63",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "fail",
+  "codeReview": {
+    "summary": "The commit improves two important pieces of the feature: browser hash/back-forward focus restoration in `GraphShell` and an obvious proof→graph handoff via the proof CTA plus the hero’s proof-first primary CTA. But the implementation still does not preserve the applicable sub-surface context that the feature explicitly promises. `GraphShell` swaps the active surface subtree in and out, so leaving Tokenomics or Roadmap unmounts the stateful components that own scenario inputs and expanded-branch state. Returning to those surfaces recreates them from defaults, which breaks cross-surface context preservation for scenarios and roadmap exploration state.",
+    "issues": [
+      {
+        "file": "src/components/tokenomics/ScenarioSwitcher.tsx",
+        "line": 76,
+        "severity": "blocking",
+        "description": "`ScenarioSwitcher` keeps the selected scenario and user inputs in local component state (`activeLevel`, `tokenBalance`, `depositAmount`), while `GraphShell` only renders the currently focused surface (`src/components/graph/GraphShell.tsx:315-384`). Navigating from Tokenomics to another graph surface unmounts this subtree, so browser back/forward or node-to-node handoffs recreate Tokenomics with the default `base` scenario and blank inputs instead of preserving the feature's required cross-surface scenario context."
+      },
+      {
+        "file": "src/components/roadmap/RoadmapAtlas.tsx",
+        "line": 119,
+        "severity": "blocking",
+        "description": "`RoadmapAtlas` stores `expandedBranches` in local reducer state initialized from an empty object, and `GraphShell` unmounts the roadmap surface whenever focus moves to another node (`src/components/graph/GraphShell.tsx:315-384`). That means multi-branch exploration state is discarded on cross-surface handoffs; at best a hashed selected node can reopen one family, but previously expanded sibling branches are silently lost, which misses the feature's expanded-branch preservation requirement."
+      },
+      {
+        "file": "src/components/graph/__tests__/CrossSurfaceContext.test.tsx",
+        "line": 116,
+        "severity": "non_blocking",
+        "description": "The new regression suite overstates its coverage for the missing behaviors. The VAL-CROSS-003 test mounts a placeholder `<div>` for the tokenomics surface instead of the real `ScenarioSwitcher` (`lines 119-122`), and the 'sub-surface content' test only swaps mock surfaces (`lines 270-277`). As a result, the added tests never exercise scenario/input persistence or roadmap branch-state preservation across real surface handoffs."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "skills",
+      "observation": "Procedure-adherence evidence for frontend shell work is still too weak: this worker marked `skillFeedback.followedProcedure=true`, but the handoff does not satisfy the skill's explicit requirement to cite at least one newly failing test expectation written before the implementation change.",
+      "evidence": "/Users/test/vision/.factory/skills/frontend-experience-worker/SKILL.md:28 requires workers to write failing tests first and cite at least one newly failing test expectation in the handoff. In /Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/handoffs/2026-03-22T08-11-49-621Z__graph-shell-cross-surface-handoffs-and-context__7e5038a1-a639-426d-bfd0-71080225fcc1.json:75-139, the handoff lists added tests and marks `followedProcedure` true, but it never names any failing pre-implementation expectation."
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "Fail. The proof-first CTA flow and hash/back-forward focus restoration are solid improvements, but the feature still drops two applicable pieces of required cross-surface context: tokenomics scenario/input state and roadmap expanded-branch state both reset when users leave those surfaces and return. I also noted a skill-adherence evidence gap around the required test-first handoff proof."
+}

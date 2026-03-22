@@ -1,0 +1,34 @@
+{
+  "featureId": "token-policy-recalibration-and-whale-revenue-model",
+  "reviewedAt": "2026-03-22T08:17:52.376326Z",
+  "commitId": "92fd56a741a9ff52a20d63b5cd561d9a90c9fd36",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "fail",
+  "codeReview": {
+    "summary": "The feature adds the requested minted-supply, first-vault, modeled whale-product, referral, and product-line revenue surfaces, but it still ships a blocking revenue-model conflict inside the tokenomics section and a smaller maturity-label inconsistency on Social Vaults.",
+    "issues": [
+      {
+        "file": "src/components/tokenomics/FeeStackValueFlow.tsx",
+        "line": 61,
+        "severity": "blocking",
+        "description": "The fee-stack surface still tells users that social vault profits take a 10% performance fee, but the newly added product-family model says social vaults use a 20% fee and cites BETTER docs for that value (see src/content/token-tiers.ts:595 and :602). That leaves the tokenomics section with contradictory user-facing revenue math for the same product line, so the requested per-product revenue/value-return modeling is not internally correct."
+      },
+      {
+        "file": "src/content/token-tiers.ts",
+        "line": 420,
+        "severity": "non_blocking",
+        "description": "The new modeled whale ladder labels Social Vaults as planned because ModeledWhaleProduct.maturity only allows planned/speculative (see line 404), even though the roadmap and the new social-vault revenue line both mark Social Vaults as in progress (src/content/roadmap-nodes.ts:76 and src/content/token-tiers.ts:593). The modeled framing is clear, but the maturity framing is now inconsistent across surfaces."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "skills",
+      "observation": "The content-strategy-worker skill says to write failing tests first, but this session's transcript shows implementation edits landed before the new token-policy regression suite was created while the handoff still reported followedProcedure=true. Either the skill expectations or the handoff-reporting standard need tighter enforcement/clarification for content features.",
+      "evidence": "worker-transcripts.jsonl for session 6c778f29-45a1-49da-a01e-e210eac9db01 shows Edit calls against src/content/token-tiers.ts before Create src/components/tokenomics/__tests__/token-policy-recalibration.test.tsx; .factory/skills/content-strategy-worker/SKILL.md step 3 requires 'Write failing tests first'; the handoff file records skillFeedback.followedProcedure=true."
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "Fail. The new token-policy surfaces are mostly in place, but the tokenomics section still disagrees with itself on the social-vault performance-fee number (10% vs 20%), and the modeled whale ladder downgrades Social Vaults to Planned even though other surfaces keep it In Progress."
+}

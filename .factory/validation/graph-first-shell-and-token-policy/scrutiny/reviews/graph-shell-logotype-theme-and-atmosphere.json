@@ -1,0 +1,34 @@
+{
+  "featureId": "graph-shell-logotype-theme-and-atmosphere",
+  "reviewedAt": "2026-03-22T08:16:28Z",
+  "commitId": "f3e3db3",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "fail",
+  "codeReview": {
+    "summary": "The logotype import/replacement and tradebetter token retune are implemented cleanly, but the feature does not fully deliver the requested full-site Radiant/Hermes extension: the non-hero shell falls back to a static gradient plus scanlines instead of carrying forward the real shader/ASCII atmosphere. I also found one consistency gap in the mobile shell chrome.",
+    "issues": [
+      {
+        "file": "src/components/visual/SiteAtmosphere.tsx",
+        "line": 42,
+        "severity": "blocking",
+        "description": "Lower-page and graph/detail states do not preserve the actual Radiant/Hermes implementation that this feature was supposed to extend across the full shell. `SiteAtmosphere` only renders a static `.site-atmosphere-gradient` plus `.scanline-overlay` here, while the real Hermes ASCII canvas and Radiant shader remain hero-only in `src/components/visual/HeroVisualSystem.tsx:128-136`; `src/app/globals.css:318-334` confirms the site-wide layer is just static radial gradients. That leaves non-hero states with a subtle tint rather than materially visible Radiant/Hermes atmosphere, so the feature misses its core expected behavior." 
+      },
+      {
+        "file": "src/components/MobileNav.tsx",
+        "line": 100,
+        "severity": "non_blocking",
+        "description": "The mobile overlay nav links keep the default sans treatment (`text-base font-medium ...`) instead of the mono UI styling used for the desktop shell in `src/app/layout.tsx:100`. Because the feature explicitly retunes header/hero/mobile-overlay chrome around tradebetter-led mono UI cues, the mobile overlay ends up visually less consistent than the rest of the shell." 
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "skills",
+      "observation": "The documented tradebetter extraction workflow is stricter than what this feature actually used. The skill says theme-parity work should use `FetchUrl`, `pinchtab`, and `agent-browser`, but this worker's transcript/handoff only shows `FetchUrl` plus local `agent-browser` verification while still marking `skillFeedback.followedProcedure=true`.",
+      "evidence": "`/Users/test/vision/.factory/skills/frontend-experience-worker/SKILL.md:23` requires the approved extraction workflow; the transcript skeleton in `/Users/test/.factory/artifacts/tool-outputs/grep_tool_cli-call_U1WfdPSpzI4PLImlkBFuSgxW-67382863.log` shows `FetchUrl` and later local `agent-browser` usage but no `pinchtab` invocation; `/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/handoffs/2026-03-22T07-18-29-681Z__graph-shell-logotype-theme-and-atmosphere__0df1b7f2-a2b5-4525-a867-c77efe9fe697.json:152` still reports `followedProcedure: true`."
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "Fail: the feature lands the BETTER logotype swap and theme-token retune, but the full-site atmosphere requirement is only met with a static continuation layer rather than extending the real Radiant/Hermes implementation beyond the hero. I also noted a non-blocking mobile-overlay typography inconsistency and one skill/procedure documentation gap around the tradebetter extraction workflow."
+}

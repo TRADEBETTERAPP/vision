@@ -1,0 +1,94 @@
+{
+  "milestone": "graph-first-shell-and-token-policy",
+  "round": 1,
+  "status": "fail",
+  "validatorsRun": {
+    "test": {
+      "passed": true,
+      "command": "npm run test",
+      "exitCode": 0
+    },
+    "typecheck": {
+      "passed": true,
+      "command": "npx tsc --noEmit",
+      "exitCode": 0
+    },
+    "lint": {
+      "passed": true,
+      "command": "npm run lint",
+      "exitCode": 0
+    },
+    "build": {
+      "passed": true,
+      "command": "npm run build",
+      "exitCode": 0
+    }
+  },
+  "reviewsSummary": {
+    "total": 5,
+    "passed": 1,
+    "failed": 4,
+    "failedFeatures": [
+      "graph-shell-logotype-theme-and-atmosphere",
+      "graph-shell-navigation-and-node-first-exploration",
+      "token-policy-recalibration-and-whale-revenue-model",
+      "graph-shell-cross-surface-handoffs-and-context"
+    ]
+  },
+  "blockingIssues": [
+    {
+      "featureId": "graph-shell-logotype-theme-and-atmosphere",
+      "severity": "blocking",
+      "description": "`src/components/visual/SiteAtmosphere.tsx` extends only a static gradient + scanline layer into lower-page and graph/detail states while the real Radiant shader and Hermes ASCII canvas remain hero-only, so the full-shell atmosphere requirement is not actually met."
+    },
+    {
+      "featureId": "graph-shell-navigation-and-node-first-exploration",
+      "severity": "blocking",
+      "description": "`src/app/page.tsx` still exposes a primary hero CTA to the legacy `#proof` section anchor instead of a graph destination/focus state, leaving a prominent anchor-scroll path in the supposedly graph-first shell."
+    },
+    {
+      "featureId": "token-policy-recalibration-and-whale-revenue-model",
+      "severity": "blocking",
+      "description": "`src/components/tokenomics/FeeStackValueFlow.tsx` still shows a 10% social-vault performance fee while the new product-family revenue model and cited source note use 20%, so the tokenomics surface disagrees with itself on user-facing revenue math."
+    },
+    {
+      "featureId": "graph-shell-cross-surface-handoffs-and-context",
+      "severity": "blocking",
+      "description": "`ScenarioSwitcher` keeps selected scenario and user inputs in local state, and `GraphShell` unmounts inactive surfaces, so tokenomics scenario/input context resets when users leave Tokenomics and come back."
+    },
+    {
+      "featureId": "graph-shell-cross-surface-handoffs-and-context",
+      "severity": "blocking",
+      "description": "`RoadmapAtlas` keeps `expandedBranches` in local reducer state while `GraphShell` unmounts the roadmap surface off-focus, so multi-branch roadmap exploration state is lost across cross-surface handoffs."
+    }
+  ],
+  "appliedUpdates": [
+    {
+      "target": "library",
+      "description": "Added a factual architecture-library note that flywheel node/status data currently lives inline in `src/components/architecture/FlywheelExplorer.tsx`, so consistency tests must render the component instead of importing a shared typed flywheel model.",
+      "sourceFeature": "graph-shell-status-and-cta-consistency"
+    }
+  ],
+  "suggestedGuidanceUpdates": [
+    {
+      "target": "frontend-experience-worker",
+      "suggestion": "Tighten procedure-adherence reporting for frontend shell work: when the skill requires a reference-extraction stack or test-first evidence, handoffs should cite the exact tools/tests actually used and workers should mark `followedProcedure=false` if required steps like `pinchtab` usage or named pre-change failing expectations are absent.",
+      "evidence": "`graph-shell-logotype-theme-and-atmosphere` marked `followedProcedure=true` without any `pinchtab` usage despite the skill requiring `FetchUrl`, `pinchtab`, and `agent-browser`; `graph-shell-cross-surface-handoffs-and-context` also marked `followedProcedure=true` without naming a newly failing pre-implementation test expectation.",
+      "isSystemic": true
+    },
+    {
+      "target": "frontend-experience-worker",
+      "suggestion": "Add an explicit validation checklist item for hero and primary CTA destinations whenever a feature claims to replace section-anchor browsing with graph/node-focused navigation.",
+      "evidence": "`graph-shell-navigation-and-node-first-exploration` shipped strong graph-shell tests but still left the hero's primary CTA pointing at `#proof` in `src/app/page.tsx`, which existing validation missed.",
+      "isSystemic": false
+    },
+    {
+      "target": "content-strategy-worker",
+      "suggestion": "Clarify/enforce the test-first requirement for content features so workers cannot report `followedProcedure=true` when implementation edits land before the new regression tests they later add.",
+      "evidence": "In `token-policy-recalibration-and-whale-revenue-model`, transcript ordering shows edits to `src/content/token-tiers.ts` before creation of `token-policy-recalibration.test.tsx`, yet the handoff still reported `followedProcedure=true`.",
+      "isSystemic": true
+    }
+  ],
+  "rejectedObservations": [],
+  "previousRound": null
+}

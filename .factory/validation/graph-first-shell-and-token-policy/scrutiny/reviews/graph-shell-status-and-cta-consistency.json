@@ -1,0 +1,21 @@
+{
+  "featureId": "graph-shell-status-and-cta-consistency",
+  "reviewedAt": "2026-03-22T08:15:53.513109Z",
+  "commitId": "979ec7c99ed714210837b73b9aa18e1d956128e8",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "pass",
+  "codeReview": {
+    "summary": "The implementation cleanly resolves the feature's reported inconsistencies: the evidence surface now uses the minted Base-contract supply, modeled social-vault gating is explicitly framed as planned policy instead of an in-progress feature state, the whale/pro flywheel node no longer overstates maturity, and the graph-shell overview badges now better match the dominant maturity of their underlying surfaces. I did not find blocking or non-blocking defects specific to this feature in the reviewed diff.",
+    "issues": []
+  },
+  "sharedStateObservations": [
+    {
+      "area": "conventions",
+      "observation": "Flywheel status data still lives inline inside the component rather than in a shared typed content module, so consistency checks have to render UI just to inspect core architecture content. The shared-state docs prefer typed local content/data modules for reusable surface models, but they do not currently call out the flywheel as one of those models.",
+      "evidence": "src/components/architecture/FlywheelExplorer.tsx:24-155 defines FLYWHEEL_NODES inline; src/components/architecture/__tests__/flywheel-status-consistency.test.tsx:7-8 explicitly notes the test must render the component because the data is inline; .factory/library/content-model.md and .factory/library/architecture.md both describe shared typed content-model expectations for major site surfaces."
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "Pass. The commit fixes the stale evidence-surface supply example, reconciles the modeled social-vault and whale-revenue maturity framing, and aligns the graph-shell dominant-status badges with the current surface mix. The only follow-up worth capturing is a shared-state convention gap: flywheel content remains inline instead of living in the typed content layer."
+}
