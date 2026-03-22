@@ -58,11 +58,11 @@ const FEE_STACK: FeeItem[] = [
     description:
       "Performance-based fee on social vault profits. Aligns vault manager incentives with depositor outcomes.",
     example:
-      "A vault generates $50,000 in profit → 10% performance fee ($5,000) split between manager and protocol.",
+      "A vault generates $50,000 in profit → 20% performance fee ($10,000) split between manager and protocol.",
     source: {
       type: "canonical",
       label: "BETTER Docs",
-      note: "Vault fee structure under finalization.",
+      note: "20% performance fee on profit-only withdrawals with wallet-level high-water mark.",
       asOf: "2026-Q1",
     },
   },
