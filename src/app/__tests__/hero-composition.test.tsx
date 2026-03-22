@@ -147,9 +147,9 @@ describe("CTA hierarchy and honesty (VAL-NARR-010)", () => {
     render(<Home />);
     const primaryCta = screen.getByTestId("cta-primary");
     expect(primaryCta).toBeInTheDocument();
-    // Primary CTA should go to live content
+    // Primary CTA should go to live/proof content (graph-first or legacy)
     const href = primaryCta.getAttribute("href");
-    expect(href).toMatch(/#live-now|https:\/\/.*betteragent|#evidence/);
+    expect(href).toMatch(/#(graph-)?(live-now|proof)|https:\/\/.*betteragent|#evidence/);
   });
 
   it("secondary CTA leads to roadmap exploration", () => {
@@ -157,7 +157,7 @@ describe("CTA hierarchy and honesty (VAL-NARR-010)", () => {
     const secondaryCta = screen.getByTestId("cta-secondary");
     expect(secondaryCta).toBeInTheDocument();
     const href = secondaryCta.getAttribute("href");
-    expect(href).toMatch(/#roadmap/);
+    expect(href).toMatch(/#(graph-)?roadmap/);
   });
 
   it("CTA labels are honest about their destinations", () => {

@@ -70,7 +70,7 @@ export default function ProofModule() {
             Read the Docs ↗
           </a>
           <a
-            href="#live-now"
+            href="#graph-live-now"
             className="inline-flex h-12 items-center justify-center rounded-md border border-border px-8 text-sm font-medium text-secondary transition-colors hover:border-accent hover:text-foreground"
             data-testid="proof-cta-secondary"
           >

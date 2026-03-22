@@ -154,13 +154,17 @@ describe("Full-shell atmosphere (VAL-VISUAL-020)", () => {
     renderWithAtmosphere();
     const atmosphere = document.querySelector('[data-testid="site-atmosphere"]');
     expect(atmosphere).toBeInTheDocument();
-    // It should contain all major sections
-    const sections = ["live-now", "roadmap", "tokenomics", "architecture"];
-    for (const id of sections) {
-      const section = document.getElementById(id);
-      expect(section).toBeInTheDocument();
-      expect(atmosphere!.contains(section!)).toBe(true);
-    }
+    // Graph-first shell: major surfaces are inside the atlas section and graph shell.
+    // Check that the hero and atlas sections are within the atmosphere.
+    const hero = document.getElementById("what-is-better");
+    const atlas = document.getElementById("atlas");
+    const proof = document.getElementById("proof");
+    expect(hero).toBeInTheDocument();
+    expect(atlas).toBeInTheDocument();
+    expect(proof).toBeInTheDocument();
+    expect(atmosphere!.contains(hero!)).toBe(true);
+    expect(atmosphere!.contains(atlas!)).toBe(true);
+    expect(atmosphere!.contains(proof!)).toBe(true);
   });
 
   it("layout.tsx imports and uses SiteAtmosphere", () => {
@@ -186,8 +190,9 @@ describe("Full-shell atmosphere (VAL-VISUAL-020)", () => {
 describe("Shell readability under persistent atmosphere (VAL-VISUAL-022)", () => {
   it("sections have readable content layers above the atmosphere", () => {
     renderWithAtmosphere();
-    // Every major section should still render readable text content
-    const sections = ["live-now", "roadmap", "tokenomics", "architecture", "evidence", "risks"];
+    // Graph-first shell: major surfaces are inside the atlas section and graph shell.
+    // Check that the hero, proof, and atlas sections have readable content.
+    const sections = ["what-is-better", "proof", "atlas"];
     for (const id of sections) {
       const section = document.getElementById(id);
       expect(section).toBeInTheDocument();

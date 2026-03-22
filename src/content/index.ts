@@ -82,3 +82,14 @@ export {
   getBlocksBySurface,
   getBlockById,
 } from "./narrative";
+
+// Graph shell nodes
+export {
+  GRAPH_NODES,
+  getGraphNodeById,
+  getRelatedGraphNodes,
+  DEFAULT_GRAPH_NODE,
+  parseGraphHash,
+  graphNodeHash,
+} from "./graph-nodes";
+export type { GraphNode } from "./graph-nodes";

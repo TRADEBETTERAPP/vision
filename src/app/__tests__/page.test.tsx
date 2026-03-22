@@ -26,95 +26,64 @@ describe("Home page", () => {
     expect(screen.getByTestId("hero-future-status")).toBeInTheDocument();
   });
 
-  // VAL-NARR-003: Current live scope and freshness are visible
-  it("renders current scope section with freshness cue", () => {
-    render(<Home />);
-    expect(screen.getByText("What's Live Today")).toBeInTheDocument();
-    const freshnessCue = screen.getByTestId("freshness-cue");
-    expect(freshnessCue).toBeInTheDocument();
-    expect(freshnessCue.textContent).toContain("2026-Q1");
-    expect(freshnessCue.textContent).toContain("BETTER Docs");
-  });
-
   // VAL-NARR-006: Narrative shell visibly carries maturity labels
-  it("renders maturity badges on narrative cards", () => {
+  it("renders maturity badges on proof and hero content", () => {
     render(<Home />);
     const badges = screen.getAllByTestId("maturity-badge");
     expect(badges.length).toBeGreaterThan(0);
-    // Check that at least Live and a non-Live status are present
+    // Check that at least Live status is present
     const statuses = badges.map((b) => b.getAttribute("data-status"));
     expect(statuses).toContain("live");
-    expect(
-      statuses.some((s) => s !== "live")
-    ).toBe(true);
-  });
-
-  // VAL-NARR-007: The site explains what maturity labels mean
-  it("renders the maturity legend", () => {
-    render(<Home />);
-    expect(screen.getByTestId("maturity-legend")).toBeInTheDocument();
-    expect(screen.getByText("Understanding Maturity Labels")).toBeInTheDocument();
   });
 
   // VAL-NARR-008: Aggressive claims expose evidence hooks
-  it("renders evidence hooks on narrative cards", () => {
+  it("renders evidence hooks on hero and proof content", () => {
     render(<Home />);
     const hooks = screen.getAllByTestId("evidence-hook");
     expect(hooks.length).toBeGreaterThan(0);
   });
 
-  // VAL-NARR-008: Evidence section explains source types
-  it("renders evidence explainer section", () => {
-    render(<Home />);
-    const explainers = screen.getAllByTestId("evidence-explainer");
-    expect(explainers.length).toBe(4); // canonical, scenario_based, illustrative, external
-  });
-
   // VAL-NARR-009: Aggressive and future-facing claims carry nearby caveats
-  it("renders caveat frames on future-facing narrative cards", () => {
+  it("renders caveat frames on future-facing hero content", () => {
     render(<Home />);
     const caveats = screen.getAllByTestId("caveat-frame");
     expect(caveats.length).toBeGreaterThan(0);
   });
 
-  // VAL-NARR-009: Risks section exists
-  it("renders the risks and caveats section", () => {
-    render(<Home />);
-    // "Risks & Caveats" appears both in label and heading — use role to target heading
-    expect(
-      screen.getByRole("heading", { name: "Risks & Caveats" })
-    ).toBeInTheDocument();
-    const riskItems = screen.getAllByTestId("risk-item");
-    expect(riskItems.length).toBeGreaterThan(0);
-  });
-
   // VAL-NARR-010: CTAs are honest about destination — live path is primary
-  it("renders honest CTAs with correct destinations", () => {
+  it("renders honest CTAs with graph-first destinations", () => {
     render(<Home />);
-    // Primary CTA leads to live product surface
+    // Primary CTA leads to proof surface via graph shell
     const primaryCta = screen.getByTestId("cta-primary");
-    expect(primaryCta).toHaveAttribute("href", "#live-now");
+    expect(primaryCta).toHaveAttribute("href", "#graph-proof");
     expect(primaryCta.textContent).toMatch(/live/i);
 
-    // Secondary CTA leads to roadmap exploration
+    // Secondary CTA leads to roadmap exploration via graph shell
     const secondaryCta = screen.getByTestId("cta-secondary");
-    expect(secondaryCta).toHaveAttribute("href", "#roadmap");
-    expect(secondaryCta.textContent).toMatch(/roadmap/i);
+    expect(secondaryCta).toHaveAttribute("href", "#graph-roadmap");
+    expect(secondaryCta.textContent).toMatch(/atlas|roadmap/i);
   });
 
-  // Section placeholders still present
-  it("renders tokenomics and architecture section placeholders", () => {
+  // VAL-NARR-013: Proof section appears before graph shell
+  it("renders proof section between hero and graph shell", () => {
     render(<Home />);
-    expect(screen.getByText("Whale-First Tokenomics")).toBeInTheDocument();
-    expect(screen.getByText("Technical Architecture")).toBeInTheDocument();
+    const proof = screen.getByTestId("proof-section");
+    expect(proof).toBeInTheDocument();
   });
 
-  // Roadmap section with narrative cards
-  it("renders roadmap narrative section with vision blocks", () => {
+  // VAL-ROADMAP-001: Graph-first shell is the primary exploration surface
+  it("renders the graph-first exploration shell", () => {
     render(<Home />);
-    expect(screen.getByText("Ecosystem Roadmap")).toBeInTheDocument();
-    // Vision blocks should be rendered
-    const cards = screen.getAllByTestId("narrative-card");
-    expect(cards.length).toBeGreaterThan(0);
+    const graphShell = screen.getByTestId("graph-shell");
+    expect(graphShell).toBeInTheDocument();
+    // Graph nodes should be visible as the primary navigation model
+    const graphNodes = screen.getAllByTestId("graph-node-button");
+    expect(graphNodes.length).toBeGreaterThanOrEqual(7);
+  });
+
+  // The atlas section wraps the graph shell
+  it("renders the BETTER Atlas section heading", () => {
+    render(<Home />);
+    expect(screen.getByText("Explore the Ecosystem")).toBeInTheDocument();
   });
 });

@@ -4,6 +4,10 @@ import Home from "../page";
 /**
  * Proof-led landing sequence and CTA flow tests.
  *
+ * Updated for graph-first shell: the proof section still appears before
+ * dense content, but the graph shell replaces individual section anchors.
+ * Content surfaces are now inside the graph shell's focused view.
+ *
  * VAL-NARR-013: Proof surface appears before dense roadmap exposition.
  * VAL-CROSS-001: First-visit flow explains BETTER, proof, and current maturity quickly.
  * VAL-CROSS-009: Landing-page section hierarchy is proof-led and single-purpose.
@@ -18,15 +22,14 @@ describe("Proof-before-density ordering (VAL-NARR-013)", () => {
     expect(proof).toBeInTheDocument();
   });
 
-  it("proof section appears before the roadmap section in DOM order", () => {
+  it("proof section appears before the graph atlas section in DOM order", () => {
     render(<Home />);
     const proof = screen.getByTestId("proof-section");
-    const roadmap = document.getElementById("roadmap");
+    const atlas = document.getElementById("atlas");
     expect(proof).toBeInTheDocument();
-    expect(roadmap).toBeInTheDocument();
-    // proof should precede roadmap in DOM order
-    const comparison = proof.compareDocumentPosition(roadmap!);
-    // Node.DOCUMENT_POSITION_FOLLOWING = 4
+    expect(atlas).toBeInTheDocument();
+    // proof should precede atlas in DOM order
+    const comparison = proof.compareDocumentPosition(atlas!);
     expect(comparison & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 
@@ -41,7 +44,6 @@ describe("Proof-before-density ordering (VAL-NARR-013)", () => {
   it("proof section contains trust cues or live product evidence", () => {
     render(<Home />);
     const proof = screen.getByTestId("proof-section");
-    // Should contain at least one proof item
     const proofItems = within(proof).getAllByTestId("proof-item");
     expect(proofItems.length).toBeGreaterThan(0);
   });
@@ -59,13 +61,11 @@ describe("Section hierarchy is proof-led and single-purpose (VAL-CROSS-009)", ()
     render(<Home />);
     const hero = screen.getByTestId("hero-section");
     const proof = screen.getByTestId("proof-section");
-    const liveNow = document.getElementById("live-now");
-    const roadmap = document.getElementById("roadmap");
+    const atlas = document.getElementById("atlas");
 
-    // Hero → Proof → Live Now → Roadmap
+    // Hero → Proof → Atlas (graph shell)
     expect(hero.compareDocumentPosition(proof) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-    expect(proof.compareDocumentPosition(liveNow!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-    expect(liveNow!.compareDocumentPosition(roadmap!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(proof.compareDocumentPosition(atlas!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 
   it("proof section has a single dominant job (proof/trust)", () => {
@@ -84,8 +84,8 @@ describe("Primary CTA follows live/proof path first (VAL-CROSS-010)", () => {
     render(<Home />);
     const primaryCta = screen.getByTestId("cta-primary");
     const href = primaryCta.getAttribute("href");
-    // Should point to live-now, proof, or a live external destination
-    expect(href).toMatch(/#live-now|#proof|https:\/\/.*betteragent|https:\/\/.*tradebetter/);
+    // Should point to proof graph state, live-now, or a live external destination
+    expect(href).toMatch(/#(graph-)?(live-now|proof)|https:\/\/.*betteragent|https:\/\/.*tradebetter/);
   });
 
   it("hero primary CTA label mentions live, proof, or product reality", () => {
@@ -97,7 +97,7 @@ describe("Primary CTA follows live/proof path first (VAL-CROSS-010)", () => {
   it("hero secondary CTA is for exploration, not the primary action", () => {
     render(<Home />);
     const secondaryCta = screen.getByTestId("cta-secondary");
-    expect(secondaryCta.textContent).toMatch(/explore|roadmap|vision|deep/i);
+    expect(secondaryCta.textContent).toMatch(/explore|roadmap|atlas|vision|deep/i);
   });
 });
 
@@ -106,12 +106,12 @@ describe("CTA promises stay consistent across surfaces (VAL-CROSS-011)", () => {
     render(<Home />);
     const proof = screen.getByTestId("proof-section");
     const proofCtas = proof.querySelectorAll("a[href]");
-    // Proof CTAs should lead to live destinations or deeper live evidence
     const proofHrefs = Array.from(proofCtas).map(a => a.getAttribute("href"));
     // At least one CTA in proof section should lead to live content
     const hasLiveDirection = proofHrefs.some(
       href =>
         href?.includes("#live-now") ||
+        href?.includes("#graph-live-now") ||
         href?.includes("betteragent") ||
         href?.includes("tradebetter") ||
         href?.includes("docs.betteragent")
@@ -119,18 +119,18 @@ describe("CTA promises stay consistent across surfaces (VAL-CROSS-011)", () => {
     expect(hasLiveDirection).toBe(true);
   });
 
-  it("roadmap section CTAs do not claim to be live destinations", () => {
+  it("graph shell provides roadmap node for exploration", () => {
     render(<Home />);
-    const roadmap = document.getElementById("roadmap");
-    expect(roadmap).toBeInTheDocument();
-    // The roadmap heading should frame itself as exploration, not live product
-    const roadmapHeading = within(roadmap!).getByText("Ecosystem Roadmap");
-    expect(roadmapHeading).toBeInTheDocument();
+    const graphShell = screen.getByTestId("graph-shell");
+    expect(graphShell).toBeInTheDocument();
+    // Roadmap should be available as a graph node
+    const roadmapNode = screen.getByRole("button", { name: /roadmap/i });
+    expect(roadmapNode).toBeInTheDocument();
   });
 });
 
 describe("First-visit comprehension flow (VAL-CROSS-001)", () => {
-  it("first sections explain BETTER, show proof, then show current maturity", () => {
+  it("first sections explain BETTER, show proof, then offer graph exploration", () => {
     render(<Home />);
     // Hero: what BETTER is
     const hero = screen.getByTestId("hero-section");
@@ -141,10 +141,9 @@ describe("First-visit comprehension flow (VAL-CROSS-001)", () => {
     const proof = screen.getByTestId("proof-section");
     expect(proof).toBeInTheDocument();
 
-    // Live Now: what is current maturity
-    const liveNow = document.getElementById("live-now");
-    expect(liveNow).toBeInTheDocument();
-    expect(liveNow!.textContent).toMatch(/live/i);
+    // Graph shell: explorable atlas for deeper content
+    const graphShell = screen.getByTestId("graph-shell");
+    expect(graphShell).toBeInTheDocument();
   });
 
   it("proof surface is visible without extensive scrolling past dense content", () => {

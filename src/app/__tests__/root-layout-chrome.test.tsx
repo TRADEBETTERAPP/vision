@@ -1,55 +1,43 @@
 /**
  * RootLayout shared-chrome regression tests.
  *
- * VAL-CROSS-001 through VAL-CROSS-007: These tests explicitly exercise
- * the RootLayout's shared header and footer chrome instead of only
- * rendering the Home page component. JSDOM cannot render <html>/<body>
- * as a root, so we test the Header and Footer sub-components directly
- * by extracting them or rendering the layout's children wrapper.
+ * Updated for graph-first shell: navigation now uses #graph-<id> hashes
+ * that target the graph shell's focus states rather than section anchors.
+ * The hero, proof, and atlas sections are always rendered on the page.
  *
- * Because RootLayout is a server component that renders <html>/<body>,
- * we test the shared chrome by importing the layout module and verifying
- * that the nav items, footer, and structural elements are present.
+ * VAL-NARR-004: Navigation opens graph destinations and focus states
+ * VAL-NARR-005: Navigation labels are understandable
  */
 
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { NAV_ITEMS } from "@/components/nav-items";
-
-// We cannot render the full RootLayout (it returns <html>) in JSDOM.
-// Instead, we import and render the exported Header and Footer directly.
-// If they are not exported, we test through the Home page as a proxy
-// but explicitly assert header/footer elements.
-
-// Since Header and Footer are private to layout.tsx, we render <Home />
-// inside a container and assert the full-page nav/footer contract via
-// the presence of nav links and footer copyright.
 import Home from "../page";
 
 describe("RootLayout shared chrome — Header", () => {
-  it("renders the BETTER navigation sections matching NAV_ITEMS", () => {
-    render(<Home />);
-    // The brand link with logotype is in the RootLayout header.
-    // Since we can't render <html>, we check the structural nav items
-    // that Home embeds have matching page sections.
-    const navAnchors = NAV_ITEMS.map((item) => item.href);
-    for (const href of navAnchors) {
-      const section = document.querySelector(href);
-      expect(section).not.toBeNull();
+  it("navigation items use graph-first hash destinations", () => {
+    // All nav items should use #graph-<id> format
+    for (const item of NAV_ITEMS) {
+      expect(item.href).toMatch(/^#graph-/);
     }
   });
 
-  it("all NAV_ITEMS destinations have matching page sections", () => {
+  it("graph node IDs in navigation match valid graph nodes", () => {
     render(<Home />);
+    // Each nav item's graph target should correspond to a graph node button
+    const graphNodes = screen.getAllByTestId("graph-node-button");
+    const graphNodeLabels = graphNodes.map((n) =>
+      n.getAttribute("aria-label")?.toLowerCase()
+    );
     for (const item of NAV_ITEMS) {
-      const sectionId = item.href.replace("#", "");
-      const section = document.getElementById(sectionId);
-      expect(section).toBeInTheDocument();
+      // Nav label should match a graph node label
+      expect(
+        graphNodeLabels.some((label) => label?.includes(item.label.toLowerCase()))
+      ).toBe(true);
     }
   });
 
   it("navigation labels are understandable without insider context (VAL-NARR-005)", () => {
-    // Labels should be plain English, no jargon abbreviations
     const insiderPatterns = [/^BRAID$/i, /^vBETTER$/i, /^HyperEVM$/i, /^FDV$/i, /^TAM$/i];
     for (const item of NAV_ITEMS) {
       for (const pattern of insiderPatterns) {
@@ -60,12 +48,12 @@ describe("RootLayout shared chrome — Header", () => {
 
   it("navigation covers required destinations: what, live, roadmap, tokenomics, evidence, risks (VAL-NARR-004)", () => {
     const requiredDestinations = [
-      "what-is-better",
-      "live-now",
-      "roadmap",
-      "tokenomics",
-      "evidence",
-      "risks",
+      "graph-what-is-better",
+      "graph-live-now",
+      "graph-roadmap",
+      "graph-tokenomics",
+      "graph-evidence",
+      "graph-risks",
     ];
     const navHrefs = NAV_ITEMS.map((item) => item.href.replace("#", ""));
     for (const dest of requiredDestinations) {
@@ -75,13 +63,7 @@ describe("RootLayout shared chrome — Header", () => {
 });
 
 describe("RootLayout shared chrome — Footer", () => {
-  // The footer is rendered by RootLayout which wraps <Home />.
-  // Since we can't render RootLayout directly, we verify the footer
-  // content expectations match what layout.tsx produces.
   it("footer disclaimer mentions maturity labels", () => {
-    // This tests the footer copy contract — the footer text in layout.tsx
-    // should mention maturity labels to satisfy cross-surface consistency.
-    // We verify the content is what we expect from the layout module.
     const expectedFooterText =
       "This site presents the BETTER ecosystem vision. Maturity labels distinguish live features from planned and speculative roadmap items.";
     expect(expectedFooterText.toLowerCase()).toContain("maturity labels");
@@ -92,44 +74,37 @@ describe("RootLayout shared chrome — Footer", () => {
 });
 
 describe("RootLayout shared chrome — Section structure", () => {
-  it("page sections follow a logical first-visit flow (VAL-CROSS-001)", () => {
+  it("page renders hero, proof, and atlas sections in correct order", () => {
     render(<Home />);
-    const sections = [
-      "what-is-better",
-      "live-now",
-      "roadmap",
-      "tokenomics",
-      "architecture",
-      "evidence",
-      "risks",
-    ];
-    // All sections must exist
-    for (const id of sections) {
-      expect(document.getElementById(id)).toBeInTheDocument();
-    }
-    // Sections must appear in DOM order (top-to-bottom reading order)
-    const allElements = document.querySelectorAll("[id]");
-    const orderedIds = Array.from(allElements)
-      .map((el) => el.id)
-      .filter((id) => sections.includes(id));
-    expect(orderedIds).toEqual(sections);
+    const hero = document.getElementById("what-is-better");
+    const proof = document.getElementById("proof");
+    const atlas = document.getElementById("atlas");
+
+    expect(hero).toBeInTheDocument();
+    expect(proof).toBeInTheDocument();
+    expect(atlas).toBeInTheDocument();
+
+    // Hero → Proof → Atlas order
+    expect(hero!.compareDocumentPosition(proof!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(proof!.compareDocumentPosition(atlas!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 
   it("hero section explains BETTER before requiring scroll (VAL-CROSS-001)", () => {
     render(<Home />);
     const heroSection = document.getElementById("what-is-better");
     expect(heroSection).toBeInTheDocument();
-    // Hero should contain the plain-language definition
     expect(heroSection!.textContent).toContain("prediction-market intelligence");
-    // Hero should distinguish live from planned via inline status framing
     const liveStatus = heroSection!.querySelector('[data-testid="hero-live-status"]');
     const futureStatus = heroSection!.querySelector('[data-testid="hero-future-status"]');
     expect(liveStatus).toBeInTheDocument();
     expect(futureStatus).toBeInTheDocument();
   });
 
-  it("architecture section has #architecture anchor for nav", () => {
+  it("atlas section contains the graph shell", () => {
     render(<Home />);
-    expect(document.getElementById("architecture")).toBeInTheDocument();
+    const atlas = document.getElementById("atlas");
+    expect(atlas).toBeInTheDocument();
+    const graphShell = screen.getByTestId("graph-shell");
+    expect(atlas!.contains(graphShell)).toBe(true);
   });
 });

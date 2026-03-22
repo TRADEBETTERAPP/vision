@@ -2,15 +2,11 @@ import { render, screen } from "@testing-library/react";
 import Home from "../page";
 
 /**
- * Focused regression tests for shared navigation and footer behavior.
+ * Focused regression tests for shared navigation and layout behavior.
  *
- * These tests ensure the narrative shell's shared layout elements
- * remain stable as features are added.
- *
- * NOTE: RootLayout renders <html>/<body> which JSDOM doesn't support
- * well as a rendered root, so we test navigation and footer presence
- * through the Home page render (which includes the layout wrapper
- * in integration) and verify the section structure.
+ * Updated for graph-first shell architecture: the hero, proof, and atlas
+ * sections are always rendered. Individual content surfaces (roadmap,
+ * tokenomics, etc.) are rendered inside the graph shell when focused.
  */
 describe("Shared navigation regression", () => {
   it("hero section has the #what-is-better anchor", () => {
@@ -19,34 +15,27 @@ describe("Shared navigation regression", () => {
     expect(section).toBeInTheDocument();
   });
 
-  it("live-now section has the #live-now anchor", () => {
+  it("proof section has the #proof anchor", () => {
     render(<Home />);
-    const section = document.getElementById("live-now");
+    const section = document.getElementById("proof");
     expect(section).toBeInTheDocument();
   });
 
-  it("roadmap section has the #roadmap anchor", () => {
+  it("atlas section has the #atlas anchor wrapping the graph shell", () => {
     render(<Home />);
-    const section = document.getElementById("roadmap");
+    const section = document.getElementById("atlas");
     expect(section).toBeInTheDocument();
+    // Graph shell should be inside the atlas section
+    const graphShell = screen.getByTestId("graph-shell");
+    expect(section!.contains(graphShell)).toBe(true);
   });
 
-  it("tokenomics section has the #tokenomics anchor", () => {
+  it("graph shell renders all major BETTER surface nodes", () => {
     render(<Home />);
-    const section = document.getElementById("tokenomics");
-    expect(section).toBeInTheDocument();
-  });
-
-  it("evidence section has the #evidence anchor", () => {
-    render(<Home />);
-    const section = document.getElementById("evidence");
-    expect(section).toBeInTheDocument();
-  });
-
-  it("risks section has the #risks anchor", () => {
-    render(<Home />);
-    const section = document.getElementById("risks");
-    expect(section).toBeInTheDocument();
+    const graphNodes = screen.getAllByTestId("graph-node-button");
+    // Should have nodes for: what-is-better, proof, live-now, roadmap,
+    // tokenomics, architecture, evidence, risks
+    expect(graphNodes.length).toBeGreaterThanOrEqual(7);
   });
 });
 
@@ -81,37 +70,22 @@ describe("Hero poster-like composition regression", () => {
   });
 });
 
-describe("Section heading structure regression", () => {
-  it("all main sections render expected headings", () => {
+describe("Graph shell heading and structure regression", () => {
+  it("renders the BETTER Atlas section heading", () => {
     render(<Home />);
-    const expectedHeadings = [
-      "What's Live Today",
-      "Ecosystem Roadmap",
-      "Whale-First Tokenomics",
-      "Technical Architecture",
-      "Evidence & Sources",
-      "Risks & Caveats",
-    ];
-    for (const heading of expectedHeadings) {
-      expect(screen.getByRole("heading", { name: heading })).toBeInTheDocument();
-    }
+    expect(screen.getByText("Explore the Ecosystem")).toBeInTheDocument();
   });
 
-  it("narrative cards in roadmap section carry evidence hooks", () => {
+  it("graph overview shows BETTER Atlas labels", () => {
     render(<Home />);
-    const roadmapSection = document.getElementById("roadmap")!;
-    const hooks = roadmapSection.querySelectorAll(
-      '[data-testid="evidence-hook"]'
-    );
+    const atlasLabels = screen.getAllByText("BETTER Atlas");
+    expect(atlasLabels.length).toBeGreaterThanOrEqual(1);
+  });
+
+  it("hero evidence hooks are present in hero section", () => {
+    render(<Home />);
+    const heroSection = screen.getByTestId("hero-section");
+    const hooks = heroSection.querySelectorAll('[data-testid="evidence-hook"]');
     expect(hooks.length).toBeGreaterThan(0);
-  });
-
-  it("future-facing vision narrative cards carry caveat frames", () => {
-    render(<Home />);
-    const roadmapSection = document.getElementById("roadmap")!;
-    const caveats = roadmapSection.querySelectorAll(
-      '[data-testid="caveat-frame"]'
-    );
-    expect(caveats.length).toBeGreaterThan(0);
   });
 });

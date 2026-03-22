@@ -66,22 +66,44 @@ describe("Release hardening — external link integrity", () => {
 // ---------------------------------------------------------------------------
 
 describe("Release hardening — deep-link target integrity", () => {
-  it("every NAV_ITEM hash target resolves to a page section", () => {
-    const { container } = render(<Home />);
+  it("every NAV_ITEM uses the graph-first hash format", () => {
     for (const item of NAV_ITEMS) {
       if (item.href.startsWith("#")) {
-        const sectionId = item.href.slice(1);
-        const section = container.querySelector(`#${sectionId}`);
-        expect(section).not.toBeNull();
+        // All nav items should use #graph-<id> format for the graph shell
+        expect(item.href).toMatch(/^#graph-/);
       }
     }
   });
 
-  it("all in-page CTA hrefs starting with # resolve to existing sections", () => {
+  it("graph-first nav targets correspond to valid graph node IDs", () => {
+    const { container } = render(<Home />);
+    // The graph shell should be rendered with graph node buttons
+    const graphNodes = container.querySelectorAll('[data-testid="graph-node-button"]');
+    const graphNodeLabels = Array.from(graphNodes).map(
+      (n) => n.getAttribute("aria-label")?.toLowerCase() ?? ""
+    );
+    // Each nav item should have a matching graph node
+    for (const item of NAV_ITEMS) {
+      const matchFound = graphNodeLabels.some(
+        (label) => label.includes(item.label.toLowerCase())
+      );
+      expect(matchFound).toBe(true);
+    }
+  });
+
+  it("all in-page CTA hrefs starting with # use valid graph or section targets", () => {
     const { container } = render(<Home />);
     const hashLinks = container.querySelectorAll("a[href^='#']");
     hashLinks.forEach((link) => {
-      const targetId = link.getAttribute("href")!.slice(1);
+      const href = link.getAttribute("href")!;
+      // Graph-first links (#graph-*) are handled by the graph shell,
+      // not by section IDs. They are valid by design.
+      if (href.startsWith("#graph-")) {
+        // Valid graph destination — no section ID needed
+        return;
+      }
+      // Legacy anchors should still resolve
+      const targetId = href.slice(1);
       const target = container.querySelector(`#${targetId}`);
       expect(target).not.toBeNull();
     });
