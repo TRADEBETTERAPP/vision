@@ -12,6 +12,7 @@ import {
 import MaturityBadge from "@/components/MaturityBadge";
 import RoadmapNodeDetail from "./RoadmapNodeDetail";
 import RoadmapStorySection, { FAMILY_KEYS } from "./RoadmapStorySection";
+import { useGraphShellPersistence } from "@/components/graph/GraphShellPersistence";
 
 /** Extract node ID from a URL hash like "#node-pe-terminal-beta" */
 function getNodeIdFromHash(hash: string): string | null {
@@ -124,9 +125,31 @@ const INITIAL_STATE: RoadmapUIState = {
 };
 
 export default function RoadmapAtlas() {
-  const [state, dispatch] = React.useReducer(roadmapReducer, INITIAL_STATE);
+  const persistence = useGraphShellPersistence();
+
+  // When inside the graph shell, initialize expanded branches from the
+  // persisted state so branch expansion survives surface unmount/remount.
+  const initialState: RoadmapUIState = persistence
+    ? {
+        ...INITIAL_STATE,
+        expandedBranches: persistence.roadmap.expandedBranches,
+      }
+    : INITIAL_STATE;
+
+  const [state, dispatch] = React.useReducer(roadmapReducer, initialState);
 
   const { expandedBranches, selectedNodeId, invalidDeepLink, activeFamilyIndex } = state;
+
+  // Sync expanded branches back to persistence context whenever they change,
+  // so they survive surface unmount/remount across graph shell handoffs.
+  // We use the stable setRoadmapState callback from the provider
+  // (wrapped in useCallback) so this effect only fires when the actual
+  // expanded branches map changes.
+  const syncRoadmap = persistence?.setRoadmapState;
+
+  useEffect(() => {
+    syncRoadmap?.({ expandedBranches });
+  }, [expandedBranches, syncRoadmap]);
 
   // Track whether the initial hash has been applied (hydration-safe).
   // Uses a ref instead of state to avoid triggering a cascading render.

@@ -36,6 +36,7 @@ import {
   type GraphNode,
 } from "@/content/graph-nodes";
 import MaturityBadge from "@/components/MaturityBadge";
+import { GraphShellPersistenceProvider } from "./GraphShellPersistence";
 
 // ---------------------------------------------------------------------------
 // Graph Shell State
@@ -234,6 +235,7 @@ export function GraphShell({ surfaces = {} }: GraphShellProps) {
   const activeNodeId = focusedNodeId ?? DEFAULT_GRAPH_NODE;
 
   return (
+    <GraphShellPersistenceProvider>
     <div data-testid="graph-shell" className="space-y-6">
       {/* ---------------------------------------------------------------- */}
       {/* Graph Overview — visual node map (VAL-ROADMAP-001)               */}
@@ -390,6 +392,7 @@ export function GraphShell({ surfaces = {} }: GraphShellProps) {
         </div>
       )}
     </div>
+    </GraphShellPersistenceProvider>
   );
 }
 

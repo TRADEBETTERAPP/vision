@@ -12,7 +12,7 @@
  * across scenario switches.
  */
 
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo, useEffect } from "react";
 import {
   PROJECTION_OUTPUTS,
   SCENARIO_DIMENSION_LABELS,
@@ -27,6 +27,7 @@ import {
 import EvidenceHook from "@/components/EvidenceHook";
 import CaveatFrame from "@/components/CaveatFrame";
 import type { ConfidenceFrame, SourceCue } from "@/content";
+import { useGraphShellPersistence } from "@/components/graph/GraphShellPersistence";
 
 /** Tier weight lookup for allocation preview (matches NonLinearAllocation) */
 const TIER_WEIGHTS: Record<string, number> = {
@@ -73,12 +74,41 @@ function formatDollar(value: number): string {
 }
 
 export default function ScenarioSwitcher() {
-  const [activeLevel, setActiveLevel] = useState<ScenarioLevel>("base");
+  const persistence = useGraphShellPersistence();
+
+  // When inside the graph shell, initialize from persisted state;
+  // otherwise default to "base" / empty strings for standalone usage.
+  const [activeLevel, setActiveLevel] = useState<ScenarioLevel>(
+    persistence?.tokenomics.activeLevel ?? "base"
+  );
 
   // User-editable inputs — stored independently from scenario level
   // so they persist across scenario switches (VAL-TOKEN-007)
-  const [tokenBalance, setTokenBalance] = useState<string>("");
-  const [depositAmount, setDepositAmount] = useState<string>("");
+  const [tokenBalance, setTokenBalance] = useState<string>(
+    persistence?.tokenomics.tokenBalance ?? ""
+  );
+  const [depositAmount, setDepositAmount] = useState<string>(
+    persistence?.tokenomics.depositAmount ?? ""
+  );
+
+  // Sync local state changes back to the persistence context so they
+  // survive surface unmount/remount across graph shell handoffs.
+  // We use the stable setTokenomicsState callback from the provider
+  // (wrapped in useCallback) so these effects only fire when the
+  // actual values change.
+  const syncTokenomics = persistence?.setTokenomicsState;
+
+  useEffect(() => {
+    syncTokenomics?.({ activeLevel });
+  }, [activeLevel, syncTokenomics]);
+
+  useEffect(() => {
+    syncTokenomics?.({ tokenBalance });
+  }, [tokenBalance, syncTokenomics]);
+
+  useEffect(() => {
+    syncTokenomics?.({ depositAmount });
+  }, [depositAmount, syncTokenomics]);
 
   const handleScenarioChange = useCallback((level: ScenarioLevel) => {
     setActiveLevel(level);
