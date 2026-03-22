@@ -1,172 +1,71 @@
 {
   "groupId": "roadmap-advanced",
-  "testedAt": "2026-03-22T09:48:58Z",
+  "testedAt": "2026-03-22T10:45:48Z",
   "isolation": {
     "appUrl": "http://127.0.0.1:3100",
-    "session": "roadmap-advanced-33dae310",
+    "session": "roadmap-advanced-retest-012",
     "missionDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83",
     "evidenceDir": "graph-first-shell-and-token-policy/roadmap-advanced",
-    "deviceCoverage": [
-      "desktop 1280x720",
-      "iPhone 14 emulation"
-    ]
+    "surface": "browser"
   },
   "toolsUsed": [
     "agent-browser"
   ],
   "assertions": [
     {
-      "id": "VAL-ROADMAP-006",
-      "title": "Valid roadmap deep links restore the intended node-focused graph state",
-      "status": "pass",
-      "steps": [
-        {
-          "action": "Open /#node-pe-terminal-beta directly",
-          "expected": "Roadmap graph focus restores with the BETTER Terminal node visibly selected",
-          "observed": "The page opened in the Roadmap graph state with Product Evolution expanded, BETTER Terminal selected, and the roadmap detail panel visible."
-        },
-        {
-          "action": "Refresh the same deep link",
-          "expected": "The same node-focused roadmap state survives refresh",
-          "observed": "After refresh the URL remained /#node-pe-terminal-beta and the BETTER Terminal detail panel reopened in the same roadmap context."
-        }
-      ],
-      "evidence": {
-        "screenshots": [
-          "graph-first-shell-and-token-policy/roadmap-advanced/VAL-ROADMAP-006-valid-deep-link-state.png",
-          "graph-first-shell-and-token-policy/roadmap-advanced/VAL-ROADMAP-006-after-refresh.png"
-        ],
-        "recordings": [
-          "graph-first-shell-and-token-policy/roadmap-advanced/VAL-ROADMAP-006-refresh-valid-deep-link.webm"
-        ],
-        "consoleErrors": "none; only React DevTools/HMR info logs were emitted.",
-        "network": "No failing requests observed; the hash-backed deep-link flow did not surface any network errors in agent-browser.",
-        "notes": [
-          "The refreshed state kept the same hash and reopened the selected roadmap node.",
-          "Captured body text and DOM checks confirmed the selected node remained BETTER Terminal (Closed Beta)."
-        ]
-      },
-      "issues": null
-    },
-    {
-      "id": "VAL-ROADMAP-007",
-      "title": "Invalid roadmap deep links fall back to a coherent node-focused graph state",
-      "status": "pass",
-      "steps": [
-        {
-          "action": "Open /#node-does-not-exist",
-          "expected": "A coherent fallback appears instead of a blank or broken roadmap surface",
-          "observed": "The roadmap showed a visible invalid-link fallback banner with a Reset & Explore Roadmap recovery action while leaving the atlas usable."
-        },
-        {
-          "action": "Activate the fallback recovery action",
-          "expected": "The stale hash is cleared and the user returns to a coherent default roadmap state",
-          "observed": "Clicking Reset & Explore Roadmap cleared the URL back to / and returned the user to the normal roadmap overview."
-        }
-      ],
-      "evidence": {
-        "screenshots": [
-          "graph-first-shell-and-token-policy/roadmap-advanced/VAL-ROADMAP-007-invalid-deep-link-fallback.png",
-          "graph-first-shell-and-token-policy/roadmap-advanced/VAL-ROADMAP-007-recovery-state.png"
-        ],
-        "consoleErrors": "none",
-        "network": "No failing requests observed; agent-browser showed only the expected local document, font, image, stylesheet, and script requests for the fallback load."
-      },
-      "issues": null
-    },
-    {
-      "id": "VAL-ROADMAP-009",
-      "title": "Mobile roadmap exploration remains node-first and recoverable",
-      "status": "pass",
-      "steps": [
-        {
-          "action": "Switch to iPhone 14 emulation and open /#graph-roadmap",
-          "expected": "The roadmap surface remains usable on a narrow viewport",
-          "observed": "The mobile roadmap rendered readable copy, visible related-node controls, and a recoverable roadmap focus state without clipped or unusable controls."
-        },
-        {
-          "action": "Expand Product Evolution and open BETTER Terminal (Closed Beta)",
-          "expected": "Parent/child relationships and active node state remain clear on mobile",
-          "observed": "The branch expanded, the BETTER Terminal node became pressed/active, and its detail panel opened with readable copy."
-        },
-        {
-          "action": "Use Back to overview in the focused roadmap state",
-          "expected": "Users can recover without getting stranded in the detail state",
-          "observed": "The back control returned to overview successfully during the recorded mobile flow."
-        }
-      ],
-      "evidence": {
-        "screenshots": [
-          "graph-first-shell-and-token-policy/roadmap-advanced/VAL-ROADMAP-009-mobile-roadmap.png",
-          "graph-first-shell-and-token-policy/roadmap-advanced/VAL-ROADMAP-009-mobile-roadmap-active-state.png"
-        ],
-        "recordings": [
-          "graph-first-shell-and-token-policy/roadmap-advanced/VAL-ROADMAP-009-touch-roadmap-flow-v2.webm"
-        ],
-        "consoleErrors": "none",
-        "network": "No failing requests observed during the mobile flow.",
-        "notes": [
-          "DOM state during the active mobile step showed the roadmap surface and BETTER Terminal node both in pressed state.",
-          "The mobile flow remained touch-usable and recoverable through the Back to overview action."
-        ]
-      },
-      "issues": null
-    },
-    {
       "id": "VAL-ROADMAP-012",
       "title": "Users can traverse directly between nodes while retaining visible graph context",
-      "status": "fail",
+      "status": "pass",
       "steps": [
         {
-          "action": "Open /#graph-roadmap and use the related-node control to move to Tokenomics",
-          "expected": "Users can move directly between nodes while the graph context remains visibly available",
-          "observed": "The related-node control switched focus directly from Roadmap to Tokenomics and updated the URL to #graph-tokenomics."
+          "action": "Open /#graph-roadmap with the Roadmap atlas focused",
+          "expected": "The roadmap shell shows nearby graph controls that allow node-to-node traversal without leaving the graph-first surface.",
+          "observed": "The Roadmap state loaded with both the Related control row and the ATLAS minimap row visible above the focused roadmap content."
         },
         {
-          "action": "Inspect the post-transition viewport",
-          "expected": "The surrounding graph shell remains visibly present during the transition, not just document-style content",
-          "observed": "After the transition, the focused Tokenomics panel filled the viewport and the graph overview/map was scrolled fully off-screen; only the related-node pills remained visible at the top of the panel."
+          "action": "Activate the visible Tokenomics minimap node from the graph-context minimap",
+          "expected": "The experience should move directly to the Tokenomics node while keeping surrounding graph context visible on screen.",
+          "observed": "The URL updated to #graph-tokenomics and the Tokenomics node became the active atlas state while the Related row and minimap remained pinned in view above the destination content."
+        },
+        {
+          "action": "Inspect the post-transition viewport for retained graph context",
+          "expected": "Users should still see graph context/minimap/overview rather than collapsing into a document-only panel.",
+          "observed": "The post-transition viewport still showed the Related pills and the ATLAS minimap row, with measured bounds remaining on screen (related controls top 72.75-98.75px, minimap top 123.75-144.25px) while Tokenomics content rendered below them."
         }
       ],
       "evidence": {
         "screenshots": [
-          "graph-first-shell-and-token-policy/roadmap-advanced/VAL-ROADMAP-012-node-transition-with-graph-context.png",
-          "graph-first-shell-and-token-policy/roadmap-advanced/VAL-ROADMAP-012-node-transition-with-graph-context-full.png"
+          "graph-first-shell-and-token-policy/roadmap-advanced/VAL-ROADMAP-012-before-traversal-annotated.png",
+          "graph-first-shell-and-token-policy/roadmap-advanced/VAL-ROADMAP-012-node-transition-with-graph-context-pass-recording.png",
+          "graph-first-shell-and-token-policy/roadmap-advanced/VAL-ROADMAP-012-node-transition-with-graph-context-pass-recording-full.png"
         ],
         "recordings": [
-          "graph-first-shell-and-token-policy/roadmap-advanced/VAL-ROADMAP-012-node-to-node-traversal.webm"
+          "graph-first-shell-and-token-policy/roadmap-advanced/VAL-ROADMAP-012-node-to-node-traversal-pass-3.webm"
         ],
         "consoleErrors": "none",
-        "network": "No failing requests observed during node-to-node traversal.",
+        "network": "No failing requests observed; this hash-only node transition did not produce additional network traffic in agent-browser.",
         "visibilityCheck": {
           "postTransitionHash": "#graph-tokenomics",
           "postTransitionScrollY": 2213,
-          "graphOverviewTop": -270,
-          "graphOverviewBottom": -24,
-          "focusedSurfaceTop": 0
+          "relatedControlsTop": 72.75,
+          "relatedControlsBottom": 98.75,
+          "minimapTop": 123.75,
+          "minimapBottom": 144.25
         }
       },
-      "issues": "Direct traversal works, but the visible graph map/context does not stay on screen after the transition; the experience collapses into the destination content panel rather than retaining clearly visible surrounding graph context."
+      "issues": null
     }
   ],
   "frictions": [
     {
-      "description": "Graph-shell persistence carried the previously selected roadmap detail into later mobile runs, so opening #graph-roadmap on mobile could land in an already-selected detail state instead of a neutral overview.",
+      "description": "A generic role-based click on the visible 'Tokenomics' control matched multiple buttons because the page exposes the same destination in overview cards, related pills, and the minimap.",
       "resolved": true,
-      "resolution": "Used the in-product Back to overview control and then re-ran the mobile interaction flow from the branch list.",
+      "resolution": "Retested with an explicit selector for the visible minimap node inside data-testid='graph-context-minimap' so the captured traversal matches the retained-context control under test.",
       "affectedAssertions": [
-        "VAL-ROADMAP-009"
-      ]
-    },
-    {
-      "description": "agent-browser request logging was sparse for hash-only state restoration, so direct deep-link refresh evidence depended more on screenshots, the recording, and DOM state than on a rich request trace.",
-      "resolved": true,
-      "resolution": "Captured before/after-refresh screenshots, a refresh recording, and DOM/body-state evidence for the valid deep-link flow.",
-      "affectedAssertions": [
-        "VAL-ROADMAP-006"
+        "VAL-ROADMAP-012"
       ]
     }
   ],
   "blockers": [],
-  "summary": "Tested 4 assertions: 3 passed (VAL-ROADMAP-006, VAL-ROADMAP-007, VAL-ROADMAP-009) and 1 failed (VAL-ROADMAP-012, because direct traversal hides the graph overview and leaves only destination content visible)."
+  "summary": "Retested 1 assertion: VAL-ROADMAP-012 passed. Traversing from Roadmap to Tokenomics via the visible minimap kept the surrounding graph context on screen instead of collapsing into a document-only view."
 }
