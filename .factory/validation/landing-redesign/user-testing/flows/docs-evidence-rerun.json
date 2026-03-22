@@ -1,0 +1,57 @@
+{
+  "groupId": "docs-evidence-rerun",
+  "surface": "browser",
+  "testedAt": "2026-03-22T03:02:57Z",
+  "isolation": {
+    "appUrl": "http://127.0.0.1:3100",
+    "browserSession": "docs-evidence-rerun",
+    "missionDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83",
+    "evidenceDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/evidence/landing-redesign/docs-evidence-rerun"
+  },
+  "assertionsTested": [
+    "VAL-NARR-008"
+  ],
+  "toolsUsed": [
+    "agent-browser",
+    "curl"
+  ],
+  "assertionResults": [
+    {
+      "id": "VAL-NARR-008",
+      "title": "Aggressive claims expose evidence hooks",
+      "status": "pass",
+      "reason": "Re-run passed: the reviewed BETTER Docs evidence hook is obvious and clickable on the landing page, its href points to https://docs.tradebetter.app, and the destination resolves to a live BETTER docs page with claim-relevant status and product explanation rather than the dead docs.betteragent.ai hostname.",
+      "evidence": {
+        "paths": [
+          "landing-redesign/docs-evidence-rerun/VAL-NARR-008-claim-hook-hero-annotated.png",
+          "landing-redesign/docs-evidence-rerun/VAL-NARR-008-proof-claim-hook.png",
+          "landing-redesign/docs-evidence-rerun/VAL-NARR-008-docs-destination.png",
+          "landing-redesign/docs-evidence-rerun/VAL-NARR-008-docs-body.txt",
+          "landing-redesign/docs-evidence-rerun/VAL-NARR-008-docs-curl-status.txt",
+          "landing-redesign/docs-evidence-rerun/VAL-NARR-008-docs-headers.txt"
+        ],
+        "observations": [
+          "The hero shows a visible BETTER Docs evidence hook immediately adjacent to the live/current-state claim, and the reviewed live-now section repeats the same BETTER Docs hook pattern on aggressive/current-state cards.",
+          "On the landing page, the extracted hook href was https://docs.tradebetter.app and a text check for docs.betteragent.ai on the reviewed page returned false, so no dead hostname copy appeared in the areas checked.",
+          "Clicking the hero BETTER Docs hook opened https://docs.tradebetter.app/ with page title 'Introduction - BETTER'.",
+          "The destination page is claim-relevant: it states 'Today the Terminal is live in closed beta for Polymarket copy trading; vaults and vBETTER are still in progress' and shows a dated status box covering live, in-progress, and planned states.",
+          "curl verification followed the destination to final_url=https://docs.tradebetter.app/ with http_code=200 and content_type=text/html; charset=utf-8."
+        ],
+        "consoleErrors": "none on the local page or destination page; local console only showed React DevTools/HMR info logs",
+        "network": "Hero evidence hook href -> https://docs.tradebetter.app ; curl reachability check -> GET https://docs.tradebetter.app/ returned 200"
+      }
+    }
+  ],
+  "frictions": [
+    {
+      "description": "agent-browser's request log did not retain the cross-origin docs navigation details in this session.",
+      "resolved": true,
+      "resolution": "Used curl with redirect-following to capture final URL, HTTP 200 status, and response headers for the docs destination.",
+      "affectedAssertions": [
+        "VAL-NARR-008"
+      ]
+    }
+  ],
+  "blockers": [],
+  "summary": "Re-ran VAL-NARR-008 after the BETTER Docs hostname fix. The assertion now passes: the visible BETTER Docs hook on the landing page points to docs.tradebetter.app, no dead docs.betteragent.ai hostname was visible in the reviewed landing content, and the destination resolved to a live BETTER docs page with claim-relevant status details."
+}
