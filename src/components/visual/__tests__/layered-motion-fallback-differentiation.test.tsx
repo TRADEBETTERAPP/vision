@@ -208,7 +208,7 @@ describe("VAL-VISUAL-017: Enhanced visual state is dramatically distinct from st
     expect(shaderOpacity).toBeGreaterThanOrEqual(0.7);
   });
 
-  it("enhanced state exposes data-motion-layers count for validation", () => {
+  it("enhanced state exposes data-motion-layers count for validation", async () => {
     HTMLCanvasElement.prototype.getContext = jest
       .fn()
       .mockImplementation((type: string) => {
@@ -238,7 +238,7 @@ describe("VAL-VISUAL-017: Enhanced visual state is dramatically distinct from st
 
     render(<Home />);
     // Enhanced state must have 2 active motion layers (shader + ASCII canvas)
-    waitFor(() => {
+    await waitFor(() => {
       const system = screen.getByTestId("hero-visual-system");
       const layers = system.getAttribute("data-motion-layers");
       expect(Number(layers)).toBeGreaterThanOrEqual(2);

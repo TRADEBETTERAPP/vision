@@ -183,15 +183,17 @@ function generateAnimatedFrame(
 // ---------------------------------------------------------------------------
 
 export function AsciiBackground() {
-  const { reducedMotion } = useVisualEffects();
+  const { reducedMotion, fallback } = useVisualEffects();
   const animFrameRef = useRef<number>(0);
   const lastUpdateRef = useRef<number>(0);
   const [lines, setLines] = useState<string[]>(() => generateStructuredGrid());
 
-  // ASCII is DOM-based and independent of WebGL — it only stops for reduced motion,
-  // not because the shader canvas failed. This keeps the ASCII atmosphere alive
-  // even when WebGL is unavailable.
-  const isStatic = reducedMotion;
+  // ASCII becomes static when either reduced motion is requested OR when
+  // the enhanced visual layer (WebGL/Radiant) has failed. In fallback mode
+  // the shipped state must be truly static — no ASCII motion — so that
+  // HeroVisualSystem's data-motion-layers=0 metadata is accurate and the
+  // enhanced-vs-fallback differentiation is honest (VAL-VISUAL-017).
+  const isStatic = reducedMotion || fallback;
 
   const staticGrid = useMemo(() => generateStructuredGrid(), []);
 

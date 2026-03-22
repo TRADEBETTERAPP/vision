@@ -250,6 +250,22 @@ body {
   color: rgba(0, 170, 255, 0.10);
 }
 
+/* When 2D canvas renderer failed to initialize, reveal the DOM-based
+   ASCII fallback so users still see a coherent non-canvas backup path
+   instead of an empty or hidden ASCII layer. */
+[data-canvas-ready="false"] .ascii-background {
+  opacity: 0.15;
+}
+
+[data-canvas-ready="false"] .ascii-background .ascii-text {
+  color: rgba(0, 170, 255, 0.12);
+}
+
+/* When canvas IS ready, hide the DOM fallback (avoid double-rendering) */
+[data-canvas-ready="true"] .ascii-background {
+  opacity: 0;
+}
+
 [data-visual-state="fallback"] .scanline-overlay {
   opacity: 0.4;
 }

@@ -446,7 +446,7 @@ class FeedbackBuffer {
     targetCtx: CanvasRenderingContext2D,
     width: number,
     height: number,
-    decay: number = 0.8,
+    decay: number = 0.85,
   ): void {
     if (
       !this.buffer ||
@@ -466,20 +466,29 @@ class FeedbackBuffer {
 
     if (!this.bufCtx) return;
 
-    // Blend old buffer onto current frame (screen mode for ghostly trails)
-    targetCtx.globalAlpha = 0.25;
+    // Blend the accumulated trail buffer onto the current frame
+    // (screen mode for ghostly trails — adapted from Hermes FeedbackBuffer)
+    targetCtx.globalAlpha = 0.3;
     targetCtx.globalCompositeOperation = "screen";
     targetCtx.drawImage(this.buffer, 0, 0);
     targetCtx.globalAlpha = 1;
     targetCtx.globalCompositeOperation = "source-over";
 
-    // Update buffer: decay old content then copy current frame
-    this.bufCtx.globalAlpha = decay;
+    // Update buffer: decay the old trail then composite the current frame.
+    // The key change: we do NOT clear the buffer first — instead we fade
+    // the existing trail content by drawing a semi-transparent black rect,
+    // then draw the current frame on top. This lets previous frames
+    // accumulate as fading ghosts (Hermes FeedbackBuffer: self.buf *= decay).
+    this.bufCtx.globalAlpha = 1 - decay;
+    this.bufCtx.globalCompositeOperation = "destination-out";
+    this.bufCtx.fillStyle = "#000000";
+    this.bufCtx.fillRect(0, 0, width, height);
+
+    // Composite current frame into the trail buffer
+    this.bufCtx.globalAlpha = 0.6;
     this.bufCtx.globalCompositeOperation = "source-over";
-    this.bufCtx.drawImage(this.buffer, 0, 0);
-    this.bufCtx.globalAlpha = 1;
-    this.bufCtx.clearRect(0, 0, width, height);
     this.bufCtx.drawImage(targetCtx.canvas, 0, 0);
+    this.bufCtx.globalAlpha = 1;
   }
 }
 
@@ -495,12 +504,17 @@ const FRAME_INTERVAL = 1000 / 8;
 // ---------------------------------------------------------------------------
 
 export function AsciiCanvasRenderer() {
-  const { reducedMotion } = useVisualEffects();
+  const { reducedMotion, fallback, markCanvasReady } = useVisualEffects();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animFrameRef = useRef<number>(0);
   const lastFrameTimeRef = useRef<number>(0);
   const feedbackRef = useRef<FeedbackBuffer>(new FeedbackBuffer());
   const gridLayersRef = useRef<GridLayer[] | null>(null);
+
+  // Stop animation when reduced motion is requested OR when the enhanced
+  // visual layer (WebGL/Radiant) has failed. In fallback mode the shipped
+  // state must be truly static so data-motion-layers=0 is accurate.
+  const isStatic = reducedMotion || fallback;
 
   const fontFamily =
     '"Fira Code", "JetBrains Mono", "SF Mono", "Menlo", "Monaco", "Consolas", monospace';
@@ -574,6 +588,11 @@ export function AsciiCanvasRenderer() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
+    // Signal that 2D canvas initialized successfully — HeroVisualSystem
+    // uses this to keep the DOM-based AsciiBackground hidden. If this never
+    // fires (canvas init failure), the DOM fallback becomes visible.
+    markCanvasReady();
+
     const resize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       const rect = canvas.getBoundingClientRect();
@@ -594,7 +613,7 @@ export function AsciiCanvasRenderer() {
     resize();
     window.addEventListener("resize", resize);
 
-    if (reducedMotion) {
+    if (isStatic) {
       return () => window.removeEventListener("resize", resize);
     }
 
@@ -620,7 +639,7 @@ export function AsciiCanvasRenderer() {
       cancelAnimationFrame(animFrameRef.current);
       window.removeEventListener("resize", resize);
     };
-  }, [reducedMotion, initGridLayers, renderFrame, renderStaticFrame]);
+  }, [isStatic, initGridLayers, renderFrame, renderStaticFrame, markCanvasReady]);
 
   return (
     <canvas

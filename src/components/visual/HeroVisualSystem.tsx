@@ -33,14 +33,17 @@ import { AsciiCanvasRenderer } from "./AsciiCanvasRenderer";
  * CSS-only layers render on server; WebGL/ASCII mount after hydration.
  *
  * Reduced-motion (VAL-VISUAL-003): all 3 motions stop; static layers persist.
- * Fallback (VAL-VISUAL-004): WebGL failure → CSS gradient + static ASCII canvas remain.
+ * Fallback (VAL-VISUAL-004): WebGL failure → CSS gradient + static ASCII layers remain.
+ *   Both AsciiCanvasRenderer and AsciiBackground become static (no animation)
+ *   so that data-motion-layers=0 is accurate and the fallback is truly still.
  *
  * Visual state differentiation (VAL-VISUAL-017):
- *   Enhanced state: WebGL shader + ASCII canvas both active → dramatic moving depth.
- *   Fallback state: CSS gradient + static layers → coherent but clearly less dramatic.
+ *   Enhanced state: WebGL shader + ASCII canvas both animating → dramatic moving depth.
+ *   Fallback state: CSS gradient + static ASCII layers → coherent but truly static.
  *   The data-visual-state attribute exposes which mode is active for headed-browser
  *   validation (VAL-VISUAL-018) and CSS-driven layering differentiation.
  *   data-motion-layers tracks the count of active motion systems (shader + ascii = 2).
+ *   data-canvas-ready tracks whether the 2D canvas renderer initialized (for DOM fallback).
  *
  * Provenance (VAL-VISUAL-014, VAL-VISUAL-015):
  *   Radiant adaptation: vendored Radiant Fluid Amber shader asset
@@ -78,7 +81,7 @@ function HeroVisualSystemInner({
 }: {
   children: React.ReactNode;
 }) {
-  const { ready, reducedMotion, fallback } = useVisualEffects();
+  const { ready, reducedMotion, fallback, canvasReady } = useVisualEffects();
 
   // SSR-safe mount detection for client-only layers
   const hasMounted = useSyncExternalStore(
@@ -109,6 +112,7 @@ function HeroVisualSystemInner({
       data-testid="hero-visual-system"
       data-visual-state={visualState}
       data-motion-layers={motionLayers}
+      data-canvas-ready={canvasReady ? "true" : "false"}
       className="relative overflow-hidden"
     >
       {/* Layer 0: CSS-only radiant fallback gradient (always visible, no JS) */}

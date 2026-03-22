@@ -303,15 +303,19 @@ describe("VAL-VISUAL-013: ASCII atmosphere is materially present and authentic",
     expect(text.length).toBeGreaterThan(2000);
   });
 
-  it("ASCII grid renders in fallback mode (WebGL failure does not stop ASCII)", () => {
+  it("ASCII grid renders static content in fallback mode (WebGL failure stops animation)", () => {
     render(
       <VisualEffectsProvider forceFallback>
         <AsciiBackground />
       </VisualEffectsProvider>
     );
     const bg = screen.getByTestId("ascii-background");
-    // ASCII is DOM-based and independent of WebGL — it stays alive even in fallback
+    // ASCII renders visible content but is static when WebGL has failed.
+    // The fallback state must be truly static so data-motion-layers=0 is
+    // accurate and the enhanced-vs-fallback differentiation is honest.
     expect(bg).toBeInTheDocument();
+    expect(bg.className).toContain("ascii-bg-static");
+    expect(bg.className).not.toContain("ascii-bg-animated");
     const text = bg.textContent ?? "";
     expect(text).toMatch(/[┌┐│─]/);
     expect(text.length).toBeGreaterThan(2000);

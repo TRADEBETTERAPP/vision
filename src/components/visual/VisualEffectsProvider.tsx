@@ -20,18 +20,24 @@ export interface VisualEffectsState {
   reducedMotion: boolean;
   /** Whether effects have been disabled due to failure or lack of support */
   fallback: boolean;
+  /** Whether the 2D canvas renderer initialized successfully */
+  canvasReady: boolean;
   /** Signal that effects are ready */
   markReady: () => void;
   /** Signal that effects should fall back */
   triggerFallback: () => void;
+  /** Signal that the 2D canvas renderer is ready */
+  markCanvasReady: () => void;
 }
 
 const defaultState: VisualEffectsState = {
   ready: false,
   reducedMotion: false,
   fallback: false,
+  canvasReady: false,
   markReady: () => {},
   triggerFallback: () => {},
+  markCanvasReady: () => {},
 };
 
 const VisualEffectsContext = createContext<VisualEffectsState>(defaultState);
@@ -72,14 +78,16 @@ export function VisualEffectsProvider({
 }: ProviderProps) {
   const [ready, setReady] = useState(false);
   const [fallback, setFallback] = useState(forceFallback);
+  const [canvasReady, setCanvasReady] = useState(false);
   const reducedMotion = useReducedMotion();
 
   const markReady = useCallback(() => setReady(true), []);
   const triggerFallback = useCallback(() => setFallback(true), []);
+  const markCanvasReady = useCallback(() => setCanvasReady(true), []);
 
   const value = useMemo<VisualEffectsState>(
-    () => ({ ready, reducedMotion, fallback, markReady, triggerFallback }),
-    [ready, reducedMotion, fallback, markReady, triggerFallback]
+    () => ({ ready, reducedMotion, fallback, canvasReady, markReady, triggerFallback, markCanvasReady }),
+    [ready, reducedMotion, fallback, canvasReady, markReady, triggerFallback, markCanvasReady]
   );
 
   return (
