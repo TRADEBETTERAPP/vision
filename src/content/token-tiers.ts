@@ -416,13 +416,13 @@ export const MODELED_WHALE_PRODUCTS: ModeledWhaleProduct[] = [
     modeledMinimumBetter: 100_000,
     minimumTierId: "tier-standard",
     description:
-      "Community-managed social vaults for collective prediction-market strategies. Standard-tier access with whale-first allocation priority when oversubscribed.",
-    maturity: "in_progress" as "planned",
+      "Community-managed social vaults for collective prediction-market strategies. Standard-tier access with whale-first allocation priority when oversubscribed. The vault feature is in active development; the specific whale-first access gate shown here is modeled policy.",
+    maturity: "planned",
     source: {
       type: "scenario_based",
       label: "BETTER Roadmap",
       note:
-        "Social vault access gates are modeled based on the first-vault policy. Final thresholds may differ at launch.",
+        "Social vault access gates are modeled based on the first-vault policy. The vault feature itself is in active development, but these specific access gates are modeled — final thresholds may differ at launch.",
     },
   },
   {

@@ -14,7 +14,7 @@ export function EvidenceSurface() {
           icon="✓"
           label="Canonical"
           description="Verified fact from BETTER docs, smart contracts, or public data. These reflect the current live state."
-          example="Total supply: 1,000,000,000 BETTER"
+          example="Minted supply: 709,001,940 BETTER (Base contract)"
         />
         <EvidenceExplainerCard
           icon="◆"

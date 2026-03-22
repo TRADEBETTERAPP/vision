@@ -110,11 +110,11 @@ const FLYWHEEL_NODES: FlywheelNode[] = [
     id: "fw-revenue-whale",
     title: "Whale & Pro Revenue",
     category: "revenue",
-    status: "in_progress",
+    status: "planned",
     summary:
-      "Whale-tier users trade at reduced fees but at much higher volumes, generating significant net revenue.",
+      "Whale-tier fee advantages, priority vault allocations, and premium subscriptions are designed to generate high-margin revenue from committed holders.",
     detail:
-      "Whale-first design creates premium demand for BETTER tokens. Priority access, allocation, and fee advantages drive large-scale token acquisition and holding. Performance fees from whale-managed vaults and agent delegation bonds create high-margin revenue. Premium subscriptions add recurring revenue.",
+      "Whale-first design creates premium demand for BETTER tokens. Priority access, allocation, and fee advantages drive large-scale token acquisition and holding. Performance fees from whale-managed vaults and agent delegation bonds create high-margin revenue. Premium subscriptions add recurring revenue. These revenue streams depend on the whale-first tier ladder and vault infrastructure reaching production readiness.",
     feedsInto: ["fw-token-demand", "fw-infra-execution"],
   },
   {
