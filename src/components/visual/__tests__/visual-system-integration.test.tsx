@@ -29,7 +29,12 @@ beforeEach(() => {
 });
 
 describe("VAL-VISUAL-000: Signature visual system is present", () => {
-  it("renders the ASCII-video-inspired background treatment", () => {
+  it("renders the canvas-based ASCII renderer (VAL-VISUAL-016)", () => {
+    render(<Home />);
+    expect(screen.getByTestId("ascii-canvas-renderer")).toBeInTheDocument();
+  });
+
+  it("renders the ASCII-video-inspired background treatment (legacy fallback)", () => {
     render(<Home />);
     expect(screen.getByTestId("ascii-background")).toBeInTheDocument();
   });

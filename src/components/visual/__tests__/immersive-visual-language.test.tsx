@@ -326,6 +326,17 @@ describe("VAL-VISUAL-013: ASCII atmosphere is materially present and authentic",
     const pre = screen.getByTestId("ascii-text-content");
     expect(pre.className).toContain("font-terminal");
   });
+
+  it("canvas-based ASCII renderer exists alongside DOM fallback (VAL-VISUAL-016)", () => {
+    const heroSrc = fs.readFileSync(
+      path.resolve(__dirname, "../HeroVisualSystem.tsx"),
+      "utf-8"
+    );
+    // Canvas renderer is the primary ASCII layer
+    expect(heroSrc).toContain("AsciiCanvasRenderer");
+    // DOM fallback is still present
+    expect(heroSrc).toContain("AsciiBackground");
+  });
 });
 
 // ---------------------------------------------------------------------------

@@ -157,12 +157,30 @@ body {
 }
 
 /* -----------------------------------------------------------------------
-   Hermes-inspired ASCII terminal atmosphere
+   Hermes-derived ASCII Canvas Renderer (VAL-VISUAL-016)
+   Real-time canvas-based multi-grid renderer — primary ASCII layer
+   ----------------------------------------------------------------------- */
+
+.ascii-canvas-renderer {
+  pointer-events: none;
+  z-index: 2;
+  /* Tuned opacity: materially visible atmospheric layer without
+     overwhelming hero content readability. Higher than the old DOM
+     layer but below the vignette/content layers. */
+  opacity: 0.22;
+}
+
+/* -----------------------------------------------------------------------
+   Legacy DOM-based ASCII atmosphere (fallback)
+   Hidden when the canvas renderer is available — kept for
+   non-canvas environments and test/SSR contexts.
    ----------------------------------------------------------------------- */
 
 .ascii-background {
   pointer-events: none;
-  z-index: 2;
+  z-index: 1;
+  /* Visually hidden when canvas renderer is the primary layer */
+  opacity: 0;
 }
 
 .ascii-background .ascii-text {

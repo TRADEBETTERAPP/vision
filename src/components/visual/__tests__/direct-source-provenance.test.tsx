@@ -227,6 +227,12 @@ describe("VAL-VISUAL-014: HeroVisualSystem documents both adapted sources", () =
     expect(src).toMatch(/Radiant adaptation/i);
     expect(src).toMatch(/Hermes adaptation/i);
   });
+
+  it("HeroVisualSystem includes the canvas-based Hermes renderer (VAL-VISUAL-016)", () => {
+    const src = readSource("HeroVisualSystem.tsx");
+    expect(src).toContain("AsciiCanvasRenderer");
+    expect(src).toContain("VAL-VISUAL-016");
+  });
 });
 
 // ---------------------------------------------------------------------------
