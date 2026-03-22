@@ -96,7 +96,7 @@ describe("VAL-VISUAL-002: Post-initialization hero remains readable", () => {
     // Both should be anchor elements with href
     expect(primaryCTA.tagName).toBe("A");
     expect(secondaryCTA.tagName).toBe("A");
-    expect(primaryCTA.getAttribute("href")).toBe("#proof");
+    expect(primaryCTA.getAttribute("href")).toBe("#graph-proof");
     expect(secondaryCTA.getAttribute("href")).toBe("#graph-roadmap");
   });
 });

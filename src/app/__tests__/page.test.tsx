@@ -53,9 +53,9 @@ describe("Home page", () => {
   // VAL-NARR-010: CTAs are honest about destination — live path is primary
   it("renders honest CTAs with graph-first destinations", () => {
     render(<Home />);
-    // Primary CTA leads to proof section (first-visit handoff, VAL-CROSS-013)
+    // Primary CTA leads to proof graph focus state (VAL-CROSS-013)
     const primaryCta = screen.getByTestId("cta-primary");
-    expect(primaryCta).toHaveAttribute("href", "#proof");
+    expect(primaryCta).toHaveAttribute("href", "#graph-proof");
     expect(primaryCta.textContent).toMatch(/live/i);
 
     // Secondary CTA leads to roadmap exploration via graph shell

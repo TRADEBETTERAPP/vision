@@ -96,11 +96,12 @@ export default function Home() {
               </div>
 
               {/* Hero CTAs — VAL-NARR-010: live/proof path is primary */}
-              {/* VAL-CROSS-013: Primary CTA starts the proof-led entry; proof
-                  section then hands off into focused graph exploration */}
+              {/* VAL-CROSS-013: Primary CTA opens the proof graph node's
+                  focus-state, entering the graph-first exploration shell
+                  with proof/trust content as the first destination. */}
               <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
                 <a
-                  href="#proof"
+                  href="#graph-proof"
                   className="inline-flex h-12 items-center justify-center rounded-md bg-accent px-8 text-sm font-semibold text-background transition-colors hover:bg-accent-bright"
                   data-testid="cta-primary"
                 >

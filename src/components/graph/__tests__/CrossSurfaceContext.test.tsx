@@ -247,16 +247,17 @@ describe("VAL-CROSS-013: Proof→graph handoff", () => {
     expect(breadcrumb.textContent).toContain("Proof");
   });
 
-  it("hero primary CTA targets the proof section for first-visit handoff", () => {
-    // This test verifies the hero CTA href leads to proof section
-    // The proof section then contains an obvious handoff into graph exploration
+  it("hero primary CTA targets the proof graph focus-state for first-visit handoff", () => {
+    // This test verifies the hero CTA href leads to the proof graph node
+    // via the graph-first focus-state path (#graph-proof) rather than a
+    // legacy section anchor
     const { getByTestId } = render(
-      <a href="#proof" data-testid="cta-primary">
+      <a href="#graph-proof" data-testid="cta-primary">
         See What&apos;s Live
       </a>
     );
     const cta = getByTestId("cta-primary");
-    expect(cta).toHaveAttribute("href", "#proof");
+    expect(cta).toHaveAttribute("href", "#graph-proof");
   });
 });
 
