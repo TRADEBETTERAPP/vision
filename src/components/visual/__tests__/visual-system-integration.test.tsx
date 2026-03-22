@@ -58,8 +58,10 @@ describe("VAL-VISUAL-000: Signature visual system is present", () => {
 describe("VAL-VISUAL-001: Content-first hero renders before effects", () => {
   it("hero headline, supporting copy, and CTA are present regardless of effects state", () => {
     render(<Home />);
-    // Brand headline
-    expect(screen.getByText("BETTER")).toBeInTheDocument();
+    // Brand headline — now rendered as logotype image (VAL-VISUAL-019)
+    const heroLogotype = screen.getByTestId("hero-logotype");
+    expect(heroLogotype).toBeInTheDocument();
+    expect(heroLogotype.getAttribute("alt")).toContain("BETTER");
     // Dominant tagline (poster-like composition)
     expect(screen.getByTestId("hero-tagline")).toBeInTheDocument();
 
@@ -117,8 +119,9 @@ describe("VAL-VISUAL-003: Reduced-motion preserves hierarchy and usability", () 
     });
 
     render(<Home />);
-    // Headline still present
-    expect(screen.getByText("BETTER")).toBeInTheDocument();
+    // Headline still present — logotype image (VAL-VISUAL-019)
+    const heroLogotype = screen.getByTestId("hero-logotype");
+    expect(heroLogotype).toBeInTheDocument();
     // CTAs still present
     expect(screen.getByTestId("cta-primary")).toBeInTheDocument();
     expect(screen.getByTestId("cta-secondary")).toBeInTheDocument();
@@ -133,7 +136,9 @@ describe("VAL-VISUAL-004: Runtime fallback handles failures cleanly", () => {
     render(<Home />);
 
     // All core hero elements should still be present
-    expect(screen.getByText("BETTER")).toBeInTheDocument();
+    const heroLogotype = screen.getByTestId("hero-logotype");
+    expect(heroLogotype).toBeInTheDocument();
+    expect(heroLogotype.getAttribute("alt")).toContain("BETTER");
     expect(screen.getByTestId("hero-live-status")).toBeInTheDocument();
     expect(screen.getByTestId("hero-future-status")).toBeInTheDocument();
     expect(screen.getByTestId("cta-primary")).toBeInTheDocument();

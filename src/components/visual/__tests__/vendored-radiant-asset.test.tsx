@@ -186,21 +186,19 @@ describe("VAL-VISUAL-015: Vendored shader preserves Radiant domain-warp pattern"
 // BETTER blue palette (remapped from Radiant amber)
 // ---------------------------------------------------------------------------
 
-describe("VAL-VISUAL-015: Vendored shader is tuned for BETTER blue", () => {
-  it("fragment shader palette uses BETTER blue tones instead of amber", () => {
-    // The actual mix() calls in the GLSL code use blue tones, not amber.
+describe("VAL-VISUAL-015: Vendored shader is tuned for tradebetter electric-blue", () => {
+  it("fragment shader palette uses tradebetter electric-blue tones instead of amber", () => {
+    // The actual mix() calls in the GLSL code use electric-blue tones, not amber.
     // (Original amber values may appear in comments explaining the adaptation.)
-    // Verify: the color mix calls use vec3(0.0, ...) pattern (blue-dominant)
-    expect(RADIANT_FLUID_AMBER_FRAGMENT).toMatch(/mix\(\s*\n?\s*col,\s*\n?\s*vec3\(0\.0/);
-    // Verify: the initial base color is deep blue, not brown
-    expect(RADIANT_FLUID_AMBER_FRAGMENT).toMatch(/vec3\(0\.0,\s*0\.04,\s*0\.10\)/);
-    // Verify: BETTER bright blue is present
-    expect(RADIANT_FLUID_AMBER_FRAGMENT).toMatch(/vec3\(0\.0,\s*0\.55,\s*1\.0\)/);
+    // Verify: the initial base color is near-black with blue hint
+    expect(RADIANT_FLUID_AMBER_FRAGMENT).toMatch(/vec3\(0\.02,\s*0\.02,\s*0\.08\)/);
+    // Verify: tradebetter electric-blue peak is present (#455eff → ~0.27, 0.37, 1.0)
+    expect(RADIANT_FLUID_AMBER_FRAGMENT).toMatch(/vec3\(0\.27,\s*0\.37,\s*1\.0\)/);
   });
 
-  it("vendored asset documents the BETTER blue adaptation", () => {
+  it("vendored asset documents the tradebetter electric-blue adaptation", () => {
     const src = readSource("radiant-fluid-amber.glsl.ts");
-    expect(src).toMatch(/BETTER blue/i);
+    expect(src).toMatch(/tradebetter electric-blue/i);
   });
 });
 

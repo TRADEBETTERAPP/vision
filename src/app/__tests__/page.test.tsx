@@ -5,7 +5,10 @@ describe("Home page", () => {
   // VAL-NARR-001: Hero explains BETTER in plain language
   it("renders a plain-language definition of BETTER in the hero", () => {
     render(<Home />);
-    expect(screen.getByText("BETTER")).toBeInTheDocument();
+    // BETTER brand is now rendered as a logotype image (VAL-VISUAL-019)
+    const heroLogotype = screen.getByTestId("hero-logotype");
+    expect(heroLogotype).toBeInTheDocument();
+    expect(heroLogotype.getAttribute("alt")).toContain("BETTER");
     // Multiple elements mention "prediction-market intelligence" — use getAllByText
     const matches = screen.getAllByText(/prediction-market intelligence/i);
     expect(matches.length).toBeGreaterThan(0);

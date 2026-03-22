@@ -361,8 +361,10 @@ function createGridLayer(
 // BETTER Blue hue constant
 // ---------------------------------------------------------------------------
 
-/** BETTER blue hue in HSV space (0-1 normalized) — ~200° = 0.555 */
-const BETTER_BLUE_HUE = 0.555;
+/** tradebetter electric-blue hue in HSV space (0-1 normalized)
+ *  #455EFF → RGB(69, 94, 255) → ~229° hue → 229/360 ≈ 0.636
+ *  Extracted from tradebetter.app Framer source via FetchUrl. */
+const BETTER_BLUE_HUE = 0.636;
 
 // ---------------------------------------------------------------------------
 // Render a single grid layer to a temporary canvas

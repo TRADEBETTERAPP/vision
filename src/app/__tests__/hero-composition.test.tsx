@@ -30,12 +30,14 @@ describe("Hero poster-like composition (VAL-NARR-011)", () => {
     expect(splitCards.length).toBe(0);
   });
 
-  it("hero contains a single dominant brand heading", () => {
+  it("hero contains a single dominant brand heading with logotype", () => {
     render(<Home />);
     const hero = screen.getByTestId("hero-section");
     const heading = within(hero).getByRole("heading", { level: 1 });
     expect(heading).toBeInTheDocument();
-    expect(heading.textContent).toContain("BETTER");
+    // The heading now contains the logotype image instead of text
+    const logotype = heading.querySelector('img[data-testid="hero-logotype"]');
+    expect(logotype).toBeInTheDocument();
   });
 
   it("hero visual system wraps the composition", () => {
@@ -49,14 +51,14 @@ describe("Hero poster-like composition (VAL-NARR-011)", () => {
 });
 
 describe("BETTER brand dominance (VAL-NARR-012)", () => {
-  it("BETTER brand mark has the largest heading treatment", () => {
+  it("BETTER logotype is the dominant above-the-fold brand signal", () => {
     render(<Home />);
     const hero = screen.getByTestId("hero-section");
     const h1 = within(hero).getByRole("heading", { level: 1 });
-    // The h1 should have glow/accent treatment making BETTER dominant
-    expect(h1.textContent).toContain("BETTER");
-    // Should have accent glow styling
-    expect(h1.innerHTML).toContain("glow-accent");
+    // The h1 should contain the BETTER logotype image (VAL-VISUAL-019)
+    const logotypeImg = h1.querySelector('img[data-testid="hero-logotype"]');
+    expect(logotypeImg).toBeInTheDocument();
+    expect(logotypeImg!.getAttribute("alt")).toContain("BETTER");
   });
 
   it("hero has a tagline below the brand mark", () => {

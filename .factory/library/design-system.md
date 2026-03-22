@@ -65,16 +65,16 @@ Recommended section jobs:
 - Typography: terminal/mono identity with one restrained supporting sans at most
 - Surfaces: reduce bordered-card repetition; favor layout, spacing, dividers, and large modules
 
-## Tradebetter Theme Signals To Translate
+## Tradebetter Theme Signals — Extracted and Shipped
 
-Extracted live guardrails from `tradebetter.app`:
-- Background base: near-black (`#101010` family)
-- Primary accent: tradebetter electric blue (`#455eff` family)
-- Primary UI/body typography: `IBM Plex Mono`
-- Restrained display typography: `Helvetica Neue Medium`
+Extracted live guardrails from `tradebetter.app` via FetchUrl (Framer HTML/CSS):
+- Background base: near-black (`#101010` family) → shipped as `--bg-primary: #0a0a0c`
+- Primary accent: tradebetter electric blue (`#455eff` family) → shipped as `--accent-primary: #455eff`
+- Primary UI/body typography: `IBM Plex Mono` → shipped via `next/font/google` + `--font-ibm-plex-mono`
+- Restrained display typography: `Helvetica Neue Medium` → shipped as Geist Sans via `--font-display`
 - Surface language: hard edges, thin borders, large modules, sparse white CTA planes, mono labels, and left-rail orientation cues
 
-Translate these signals into BETTER-specific execution rather than cloning Framer layouts literally.
+These are now the shipped theme tokens. The tradebetter electric-blue replaces the old `#00aaff` cyan across globals.css, Radiant shader palette, and ASCII canvas renderer hue.
 
 ## Global Shell Direction
 

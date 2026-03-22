@@ -154,18 +154,17 @@ describe("VAL-VISUAL-012: Shader feels authentically Radiant-influenced", () => 
     expect(shaderSource).toContain("snoise");
   });
 
-  it("vendored shader uses BETTER blue color palette (not generic green or amber)", () => {
+  it("vendored shader uses tradebetter electric-blue color palette (not generic green or amber)", () => {
     const shaderSource = fs.readFileSync(
       path.resolve(__dirname, "../radiant-fluid-amber.glsl.ts"),
       "utf-8"
     );
-    // Should contain blue-dominant color values in the actual GLSL code
-    expect(shaderSource).toMatch(/vec3\s*\([^)]*0\.0[^)]*,\s*0\.\d+[^)]*,\s*1\.0[^)]*\)/);
+    // Should contain tradebetter electric-blue peak (#455eff → ~0.27, 0.37, 1.0)
+    expect(shaderSource).toMatch(/vec3\(0\.27,\s*0\.37,\s*1\.0\)/);
     // Should not use the old green accent
     expect(shaderSource).not.toContain("0, 1, 0.533");
-    // The actual color mix() calls should use blue tones, not amber
-    // (amber values may appear in comments to document the adaptation)
-    expect(shaderSource).toMatch(/mix\s*\(\s*\n?\s*col,\s*\n?\s*vec3\(0\.0/);
+    // Near-black base with blue hint
+    expect(shaderSource).toMatch(/vec3\(0\.02,\s*0\.02,\s*0\.08\)/);
   });
 
   it("vendored shader creates depth with q-r-f domain-warp composition", () => {
@@ -188,7 +187,7 @@ describe("VAL-VISUAL-012: Shader feels authentically Radiant-influenced", () => 
     expect(shaderSource).toContain("vignette");
   });
 
-  it("CSS radiant fallback uses BETTER blue radial gradients", () => {
+  it("CSS radiant fallback uses tradebetter electric-blue radial gradients", () => {
     const globalsCss = fs.readFileSync(
       path.resolve(__dirname, "../../../app/globals.css"),
       "utf-8"
@@ -387,7 +386,10 @@ describe("Content-first and fallback behavior preserved", () => {
     mockReducedMotion(true);
 
     render(<Home />);
-    expect(screen.getByText("BETTER")).toBeInTheDocument();
+    // BETTER brand is now rendered as logotype image (VAL-VISUAL-019)
+    const heroLogotype = screen.getByTestId("hero-logotype");
+    expect(heroLogotype).toBeInTheDocument();
+    expect(heroLogotype.getAttribute("alt")).toContain("BETTER");
     expect(screen.getByTestId("hero-tagline")).toBeInTheDocument();
     expect(screen.getByTestId("cta-primary")).toBeInTheDocument();
     expect(screen.getByTestId("cta-secondary")).toBeInTheDocument();

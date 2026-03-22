@@ -10,22 +10,22 @@ describe("Design system baseline", () => {
   const globalsCss = fs.readFileSync(globalsPath, "utf-8");
 
   describe("Token primitives in globals.css", () => {
-    it("defines BETTER blue as the primary accent", () => {
-      // Primary accent should be BETTER blue, not green
-      expect(globalsCss).toContain("--accent-primary: #00aaff");
+    it("defines tradebetter electric-blue as the primary accent", () => {
+      // Primary accent should be tradebetter electric-blue (#455eff family)
+      expect(globalsCss).toContain("--accent-primary: #455eff");
     });
 
     it("defines a green accent for live-status highlighting", () => {
       expect(globalsCss).toContain("--accent-green: #00ff88");
     });
 
-    it("provides deeper background tonal layering", () => {
-      // bg-primary should be darker than the original #0a0a0f
-      expect(globalsCss).toContain("--bg-primary: #060609");
-      expect(globalsCss).toContain("--bg-secondary: #0c0c14");
-      expect(globalsCss).toContain("--bg-surface: #13131f");
-      expect(globalsCss).toContain("--bg-elevated: #1a1a2a");
-      expect(globalsCss).toContain("--bg-raised: #222236");
+    it("provides tradebetter-led near-black background tonal layering", () => {
+      // bg-primary should be near-black in the #101010 family (tradebetter parity)
+      expect(globalsCss).toContain("--bg-primary: #0a0a0c");
+      expect(globalsCss).toContain("--bg-secondary: #111114");
+      expect(globalsCss).toContain("--bg-surface: #18181e");
+      expect(globalsCss).toContain("--bg-elevated: #1f1f28");
+      expect(globalsCss).toContain("--bg-raised: #272732");
     });
 
     it("defines an accent border token", () => {
@@ -50,14 +50,22 @@ describe("Design system baseline", () => {
       expect(globalsCss).toContain("--space-section:");
     });
 
-    it("uses BETTER blue in the glow effect", () => {
-      // Glow should reference 0, 170, 255 (BETTER blue)
-      expect(globalsCss).toContain("rgba(0, 170, 255");
+    it("uses tradebetter electric-blue in the glow effect", () => {
+      // Glow should reference 69, 94, 255 (tradebetter electric-blue)
+      expect(globalsCss).toContain("rgba(69, 94, 255");
     });
 
-    it("uses BETTER blue in the radiant fallback gradient", () => {
-      // The Radiant-influenced fallback replaces the old grid-pattern layer
-      expect(globalsCss).toMatch(/hero-radiant-fallback[\s\S]*rgba\(0,\s*\d+,\s*\d+/);
+    it("uses tradebetter electric-blue in the radiant fallback gradient", () => {
+      // The Radiant-influenced fallback uses tradebetter electric-blue family
+      expect(globalsCss).toMatch(/hero-radiant-fallback[\s\S]*rgba\(69,\s*\d+,\s*\d+/);
+    });
+
+    it("defines IBM Plex Mono for terminal typography", () => {
+      expect(globalsCss).toContain("--font-ibm-plex-mono");
+    });
+
+    it("defines a site atmosphere gradient for full-shell atmosphere", () => {
+      expect(globalsCss).toContain("site-atmosphere-gradient");
     });
   });
 

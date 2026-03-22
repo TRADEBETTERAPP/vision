@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { IBM_Plex_Mono } from "next/font/google";
 import Link from "next/link";
 import MobileNav from "@/components/MobileNav";
+import { BetterLogotype } from "@/components/BetterLogotype";
 import { NAV_ITEMS } from "@/components/nav-items";
+import { SiteAtmosphere } from "@/components/visual/SiteAtmosphere";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -13,6 +16,17 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+/**
+ * IBM Plex Mono — tradebetter-led terminal UI typography.
+ * Extracted from tradebetter.app Framer source: primary UI/body font.
+ * Design system ref: .factory/library/design-system.md § Tradebetter Theme Signals
+ */
+const ibmPlexMono = IBM_Plex_Mono({
+  variable: "--font-ibm-plex-mono",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -47,11 +61,13 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${ibmPlexMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <Header />
-        <main className="flex-1">{children}</main>
+        <SiteAtmosphere>
+          <main className="flex-1">{children}</main>
+        </SiteAtmosphere>
         <Footer />
       </body>
     </html>
@@ -73,15 +89,15 @@ function Header() {
       >
         <Link
           href="/"
-          className="font-terminal text-lg font-bold tracking-wider text-accent"
+          className="flex items-center"
           aria-label="BETTER home"
         >
-          BETTER<span className="text-muted">_</span>
+          <BetterLogotype variant="header" data-testid="header-logotype" />
         </Link>
 
         {/* Desktop navigation */}
         <div
-          className="hidden items-center gap-6 text-sm font-medium text-secondary sm:flex"
+          className="hidden items-center gap-6 font-terminal text-sm font-medium text-secondary sm:flex"
           data-testid="desktop-nav"
         >
           {NAV_ITEMS.map((item) => (

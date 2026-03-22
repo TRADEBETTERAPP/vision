@@ -27,11 +27,11 @@ import { NAV_ITEMS } from "@/components/nav-items";
 import Home from "../page";
 
 describe("RootLayout shared chrome — Header", () => {
-  it("renders the BETTER brand link in desktop navigation", () => {
+  it("renders the BETTER navigation sections matching NAV_ITEMS", () => {
     render(<Home />);
-    // The brand link is in the RootLayout header, but since we can't
-    // render <html>, we check the structural nav items that Home embeds.
-    // For a true shared-chrome test, we check the page includes nav anchors.
+    // The brand link with logotype is in the RootLayout header.
+    // Since we can't render <html>, we check the structural nav items
+    // that Home embeds have matching page sections.
     const navAnchors = NAV_ITEMS.map((item) => item.href);
     for (const href of navAnchors) {
       const section = document.querySelector(href);

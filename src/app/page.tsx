@@ -5,6 +5,7 @@ import NarrativeCard from "@/components/NarrativeCard";
 import EvidenceHook from "@/components/EvidenceHook";
 import CaveatFrame from "@/components/CaveatFrame";
 import ProofModule from "@/components/ProofModule";
+import { BetterLogotype } from "@/components/BetterLogotype";
 import { RoadmapAtlas } from "@/components/roadmap";
 import { TokenomicsSection } from "@/components/tokenomics";
 import { ArchitectureSection } from "@/components/architecture";
@@ -36,9 +37,9 @@ export default function Home() {
         <HeroVisualSystem>
           <div className="flex min-h-screen flex-col items-center justify-center px-4 py-20 text-center">
             <div className="mx-auto max-w-3xl">
-              {/* Brand signal — BETTER is the loudest element (VAL-NARR-012) */}
-              <h1 className="mb-4 font-terminal text-6xl font-extrabold leading-[1.05] tracking-tight sm:text-7xl lg:text-8xl">
-                <span className="glow-accent text-accent">BETTER</span>
+              {/* Brand signal — BETTER logotype is the loudest element (VAL-NARR-012, VAL-VISUAL-019) */}
+              <h1 className="mb-4 flex justify-center">
+                <BetterLogotype variant="hero" data-testid="hero-logotype" />
               </h1>
 
               {/* Tagline — one dominant promise */}

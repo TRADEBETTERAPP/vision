@@ -21,8 +21,8 @@
 //   The vertex shader is a standard full-screen quad pass-through.
 //
 // WHAT WAS ADAPTED FOR BETTER:
-//   1. Palette remapped from warm amber (gold/brown tones) to BETTER blue
-//      (deep oceanic → mid radiance → bright #00aaff)
+//   1. Palette remapped from warm amber (gold/brown tones) to tradebetter
+//      electric-blue (near-black base → mid electric → bright #455eff)
 //   2. Mouse interaction removed (BETTER uses a non-interactive background)
 //   3. Time scale and amplitude decay exposed as constants for tuning
 //   4. Vignette + vertical fade added for hero text readability
@@ -143,31 +143,31 @@ export const RADIANT_FLUID_AMBER_FRAGMENT = `
 
     float f = fbm(p + 3.5 * r, t * 0.8);
 
-    // --- BETTER blue palette (adapted from Radiant amber) ---
+    // --- tradebetter electric-blue palette (adapted from Radiant amber) ---
     // Original Radiant amber:
     //   mix(vec3(0.075, 0.065, 0.055), vec3(0.20, 0.14, 0.07), ...)
     //   mix(col, vec3(0.78, 0.58, 0.24), ...)
     //   mix(col, vec3(0.95, 0.75, 0.35), ...)
-    // Remapped to BETTER blue:
+    // Remapped to tradebetter electric-blue (#455eff family):
     vec3 col = mix(
-      vec3(0.0, 0.04, 0.10),          // Deep oceanic base (was warm brown)
-      vec3(0.0, 0.12, 0.28),          // Mid depth blue (was dark amber)
+      vec3(0.02, 0.02, 0.08),         // Near-black base with blue hint
+      vec3(0.05, 0.06, 0.22),         // Deep electric-blue (mid depth)
       clamp(f * f * 2.0, 0.0, 1.0)
     );
     col = mix(
       col,
-      vec3(0.0, 0.35, 0.70),          // Radiant mid-blue (was gold)
+      vec3(0.15, 0.20, 0.65),         // Radiant mid electric-blue
       clamp(length(q) * 0.5, 0.0, 1.0)
     );
     col = mix(
       col,
-      vec3(0.0, 0.55, 1.0),           // BETTER bright blue (was light amber)
+      vec3(0.27, 0.37, 1.0),          // tradebetter electric-blue peak (#455eff)
       clamp(length(r.x) * 0.6, 0.0, 1.0)
     );
 
     // Highlight extraction (preserved from original Radiant)
     float highlight = smoothstep(0.5, 1.2, f * f * 3.0 + length(r) * 0.5);
-    col += vec3(0.0, 0.10, 0.22) * highlight;  // Blue highlight (was warm amber)
+    col += vec3(0.05, 0.08, 0.20) * highlight;  // Electric-blue highlight
 
     // Gamma correction (preserved from original Radiant)
     col = pow(col, vec3(1.1));

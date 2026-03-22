@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect } from "react";
 import { NAV_ITEMS } from "./nav-items";
+import { BetterLogotype } from "./BetterLogotype";
 
 export { NAV_ITEMS } from "./nav-items";
 
@@ -81,13 +82,17 @@ export default function MobileNav() {
 
       {isOpen && (
         <div
-          className="fixed inset-0 top-14 z-40 bg-background backdrop-blur-md"
+          className="fixed inset-0 top-14 z-40 bg-background/95 backdrop-blur-md"
           data-testid="mobile-nav-overlay"
         >
           <nav
             className="flex flex-col gap-1 px-4 py-6"
             aria-label="Mobile navigation"
           >
+            {/* BETTER logotype in mobile overlay (VAL-VISUAL-019) */}
+            <div className="mb-4 px-4">
+              <BetterLogotype variant="mobile-overlay" data-testid="mobile-overlay-logotype" />
+            </div>
             {NAV_ITEMS.map((item) => (
               <a
                 key={item.href}

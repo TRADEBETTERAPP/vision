@@ -9,22 +9,31 @@
    * tradebetter-led first-viewport composition.
    * ----------------------------------------------------------------------- */
 
-  /* Background scale — deeper tonal layering */
-  --bg-primary: #060609;
-  --bg-secondary: #0c0c14;
-  --bg-surface: #13131f;
-  --bg-elevated: #1a1a2a;
-  --bg-raised: #222236;
+  /* Background scale — tradebetter-led near-black foundations
+   * Extracted from tradebetter.app Framer source via FetchUrl:
+   *   Primary background: #101010 family (near-black, not blue-shifted)
+   *   Surface hierarchy: subtle warm-neutral lift per depth level
+   * Design system ref: .factory/library/design-system.md § Tradebetter Theme Signals */
+  --bg-primary: #0a0a0c;
+  --bg-secondary: #111114;
+  --bg-surface: #18181e;
+  --bg-elevated: #1f1f28;
+  --bg-raised: #272732;
 
   /* Foreground scale */
   --text-primary: #eaeaf2;
   --text-secondary: #9898b0;
   --text-muted: #5a5a78;
 
-  /* BETTER blue as the dominant accent */
-  --accent-primary: #00aaff;
-  --accent-primary-bright: #33bbff;
-  --accent-primary-dim: #0077cc;
+  /* tradebetter electric-blue emphasis
+   * Extracted from tradebetter.app Framer source via FetchUrl:
+   *   Primary accent: #455eff family (electric blue, not cyan)
+   *   The BETTER site adapts this to a slightly brighter variant to
+   *   maintain contrast on the darker bg-primary scale.
+   * Design system ref: .factory/library/design-system.md § Tradebetter Theme Signals */
+  --accent-primary: #455eff;
+  --accent-primary-bright: #6b7fff;
+  --accent-primary-dim: #3348cc;
 
   /* Supporting accents — used sparingly */
   --accent-green: #00ff88;
@@ -34,11 +43,16 @@
   /* Borders */
   --border-default: #1e1e30;
   --border-active: #2e2e48;
-  --border-accent: rgba(0, 170, 255, 0.25);
+  --border-accent: rgba(69, 94, 255, 0.25);
 
-  /* Typography */
+  /* Typography — tradebetter-led IBM Plex Mono UI treatment
+   * Extracted from tradebetter.app Framer source via FetchUrl:
+   *   Primary UI/body: IBM Plex Mono (monospace terminal identity)
+   *   Display: Restrained sans-serif (Geist Sans for display headings)
+   * Design system ref: .factory/library/design-system.md § Tradebetter Theme Signals */
   --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-mono: var(--font-ibm-plex-mono), var(--font-geist-mono);
+  --font-display: var(--font-geist-sans);
 
   /* Spacing scale tokens */
   --space-section: 6rem;
@@ -80,7 +94,8 @@
 
   /* Fonts */
   --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-mono: var(--font-ibm-plex-mono), var(--font-geist-mono);
+  --font-display: var(--font-geist-sans);
 }
 
 html {
@@ -93,9 +108,14 @@ body {
   font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
 }
 
-/* Utility for terminal-style monospace text */
+/* Utility for terminal-style monospace text — IBM Plex Mono primary (tradebetter parity) */
 .font-terminal {
-  font-family: var(--font-mono), "Fira Code", "JetBrains Mono", monospace;
+  font-family: var(--font-ibm-plex-mono), var(--font-mono), "IBM Plex Mono", "Fira Code", "JetBrains Mono", monospace;
+}
+
+/* Utility for restrained display typography — Geist Sans for headings */
+.font-display {
+  font-family: var(--font-display), var(--font-sans), system-ui, -apple-system, sans-serif;
 }
 
 /* -----------------------------------------------------------------------
@@ -118,9 +138,9 @@ body {
    ----------------------------------------------------------------------- */
 
 .glow-accent {
-  text-shadow: 0 0 12px rgba(0, 170, 255, 0.5),
-    0 0 40px rgba(0, 170, 255, 0.2),
-    0 0 80px rgba(0, 170, 255, 0.05);
+  text-shadow: 0 0 12px rgba(69, 94, 255, 0.5),
+    0 0 40px rgba(69, 94, 255, 0.2),
+    0 0 80px rgba(69, 94, 255, 0.05);
 }
 
 /* Green accent glow (for live-status highlights) */
@@ -140,18 +160,18 @@ body {
   background:
     radial-gradient(
       ellipse 120% 80% at 50% 60%,
-      rgba(0, 60, 140, 0.35) 0%,
-      rgba(0, 30, 80, 0.15) 40%,
+      rgba(69, 94, 255, 0.20) 0%,
+      rgba(40, 50, 160, 0.10) 40%,
       transparent 70%
     ),
     radial-gradient(
       ellipse 60% 50% at 30% 40%,
-      rgba(0, 100, 180, 0.12) 0%,
+      rgba(69, 94, 255, 0.08) 0%,
       transparent 60%
     ),
     radial-gradient(
       ellipse 50% 60% at 70% 50%,
-      rgba(0, 80, 160, 0.08) 0%,
+      rgba(50, 60, 180, 0.06) 0%,
       transparent 55%
     );
 }
@@ -190,8 +210,8 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   width: max-content;
-  /* Materially visible BETTER blue tint — not faint noise */
-  color: rgba(0, 170, 255, 0.12);
+  /* Materially visible tradebetter electric-blue tint */
+  color: rgba(69, 94, 255, 0.12);
 }
 
 /* Animated state: no constant pulse — the character transitions ARE the motion */
@@ -247,7 +267,7 @@ body {
 }
 
 [data-visual-state="fallback"] .ascii-background .ascii-text {
-  color: rgba(0, 170, 255, 0.10);
+  color: rgba(69, 94, 255, 0.10);
 }
 
 /* When 2D canvas renderer failed to initialize, reveal the DOM-based
@@ -258,7 +278,7 @@ body {
 }
 
 [data-canvas-ready="false"] .ascii-background .ascii-text {
-  color: rgba(0, 170, 255, 0.12);
+  color: rgba(69, 94, 255, 0.12);
 }
 
 /* When canvas IS ready, hide the DOM fallback (avoid double-rendering) */
@@ -286,6 +306,33 @@ body {
 
 [data-visual-state="reduced-motion"] .scanline-overlay {
   opacity: 0.3;
+}
+
+/* -----------------------------------------------------------------------
+   Site-wide atmosphere gradient (VAL-VISUAL-020)
+   Extends Radiant/Hermes atmospheric language across the full shell —
+   lighter than the hero but materially visible so the site reads as one
+   coherent immersive environment.
+   ----------------------------------------------------------------------- */
+
+.site-atmosphere-gradient {
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse 100% 60% at 50% 30%,
+      rgba(69, 94, 255, 0.06) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 80% 40% at 20% 60%,
+      rgba(40, 50, 160, 0.04) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse 60% 50% at 80% 80%,
+      rgba(69, 94, 255, 0.03) 0%,
+      transparent 50%
+    );
 }
 
 /* -----------------------------------------------------------------------
