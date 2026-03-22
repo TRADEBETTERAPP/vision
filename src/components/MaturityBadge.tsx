@@ -1,8 +1,8 @@
 import { MATURITY_LABELS, type MaturityStatus } from "@/content";
 
 const STATUS_STYLES: Record<MaturityStatus, string> = {
-  live: "bg-accent/15 text-accent border-accent/30",
-  in_progress: "bg-accent-secondary/15 text-accent-secondary border-accent-secondary/30",
+  live: "bg-accent-green/15 text-accent-green border-accent-green/30",
+  in_progress: "bg-accent/15 text-accent border-accent/30",
   planned: "bg-accent-warn/15 text-accent-warn border-accent-warn/30",
   speculative: "bg-accent-danger/15 text-accent-danger border-accent-danger/30",
 };

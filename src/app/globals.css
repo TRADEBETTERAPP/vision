@@ -1,41 +1,84 @@
 @import "tailwindcss";
 
 :root {
-  /* BETTER brand palette — dark terminal / HFT aesthetic */
-  --bg-primary: #0a0a0f;
-  --bg-secondary: #12121a;
-  --bg-surface: #1a1a26;
-  --bg-elevated: #222233;
+  /* -----------------------------------------------------------------------
+   * BETTER Design System — Redesign baseline
+   *
+   * Visual thesis: premium dark terminal / HFT aesthetic with BETTER blue
+   * as the primary accent. Deeper tonal layering than the original build;
+   * tradebetter-led first-viewport composition.
+   * ----------------------------------------------------------------------- */
 
-  --text-primary: #e8e8f0;
+  /* Background scale — deeper tonal layering */
+  --bg-primary: #060609;
+  --bg-secondary: #0c0c14;
+  --bg-surface: #13131f;
+  --bg-elevated: #1a1a2a;
+  --bg-raised: #222236;
+
+  /* Foreground scale */
+  --text-primary: #eaeaf2;
   --text-secondary: #9898b0;
   --text-muted: #5a5a78;
 
-  --accent-primary: #00ff88;
-  --accent-secondary: #00ccff;
+  /* BETTER blue as the dominant accent */
+  --accent-primary: #00aaff;
+  --accent-primary-bright: #33bbff;
+  --accent-primary-dim: #0077cc;
+
+  /* Supporting accents — used sparingly */
+  --accent-green: #00ff88;
   --accent-warn: #ff9900;
   --accent-danger: #ff3366;
 
-  --border-default: #2a2a3d;
-  --border-active: #3a3a55;
+  /* Borders */
+  --border-default: #1e1e30;
+  --border-active: #2e2e48;
+  --border-accent: rgba(0, 170, 255, 0.25);
 
+  /* Typography */
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* Spacing scale tokens */
+  --space-section: 6rem;
+  --space-section-sm: 4rem;
+
+  /* Transition tokens */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 400ms ease;
 }
 
 @theme inline {
+  /* Backgrounds */
   --color-background: var(--bg-primary);
   --color-foreground: var(--text-primary);
   --color-surface: var(--bg-surface);
   --color-elevated: var(--bg-elevated);
+  --color-raised: var(--bg-raised);
+
+  /* Text */
   --color-muted: var(--text-muted);
   --color-secondary: var(--text-secondary);
+
+  /* Accent — BETTER blue primary */
   --color-accent: var(--accent-primary);
-  --color-accent-secondary: var(--accent-secondary);
+  --color-accent-bright: var(--accent-primary-bright);
+  --color-accent-dim: var(--accent-primary-dim);
+
+  /* Supporting accents */
+  --color-accent-green: var(--accent-green);
+  --color-accent-secondary: var(--accent-primary-bright);
   --color-accent-warn: var(--accent-warn);
   --color-accent-danger: var(--accent-danger);
+
+  /* Borders */
   --color-border: var(--border-default);
   --color-border-active: var(--border-active);
+  --color-border-accent: var(--border-accent);
+
+  /* Fonts */
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -67,8 +110,14 @@ body {
   );
 }
 
-/* Glow effect for accent elements */
+/* Glow effect for accent elements — BETTER blue */
 .glow-accent {
+  text-shadow: 0 0 10px rgba(0, 170, 255, 0.4),
+    0 0 30px rgba(0, 170, 255, 0.15);
+}
+
+/* Green accent glow (for live-status highlights) */
+.glow-green {
   text-shadow: 0 0 10px rgba(0, 255, 136, 0.3),
     0 0 20px rgba(0, 255, 136, 0.1);
 }
@@ -115,17 +164,17 @@ body {
    Premium dark terminal / HFT grid pattern
    ----------------------------------------------------------------------- */
 
-/* CSS-only grid pattern: visible immediately, no JS dependency */
+/* CSS-only grid pattern: visible immediately, no JS dependency — BETTER blue */
 .hero-grid-pattern {
   pointer-events: none;
   background-image:
     linear-gradient(
-      rgba(0, 255, 136, 0.03) 1px,
+      rgba(0, 170, 255, 0.04) 1px,
       transparent 1px
     ),
     linear-gradient(
       90deg,
-      rgba(0, 255, 136, 0.03) 1px,
+      rgba(0, 170, 255, 0.04) 1px,
       transparent 1px
     );
   background-size: 60px 40px;

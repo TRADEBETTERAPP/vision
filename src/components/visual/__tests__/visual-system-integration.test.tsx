@@ -53,10 +53,11 @@ describe("VAL-VISUAL-000: Signature visual system is present", () => {
 describe("VAL-VISUAL-001: Content-first hero renders before effects", () => {
   it("hero headline, supporting copy, and CTA are present regardless of effects state", () => {
     render(<Home />);
-    // Headline
+    // Brand headline
     expect(screen.getByText("BETTER")).toBeInTheDocument();
+    // Dominant promise line (poster-like composition)
     expect(
-      screen.getByText("is building the future of prediction-market intelligence")
+      screen.getByText("The future of prediction-market intelligence")
     ).toBeInTheDocument();
 
     // Supporting copy (plain-language definition)

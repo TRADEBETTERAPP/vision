@@ -8,6 +8,7 @@ import { RoadmapAtlas } from "@/components/roadmap";
 import { TokenomicsSection } from "@/components/tokenomics";
 import { ArchitectureSection } from "@/components/architecture";
 import { HeroVisualSystem } from "@/components/visual";
+import { Section, Heading } from "@/components/ui";
 
 export default function Home() {
   const heroBlocks = getBlocksBySurface("hero");
@@ -22,40 +23,41 @@ export default function Home() {
     <div className="flex flex-col">
       {/* ---------------------------------------------------------------- */}
       {/* Hero Section — VAL-NARR-001, VAL-NARR-002, VAL-VISUAL-000–004 */}
+      {/* Poster-like first viewport: one dominant BETTER composition,    */}
+      {/* compressed copy, BETTER blue branding, no dashboard cards.      */}
       {/* ---------------------------------------------------------------- */}
       <section
         id="what-is-better"
         data-testid="hero-section"
-        className="relative min-h-[80vh]"
+        className="relative min-h-screen"
       >
         <HeroVisualSystem>
-          <div className="flex min-h-[80vh] flex-col items-center justify-center px-4 py-24 text-center">
-            <div className="mx-auto max-w-3xl">
-              <p className="mb-4 font-terminal text-sm font-medium uppercase tracking-widest text-accent">
-                Ecosystem Vision &amp; Roadmap
-              </p>
-
-              <h1 className="mb-6 text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
-                <span className="glow-accent text-accent">BETTER</span>{" "}
-                <span className="text-foreground">
-                  is building the future of prediction-market intelligence
-                </span>
+          <div className="flex min-h-screen flex-col items-center justify-center px-4 py-20 text-center">
+            <div className="mx-auto max-w-4xl">
+              {/* Brand signal — BETTER is unmistakable */}
+              <h1 className="mb-6 font-terminal text-5xl font-extrabold leading-[1.1] tracking-tight sm:text-6xl lg:text-7xl">
+                <span className="glow-accent text-accent">BETTER</span>
               </h1>
+
+              {/* Single dominant promise — one sentence */}
+              <p className="mx-auto mb-4 max-w-2xl text-xl font-medium leading-snug text-foreground sm:text-2xl">
+                The future of prediction-market intelligence
+              </p>
 
               {/* Plain-language definition (VAL-NARR-001) */}
               {heroDefinition && (
-                <p className="mx-auto mb-8 max-w-2xl text-lg leading-relaxed text-secondary">
+                <p className="mx-auto mb-10 max-w-xl text-base leading-relaxed text-secondary">
                   {heroDefinition.body}
                 </p>
               )}
 
-              {/* Live vs Vision framing (VAL-NARR-002) */}
-              <div className="mx-auto mb-8 grid max-w-2xl gap-4 text-left sm:grid-cols-2">
+              {/* Live vs Vision framing (VAL-NARR-002) — condensed inline */}
+              <div className="mx-auto mb-10 flex max-w-2xl flex-col gap-3 text-left sm:flex-row sm:gap-4">
                 {heroLiveToday && (
-                  <div className="rounded-lg border border-accent/20 bg-accent/5 p-4 backdrop-blur-sm">
+                  <div className="flex-1 rounded-lg border border-accent-green/20 bg-accent-green/5 p-4 backdrop-blur-sm">
                     <div className="mb-2 flex items-center gap-2">
                       <MaturityBadge status="live" />
-                      <span className="font-terminal text-xs font-medium text-accent">
+                      <span className="font-terminal text-xs font-medium text-accent-green">
                         {heroLiveToday.title}
                       </span>
                     </div>
@@ -67,7 +69,7 @@ export default function Home() {
                 )}
 
                 {heroVision && (
-                  <div className="rounded-lg border border-accent-warn/20 bg-accent-warn/5 p-4 backdrop-blur-sm">
+                  <div className="flex-1 rounded-lg border border-accent-warn/20 bg-accent-warn/5 p-4 backdrop-blur-sm">
                     <div className="mb-2 flex items-center gap-2">
                       <MaturityBadge status="planned" />
                       <span className="font-terminal text-xs font-medium text-accent-warn">
@@ -89,7 +91,7 @@ export default function Home() {
               <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
                 <a
                   href="#roadmap"
-                  className="inline-flex h-12 items-center justify-center rounded-md bg-accent px-8 text-sm font-semibold text-background transition-opacity hover:opacity-90"
+                  className="inline-flex h-12 items-center justify-center rounded-md bg-accent px-8 text-sm font-semibold text-background transition-colors hover:bg-accent-bright"
                   data-testid="cta-explore-roadmap"
                 >
                   Explore the Roadmap
@@ -110,9 +112,9 @@ export default function Home() {
       {/* ---------------------------------------------------------------- */}
       {/* Current Scope — VAL-NARR-003 */}
       {/* ---------------------------------------------------------------- */}
-      <section id="live-now" className="border-t border-border px-4 py-24">
-        <div className="mx-auto max-w-5xl">
-          <SectionHeading
+      <Section id="live-now" divider="top">
+        <div>
+          <Heading
             label="Live Now"
             title="What's Live Today"
             description="The current production capabilities of the BETTER ecosystem — everything below is shipping and accessible right now."
@@ -134,23 +136,23 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </section>
+      </Section>
 
       {/* ---------------------------------------------------------------- */}
       {/* Maturity Legend — VAL-NARR-007 */}
       {/* ---------------------------------------------------------------- */}
-      <section className="border-t border-border px-4 py-16">
-        <div className="mx-auto max-w-3xl">
+      <Section spacing="compact" divider="top">
+        <div className="max-w-3xl">
           <MaturityLegend />
         </div>
-      </section>
+      </Section>
 
       {/* ---------------------------------------------------------------- */}
       {/* Vision / Future Roadmap Narrative — VAL-NARR-006, VAL-NARR-008, VAL-NARR-009 */}
       {/* ---------------------------------------------------------------- */}
-      <section id="roadmap" className="border-t border-border px-4 py-24">
-        <div className="mx-auto max-w-5xl">
-          <SectionHeading
+      <Section id="roadmap" divider="top">
+        <div>
+          <Heading
             label="Roadmap"
             title="Ecosystem Roadmap"
             description="Interactive exploration of BETTER's product, infrastructure, and token utility evolution — from active work to long-range ambition."
@@ -171,14 +173,14 @@ export default function Home() {
             <RoadmapAtlas />
           </div>
         </div>
-      </section>
+      </Section>
 
       {/* ---------------------------------------------------------------- */}
       {/* Tokenomics — VAL-TOKEN-001 through VAL-TOKEN-011 */}
       {/* ---------------------------------------------------------------- */}
-      <section id="tokenomics" className="border-t border-border px-4 py-24">
-        <div className="mx-auto max-w-5xl">
-          <SectionHeading
+      <Section id="tokenomics" divider="top">
+        <div>
+          <Heading
             label="Tokenomics"
             title="Whale-First Tokenomics"
             description="Reconciled supply math, whale-first tier ladders, fee advantages, scenario projections, and agent-native utility. Content is exploration-only — not a live trading interface."
@@ -187,14 +189,14 @@ export default function Home() {
             <TokenomicsSection />
           </div>
         </div>
-      </section>
+      </Section>
 
       {/* ---------------------------------------------------------------- */}
       {/* Architecture — VAL-VISUAL-005 through VAL-VISUAL-009 */}
       {/* ---------------------------------------------------------------- */}
-      <section id="architecture" className="border-t border-border px-4 py-24">
-        <div className="mx-auto max-w-5xl">
-          <SectionHeading
+      <Section id="architecture" divider="top">
+        <div>
+          <Heading
             label="Architecture"
             title="Technical Architecture"
             description="Hyperliquid/HyperEVM, OpenServ/BRAID, proprietary AI/RL, Polygon validators, and phased low-latency execution — the BETTER stack, its cost bands, and the compounding flywheel. Content is informational — not operational."
@@ -203,14 +205,14 @@ export default function Home() {
             <ArchitectureSection />
           </div>
         </div>
-      </section>
+      </Section>
 
       {/* ---------------------------------------------------------------- */}
       {/* Evidence & Sources — VAL-NARR-008 */}
       {/* ---------------------------------------------------------------- */}
-      <section id="evidence" className="border-t border-border px-4 py-24">
-        <div className="mx-auto max-w-5xl">
-          <SectionHeading
+      <Section id="evidence" divider="top">
+        <div>
+          <Heading
             label="Evidence & Sources"
             title="Evidence & Sources"
             description="Every quantitative claim, threshold, and projection on this site traces back to a source or assumption. Here's how to read them."
@@ -242,14 +244,14 @@ export default function Home() {
             />
           </div>
         </div>
-      </section>
+      </Section>
 
       {/* ---------------------------------------------------------------- */}
       {/* Risks & Caveats — VAL-NARR-009 */}
       {/* ---------------------------------------------------------------- */}
-      <section id="risks" className="border-t border-border px-4 py-24">
-        <div className="mx-auto max-w-5xl">
-          <SectionHeading
+      <Section id="risks" divider="top">
+        <div>
+          <Heading
             label="Risks & Caveats"
             title="Risks & Caveats"
             description="This site represents BETTER's vision — not a guarantee. Here are the key uncertainties."
@@ -289,33 +291,7 @@ export default function Home() {
             {" "}as the canonical source of truth.
           </p>
         </div>
-      </section>
-    </div>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// Sub-components
-// ---------------------------------------------------------------------------
-
-function SectionHeading({
-  label,
-  title,
-  description,
-}: {
-  label: string;
-  title: string;
-  description: string;
-}) {
-  return (
-    <div className="text-center">
-      <p className="mb-2 font-terminal text-xs font-medium uppercase tracking-widest text-accent">
-        {label}
-      </p>
-      <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{title}</h2>
-      <p className="mx-auto mt-4 max-w-2xl text-lg text-secondary">
-        {description}
-      </p>
+      </Section>
     </div>
   );
 }
