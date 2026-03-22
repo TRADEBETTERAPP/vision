@@ -1,0 +1,213 @@
+{
+  "groupId": "token-policy",
+  "surface": "browser",
+  "testedAt": "2026-03-22T09:56:42Z",
+  "isolation": {
+    "appUrl": "http://127.0.0.1:3100",
+    "browserSession": "token-policy-validator-33dae310",
+    "missionDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83",
+    "evidenceDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/evidence/graph-first-shell-and-token-policy/token-policy"
+  },
+  "assertionsTested": [
+    "VAL-TOKEN-001",
+    "VAL-TOKEN-002",
+    "VAL-TOKEN-009",
+    "VAL-TOKEN-012",
+    "VAL-TOKEN-013",
+    "VAL-TOKEN-014",
+    "VAL-CROSS-005",
+    "VAL-CROSS-006"
+  ],
+  "toolsUsed": [
+    "agent-browser",
+    "Read",
+    "Execute"
+  ],
+  "assertionResults": [
+    {
+      "id": "VAL-TOKEN-001",
+      "title": "Token supply presentation uses the minted Base-contract supply only",
+      "status": "pass",
+      "reason": "The tokenomics surface presents 709,001,940 BETTER as the canonical Base-contract supply, the allocation table reconciles to that minted total, and no current 1B supply story remained visible in the tokenomics, roadmap, or architecture views tested.",
+      "evidence": {
+        "paths": [
+          "graph-first-shell-and-token-policy/token-policy/VAL-TOKEN-001-supply.png",
+          "graph-first-shell-and-token-policy/token-policy/tokenomics-innerText.txt",
+          "graph-first-shell-and-token-policy/token-policy/assertion-check-notes.txt"
+        ],
+        "observations": [
+          "The tokenomics detail panel states 'Minted supply of 709,001,940 BETTER tokens on the Base contract' and shows a five-row allocation table totaling 709,001,940 at 100%.",
+          "Cross-section text checks recorded hasMintedSupply=true and hasOneBReference=false for the tokenomics, roadmap, and architecture views visited during the run."
+        ],
+        "consoleErrors": "none",
+        "network": "No relevant API requests were exposed; agent-browser network tracking reported 'No requests captured' during this in-page graph/hash navigation flow."
+      }
+    },
+    {
+      "id": "VAL-TOKEN-002",
+      "title": "Tier ladder presents a complete whale-first access and modeled-product structure",
+      "status": "pass",
+      "reason": "The ladder is rendered in ascending Explorer-to-Apex order with explicit thresholds, monotonic access/allocation/preview/agent/fee advantages, and a separate modeled whale product ladder that clearly labels inferred gates as Planned/Speculative and modeled rather than live mechanics.",
+      "evidence": {
+        "paths": [
+          "graph-first-shell-and-token-policy/token-policy/VAL-TOKEN-002-tier-ladder.png",
+          "graph-first-shell-and-token-policy/token-policy/VAL-TOKEN-002-modeled-whale-products.png",
+          "graph-first-shell-and-token-policy/token-policy/tokenomics-innerText.txt"
+        ],
+        "observations": [
+          "The tier ladder lists Explorer, Lite (\u226550,000), Standard (\u2265100,000), Whale (\u2265500,000), and Apex Whale (\u22652,000,000) with increasing access priority, allocation priority, preview priority, agent slots, and fee advantages.",
+          "Modeled whale products such as Social Vaults, Personal AI-Crafted Vaults, Private Alpha Signals, and OTC & Institutional Facilitation are explicitly labeled with maturity framing and 'Modeled Gate' instead of being presented as settled live policy."
+        ],
+        "consoleErrors": "none",
+        "network": "No relevant API requests were exposed for this static/content validation flow."
+      }
+    },
+    {
+      "id": "VAL-TOKEN-009",
+      "title": "Sustainable referrals and per-product revenue-return modeling are explicit",
+      "status": "pass",
+      "reason": "The tokenomics surface separately breaks out the fee stack, referral sustainability policy, and the product-family revenue/value-return model, with explicit maturity labels and return-path descriptions instead of collapsing them into one blended story.",
+      "evidence": {
+        "paths": [
+          "graph-first-shell-and-token-policy/token-policy/VAL-TOKEN-009-fee-breakdown.png",
+          "graph-first-shell-and-token-policy/token-policy/VAL-TOKEN-013-referral-policy.png",
+          "graph-first-shell-and-token-policy/token-policy/VAL-TOKEN-014-product-return-model.png"
+        ],
+        "observations": [
+          "The fee stack separately names Trading Tax (Buy/Sell), Lite Mode Per-Fill Fee, Vault Performance Fee, Whale Premium Fee Advantage, Agent Transaction Fees, and Enterprise Data & API Licensing with worked examples.",
+          "Below the fee stack, the referral policy and product-family model explicitly explain payout sustainability plus how each product line returns direct revenue or broader ecosystem value."
+        ],
+        "consoleErrors": "none",
+        "network": "No relevant API requests were exposed for this content-only validation flow."
+      }
+    },
+    {
+      "id": "VAL-TOKEN-012",
+      "title": "Q1 2026 first-vault policy distinguishes deposit cap from modeled allocation weight",
+      "status": "pass",
+      "reason": "The first-vault policy explicitly separates the 100,000 BETTER minimum from the per-wallet $25,000 initial-deposit cap, and the worked examples numerically reconcile cap policy versus modeled whale-first allocation weight without conflating the two.",
+      "evidence": {
+        "paths": [
+          "graph-first-shell-and-token-policy/token-policy/VAL-TOKEN-012-first-vault-policy.png",
+          "graph-first-shell-and-token-policy/token-policy/tokenomics-innerText.txt",
+          "graph-first-shell-and-token-policy/token-policy/assertion-check-notes.txt"
+        ],
+        "observations": [
+          "The policy card states MINIMUM HOLDING = 100,000 BETTER and PER-WALLET DEPOSIT CAP = $25,000, followed by a dedicated 'Deposit Cap \u2260 Allocation Weight' explainer.",
+          "Worked examples reconcile exactly: Standard $25,000 \u00d7 1.25 = $31,250, Whale $25,000 \u00d7 1.6 = $40,000, Apex Whale $25,000 \u00d7 2.0 = $50,000, and Lite correctly shows $0 because it does not qualify."
+        ],
+        "consoleErrors": "none",
+        "network": "No relevant API requests were exposed for this static/content validation flow."
+      }
+    },
+    {
+      "id": "VAL-TOKEN-013",
+      "title": "Referral incentive sustainability is explicit",
+      "status": "pass",
+      "reason": "The referral section clearly identifies the payout source, payout caps, anti-abuse controls, and quarterly budget throttle, so it reads as a bounded treasury-funded policy instead of an unbounded reward promise.",
+      "evidence": {
+        "paths": [
+          "graph-first-shell-and-token-policy/token-policy/VAL-TOKEN-013-referral-policy.png",
+          "graph-first-shell-and-token-policy/token-policy/tokenomics-innerText.txt",
+          "graph-first-shell-and-token-policy/token-policy/assertion-check-notes.txt"
+        ],
+        "observations": [
+          "Referral rewards are described as funded from the Treasury allocation via a dedicated referral sub-pool rather than user deposits or vault performance fees.",
+          "The surface shows a $10,000 cumulative cap per referrer, a $500 cap per individual referral, wallet-clustering/self-referral checks, minimum referred-user activity rules, and quarterly throttling when the referral pool budget is exhausted."
+        ],
+        "consoleErrors": "none",
+        "network": "No relevant API requests were exposed for this content-only validation flow."
+      }
+    },
+    {
+      "id": "VAL-TOKEN-014",
+      "title": "Product-family revenue and value return modeling is broken out by line",
+      "status": "pass",
+      "reason": "The product-family return model explicitly breaks out every required product family by line and labels each as direct monetized revenue, hybrid revenue plus ecosystem value, or ecosystem-value growth driver rather than blending them into a single catch-all return narrative.",
+      "evidence": {
+        "paths": [
+          "graph-first-shell-and-token-policy/token-policy/VAL-TOKEN-014-product-return-model.png",
+          "graph-first-shell-and-token-policy/token-policy/VAL-TOKEN-013-referral-policy.png",
+          "graph-first-shell-and-token-policy/token-policy/assertion-check-notes.txt"
+        ],
+        "observations": [
+          "The model explicitly lists Token Trading & Taxes, Lite Mode & Terminal, Social Vaults, Strategy Agents, Whale Premium Products, Referrals, and Enterprise & API Rails.",
+          "Each row includes a return-type label plus a specific return path, such as treasury flows for trading taxes, hybrid revenue/value for social vaults and strategy agents, ecosystem-value growth-driver framing for referrals, and direct monetized revenue for enterprise/API rails."
+        ],
+        "consoleErrors": "none",
+        "network": "No relevant API requests were exposed for this content-only validation flow."
+      }
+    },
+    {
+      "id": "VAL-CROSS-005",
+      "title": "Terminology, supply figures, and thresholds remain consistent across the site",
+      "status": "pass",
+      "reason": "Across the tokenomics, roadmap, and architecture surfaces tested, the site reused the same product names and maturity framing, preserved the 709,001,940 minted-supply story, and did not surface a conflicting live 1B reference.",
+      "evidence": {
+        "paths": [
+          "graph-first-shell-and-token-policy/token-policy/VAL-TOKEN-001-supply.png",
+          "graph-first-shell-and-token-policy/token-policy/VAL-CROSS-006-roadmap-context.png",
+          "graph-first-shell-and-token-policy/token-policy/VAL-CROSS-006-architecture-context.png",
+          "graph-first-shell-and-token-policy/token-policy/assertion-check-notes.txt"
+        ],
+        "observations": [
+          "Roadmap and architecture both reference the same major product families and dependency names used on tokenomics, including Whale-First Tier Ladder, Social Vaults & vBETTER, Autonomous Strategy Agents, and Enterprise Data & API Licensing.",
+          "The cross-section summary notes file recorded hasOneBReference=false for tokenomics, roadmap, and architecture, so no superseded 1B story remained visible in the tested browser flow."
+        ],
+        "consoleErrors": "none",
+        "network": "No relevant API requests were exposed; navigation stayed inside client-side graph/detail states."
+      }
+    },
+    {
+      "id": "VAL-CROSS-006",
+      "title": "Projection dependencies trace back to roadmap and architecture stages",
+      "status": "pass",
+      "reason": "Scenario outputs explicitly list dependency labels, and those labels map back to corresponding roadmap and architecture stages with visible maturity framing, so the projections do not read as if all future mechanics are already live.",
+      "evidence": {
+        "paths": [
+          "graph-first-shell-and-token-policy/token-policy/VAL-CROSS-006-scenario-dependencies.png",
+          "graph-first-shell-and-token-policy/token-policy/VAL-CROSS-006-roadmap-context.png",
+          "graph-first-shell-and-token-policy/token-policy/VAL-CROSS-006-architecture-context.png",
+          "graph-first-shell-and-token-policy/token-policy/assertion-check-notes.txt"
+        ],
+        "observations": [
+          "The scenario panel ties projected outcomes to explicit dependencies such as Trading Tax (Buy/Sell), Lite Mode Per-Fill Fees, Social Vaults & vBETTER, Autonomous Strategy Agents, and Enterprise Data & API Licensing, while also caveating the projections as 'if X, then Y' illustrations.",
+          "The roadmap and architecture surfaces expose those same dependent mechanics with Live/In Progress/Planned/Speculative framing, allowing the user to trace which scenario assumptions rely on future roadmap or infrastructure delivery."
+        ],
+        "consoleErrors": "none",
+        "network": "No relevant API requests were exposed for this content/state validation flow."
+      }
+    }
+  ],
+  "frictions": [
+    {
+      "description": "Focused graph views reuse short related-link labels such as 'Roadmap', 'Tokenomics', and 'Architecture', which made stale refs and ambiguous target selection more likely than the guidance implied.",
+      "resolved": true,
+      "resolution": "Refreshed snapshots before cross-surface hops and, when needed, used DOM text matching inside the active session to click the intended focused-surface control.",
+      "affectedAssertions": [
+        "VAL-CROSS-005",
+        "VAL-CROSS-006"
+      ]
+    },
+    {
+      "description": "Raw body-text extraction on the local Next.js dev surface included streamed framework payload text alongside visible copy, which polluted literal page-text captures.",
+      "resolved": true,
+      "resolution": "Used screenshot evidence plus document.body.innerText-based notes instead of raw body extraction for the final copy checks.",
+      "affectedAssertions": [
+        "VAL-TOKEN-001",
+        "VAL-TOKEN-012",
+        "VAL-TOKEN-013",
+        "VAL-TOKEN-014",
+        "VAL-CROSS-005",
+        "VAL-CROSS-006"
+      ]
+    }
+  ],
+  "blockers": [],
+  "summary": {
+    "pass": 8,
+    "fail": 0,
+    "blocked": 0,
+    "note": "All 8 assigned token-policy and cross-section assertions passed in the browser run. The tested tokenomics flow consistently used the minted 709,001,940 BETTER supply, clearly separated policy caps from modeled whale-weight examples, explicitly framed referral sustainability plus per-product return modeling, and traced scenario dependencies back to roadmap and architecture context. No significant browser runtime errors were observed."
+  }
+}

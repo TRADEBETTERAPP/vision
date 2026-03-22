@@ -1,0 +1,221 @@
+{
+  "groupId": "shell-theme",
+  "surface": "browser",
+  "testedAt": "2026-03-22T09:22:50Z",
+  "isolation": {
+    "appUrl": "http://127.0.0.1:3100",
+    "browserSession": "shell-theme-33dae310",
+    "missionDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83",
+    "evidenceDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/evidence/graph-first-shell-and-token-policy/shell-theme"
+  },
+  "assertionsTested": [
+    "VAL-NARR-012",
+    "VAL-VISUAL-000",
+    "VAL-VISUAL-019",
+    "VAL-VISUAL-020",
+    "VAL-VISUAL-021",
+    "VAL-VISUAL-022",
+    "VAL-VISUAL-023"
+  ],
+  "toolsUsed": [
+    "agent-browser",
+    "Read",
+    "Grep",
+    "Execute"
+  ],
+  "assertionResults": [
+    {
+      "id": "VAL-NARR-012",
+      "title": "BETTER brand dominates above the fold",
+      "status": "pass",
+      "reason": "The first viewport is unmistakably BETTER-led: the hero logotype is the largest visual brand element above the fold, while the explanatory copy, status chips, and CTAs remain visually subordinate.",
+      "evidence": {
+        "paths": [
+          "graph-first-shell-and-token-policy/shell-theme/hero-annotated.png",
+          "graph-first-shell-and-token-policy/shell-theme/hero.png"
+        ],
+        "observations": [
+          "At 1440px desktop width, the BETTER logotype sits centrally in the hero and reads as the loudest brand signal before any scroll.",
+          "The header also carries the same BETTER asset, but it remains smaller than the hero lockup, reinforcing a single dominant above-the-fold brand statement rather than competing with it."
+        ],
+        "consoleErrors": "none (only development-mode React DevTools/HMR informational logs)",
+        "codeReferences": [
+          "src/app/page.tsx:31-36",
+          "src/components/BetterLogotype.tsx:27-46"
+        ]
+      }
+    },
+    {
+      "id": "VAL-VISUAL-000",
+      "title": "Signature BETTER shell matches the approved overhaul",
+      "status": "pass",
+      "reason": "The shipped experience preserves the approved shell overhaul: a poster-like BETTER hero, graph-first atlas entry, premium near-black/electric-blue tradebetter palette, and persistent Radiant/Hermes atmosphere instead of a generic dashboard treatment.",
+      "evidence": {
+        "paths": [
+          "graph-first-shell-and-token-policy/shell-theme/hero.png",
+          "graph-first-shell-and-token-policy/shell-theme/atlas-annotated.png",
+          "graph-first-shell-and-token-policy/shell-theme/graph-rest-annotated.png",
+          "graph-first-shell-and-token-policy/shell-theme/lower-page-architecture.png"
+        ],
+        "observations": [
+          "The hero reads as one immersive BETTER composition with a dominant logotype, restrained copy stack, and electric-blue atmospheric depth behind the content.",
+          "After entering the atlas and moving through roadmap/architecture surfaces, the shell keeps the same graph-first, tradebetter-led visual language rather than switching into a disconnected page style."
+        ],
+        "consoleErrors": "none (only development-mode React DevTools/HMR informational logs)",
+        "sourceReferences": [
+          "https://radiant-shaders.com/shader/fluid-amber",
+          "https://github.com/NousResearch/hermes-agent/tree/main/skills/creative/ascii-video"
+        ],
+        "codeReferences": [
+          "src/app/page.tsx:31-120",
+          "src/components/visual/HeroVisualSystem.tsx:51-56",
+          "src/components/visual/SiteAtmosphere.tsx:11-35"
+        ]
+      }
+    },
+    {
+      "id": "VAL-VISUAL-019",
+      "title": "Provided BETTER logotype asset replaces text wordmarks across key shell surfaces",
+      "status": "pass",
+      "reason": "The shipped shell uses the provided BETTER SVG asset for the hero, header, and mobile overlay instead of rendering BETTER as a plain text wordmark on those surfaces.",
+      "evidence": {
+        "paths": [
+          "graph-first-shell-and-token-policy/shell-theme/hero-annotated.png"
+        ],
+        "observations": [
+          "Browser inspection shows the hero and header using the same BETTER lockup asset in the live shell.",
+          "Code trace confirms the shared BetterLogotype component is wired into the header, hero, and mobile navigation overlay surfaces."
+        ],
+        "consoleErrors": "none",
+        "codeReferences": [
+          "src/components/BetterLogotype.tsx:6-6",
+          "src/components/BetterLogotype.tsx:40-40",
+          "src/app/layout.tsx:95-95",
+          "src/app/page.tsx:36-36",
+          "src/components/MobileNav.tsx:94-94"
+        ]
+      }
+    },
+    {
+      "id": "VAL-VISUAL-020",
+      "title": "Radiant/Hermes atmosphere remains materially visible across the full shell",
+      "status": "pass",
+      "reason": "The real Radiant-derived shader field and Hermes-derived ASCII texture remain visibly present not only in the hero, but also through roadmap at-rest, focused graph detail, and lower-page exploration states.",
+      "evidence": {
+        "paths": [
+          "graph-first-shell-and-token-policy/shell-theme/hero.png",
+          "graph-first-shell-and-token-policy/shell-theme/graph-rest-annotated.png",
+          "graph-first-shell-and-token-policy/shell-theme/graph-detail.png",
+          "graph-first-shell-and-token-policy/shell-theme/lower-page-architecture.png"
+        ],
+        "observations": [
+          "The hero shows broad electric-blue shader depth and terminal-like ASCII texture as substantive background structure rather than a flat gradient wash.",
+          "Roadmap and architecture surfaces still show the same atmospheric treatment at reduced strength, confirming the immersive language continues below the hero instead of disappearing after the first section."
+        ],
+        "consoleErrors": "none",
+        "sourceReferences": [
+          "https://radiant-shaders.com/shader/fluid-amber",
+          "https://github.com/NousResearch/hermes-agent/tree/main/skills/creative/ascii-video"
+        ],
+        "codeReferences": [
+          "src/components/visual/SiteAtmosphere.tsx:11-35",
+          "src/components/visual/SiteAtmosphere.tsx:81-94",
+          "src/components/visual/HeroVisualSystem.tsx:51-56",
+          "src/components/visual/HeroVisualSystem.tsx:126-132"
+        ]
+      }
+    },
+    {
+      "id": "VAL-VISUAL-021",
+      "title": "tradebetter theme parity extends across the full shell",
+      "status": "pass",
+      "reason": "The shell keeps tradebetter parity across hero, atlas, roadmap, and architecture surfaces by consistently using the near-black foundation, electric-blue accents, and IBM Plex Mono terminal typography.",
+      "evidence": {
+        "paths": [
+          "graph-first-shell-and-token-policy/shell-theme/hero.png",
+          "graph-first-shell-and-token-policy/shell-theme/atlas-annotated.png",
+          "graph-first-shell-and-token-policy/shell-theme/graph-rest-annotated.png",
+          "graph-first-shell-and-token-policy/shell-theme/lower-page-architecture.png"
+        ],
+        "observations": [
+          "Across all captured states, the shell remains anchored in near-black surfaces with electric-blue emphasis and mono terminal framing rather than reverting to a neutral/light page treatment.",
+          "Theme tokens in code explicitly map to tradebetter values: #0a0a0c for background, #455eff for accent emphasis, IBM Plex Mono for UI/terminal typography, and blue remaps in both shader and ASCII systems."
+        ],
+        "consoleErrors": "none",
+        "codeReferences": [
+          "src/app/globals.css:17-17",
+          "src/app/globals.css:34-34",
+          "src/app/globals.css:54-54",
+          "src/app/layout.tsx:3-27",
+          "src/components/visual/radiant-fluid-amber.glsl.ts:146-164",
+          "src/components/visual/AsciiCanvasRenderer.tsx:364-367"
+        ]
+      }
+    },
+    {
+      "id": "VAL-VISUAL-022",
+      "title": "Persistent atmosphere preserves readability and interaction clarity",
+      "status": "pass",
+      "reason": "Despite the immersive background, copy, CTAs, roadmap labels, and lower-page content remain clearly readable and usable across every tested shell state.",
+      "evidence": {
+        "paths": [
+          "graph-first-shell-and-token-policy/shell-theme/hero-annotated.png",
+          "graph-first-shell-and-token-policy/shell-theme/graph-rest-annotated.png",
+          "graph-first-shell-and-token-policy/shell-theme/graph-detail.png",
+          "graph-first-shell-and-token-policy/shell-theme/lower-page-architecture.png"
+        ],
+        "observations": [
+          "Hero copy, status chips, and CTA buttons remain crisp on top of the shader/ASCII stack, with no atmospheric layer obscuring the primary narrative block.",
+          "Roadmap tabs, graph detail content, and lower-page architecture copy remain readable against the persistent background, indicating the reduced-opacity continuation is correctly balanced for legibility."
+        ],
+        "consoleErrors": "none",
+        "codeReferences": [
+          "src/components/visual/SiteAtmosphere.tsx:34-35",
+          "src/components/visual/SiteAtmosphere.tsx:101-102",
+          "src/app/globals.css:318-369"
+        ]
+      }
+    },
+    {
+      "id": "VAL-VISUAL-023",
+      "title": "BETTER logotype usage is traceable to the provided asset",
+      "status": "pass",
+      "reason": "The shipped BETTER logotype is directly traceable to the provided Better_Design source asset: the repo SVG and the supplied source SVG are SHA-256 identical, and the BetterLogotype component documents and serves that exact asset path across the shell.",
+      "evidence": {
+        "paths": [
+          "graph-first-shell-and-token-policy/shell-theme/hero-annotated.png"
+        ],
+        "observations": [
+          "`public/better-logotype.svg` and `/Users/test/Downloads/Better_Design/Logo/Better_Logotype_Light.svg` produced the same SHA-256 digest during validation, confirming byte-identical provenance.",
+          "The BetterLogotype component comment explicitly names the provided source asset, and the live hero/header/mobile surfaces all consume `/better-logotype.svg`."
+        ],
+        "assetChecksums": {
+          "repoAsset": {
+            "path": "/Users/test/vision/public/better-logotype.svg",
+            "sha256": "052741e14b0bf3ca87d31b8a6bc6521115644be5b156d29cd3d005aa72864edc"
+          },
+          "providedSourceAsset": {
+            "path": "/Users/test/Downloads/Better_Design/Logo/Better_Logotype_Light.svg",
+            "sha256": "052741e14b0bf3ca87d31b8a6bc6521115644be5b156d29cd3d005aa72864edc"
+          }
+        },
+        "consoleErrors": "none",
+        "codeReferences": [
+          "src/components/BetterLogotype.tsx:6-6",
+          "src/components/BetterLogotype.tsx:40-40",
+          "src/app/layout.tsx:95-95",
+          "src/app/page.tsx:36-36",
+          "src/components/MobileNav.tsx:94-94"
+        ]
+      }
+    }
+  ],
+  "frictions": [],
+  "blockers": [],
+  "summary": {
+    "pass": 7,
+    "fail": 0,
+    "blocked": 0,
+    "note": "All 7 assigned shell-theme assertions passed in the headed browser run. The live shell keeps the BETTER logotype dominant above the fold, extends tradebetter theme parity and Radiant/Hermes atmosphere across graph-first and lower-page surfaces, preserves readability under the persistent background, and serves a logotype asset that is byte-identical to the provided Better_Design source file. No browser runtime errors were observed beyond normal development-mode informational logs."
+  }
+}

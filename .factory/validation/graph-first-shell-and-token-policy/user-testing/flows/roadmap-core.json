@@ -1,0 +1,163 @@
+{
+  "groupId": "roadmap-core",
+  "surface": "browser",
+  "testedAt": "2026-03-22T09:38:53Z",
+  "isolation": {
+    "appUrl": "http://127.0.0.1:3100",
+    "browserSession": "roadmap-core-33dae310",
+    "missionDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83",
+    "evidenceDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/evidence/graph-first-shell-and-token-policy/roadmap-core"
+  },
+  "assertionsTested": [
+    "VAL-NARR-004",
+    "VAL-ROADMAP-001",
+    "VAL-ROADMAP-002",
+    "VAL-ROADMAP-003",
+    "VAL-ROADMAP-011",
+    "VAL-ROADMAP-013"
+  ],
+  "toolsUsed": [
+    "agent-browser",
+    "Read",
+    "Grep",
+    "Execute"
+  ],
+  "assertionResults": [
+    {
+      "id": "VAL-NARR-004",
+      "title": "Primary navigation exposes required graph destinations and focus states",
+      "status": "pass",
+      "reason": "Desktop and mobile navigation both expose the required BETTER destinations, and the tested actions open graph focus-state hashes rather than leaving users on disconnected document anchors or in a broken mobile overlay.",
+      "evidence": {
+        "paths": [
+          "graph-first-shell-and-token-policy/roadmap-core/VAL-NARR-004-desktop-nav.png",
+          "graph-first-shell-and-token-policy/roadmap-core/VAL-NARR-004-mobile-nav-open.png",
+          "graph-first-shell-and-token-policy/roadmap-core/VAL-NARR-004-desktop-nav-destination-flow.webm",
+          "graph-first-shell-and-token-policy/roadmap-core/VAL-NARR-004-mobile-nav-destination-flow-v2.webm"
+        ],
+        "observations": [
+          "Desktop navigation exposed What is BETTER, Live Now, Roadmap, Tokenomics, Architecture, Evidence & Sources, and Risks & Caveats, and tested clicks drove the shell into graph hashes such as #graph-roadmap and #graph-tokenomics.",
+          "On iPhone 14 emulation, opening the navigation menu showed the same destination set; selecting destinations dismissed the overlay cleanly and landed on the intended graph-focused state instead of trapping the user in the menu."
+        ],
+        "consoleErrors": "none (console was cleared and checked during the run; no significant runtime errors were observed)"
+      }
+    },
+    {
+      "id": "VAL-ROADMAP-001",
+      "title": "The shell immediately reads as a graph-first explorable mindmap",
+      "status": "pass",
+      "reason": "The first meaningful roadmap exploration view visibly presents an interactive graph shell with multiple node buttons, an active focal state, and explicit overview/orientation controls, so it reads as an explorable atlas rather than a plain linear document.",
+      "evidence": {
+        "paths": [
+          "graph-first-shell-and-token-policy/roadmap-core/VAL-ROADMAP-001-graph-shell-first-view.png",
+          "graph-first-shell-and-token-policy/roadmap-core/VAL-ROADMAP-001-active-node-orientation-cue.png",
+          "graph-first-shell-and-token-policy/roadmap-core/VAL-ROADMAP-001-graph-shell-annotated.png"
+        ],
+        "observations": [
+          "The graph overview shows eight explorable BETTER nodes in one shell: What is BETTER, Proof & Trust, Live Now, Roadmap, Tokenomics, Architecture, Evidence & Sources, and Risks & Caveats.",
+          "The focused roadmap state is visually obvious through the active node treatment plus visible orientation affordances such as the overview control and breadcrumb/wayfinding labels."
+        ],
+        "consoleErrors": "none"
+      }
+    },
+    {
+      "id": "VAL-ROADMAP-002",
+      "title": "Graph wayfinding and orientation recovery stay available",
+      "status": "pass",
+      "reason": "Traversal between roadmap-adjacent graph surfaces preserved visible orientation cues and recovery controls, allowing the user to move across focused states and return to overview without losing context.",
+      "evidence": {
+        "paths": [
+          "graph-first-shell-and-token-policy/roadmap-core/VAL-ROADMAP-002-graph-wayfinding.png",
+          "graph-first-shell-and-token-policy/roadmap-core/VAL-ROADMAP-002-wayfinding-annotated.png",
+          "graph-first-shell-and-token-policy/roadmap-core/VAL-ROADMAP-002-wayfinding-flow-v2.webm"
+        ],
+        "observations": [
+          "The shell kept visible wayfinding cues during traversal, including the graph breadcrumb plus explicit recovery controls labeled Return to overview / Back to overview.",
+          "Recorded traversal from Roadmap to Tokenomics to Architecture and back to overview completed without stranding the user in a lost state or removing the surrounding graph context."
+        ],
+        "consoleErrors": "none"
+      }
+    },
+    {
+      "id": "VAL-ROADMAP-003",
+      "title": "Supporting scroll/story state stays synchronized without becoming the primary navigation model",
+      "status": "pass",
+      "reason": "Scrolling through surrounding narrative content did not hijack or desynchronize the graph shell's active focus, while explicit graph/navigation actions remained the mechanism for changing major exploration states.",
+      "evidence": {
+        "paths": [
+          "graph-first-shell-and-token-policy/roadmap-core/VAL-ROADMAP-003-graph-sync-forward-back-v2.webm",
+          "graph-first-shell-and-token-policy/roadmap-core/VAL-ROADMAP-011-focused-node-detail-panel.png",
+          "graph-first-shell-and-token-policy/roadmap-core/VAL-ROADMAP-013-major-roadmap-state-controls.png"
+        ],
+        "observations": [
+          "During the recorded forward/back scroll check, moving through the hero and surrounding story sections did not silently flip the graph to unrelated roadmap states or force progression through the roadmap via scrolling.",
+          "Major transitions still happened through deliberate top-nav or node/focus actions, demonstrating that scrolling supports the experience without replacing node-first graph navigation."
+        ],
+        "consoleErrors": "none"
+      }
+    },
+    {
+      "id": "VAL-ROADMAP-011",
+      "title": "Node-first exploration is the primary interaction model",
+      "status": "pass",
+      "reason": "Across desktop and mobile, the shell foregrounds graph node selection and focused detail-surface exploration, so interaction reads as atlas traversal rather than section-by-section anchor browsing.",
+      "evidence": {
+        "paths": [
+          "graph-first-shell-and-token-policy/roadmap-core/VAL-ROADMAP-011-at-rest-annotated.png",
+          "graph-first-shell-and-token-policy/roadmap-core/VAL-ROADMAP-011-focused-node-detail-panel.png",
+          "graph-first-shell-and-token-policy/roadmap-core/VAL-ROADMAP-011-mobile-roadmap.png",
+          "graph-first-shell-and-token-policy/roadmap-core/VAL-ROADMAP-011-node-first-exploration.webm"
+        ],
+        "observations": [
+          "At rest, the graph overview presents the node map itself as the main exploration affordance before any linear page reading is required.",
+          "Selecting a node opens an in-shell focused surface with roadmap detail while preserving graph context, and the mobile run likewise reaches roadmap focus through the graph shell rather than a simple document-anchor jump."
+        ],
+        "consoleErrors": "none"
+      }
+    },
+    {
+      "id": "VAL-ROADMAP-013",
+      "title": "Major exploration transitions do not require linear page scrolling",
+      "status": "pass",
+      "reason": "Users can jump directly between major roadmap-adjacent states through the graph shell and top navigation controls, without having to linearly scroll through the page to advance the experience.",
+      "evidence": {
+        "paths": [
+          "graph-first-shell-and-token-policy/roadmap-core/VAL-ROADMAP-013-major-roadmap-state-controls.png",
+          "graph-first-shell-and-token-policy/roadmap-core/VAL-ROADMAP-013-non-linear-roadmap-transition.webm"
+        ],
+        "observations": [
+          "The recorded transition flow moved directly between major states such as Roadmap, Tokenomics, and Architecture via explicit controls instead of relying on incremental document scrolling.",
+          "The major-state controls remain visible while focused surfaces are open, keeping non-linear movement available throughout the exploration flow."
+        ],
+        "consoleErrors": "none"
+      }
+    }
+  ],
+  "frictions": [
+    {
+      "description": "Automation encountered duplicate accessible button names such as 'Tokenomics' because both overview nodes and focused-surface related links were simultaneously visible.",
+      "resolved": true,
+      "resolution": "Re-ran the affected recordings using stable element refs from fresh snapshots instead of ambiguous semantic locators.",
+      "affectedAssertions": [
+        "VAL-ROADMAP-002",
+        "VAL-ROADMAP-003",
+        "VAL-ROADMAP-013"
+      ]
+    },
+    {
+      "description": "The first mobile navigation recording timed out before the 'Open navigation menu' interaction completed.",
+      "resolved": true,
+      "resolution": "Discarded the partial take and captured a complete replacement recording as `VAL-NARR-004-mobile-nav-destination-flow-v2.webm`.",
+      "affectedAssertions": [
+        "VAL-NARR-004"
+      ]
+    }
+  ],
+  "blockers": [],
+  "summary": {
+    "pass": 6,
+    "fail": 0,
+    "blocked": 0,
+    "note": "All 6 assigned roadmap-core assertions passed in the browser run. Desktop and mobile navigation opened graph focus states cleanly, the shell read as a graph-first atlas with durable wayfinding, node-first exploration remained primary, scrolling did not become the navigation model, and major roadmap transitions were reachable without linear page scrolling. No significant browser runtime errors were observed."
+  }
+}

@@ -1,0 +1,171 @@
+{
+  "groupId": "cross-surface",
+  "surface": "browser",
+  "testedAt": "2026-03-22T10:20:42Z",
+  "isolation": {
+    "appUrl": "http://127.0.0.1:3100",
+    "browserSession": "crosssurface-final",
+    "missionDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83",
+    "evidenceDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/evidence/graph-first-shell-and-token-policy/cross-surface"
+  },
+  "assertionsTested": [
+    "VAL-CROSS-002",
+    "VAL-CROSS-003",
+    "VAL-CROSS-004",
+    "VAL-CROSS-007",
+    "VAL-CROSS-012",
+    "VAL-CROSS-013"
+  ],
+  "toolsUsed": [
+    "agent-browser",
+    "Read",
+    "Execute"
+  ],
+  "assertionResults": [
+    {
+      "id": "VAL-CROSS-002",
+      "title": "Cross-surface navigation preserves graph focus and roadmap exploration context",
+      "status": "pass",
+      "reason": "Roadmap exploration context survived real shell handoffs: the focused whale-tier node, the expanded Token Utility branch, and the same roadmap focus hash all came back after leaving for Tokenomics/Architecture and navigating back through browser history.",
+      "evidence": {
+        "paths": [
+          "graph-first-shell-and-token-policy/cross-surface/VAL-CROSS-002-003-history-scenario-flow.webm",
+          "graph-first-shell-and-token-policy/cross-surface/VAL-CROSS-002-roadmap-focused-node.png",
+          "graph-first-shell-and-token-policy/cross-surface/VAL-CROSS-002-restored-graph-context.png",
+          "graph-first-shell-and-token-policy/cross-surface/VAL-CROSS-002-close-detail-preserves-branch.png"
+        ],
+        "observations": [
+          "Fresh rerun in session `crosssurface-final` selected `tu-whale-tiers`, then left Roadmap for Tokenomics and Architecture; browser back restored `#node-tu-whale-tiers` with breadcrumb `→ Roadmap`, `aria-expanded=true` on `Token Utility & Access Tiers`, and `selectedNodeId=tu-whale-tiers`.",
+          "Closing the roadmap detail panel cleared the hash but kept the Token Utility branch expanded, so context recovery did not depend on keeping the detail drawer open."
+        ],
+        "consoleErrors": "none",
+        "network": "No relevant API requests were required; the flow stayed inside client-side hash/state transitions."
+      }
+    },
+    {
+      "id": "VAL-CROSS-003",
+      "title": "Tokenomics scenario and user inputs persist across cross-surface handoffs",
+      "status": "pass",
+      "reason": "The real Tokenomics surface preserved both scenario selection and typed inputs after a handoff to Architecture and a browser-history return, so the cross-surface shell no longer resets the user's working scenario context.",
+      "evidence": {
+        "paths": [
+          "graph-first-shell-and-token-policy/cross-surface/VAL-CROSS-002-003-history-scenario-flow.webm",
+          "graph-first-shell-and-token-policy/cross-surface/VAL-CROSS-003-upside-scenario-state.png",
+          "graph-first-shell-and-token-policy/cross-surface/VAL-CROSS-003-restored-tokenomics-state.png"
+        ],
+        "observations": [
+          "Fresh rerun set the Tokenomics surface to the `Upside` tab with `Token Balance (BETTER)=500000` and `Vault Deposit ($)=25000`, then navigated to Architecture via the related-link pill.",
+          "Browser back returned to `#graph-tokenomics` with breadcrumb `→ Tokenomics`, `activeScenario=Upside`, `tokenBalance=500000`, and `depositAmount=25000`, matching the pre-handoff state exactly."
+        ],
+        "consoleErrors": "none",
+        "network": "No relevant API requests were required for the scenario/input persistence flow."
+      }
+    },
+    {
+      "id": "VAL-CROSS-004",
+      "title": "Shared maturity/status labels stay consistent across proof, roadmap, and architecture",
+      "status": "pass",
+      "reason": "The browser-rendered surfaces agreed on the maturity framing for the shared concepts checked: live proof items stayed live, Social Vaults stayed in progress, and Autonomous Strategy Agents stayed planned across roadmap and architecture.",
+      "evidence": {
+        "paths": [
+          "graph-first-shell-and-token-policy/cross-surface/VAL-CROSS-013-focused-graph-exploration-state.png",
+          "graph-first-shell-and-token-policy/cross-surface/roadmap-shell-full.png",
+          "graph-first-shell-and-token-policy/cross-surface/VAL-CROSS-012-architecture-shell-state.png"
+        ],
+        "observations": [
+          "Fresh proof-section DOM extraction returned four live cards: `Live Terminal`, `On-Chain Access Gating`, `Real Copy Trading`, and `Lite Mode Onramp`, each with a `Live` badge in the rendered text.",
+          "Fresh roadmap node text checks returned `BETTER Terminal (Closed Beta) Live`, `Lite Mode Live`, `Social Vaults & vBETTER In Progress`, and `Autonomous Strategy Agents Planned`; the Architecture flywheel buttons rendered the same `Social Vaults & vBETTER In Progress` and `Autonomous Strategy Agents Planned` labels."
+        ],
+        "consoleErrors": "none",
+        "network": "No relevant network activity beyond the local document/static assets."
+      }
+    },
+    {
+      "id": "VAL-CROSS-007",
+      "title": "Non-hero exploratory CTAs stay informational and land on the promised surface",
+      "status": "pass",
+      "reason": "The checked in-shell CTA remained exploratory rather than transactional: the Evidence surface exposed only adjacent informational destinations, and the Risks handoff landed on the matching detail surface without misleading action language.",
+      "evidence": {
+        "paths": [
+          "graph-first-shell-and-token-policy/cross-surface/VAL-CROSS-007-section-cta-inventory.png",
+          "graph-first-shell-and-token-policy/cross-surface/VAL-CROSS-007-post-click-section-destination.png",
+          "graph-first-shell-and-token-policy/cross-surface/VAL-CROSS-012-evidence-shell-state.png"
+        ],
+        "observations": [
+          "On `#graph-evidence`, the focused shell exposed only the related informational exits `Architecture` and `Risks & Caveats`; no purchase or activation CTA appeared in the checked section state.",
+          "Fresh rerun clicked the related `Risks & Caveats` pill and landed on `#graph-risks` with breadcrumb `→ Risks & Caveats`, a focused surface present, and 5 rendered risk cards."
+        ],
+        "consoleErrors": "none",
+        "network": "No relevant API/XHR activity was involved in the in-shell CTA handoff."
+      }
+    },
+    {
+      "id": "VAL-CROSS-012",
+      "title": "Major BETTER surfaces remain inside one coherent explorable shell",
+      "status": "pass",
+      "reason": "Roadmap, Tokenomics, Architecture, Evidence, and Risks all stayed inside the same graph shell with persistent breadcrumb/overview controls and related-node traversal, so major exploration did not collapse back into disconnected page sections.",
+      "evidence": {
+        "paths": [
+          "graph-first-shell-and-token-policy/cross-surface/roadmap-shell-full.png",
+          "graph-first-shell-and-token-policy/cross-surface/VAL-CROSS-012-architecture-shell-state.png",
+          "graph-first-shell-and-token-policy/cross-surface/VAL-CROSS-012-evidence-shell-state.png",
+          "graph-first-shell-and-token-policy/cross-surface/VAL-CROSS-007-post-click-section-destination.png"
+        ],
+        "observations": [
+          "Fresh rerun confirmed `#graph-tokenomics`, `#graph-architecture`, `#graph-evidence`, and `#graph-risks` each rendered `graph-focused-surface=true` with the shell breadcrumb showing `→ Tokenomics`, `→ Architecture`, `→ Evidence & Sources`, and `→ Risks & Caveats` respectively.",
+          "Related-node pills remained available inside focused states (for example Architecture exposed `Roadmap`, `Tokenomics`, and `Evidence & Sources`; Evidence exposed `Architecture` and `Risks & Caveats`), preserving continuous node-to-node traversal inside one shell."
+        ],
+        "consoleErrors": "none",
+        "network": "No relevant network requests beyond the initial local page/assets were needed for shell traversal."
+      }
+    },
+    {
+      "id": "VAL-CROSS-013",
+      "title": "Proof-led entry has an obvious handoff into focused graph exploration",
+      "status": "pass",
+      "reason": "The proof section presents a dedicated `Explore the BETTER Atlas →` handoff, and a fresh rerun confirmed that clicking it enters the focused Roadmap graph state with the expected hash and breadcrumb instead of leaving the user in an unfocused scroll-only atlas position.",
+      "evidence": {
+        "paths": [
+          "graph-first-shell-and-token-policy/cross-surface/VAL-CROSS-013-proof-entry-handoff-cta.png",
+          "graph-first-shell-and-token-policy/cross-surface/VAL-CROSS-013-proof-led-entry-to-graph-handoff.webm",
+          "graph-first-shell-and-token-policy/cross-surface/VAL-CROSS-002-roadmap-focused-node.png"
+        ],
+        "observations": [
+          "Fresh targeted rerun on session `crosssurface-final` clicked `proof-cta-graph-explore` and immediately observed `window.location.hash=#graph-roadmap`, breadcrumb `→ Roadmap`, `graph-focused-surface=true`, and roadmap content present in the shell.",
+          "The CTA remains visually obvious in the proof block cluster and the recorded handoff shows a direct move from proof-led evidence into graph exploration without requiring manual scavenger-hunt navigation."
+        ],
+        "consoleErrors": "none",
+        "network": "No relevant API requests were needed for the proof-to-graph handoff."
+      }
+    }
+  ],
+  "frictions": [
+    {
+      "description": "The earlier screenshot labeled `VAL-CROSS-013-focused-graph-exploration-state.png` looked like a root-page atlas scroll state, so it was not strong enough on its own to prove the proof CTA's hash-focused destination.",
+      "resolved": true,
+      "resolution": "Ran a fresh targeted rerun in `crosssurface-final` that clicked the proof CTA and directly verified `#graph-roadmap`, breadcrumb `→ Roadmap`, and `graph-focused-surface=true`.",
+      "affectedAssertions": [
+        "VAL-CROSS-013"
+      ]
+    },
+    {
+      "description": "Roadmap/Tokenomics/Architecture labels appear in both overview nodes and related-link pills, which makes naive text-only click automation ambiguous.",
+      "resolved": true,
+      "resolution": "Used refreshed `agent-browser snapshot -i` refs and `data-testid`/hash checks after each hop to ensure the intended in-shell control was exercised.",
+      "affectedAssertions": [
+        "VAL-CROSS-002",
+        "VAL-CROSS-003",
+        "VAL-CROSS-007",
+        "VAL-CROSS-012",
+        "VAL-CROSS-013"
+      ]
+    }
+  ],
+  "blockers": [],
+  "summary": {
+    "pass": 6,
+    "fail": 0,
+    "blocked": 0,
+    "note": "All 6 assigned cross-surface assertions passed in browser validation. Real shell handoffs preserved roadmap branch/node context and tokenomics scenario inputs, proof/live-roadmap/architecture maturity labels stayed aligned for the sampled shared concepts, non-hero exploratory CTAs remained honest, major surfaces stayed inside one coherent graph shell, and the proof CTA cleanly handed users into focused roadmap exploration. No significant browser runtime errors were observed."
+  }
+}
