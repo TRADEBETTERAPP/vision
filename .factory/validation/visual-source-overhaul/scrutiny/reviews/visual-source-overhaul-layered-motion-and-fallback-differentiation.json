@@ -1,0 +1,39 @@
+{
+  "featureId": "visual-source-overhaul-layered-motion-and-fallback-differentiation",
+  "reviewedAt": "2026-03-22T04:48:00Z",
+  "commitId": "bf15b0e1a163ea6fe25dbca20b5484258b6db2cd",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "fail",
+  "codeReview": {
+    "summary": "The feature adds visual-state metadata, CSS tuning, and headed-browser evidence artifacts, but the shipped fallback mode is not actually static or fully degraded as claimed because both ASCII layers continue animating when WebGL fallback is active. That makes the new data-motion-layers metadata inaccurate and leaves the enhanced-vs-fallback differentiation contract only partially implemented. The new regression tests also contain an un-awaited waitFor, which weakens coverage around the new metadata.",
+    "issues": [
+      {
+        "file": "src/components/visual/AsciiCanvasRenderer.tsx",
+        "line": 498,
+        "severity": "blocking",
+        "description": "Failure fallback still animates the ASCII layers. `AsciiCanvasRenderer` only reads `reducedMotion`, and `AsciiBackground` does the same at `src/components/visual/AsciiBackground.tsx:186-220`, so a WebGL failure leaves moving ASCII visible even though `HeroVisualSystem` labels the wrapper as `data-visual-state=\"fallback\"` and reports `data-motion-layers=0` at `src/components/visual/HeroVisualSystem.tsx:100-111`. That makes the fallback metadata inaccurate and means the shipped fallback is not the static/degraded state promised in the feature description and comments."
+      },
+      {
+        "file": "src/components/visual/__tests__/layered-motion-fallback-differentiation.test.tsx",
+        "line": 241,
+        "severity": "non_blocking",
+        "description": "The `waitFor(...)` call in `enhanced state exposes data-motion-layers count for validation` is neither `await`ed nor returned, so Jest can finish the test before the asynchronous assertion runs. This weakens the new regression coverage around the feature's validation metadata."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "skills",
+      "observation": "The worker followed a test-first flow in the transcript, but the handoff still lacked the concrete failing-test evidence that the mission and skill require when claiming `followedProcedure=true`. A dedicated handoff field for pre-implementation failing test evidence would make this requirement harder to miss.",
+      "evidence": "The transcript skeleton shows the worker created `src/components/visual/__tests__/layered-motion-fallback-differentiation.test.tsx` and ran it before implementation, with 10 failures, while the handoff only lists passing validators. Compare `frontend-experience-worker/SKILL.md` step 6 and mission `AGENTS.md` ('workers must cite concrete evidence for test-first ordering')."
+    },
+    {
+      "area": "knowledge",
+      "observation": "The shared browser-validation guidance does not explicitly tell workers to validate failure fallback separately from reduced-motion when an immersive feature exposes both states. In this feature, that ambiguity let the worker compare enhanced mode only against reduced-motion, leaving the actual `fallback` state unchecked.",
+      "evidence": "`user-testing.md` asks for evidence that enhanced state differs from the static fallback, and the handoff's interactive checks only describe enhanced vs `reduced-motion` captures. The shipped code also exposes distinct `data-visual-state` values for `fallback` and `reduced-motion` in `src/components/visual/HeroVisualSystem.tsx`."
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "Fail. The feature improves layering metadata and visual tuning, but the real WebGL failure fallback still animates both ASCII layers, so the fallback state is misreported and not fully aligned with the contract. I also noted a weak async test assertion and two shared-state/documentation gaps around test-first evidence and fallback-vs-reduced-motion browser validation."
+}

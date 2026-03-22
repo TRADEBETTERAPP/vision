@@ -1,0 +1,38 @@
+{
+  "featureId": "visual-source-overhaul-radiant-asset-background",
+  "reviewedAt": "2026-03-22T04:47:52.767755Z",
+  "commitId": "f0d47bf2979b38ec22e05f54193c34441456c209",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "fail",
+  "codeReview": {
+    "summary": "The commit successfully vendors the real Radiant Fluid Amber shader asset and wires it into the hero background, but it does not satisfy the feature contract for a coherent static fallback when the enhanced layer is unavailable. On WebGL failure, the DOM ASCII layer keeps animating, so the fallback is still moving rather than static.",
+    "issues": [
+      {
+        "file": "src/components/visual/AsciiBackground.tsx",
+        "line": 194,
+        "severity": "blocking",
+        "description": "`AsciiBackground` only becomes static when `reducedMotion` is true (`const isStatic = reducedMotion`), so a WebGL failure still leaves the ASCII layer animating. That breaks the feature contract in `features.json` (`Reduced-motion and failure states still fall back to a coherent static presentation`) and contradicts `src/components/visual/HeroVisualSystem.tsx:36`, which claims fallback leaves a static ASCII layer. The mismatch is reinforced by `src/components/visual/__tests__/immersive-visual-language.test.tsx:306`, which explicitly asserts that fallback should keep the ASCII layer alive instead of making it static."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "skills",
+      "observation": "The frontend-experience-worker skill requires hero/immersive visual changes to review the reference screenshots in `.factory/research/screenshots/`, but this worker transcript only shows `design-system.md` being read before implementation and never reads any screenshot files even though the screenshot set exists.",
+      "evidence": "Skill requirement: `/Users/test/vision/.factory/skills/frontend-experience-worker/SKILL.md:22`. Transcript excerpt: `/tmp/fbf6ecaa-07c1-4f2d-accb-7e62db4e6c37.skeleton.txt:75-98` shows `design-system.md` but no screenshot reads. Available references: `/Users/test/vision/.factory/research/screenshots/` contains `vision-current-hero.png`, `tradebetter-hero.png`, and `radiant-hero.png`."
+    },
+    {
+      "area": "skills",
+      "observation": "The frontend-experience-worker skill requires the handoff to cite at least one newly failing test expectation written before implementation, but this handoff only lists added tests generically while `skillFeedback.followedProcedure` is still marked true.",
+      "evidence": "Skill requirement: `/Users/test/vision/.factory/skills/frontend-experience-worker/SKILL.md:25`. Transcript shows test-first execution and pre-implementation failures at `/tmp/fbf6ecaa-07c1-4f2d-accb-7e62db4e6c37.skeleton.txt:270-305` (`19 tests fail as expected`). Handoff content at `/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/handoffs/2026-03-22T04-21-39-813Z__visual-source-overhaul-radiant-asset-background__fbf6ecaa-07c1-4f2d-accb-7e62db4e6c37.json:10-151` enumerates tests but does not explicitly cite one failing expectation from before the implementation change."
+    },
+    {
+      "area": "conventions",
+      "observation": "The repo’s visual fallback tests currently encode the opposite of the feature contract: they assert that ASCII should keep animating during WebGL fallback instead of becoming static. That made the incorrect fallback behavior look intentional instead of surfacing as a regression.",
+      "evidence": "Feature contract: `/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/features.json:1023-1027` requires failure fallback to be static. Current implementation says otherwise in `/Users/test/vision/src/components/visual/AsciiBackground.tsx:191-194`, and `/Users/test/vision/src/components/visual/__tests__/immersive-visual-language.test.tsx:306-317` explicitly expects fallback-mode ASCII to stay alive."
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "Fail. The vendored Radiant shader integration itself is solid, but the feature misses a blocking contract requirement: failure fallback is not static because the ASCII layer keeps animating when WebGL falls back. I also noted two shared-state skill/procedure gaps (reference screenshots not reviewed and no explicit failing pre-implementation test cited in the handoff) plus a repo test/convention mismatch that currently normalizes the incorrect fallback behavior."
+}

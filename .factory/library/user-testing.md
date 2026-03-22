@@ -32,6 +32,7 @@ Core flows to validate:
 ## Flow Validator Guidance: browser
 
 - Use `agent-browser` for all browser validation against `http://127.0.0.1:3100`.
+- The current `agent-browser` CLI uses `open` to start a session against a URL; `launch` is not a supported subcommand in this environment.
 - If a visual-authenticity pass reports `webglSupport=false` in headless mode, rerun the same isolated session in headed mode before failing shader assertions; this environment can hide the shipped WebGL canvas in headless browser runs.
 - For redesign work, use the captured public reference screenshots in `.factory/research/screenshots/` as visual guardrails when evaluating composition, hierarchy, and atmosphere.
 - Stay inside the assigned assertion scope and treat the running local Next.js app as shared infrastructure; do not restart it unless the parent validator explicitly asks.
@@ -40,5 +41,6 @@ Core flows to validate:
 - Explicitly note whether the first viewport reads as one composition, whether BETTER branding is unmistakable, and whether shader/ascii layers improve the surface without obscuring readability.
 - When validating the immersive system, record which concrete Radiant and Hermes ASCII-video source resources are present in the shipped implementation and how they show up on the page.
 - Capture evidence that the enhanced state is materially different from the static fallback state; a faint or barely changing background should fail.
+- When an immersive feature exposes both `fallback` and `reduced-motion` visual states, validate them separately; reduced motion is not sufficient evidence for failure-fallback behavior.
 - For this mission, run only one browser validator at a time because the visual layer can increase runtime cost.
 - Do not modify application code or mission state files from a flow validator; write only the assigned flow report and evidence artifacts.

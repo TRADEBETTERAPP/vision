@@ -1,0 +1,76 @@
+{
+  "milestone": "visual-source-overhaul",
+  "round": 1,
+  "status": "fail",
+  "validatorsRun": {
+    "test": {
+      "passed": true,
+      "command": "npm --prefix \"/Users/test/vision\" run test",
+      "exitCode": 0
+    },
+    "typecheck": {
+      "passed": true,
+      "command": "\"/Users/test/vision/node_modules/.bin/tsc\" --noEmit -p \"/Users/test/vision/tsconfig.json\"",
+      "exitCode": 0
+    },
+    "lint": {
+      "passed": true,
+      "command": "npm --prefix \"/Users/test/vision\" run lint",
+      "exitCode": 0
+    }
+  },
+  "reviewsSummary": {
+    "total": 3,
+    "passed": 1,
+    "failed": 2,
+    "failedFeatures": [
+      "visual-source-overhaul-radiant-asset-background",
+      "visual-source-overhaul-layered-motion-and-fallback-differentiation"
+    ]
+  },
+  "blockingIssues": [
+    {
+      "featureId": "visual-source-overhaul-radiant-asset-background",
+      "severity": "blocking",
+      "description": "WebGL failure fallback is not static: `AsciiBackground` only stops animating for reduced motion, so the shipped fallback still shows moving ASCII instead of the coherent static presentation required by the feature contract."
+    },
+    {
+      "featureId": "visual-source-overhaul-layered-motion-and-fallback-differentiation",
+      "severity": "blocking",
+      "description": "The integrated fallback state still animates ASCII layers while `HeroVisualSystem` reports `data-visual-state=\"fallback\"` and `data-motion-layers=0`, so the fallback metadata and enhanced-vs-fallback differentiation contract are inaccurate."
+    }
+  ],
+  "appliedUpdates": [
+    {
+      "target": "library",
+      "description": "Updated `.factory/library/user-testing.md` to document that the current `agent-browser` CLI uses `open` rather than `launch` for URL sessions.",
+      "sourceFeature": "visual-source-overhaul-hermes-ascii-canvas-renderer"
+    },
+    {
+      "target": "library",
+      "description": "Updated `.factory/library/user-testing.md` to require separate validation of immersive `fallback` and `reduced-motion` states when both exist.",
+      "sourceFeature": "visual-source-overhaul-layered-motion-and-fallback-differentiation"
+    }
+  ],
+  "suggestedGuidanceUpdates": [
+    {
+      "target": "skills",
+      "suggestion": "Tighten `frontend-experience-worker` procedure evidence so hero/immersive features that mark `followedProcedure=true` must either show transcript evidence of `.factory/research/screenshots/` review or explicitly declare an exception path for non-visual-only fixes.",
+      "evidence": "The review for `visual-source-overhaul-radiant-asset-background` found no screenshot-review evidence despite the skill requiring screenshot review for hero/immersive work, and the same adherence gap was already recorded in `.factory/validation/landing-redesign/scrutiny/synthesis.json` round 2.",
+      "isSystemic": true
+    },
+    {
+      "target": "skills",
+      "suggestion": "Add an explicit handoff field or checklist item for at least one newly failing pre-implementation test expectation whenever `frontend-experience-worker` claims test-first adherence.",
+      "evidence": "Reviews for `visual-source-overhaul-radiant-asset-background` and `visual-source-overhaul-layered-motion-and-fallback-differentiation` both found transcript evidence of test-first work, but the handoffs still omitted the concrete failing-test citation required by the skill while marking `followedProcedure=true`.",
+      "isSystemic": true
+    }
+  ],
+  "rejectedObservations": [
+    {
+      "observation": "The current visual fallback tests expect ASCII motion to persist during WebGL fallback.",
+      "reason": "This is a feature-specific product/test defect already captured in the blocking review findings, not a separate shared-state update to apply in `services.yaml`, `.factory/library/`, or orchestrator guidance."
+    }
+  ],
+  "previousRound": null
+}
