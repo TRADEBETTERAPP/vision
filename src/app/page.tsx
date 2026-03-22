@@ -70,7 +70,7 @@ export default function Home() {
                     >
                       <MaturityBadge status="live" />
                       <span className="text-sm text-secondary">
-                        Terminal &amp; copy-trading shipping now
+                        Terminal &amp; copy-trading in closed beta
                       </span>
                       <EvidenceHook source={heroLiveToday.source} />
                     </div>
@@ -138,7 +138,7 @@ export default function Home() {
           <Heading
             label="Live Now"
             title="What's Live Today"
-            description="The current production capabilities of the BETTER ecosystem — everything below is shipping and accessible right now."
+            description="The current production capabilities of the BETTER ecosystem — live today for qualifying token holders."
           />
           <p className="mx-auto mt-2 max-w-2xl text-center text-xs text-muted" data-testid="freshness-cue">
             Status as of 2026-Q1 · Source: BETTER Docs ·{" "}

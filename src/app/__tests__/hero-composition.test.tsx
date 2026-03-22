@@ -78,13 +78,29 @@ describe("Plain-language definition (VAL-NARR-001)", () => {
 });
 
 describe("Live vs future framing without split cards (VAL-NARR-002)", () => {
-  it("hero conveys live product reality", () => {
+  it("hero conveys live product reality with honest availability qualifier", () => {
     render(<Home />);
     const hero = screen.getByTestId("hero-section");
     // Live framing should be present in the hero
     const liveIndicator = within(hero).getByTestId("hero-live-status");
     expect(liveIndicator).toBeInTheDocument();
-    expect(liveIndicator.textContent).toMatch(/live|shipping|today/i);
+    // Must include a closed-beta or equivalent availability qualifier —
+    // generic "shipping now" or "live now" phrasing is not acceptable
+    // because the Terminal is not yet openly available.
+    expect(liveIndicator.textContent).toMatch(/closed beta|early access|limited access|beta/i);
+  });
+
+  it("hero live-status does NOT use generic shipping-now phrasing without qualifier", () => {
+    render(<Home />);
+    const hero = screen.getByTestId("hero-section");
+    const liveIndicator = within(hero).getByTestId("hero-live-status");
+    // Reject overstated availability phrasing that omits the beta qualifier
+    const text = liveIndicator.textContent ?? "";
+    const hasQualifier = /closed beta|early access|limited access|beta/i.test(text);
+    // If the text says "shipping" or "live now" without a qualifier, fail
+    if (/shipping now|available now/i.test(text)) {
+      expect(hasQualifier).toBe(true);
+    }
   });
 
   it("hero conveys future vision", () => {
