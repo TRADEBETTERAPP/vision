@@ -1,28 +1,33 @@
 "use client";
 
 /**
- * LiquidMetalCard — Glass-morphism card with liquid metal interactive finish.
+ * LiquidMetalCard — Nearly-transparent glass panel with liquid metal finish.
  *
  * VAL-VISUAL-030: Cards across the graph workspace and content surfaces use
  * glass-morphism (semi-transparent white backgrounds, white borders at low
  * opacity) with a liquid metal interactive finish (cursor-tracking metallic
  * sheen or equivalent radial-gradient effect).
  *
+ * VAL-VISUAL-035: Cards are nearly transparent so the shader background shows
+ * through. No backdrop-blur. Cursor-tracking metallic sheen clearly visible
+ * on hover. Subtle inner glow adds depth without opacity.
+ *
  * Glass-morphism base:
- *   - background: rgba(255, 255, 255, 0.10)
- *   - border: 1px solid rgba(255, 255, 255, 0.20)
+ *   - background: rgba(255, 255, 255, 0.04) — nearly transparent
+ *   - border: 1px solid rgba(255, 255, 255, 0.12) — subtle edge
  *   - border-radius: 8px (rounded-lg)
- *   - backdrop-filter: blur(10px)
+ *   - NO backdrop-filter (removed to let shader show through)
  *
  * Liquid metal finish:
  *   - Cursor-tracking radial-gradient with metallic white/silver sheen
- *   - Center highlight: rgba(255, 255, 255, 0.38) — clearly visible over 0.15 base
+ *   - Center highlight: rgba(255, 255, 255, 0.38) — clearly visible over 0.08 base
  *   - Secondary metallic ring: rgba(200, 210, 255, 0.12) at 40% for depth
  *   - Activated on hover/interaction
  *   - CSS-only, no WebGL
  *
  * Hover state:
- *   - background: rgba(255, 255, 255, 0.15)
+ *   - background: rgba(255, 255, 255, 0.08)
+ *   - box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.03) — subtle inner glow
  */
 
 import React, {
@@ -63,7 +68,7 @@ export type LiquidMetalCardProps = LiquidMetalCardBaseProps &
 
 const VARIANT_CLASSES: Record<string, string> = {
   default: "",
-  active: "ring-1 ring-[rgba(255,255,255,0.20)]",
+  active: "ring-1 ring-[rgba(255,255,255,0.12)]",
   focused:
     "ring-1 ring-[rgba(255,255,255,0.40)] border-[rgba(255,255,255,0.30)]",
 };
@@ -116,18 +121,19 @@ export const LiquidMetalCard = forwardRef<HTMLElement, Omit<LiquidMetalCardProps
       }
     }, []);
 
-    // Glass-morphism base + liquid metal sheen via inline style
+    // Nearly-transparent glass base + liquid metal sheen via inline style
+    // VAL-VISUAL-035: 0.04 base / 0.08 hover — shader visible through cards
     const baseBackground = isHovered
-      ? "rgba(255, 255, 255, 0.15)"
-      : "rgba(255, 255, 255, 0.10)";
+      ? "rgba(255, 255, 255, 0.08)"
+      : "rgba(255, 255, 255, 0.04)";
 
     const inlineStyle: React.CSSProperties = {
       background: isHovered
         ? `radial-gradient(circle at var(--metal-x, 50%) var(--metal-y, 50%), rgba(255, 255, 255, 0.38) 0%, rgba(200, 210, 255, 0.12) 40%, transparent 70%), ${baseBackground}`
         : baseBackground,
-      border: "1px solid rgba(255, 255, 255, 0.20)",
-      backdropFilter: "blur(10px)",
-      WebkitBackdropFilter: "blur(10px)",
+      border: "1px solid rgba(255, 255, 255, 0.12)",
+      // No backdrop-filter — removed to let shader background show through
+      boxShadow: isHovered ? "inset 0 0 30px rgba(255, 255, 255, 0.03)" : "none",
       transition: "background 0.2s ease, box-shadow 0.2s ease",
       ...(rest.style ?? {}),
     };

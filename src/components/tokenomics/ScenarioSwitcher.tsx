@@ -159,12 +159,12 @@ export default function ScenarioSwitcher() {
             onClick={() => handleScenarioChange(level)}
             className={`flex-1 rounded-lg px-4 py-3 text-center font-terminal text-sm font-medium transition-all ${
               activeLevel === level
-                ? "text-foreground ring-1 ring-[rgba(255,255,255,0.20)]"
+                ? "text-foreground ring-1 ring-[rgba(255,255,255,0.12)]"
                 : "text-white hover:text-foreground"
             }`}
             style={{
-              background: activeLevel === level ? "rgba(255, 255, 255, 0.14)" : "rgba(255, 255, 255, 0.10)",
-              border: "1px solid rgba(255, 255, 255, 0.20)",
+              background: activeLevel === level ? "rgba(255, 255, 255, 0.08)" : "rgba(255, 255, 255, 0.04)",
+              border: "1px solid rgba(255, 255, 255, 0.12)",
             }}
             data-testid="scenario-tab"
             data-scenario={level}

@@ -7,6 +7,10 @@ import { LiquidMetalCard } from "../LiquidMetalCard";
  * VAL-VISUAL-030: Cards use glass-morphism (semi-transparent white backgrounds,
  * white borders at low opacity) with a liquid metal interactive finish
  * (cursor-tracking metallic sheen or equivalent radial-gradient effect).
+ *
+ * VAL-VISUAL-035: Cards are nearly transparent (rgba(255,255,255,0.04) base)
+ * so the shader background shows through. No backdrop-blur. Cursor-tracking
+ * metallic sheen clearly visible on hover. Subtle inner glow adds depth.
  */
 describe("LiquidMetalCard", () => {
   it("renders with glass-morphism base styles", () => {
@@ -50,7 +54,6 @@ describe("LiquidMetalCard", () => {
   it("has inline style for glass-morphism background", () => {
     render(<LiquidMetalCard>Styled</LiquidMetalCard>);
     const card = screen.getByTestId("liquid-metal-card");
-    // Glass-morphism background: rgba(255,255,255,0.10)
     expect(card.style.background).toBeTruthy();
   });
 
@@ -134,6 +137,7 @@ describe("LiquidMetalCard", () => {
     expect(bg).toMatch(/rgba\(\s*200\s*,\s*210\s*,\s*255/);
   });
 
+  // VAL-VISUAL-035: sheen contrast against the new 0.08 hover base
   it("sheen radial-gradient is materially distinct from the hover base background", () => {
     render(<LiquidMetalCard>Contrast test</LiquidMetalCard>);
     const card = screen.getByTestId("liquid-metal-card");
@@ -142,14 +146,62 @@ describe("LiquidMetalCard", () => {
     fireEvent.mouseMove(card, { clientX: 50, clientY: 50 });
 
     const bg = card.style.background;
-    // The center highlight opacity minus the hover base (0.15) should be >= 0.20
-    // to ensure the sheen is clearly visible, not nearly invisible
+    // The center highlight opacity minus the hover base (0.08) should be >= 0.25
+    // to ensure the sheen is clearly visible over the nearly-transparent card
     const rgbaMatch = bg.match(
       /radial-gradient\(.*?rgba\(\s*255\s*,\s*255\s*,\s*255\s*,\s*([\d.]+)\s*\)/
     );
     expect(rgbaMatch).not.toBeNull();
     const sheenOpacity = parseFloat(rgbaMatch![1]);
-    const hoverBase = 0.15;
-    expect(sheenOpacity - hoverBase).toBeGreaterThanOrEqual(0.20);
+    const hoverBase = 0.08;
+    expect(sheenOpacity - hoverBase).toBeGreaterThanOrEqual(0.25);
+  });
+
+  // ---------------------------------------------------------------------------
+  // VAL-VISUAL-035: Nearly transparent cards that complement the shader
+  // ---------------------------------------------------------------------------
+
+  it("base background is rgba(255,255,255,0.04) — nearly transparent — VAL-VISUAL-035", () => {
+    render(<LiquidMetalCard>Transparent base</LiquidMetalCard>);
+    const card = screen.getByTestId("liquid-metal-card");
+    expect(card.style.background).toContain("rgba(255, 255, 255, 0.04)");
+  });
+
+  it("hover background is rgba(255,255,255,0.08) — VAL-VISUAL-035", () => {
+    render(<LiquidMetalCard>Hover check</LiquidMetalCard>);
+    const card = screen.getByTestId("liquid-metal-card");
+    fireEvent.mouseEnter(card);
+    expect(card.style.background).toContain("rgba(255, 255, 255, 0.08)");
+  });
+
+  it("border uses rgba(255,255,255,0.12) — subtle edge — VAL-VISUAL-035", () => {
+    render(<LiquidMetalCard>Border check</LiquidMetalCard>);
+    const card = screen.getByTestId("liquid-metal-card");
+    expect(card.style.border).toContain("rgba(255, 255, 255, 0.12)");
+  });
+
+  it("does NOT apply backdrop-filter blur — shader shows through — VAL-VISUAL-035", () => {
+    render(<LiquidMetalCard>No blur</LiquidMetalCard>);
+    const card = screen.getByTestId("liquid-metal-card");
+    // backdropFilter must not be set (or be empty)
+    expect(card.style.backdropFilter).toBeFalsy();
+    // Also check WebkitBackdropFilter
+    expect(card.style.getPropertyValue("-webkit-backdrop-filter")).toBeFalsy();
+  });
+
+  it("hover state includes subtle inner glow box-shadow — VAL-VISUAL-035", () => {
+    render(<LiquidMetalCard>Glow check</LiquidMetalCard>);
+    const card = screen.getByTestId("liquid-metal-card");
+    fireEvent.mouseEnter(card);
+    // Should have an inset box-shadow for the inner glow
+    expect(card.style.boxShadow).toContain("inset");
+    expect(card.style.boxShadow).toContain("30px");
+  });
+
+  it("no inner glow in default (non-hover) state — VAL-VISUAL-035", () => {
+    render(<LiquidMetalCard>No glow default</LiquidMetalCard>);
+    const card = screen.getByTestId("liquid-metal-card");
+    // In default state, no inset box-shadow
+    expect(card.style.boxShadow).not.toContain("inset");
   });
 });

@@ -64,9 +64,8 @@ export default function RoadmapStorySection({
             data-active={isActive ? "true" : "false"}
             className="w-full rounded-lg p-4 text-left transition-all"
             style={{
-              background: isActive ? "rgba(255, 255, 255, 0.14)" : "rgba(255, 255, 255, 0.10)",
-              border: "1px solid rgba(255, 255, 255, 0.20)",
-              backdropFilter: "blur(10px)",
+              background: isActive ? "rgba(255, 255, 255, 0.08)" : "rgba(255, 255, 255, 0.04)",
+              border: "1px solid rgba(255, 255, 255, 0.12)",
             }}
             onClick={() => onActiveFamilyChange(index)}
           >

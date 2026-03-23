@@ -52,10 +52,8 @@ export function CompactBrandBand() {
         <div
           className="inline-flex flex-wrap items-center justify-center gap-x-6 gap-y-2 rounded-lg px-5 py-2"
           style={{
-            background: "rgba(255, 255, 255, 0.08)",
-            border: "1px solid rgba(255, 255, 255, 0.15)",
-            backdropFilter: "blur(10px)",
-            WebkitBackdropFilter: "blur(10px)",
+            background: "rgba(255, 255, 255, 0.04)",
+            border: "1px solid rgba(255, 255, 255, 0.12)",
           }}
         >
           {/* Live status */}

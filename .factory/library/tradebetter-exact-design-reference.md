@@ -82,9 +82,9 @@
 
 | Value | Usage |
 |---|---|
-| `rgba(255, 255, 255, 0.10)` / `#ffffff1a` | Card surfaces (glass-morphism base) |
-| `rgba(255, 255, 255, 0.15)` | Card hover states |
-| `rgba(255, 255, 255, 0.20)` | Border color on cards |
+| `rgba(255, 255, 255, 0.04)` | Card surfaces (nearly-transparent glass base — VAL-VISUAL-035) |
+| `rgba(255, 255, 255, 0.08)` | Card hover states (VAL-VISUAL-035) |
+| `rgba(255, 255, 255, 0.12)` | Border color on cards (subtle edge — VAL-VISUAL-035) |
 | `rgba(255, 255, 255, 0.30)` / `#ffffff4d` | Emphasized glass surfaces |
 | `rgba(255, 255, 255, 0.50)` | Active/focused element borders |
 | `#fff6` (white 40%) | Default outlined element borders |
@@ -172,13 +172,13 @@ padding: 24px; /* or 32px on larger variants */
 gap: 12px-16px; /* internal spacing */
 border-radius: 8px;
 
-/* Surface — glass-morphism */
-background-color: rgba(255, 255, 255, 0.10);
+/* Surface — nearly-transparent glass (VAL-VISUAL-035) */
+background-color: rgba(255, 255, 255, 0.04);
 /* OR solid variant: */
 background-color: #191a1d;
 
-/* Border */
-border: 1px solid rgba(255, 255, 255, 0.20);
+/* Border — subtle edge (VAL-VISUAL-035) */
+border: 1px solid rgba(255, 255, 255, 0.12);
 /* OR: */
 border-color: #fff6; /* white 40% */
 border-style: solid;
@@ -796,8 +796,8 @@ ROADMAP // REVENUE // REALISED
   /* ====== BACKGROUNDS ====== */
   --bg-primary: #101010;                    /* rgb(16, 16, 16) — page canvas */
   --bg-secondary: #191a1d;                  /* rgb(25, 26, 29) — card/panel backgrounds */
-  --bg-card: rgba(255, 255, 255, 0.10);     /* glass-morphism card surface */
-  --bg-card-hover: rgba(255, 255, 255, 0.15); /* card hover state */
+  --bg-card: rgba(255, 255, 255, 0.04);     /* nearly-transparent glass surface (VAL-VISUAL-035) */
+  --bg-card-hover: rgba(255, 255, 255, 0.08); /* card hover state (VAL-VISUAL-035) */
   --bg-card-emphasis: rgba(255, 255, 255, 0.30); /* emphasized glass surface */
   --bg-overlay-dark: rgba(0, 0, 0, 0.65);  /* image darkening overlay */
 

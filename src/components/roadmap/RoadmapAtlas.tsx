@@ -445,9 +445,8 @@ export default function RoadmapAtlas() {
                   aria-label={BRANCH_FAMILY_LABELS[family]}
                   className="group flex w-full items-center gap-3 rounded-lg p-4 text-left transition-all"
                   style={{
-                    background: isExpanded ? "rgba(255, 255, 255, 0.14)" : "rgba(255, 255, 255, 0.10)",
-                    border: "1px solid rgba(255, 255, 255, 0.20)",
-                    backdropFilter: "blur(10px)",
+                    background: isExpanded ? "rgba(255, 255, 255, 0.08)" : "rgba(255, 255, 255, 0.04)",
+                    border: "1px solid rgba(255, 255, 255, 0.12)",
                   }}
                   data-testid="roadmap-branch-toggle"
                 >
@@ -572,9 +571,8 @@ function RoadmapNodeItem({
       aria-pressed={isSelected}
       className="flex w-full items-center gap-3 rounded-lg p-3 text-left transition-all"
       style={{
-        background: isSelected ? "rgba(255, 255, 255, 0.14)" : "rgba(255, 255, 255, 0.10)",
-        border: "1px solid rgba(255, 255, 255, 0.20)",
-        backdropFilter: "blur(10px)",
+        background: isSelected ? "rgba(255, 255, 255, 0.08)" : "rgba(255, 255, 255, 0.04)",
+        border: "1px solid rgba(255, 255, 255, 0.12)",
       }}
       data-testid="roadmap-node-item"
       data-node-id={node.id}

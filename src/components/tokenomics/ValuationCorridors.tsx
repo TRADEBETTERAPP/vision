@@ -99,7 +99,7 @@ export default function ValuationCorridors() {
             <LiquidMetalCard
               key={corridor.id}
               className={`p-4 ${
-                corridor.isLiveAnchor ? "ring-1 ring-[rgba(255,255,255,0.20)]" : ""
+                corridor.isLiveAnchor ? "ring-1 ring-[rgba(255,255,255,0.12)]" : ""
               }`}
               data-testid="valuation-corridor"
               data-corridor-id={corridor.id}
