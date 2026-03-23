@@ -28,7 +28,6 @@ const HeroShaderCanvas = dynamic(
  * VAL-VISUAL-022: Persistent atmosphere preserves readable copy, controls,
  * and focus states across the full shell.
  *
- * VAL-VISUAL-028: All ASCII layers have been permanently removed.
  * VAL-VISUAL-029: Only ONE Radiant Fluid Amber shader instance runs
  * site-wide — HERE in SiteAtmosphere. HeroVisualSystem no longer renders
  * its own shader canvas. The film grain overlay (animated noise at 5%

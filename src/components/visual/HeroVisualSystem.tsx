@@ -5,14 +5,12 @@ import { useVisualEffects } from "./VisualEffectsProvider";
 /**
  * HeroVisualSystem — immersive BETTER atmosphere for the hero section.
  *
- * VAL-VISUAL-028: All ASCII layers have been permanently removed.
  * VAL-VISUAL-029: Only ONE Radiant Fluid Amber shader instance runs site-wide
  * via SiteAtmosphere. This component provides ONLY CSS layers for the hero:
  *   - Radiant fallback gradient (CSS-only)
  *   - Scanline overlay (CSS-only terminal texture)
  * The WebGL shader canvas is NOT rendered here — it lives exclusively in
  * SiteAtmosphere to enforce the single-shader-instance rule.
- * Vignette gradient overlays have been removed per redesign spec.
  *
  * Visual layers (back to front):
  * 1. CSS-only radiant fallback gradient — atmospheric depth
