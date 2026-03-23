@@ -1,0 +1,135 @@
+{
+  "groupId": "shell-design-and-status",
+  "testedAt": "2026-03-23T16:42:35.274462+00:00",
+  "isolation": {
+    "appUrl": "http://127.0.0.1:3100",
+    "missionDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83",
+    "repoRoot": "/Users/test/vision",
+    "browserSession": "af822a8e2862__flow2",
+    "surface": "browser",
+    "assignedAssertions": [
+      "VAL-VISUAL-030",
+      "VAL-VISUAL-031",
+      "VAL-VISUAL-032",
+      "VAL-VISUAL-033"
+    ]
+  },
+  "toolsUsed": [
+    "agent-browser"
+  ],
+  "assertions": [
+    {
+      "id": "VAL-VISUAL-030",
+      "title": "Liquid metal card finish with glass-morphism",
+      "status": "fail",
+      "steps": [
+        {
+          "action": "Open the desktop shell and inspect the default atlas cards.",
+          "expected": "Cards should show glass-morphism with a liquid-metal finish.",
+          "observed": "Cards used semi-transparent white surfaces with white borders and blur, matching the glass base."
+        },
+        {
+          "action": "Hover a graph card and compare the interaction state.",
+          "expected": "Hover should reveal a cursor-tracking metallic sheen or equivalent radial-gradient effect.",
+          "observed": "Hover only raised the card background from rgba(255,255,255,0.10) to rgba(255,255,255,0.145); computed styles showed no background image and no ::before/::after sheen layer."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "visual-re-engineering/shell-design-and-status/desktop-initial-annotated.png",
+          "visual-re-engineering/shell-design-and-status/desktop-card-hover.png"
+        ],
+        "consoleErrors": "none; browser errors output was empty during the desktop checks",
+        "network": "No requests captured during the inspected flows"
+      },
+      "issues": "Glass-morphism is present, but the required liquid-metal interactive sheen is missing; the cards still read as flat frosted panels rather than metallic surfaces."
+    },
+    {
+      "id": "VAL-VISUAL-031",
+      "title": "Tradebetter-exact design language",
+      "status": "fail",
+      "steps": [
+        {
+          "action": "Inspect the desktop hero and computed shell tokens.",
+          "expected": "The shell should match the required tradebetter atoms: #101010 background, uppercase/tight-tracked headings, IBM Plex Mono body, square CTAs, green-only status usage, and generous section spacing.",
+          "observed": "The page background resolved to rgb(16,16,16) (#101010) and body text used IBM Plex Mono; the CTA buttons appeared square and live dots were neon green."
+        },
+        {
+          "action": "Verify heading typography against the required uppercase/tight-spacing rule.",
+          "expected": "All headings should be uppercase with tight tracking and display treatment.",
+          "observed": "The hero heading rendered as 'Prediction-market intelligence, automated.' in sentence case; computed styles showed textTransform 'none', letterSpacing 'normal', IBM Plex Mono, and grey text (rgb(160,160,160))."
+        },
+        {
+          "action": "Check the narrow/mobile state for the same visual language.",
+          "expected": "The design atoms should still hold on narrow screens.",
+          "observed": "Mobile kept the dark shell and square CTAs, but the same sentence-case hero heading and compressed mono-heavy presentation remained."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "visual-re-engineering/shell-design-and-status/desktop-initial-annotated.png",
+          "visual-re-engineering/shell-design-and-status/mobile-overview-full.png"
+        ],
+        "consoleErrors": "none; browser errors output was empty during desktop and mobile checks",
+        "network": "No requests captured during the inspected flows"
+      },
+      "issues": "Several required tradebetter-exact atoms are missing or inconsistent, especially the mandated all-uppercase, tight-tracked heading typography; the hero instead uses sentence case with normal tracking."
+    },
+    {
+      "id": "VAL-VISUAL-032",
+      "title": "Simplified status indicators \u2014 monochrome plus green only",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Review default desktop cards and focused roadmap states.",
+          "expected": "Live should use a green dot, while non-live states should be monochrome text with no rainbow badge fills.",
+          "observed": "Live cards used static neon-green 8px dots, and In Progress/Planned/Speculative labels appeared as white/gray text on transparent backgrounds."
+        },
+        {
+          "action": "Cross-check the narrow/mobile shell.",
+          "expected": "The simplified status system should remain consistent on mobile.",
+          "observed": "Mobile cards preserved the same green-dot live state and monochrome non-live labels with no colored badge backgrounds."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "visual-re-engineering/shell-design-and-status/desktop-initial-annotated.png",
+          "visual-re-engineering/shell-design-and-status/desktop-roadmap-focus.png",
+          "visual-re-engineering/shell-design-and-status/mobile-overview-full.png"
+        ],
+        "consoleErrors": "none; browser errors output was empty during these flows",
+        "network": "No requests captured during the inspected flows"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-VISUAL-033",
+      "title": "Clean graph workspace without chrome clutter",
+      "status": "fail",
+      "steps": [
+        {
+          "action": "Open the roadmap-focused graph state from the desktop shell.",
+          "expected": "The workspace should use one clean navigation model without competing chrome layers.",
+          "observed": "The focused roadmap state showed the top nav, related chips, back/next controls, a collapse-all button, a tab strip, and a second row of branch buttons at the same time."
+        },
+        {
+          "action": "Assess whether the workspace reads as a quick-glance exploration tool.",
+          "expected": "The shell should feel focused and uncluttered.",
+          "observed": "The amount of simultaneous chrome made the roadmap state feel busy rather than glanceable, even though no minimap was present."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "visual-re-engineering/shell-design-and-status/desktop-roadmap-focus.png",
+          "visual-re-engineering/shell-design-and-status/desktop-initial-annotated.png"
+        ],
+        "consoleErrors": "none; browser errors output was empty during roadmap navigation",
+        "network": "No requests captured during the inspected flows"
+      },
+      "issues": "The graph workspace still exposes multiple overlapping navigation/control layers instead of a single clean exploration model."
+    }
+  ],
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 4 assertions: 1 passed, 3 failed. VAL-VISUAL-032 passed; VAL-VISUAL-030 failed because the metallic sheen interaction is missing, VAL-VISUAL-031 failed because the typography/design atoms are not fully tradebetter-exact, and VAL-VISUAL-033 failed because the roadmap workspace still has competing chrome layers."
+}

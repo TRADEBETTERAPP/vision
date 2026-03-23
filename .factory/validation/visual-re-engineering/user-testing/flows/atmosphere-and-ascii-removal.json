@@ -1,0 +1,236 @@
+{
+  "groupId": "atmosphere-and-ascii-removal",
+  "testedAt": "2026-03-23T16:35:11.120131+00:00",
+  "isolation": {
+    "milestone": "visual-re-engineering",
+    "missionDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83",
+    "repoRoot": "/Users/test/vision",
+    "appUrl": "http://127.0.0.1:3100",
+    "browserSession": "af822a8e2862__flow1",
+    "surface": "browser",
+    "mode": "headed"
+  },
+  "toolsUsed": [
+    "agent-browser",
+    "Read",
+    "Grep"
+  ],
+  "assertions": [
+    {
+      "id": "VAL-VISUAL-015",
+      "title": "Moving background ships a vendored real Radiant asset",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Open the root page in a headed browser session and inspect the hero/background treatment.",
+          "expected": "A live Radiant-derived moving background is visible behind the hero and atlas surfaces.",
+          "observed": "A subtle blue animated background is visible behind the hero, graph cards, and lower proof section in headed mode."
+        },
+        {
+          "action": "Inspect the rendered DOM for atmospheric canvas instances.",
+          "expected": "The shipped page exposes the actual moving shader layer rather than a placeholder.",
+          "observed": "DOM inspection returned `shaderCanvasCount: 1`, `allCanvasCount: 1`, and `heroVisualState: \"enhanced\"`."
+        },
+        {
+          "action": "Audit the shipped implementation for provenance.",
+          "expected": "The visible background traces to a vendored Radiant asset path and source reference.",
+          "observed": "`src/components/visual/SiteAtmosphere.tsx` dynamically imports `HeroShaderCanvas`, and `src/components/visual/radiant-fluid-amber.glsl.ts` vendors the Radiant Fluid Amber shader with source reference `https://github.com/pbakaus/radiant/blob/main/static/fluid-amber.html`."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "visual-re-engineering/atmosphere-and-ascii-removal/VAL-VISUAL-015-018-028-029-home-headed.png",
+          "visual-re-engineering/atmosphere-and-ascii-removal/VAL-VISUAL-028-029-full-page.png"
+        ],
+        "consoleErrors": "none; console only showed the React DevTools recommendation and `[HMR] connected`.",
+        "network": "Browser performance entries included `/_next/static/chunks/src_components_visual_HeroShaderCanvas_tsx_*.js` and `/grain.gif`; local asset loads only."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-VISUAL-016",
+      "title": "ASCII layer uses a real-time Hermes-derived canvas renderer",
+      "status": "fail",
+      "steps": [
+        {
+          "action": "Inspect the page visually and via DOM queries for any ASCII atmosphere layer.",
+          "expected": "A Hermes-derived real-time ASCII canvas renderer is present and materially visible.",
+          "observed": "No ASCII layer is visible anywhere on the page; the atmosphere is shader + film grain only."
+        },
+        {
+          "action": "Count canvas and ASCII-related DOM nodes.",
+          "expected": "An ASCII-specific canvas renderer exists and the page does not fall back to a DOM text grid.",
+          "observed": "DOM inspection returned `allCanvasCount: 1` and `asciiDomNodeCount: 0`; the single canvas is the background shader, not an ASCII renderer."
+        },
+        {
+          "action": "Audit the app source for shipped ASCII renderer code.",
+          "expected": "Hermes-style ASCII renderer files or imports remain if this assertion is satisfied.",
+          "observed": "`Grep` over `/Users/test/vision/src` found no `AsciiCanvasRenderer`, `AsciiBackground`, `ascii`, or `ASCII` matches."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "visual-re-engineering/atmosphere-and-ascii-removal/VAL-VISUAL-015-018-028-029-home-headed.png",
+          "visual-re-engineering/atmosphere-and-ascii-removal/VAL-VISUAL-028-029-full-page.png"
+        ],
+        "consoleErrors": "none; console only showed the React DevTools recommendation and `[HMR] connected`.",
+        "network": "No ASCII-specific assets or renderer bundles were observed; the visible background assets were the shader chunk and `/grain.gif`."
+      },
+      "issues": "Fails against the current validation-contract wording because the shipped visual re-engineering intentionally removes ASCII entirely. This behavior aligns with VAL-VISUAL-028 and the mission guidance, but not with the stale Hermes/ASCII contract text."
+    },
+    {
+      "id": "VAL-VISUAL-017",
+      "title": "Enhanced visual state is dramatically distinct from static fallback",
+      "status": "fail",
+      "steps": [
+        {
+          "action": "Capture the default enhanced desktop state in headed mode.",
+          "expected": "The enhanced state should look materially richer than fallback.",
+          "observed": "The enhanced state reports `heroVisualState: \"enhanced\"` with `heroMotionLayers: 1`, but the visible page remains very close to the fallback look."
+        },
+        {
+          "action": "Relaunch the same page with `--disable-gpu,--disable-webgl` to force fallback and capture a fallback screenshot.",
+          "expected": "The fallback should be clearly flatter/static than the enhanced state.",
+          "observed": "The fallback reports `heroVisualState: \"fallback\"`, `heroMotionLayers: 0`, and `shaderCanvasCount: 0`, but the screenshot is visually near-identical to the enhanced state."
+        },
+        {
+          "action": "Compare the enhanced screenshot to the fallback screenshot.",
+          "expected": "The comparison should show a dramatic visible change.",
+          "observed": "Pixel diff against the enhanced baseline found only 634 / 1,728,000 pixels different (0.04%), which is not a material visual distinction."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "visual-re-engineering/atmosphere-and-ascii-removal/VAL-VISUAL-015-018-028-029-home-headed.png",
+          "visual-re-engineering/atmosphere-and-ascii-removal/VAL-VISUAL-017-static-fallback-state.png"
+        ],
+        "consoleErrors": "none; console only showed the React DevTools recommendation and `[HMR] connected`.",
+        "network": "Fallback run loaded the same local page assets but with WebGL disabled; no remote/network blocker was involved."
+      },
+      "issues": "The enhanced and forced-fallback states are almost indistinguishable in the rendered page. The underlying state flags change correctly, but the user-visible result is not dramatically distinct."
+    },
+    {
+      "id": "VAL-VISUAL-018",
+      "title": "Headed browser validation shows visible background motion",
+      "status": "fail",
+      "steps": [
+        {
+          "action": "Run the page in headed mode and capture frame A before motion recording.",
+          "expected": "Visible background motion should be observable over time in the rendered page.",
+          "observed": "Frame A shows the subtle blue atmosphere, but no obvious motion is perceptible from the still image."
+        },
+        {
+          "action": "Record a 2.5 second headed browser clip and capture frame B, then wait 5 more seconds and capture frame C.",
+          "expected": "The moving background should noticeably shift between frames and in the recording.",
+          "observed": "Frames A/B/C appear visually static to the eye; the recording does not surface clearly visible movement."
+        },
+        {
+          "action": "Quantify the visual change between captured frames.",
+          "expected": "Inter-frame diffs should reflect visible motion rather than trace-level pixel noise.",
+          "observed": "Frame A vs B diff was 87 / 1,728,000 pixels (0.01%), and frame A vs C diff was 81 / 1,728,000 pixels (0.00%), which is too small to count as visible motion."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "visual-re-engineering/atmosphere-and-ascii-removal/VAL-VISUAL-018-motion-frame-a.png",
+          "visual-re-engineering/atmosphere-and-ascii-removal/VAL-VISUAL-018-motion-frame-b.png",
+          "visual-re-engineering/atmosphere-and-ascii-removal/VAL-VISUAL-018-motion-frame-c.png"
+        ],
+        "consoleErrors": "none; console only showed the React DevTools recommendation and `[HMR] connected`.",
+        "network": "Local asset loads only; no network issue blocked animation."
+      },
+      "issues": "In headed validation the background motion is too faint to be visibly confirmed. The page exposes an enhanced state, but the rendered motion is not perceptible enough to satisfy the assertion."
+    },
+    {
+      "id": "VAL-VISUAL-028",
+      "title": "ASCII layers completely removed",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Inspect the full rendered page for terminal-style ASCII overlays, box-drawing grids, or unicode decoration.",
+          "expected": "No ASCII layers or text-grid background elements remain anywhere on the page.",
+          "observed": "No ASCII or terminal-grid decoration is visible in the hero, atlas cards, proof section, or footer."
+        },
+        {
+          "action": "Query the DOM for ASCII-related selectors and box-drawing characters.",
+          "expected": "No ASCII DOM hooks or box-drawing text should remain.",
+          "observed": "DOM inspection returned `asciiDomNodeCount: 0`, `boxDrawingCount: 0`, and no `<pre>`-based background layer."
+        },
+        {
+          "action": "Audit source files for remaining ASCII imports/references.",
+          "expected": "No `AsciiCanvasRenderer`, `AsciiBackground`, or ASCII-related imports remain in shipped source.",
+          "observed": "`Grep` over `/Users/test/vision/src` returned no ASCII-related matches."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "visual-re-engineering/atmosphere-and-ascii-removal/VAL-VISUAL-028-029-full-page.png"
+        ],
+        "consoleErrors": "none; console only showed the React DevTools recommendation and `[HMR] connected`.",
+        "network": "Only the local page assets, shader chunk, and `/grain.gif` loaded; no ASCII assets were observed."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-VISUAL-029",
+      "title": "Single shader site-wide atmosphere with film grain",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Inspect the rendered page at the hero and lower sections.",
+          "expected": "A single subtle site-wide shader and low-opacity film grain remain visible without competing with content.",
+          "observed": "A subdued blue atmosphere and fine grain texture remain visible across the hero, atlas, and lower proof cards while content stays readable."
+        },
+        {
+          "action": "Inspect DOM/style data for atmosphere layers.",
+          "expected": "Exactly one shader instance is present site-wide, plus one film grain overlay with lighten blend and 5% opacity.",
+          "observed": "DOM inspection returned `shaderCanvasCount: 1`, `allCanvasCount: 1`, and film grain styles `mixBlendMode: \"lighten\"`, `opacity: \"0.05\"`, `backgroundImage: \".../grain.gif\"`."
+        },
+        {
+          "action": "Audit the implementation structure for duplicate shader usage.",
+          "expected": "The site atmosphere owns the only shader instance and applies the grain overlay globally.",
+          "observed": "`src/components/visual/SiteAtmosphere.tsx` imports `HeroShaderCanvas` and `FilmGrainOverlay`, renders `<HeroShaderCanvas />` once, and `src/app/globals.css` defines `.site-atmosphere-shader { opacity: 0.25; }` and `.film-grain-overlay { mix-blend-mode: lighten; opacity: 0.05; }`."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "visual-re-engineering/atmosphere-and-ascii-removal/VAL-VISUAL-015-018-028-029-home-headed.png",
+          "visual-re-engineering/atmosphere-and-ascii-removal/VAL-VISUAL-028-029-full-page.png"
+        ],
+        "consoleErrors": "none; console only showed the React DevTools recommendation and `[HMR] connected`.",
+        "network": "Browser performance entries included `/grain.gif` and the local `HeroShaderCanvas` chunk; only one atmosphere canvas was present in DOM."
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [
+    {
+      "description": "`VAL-VISUAL-016` and `VAL-VISUAL-018` still use stale ASCII/Hermes contract wording, while the approved visual re-engineering guidance removes ASCII entirely.",
+      "resolved": true,
+      "resolution": "Reported the literal assertion outcomes and separately documented the actual shipped behavior: no ASCII remains, one shader + film grain only.",
+      "affectedAssertions": [
+        "VAL-VISUAL-016",
+        "VAL-VISUAL-018"
+      ]
+    },
+    {
+      "description": "`agent-browser network requests` did not capture passive asset loads for this session.",
+      "resolved": true,
+      "resolution": "Used `performance.getEntriesByType(\"resource\")` inside the browser to confirm local asset loads including `/grain.gif` and the `HeroShaderCanvas` chunk.",
+      "affectedAssertions": [
+        "VAL-VISUAL-015",
+        "VAL-VISUAL-029"
+      ]
+    },
+    {
+      "description": "Fallback comparison required a separate browser relaunch with WebGL disabled to force the degraded state.",
+      "resolved": true,
+      "resolution": "Reran the same page in a headed session with `--disable-gpu,--disable-webgl`, captured `VAL-VISUAL-017-static-fallback-state.png`, and compared it against the enhanced baseline.",
+      "affectedAssertions": [
+        "VAL-VISUAL-017"
+      ]
+    }
+  ],
+  "blockers": [],
+  "summary": "Tested 6 assertions. Passed: VAL-VISUAL-015, VAL-VISUAL-028, VAL-VISUAL-029. Failed: VAL-VISUAL-016 (stale ASCII renderer contract does not match the intentionally ASCII-free shipped implementation), VAL-VISUAL-017 (enhanced and fallback states are not materially distinct), VAL-VISUAL-018 (headed browser motion is too faint to visibly confirm)."
+}
