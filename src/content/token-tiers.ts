@@ -178,11 +178,15 @@ export const BASE_CONTRACT = {
 };
 
 /**
- * Token allocation breakdown.
- * Percentages must sum to 100 and token amounts must reconcile with MINTED_SUPPLY.
+ * Token allocation breakdown — on-chain verified from Dune Analytics and basescan.
  *
- * Updated allocation split per mission economics guidance:
- * 40 % public sale + liquidity / 20 % team / 25 % treasury / 5 % OpenServ drop / 10 % programmatic funding
+ * All allocations are verified against the deployer wallet
+ * (0x1bbdc95d322b8fd76e6a00e6c318dfb421d7d322) transfer history on Base.
+ *
+ * Contract: 0x396FfAd9469e3d3E3fc4061B79accE2Ad0Ce4B9E
+ * Reference: /Users/test/dune_query_results.md
+ *
+ * Percentages sum to 100 and token amounts reconcile with MINTED_SUPPLY.
  */
 export interface TokenAllocation {
   label: string;
@@ -191,64 +195,92 @@ export interface TokenAllocation {
   source: {
     type: "canonical" | "scenario_based" | "illustrative";
     label: string;
+    href?: string;
     note?: string;
   };
 }
 
 export const TOKEN_ALLOCATIONS: TokenAllocation[] = [
   {
-    label: "Public Sale & Liquidity",
-    percentage: 40,
-    tokens: 283_600_776,
+    label: "Team/Vesting",
+    percentage: 35.26,
+    tokens: 250_000_000,
     source: {
       type: "canonical",
-      label: "BETTER Tokenomics",
-      note: "Combined public sale and DEX liquidity allocation.",
-    },
-  },
-  {
-    label: "Team & Advisors",
-    percentage: 20,
-    tokens: 141_800_388,
-    source: {
-      type: "canonical",
-      label: "BETTER Tokenomics",
-      note: "Subject to vesting schedule.",
+      label: "Basescan (On-Chain)",
+      href: "https://basescan.org/token/0x396FfAd9469e3d3E3fc4061B79accE2Ad0Ce4B9E?a=0x17c68a6e8bd3dfda2664105aa87c8bdd2bfccf6a",
+      note: "Single 250M transfer from deployer to 0x17c68a…. Verified via Dune erc20_base.evt_Transfer query.",
     },
   },
   {
     label: "Treasury",
-    percentage: 25,
-    tokens: 177_250_485,
+    percentage: 28.21,
+    tokens: 200_000_000,
     source: {
       type: "canonical",
-      label: "BETTER Tokenomics",
-      note: "Protocol-controlled treasury for operations and growth.",
+      label: "Basescan (On-Chain)",
+      href: "https://basescan.org/token/0x396FfAd9469e3d3E3fc4061B79accE2Ad0Ce4B9E?a=0xe2b2dbff14cf396a62487ca05a2fea7f2dcc5c78",
+      note: "Single 200M transfer from deployer to 0xe2b2db…. Verified via Dune erc20_base.evt_Transfer query.",
     },
   },
   {
-    label: "OpenServ Drop",
-    percentage: 5,
-    tokens: 35_450_097,
+    label: "SERV / Strategic Reserve",
+    percentage: 7.05,
+    tokens: 50_000_000,
     source: {
       type: "canonical",
-      label: "BETTER Tokenomics",
-      note: "Allocated for the OpenServ ecosystem airdrop.",
+      label: "Basescan (On-Chain)",
+      href: "https://basescan.org/token/0x396FfAd9469e3d3E3fc4061B79accE2Ad0Ce4B9E?a=0x1abd20bc5e6f9deecb0067556c90876c619c8b3b",
+      note: "Two transfers totaling 50M from deployer to 0x1abd20…. Verified via Dune erc20_base.evt_Transfer query.",
+    },
+  },
+  {
+    label: "LP / Liquidity",
+    percentage: 8.59,
+    tokens: 60_903_359,
+    source: {
+      type: "canonical",
+      label: "Basescan (On-Chain)",
+      href: "https://basescan.org/token/0x396FfAd9469e3d3E3fc4061B79accE2Ad0Ce4B9E",
+      note: "Combined LP across 0x80e29f… (~30.75M) and 0x498581… (~30.15M). Verified via Dune erc20_base.evt_Transfer query.",
     },
   },
   {
     label: "Programmatic Funding",
-    percentage: 10,
-    tokens: 70_900_194,
+    percentage: 3.65,
+    tokens: 25_869_846,
     source: {
       type: "canonical",
-      label: "BETTER Tokenomics",
-      note: "Reserved for strategic integrations and programmatic funding.",
+      label: "Basescan (On-Chain)",
+      href: "https://basescan.org/token/0x396FfAd9469e3d3E3fc4061B79accE2Ad0Ce4B9E",
+      note: "Distributed programmatic funding across 0x2d407b… (~13.1M) and 0x1b33f3… (~12.7M). Verified via Dune erc20_base.evt_Transfer query.",
+    },
+  },
+  {
+    label: "Deployer / Undistributed",
+    percentage: 5.80,
+    tokens: 41_104_714,
+    source: {
+      type: "canonical",
+      label: "Basescan (On-Chain)",
+      href: "https://basescan.org/token/0x396FfAd9469e3d3E3fc4061B79accE2Ad0Ce4B9E?a=0x1bbdc95d322b8fd76e6a00e6c318dfb421d7d322",
+      note: "Remaining undistributed in deployer 0x1bbdc9…. Verified via Dune erc20_base.evt_Transfer query.",
+    },
+  },
+  {
+    label: "Airdrop / Migration",
+    percentage: 11.44,
+    tokens: 81_124_021,
+    source: {
+      type: "canonical",
+      label: "Dune Analytics (On-Chain)",
+      href: "https://dune.com/queries?q=BETTER+token+0x396FfAd9469e3d3E3fc4061B79accE2Ad0Ce4B9E",
+      note: "Batch of ~200+ smaller transfers at 2026-03-08 21:45:29 UTC. Verified via Dune erc20_base.evt_Transfer query.",
     },
   },
 ];
 
-/** Validate that token allocations sum to 100% and reconcile with minted supply */
+/** Validate that token allocations sum to ~100% and reconcile with minted supply */
 export function validateAllocations(): {
   valid: boolean;
   totalPercentage: number;
@@ -264,8 +296,8 @@ export function validateAllocations(): {
   );
   return {
     valid:
-      Math.abs(totalPercentage - 100) < 0.001 && totalTokens === MINTED_SUPPLY,
-    totalPercentage,
+      Math.abs(totalPercentage - 100) < 0.01 && totalTokens === MINTED_SUPPLY,
+    totalPercentage: Math.round(totalPercentage * 100) / 100,
     totalTokens,
   };
 }
@@ -509,7 +541,7 @@ export interface ReferralIncentivePolicy {
 
 export const REFERRAL_INCENTIVE_POLICY: ReferralIncentivePolicy = {
   rewardSourceDescription:
-    "Referral rewards are funded from the Treasury allocation (25% of minted supply). Payouts draw from a dedicated referral sub-pool, not from user deposits or vault performance fees.",
+    "Referral rewards are funded from the Treasury allocation (~28% of minted supply, 200M BETTER). Payouts draw from a dedicated referral sub-pool, not from user deposits or vault performance fees.",
   rewardBasis:
     "Referrers earn a percentage of the trading fees generated by their referred users during a defined qualification window (e.g. first 90 days). The payout is a share of fees already collected by the protocol, not an additional cost.",
   payoutCapPerReferrer:

@@ -53,12 +53,15 @@ describe("Minted Supply Presentation (VAL-TOKEN-001)", () => {
     expect(screen.getByText("✓ Reconciled")).toBeInTheDocument();
   });
 
-  it("shows updated allocation categories", () => {
+  it("shows on-chain verified allocation categories", () => {
     render(<SupplyAllocation />);
-    expect(screen.getByText("Public Sale & Liquidity")).toBeInTheDocument();
+    expect(screen.getByText("Team/Vesting")).toBeInTheDocument();
     expect(screen.getByText("Treasury")).toBeInTheDocument();
-    expect(screen.getByText("OpenServ Drop")).toBeInTheDocument();
+    expect(screen.getByText("SERV / Strategic Reserve")).toBeInTheDocument();
+    expect(screen.getByText("LP / Liquidity")).toBeInTheDocument();
     expect(screen.getByText("Programmatic Funding")).toBeInTheDocument();
+    expect(screen.getByText("Deployer / Undistributed")).toBeInTheDocument();
+    expect(screen.getByText("Airdrop / Migration")).toBeInTheDocument();
   });
 });
 

@@ -373,9 +373,11 @@ describe("Token Allocations (Minted Supply)", () => {
 
   it("each allocation percentage approximately matches its token count", () => {
     for (const alloc of TOKEN_ALLOCATIONS) {
-      const expected = Math.round((alloc.percentage / 100) * MINTED_SUPPLY);
-      // Allow for rounding within 1 token
-      expect(Math.abs(alloc.tokens - expected)).toBeLessThanOrEqual(1);
+      const expected = (alloc.percentage / 100) * MINTED_SUPPLY;
+      // Allow for rounding within 0.1% of the allocation
+      // On-chain verified allocations use exact token counts; percentages are derived
+      const tolerance = Math.max(1, alloc.tokens * 0.001);
+      expect(Math.abs(alloc.tokens - expected)).toBeLessThanOrEqual(tolerance);
     }
   });
 

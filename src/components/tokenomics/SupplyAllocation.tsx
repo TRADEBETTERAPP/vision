@@ -1,8 +1,11 @@
 /**
- * Supply & Allocation Table — VAL-TOKEN-001
+ * Supply & Allocation Table — VAL-TOKEN-001 / VAL-TOKEN-020
  *
  * Displays token allocations, percentages, and token amounts that
  * reconcile to the minted supply from the Base contract (709,001,940 BETTER).
+ *
+ * All allocations are verified from on-chain data via Dune Analytics queries
+ * and basescan transfer history. Each allocation cites its source.
  */
 
 import {
@@ -31,7 +34,8 @@ export default function SupplyAllocation() {
         <span className="font-terminal font-semibold text-accent" data-testid="minted-supply-figure">
           {formatNumber(MINTED_SUPPLY)}
         </span>{" "}
-        BETTER tokens on the Base contract, allocated across five categories.
+        BETTER tokens on the Base contract — on-chain verified via Dune Analytics
+        and basescan.
       </p>
       <div className="mb-4 rounded border border-accent/20 bg-accent/5 px-3 py-2 text-xs text-secondary">
         <span className="font-terminal font-medium text-accent">Base Contract:</span>{" "}
@@ -117,6 +121,8 @@ export default function SupplyAllocation() {
             "bg-accent-warn",
             "bg-[#8b5cf6]",
             "bg-accent-danger",
+            "bg-[#06b6d4]",
+            "bg-[#f59e0b]",
           ];
           return (
             <div
@@ -136,6 +142,8 @@ export default function SupplyAllocation() {
             "bg-accent-warn",
             "bg-[#8b5cf6]",
             "bg-accent-danger",
+            "bg-[#06b6d4]",
+            "bg-[#f59e0b]",
           ];
           return (
             <span key={alloc.label} className="flex items-center gap-1">
