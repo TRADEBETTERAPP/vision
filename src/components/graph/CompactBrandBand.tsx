@@ -34,7 +34,7 @@ export function CompactBrandBand() {
 
       {/* Tagline — one dominant promise */}
       <p
-        className="mx-auto mb-3 max-w-2xl text-lg font-medium leading-snug text-foreground sm:text-xl"
+        className="mx-auto mb-3 max-w-2xl text-lg font-medium uppercase tracking-[-0.06em] leading-snug text-foreground sm:text-xl"
         data-testid="hero-tagline"
       >
         Prediction-market intelligence, automated.
