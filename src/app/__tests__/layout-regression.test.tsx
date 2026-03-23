@@ -71,9 +71,15 @@ describe("Hero poster-like composition regression", () => {
 });
 
 describe("Graph shell heading and structure regression", () => {
-  it("renders the BETTER Atlas section heading", () => {
+  it("atlas section contains the graph shell and hero brand band", () => {
     render(<Home />);
-    expect(screen.getByText("Explore the Ecosystem")).toBeInTheDocument();
+    const atlas = document.getElementById("atlas");
+    expect(atlas).toBeInTheDocument();
+    const graphShell = screen.getByTestId("graph-shell");
+    expect(atlas!.contains(graphShell)).toBe(true);
+    // Hero/brand band is now inside the atlas (VAL-VISUAL-026)
+    const hero = screen.getByTestId("hero-section");
+    expect(atlas!.contains(hero)).toBe(true);
   });
 
   it("graph overview shows BETTER Atlas labels", () => {

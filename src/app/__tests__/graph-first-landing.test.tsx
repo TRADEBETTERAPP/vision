@@ -2,35 +2,48 @@
  * Tests for graph-first default landing.
  *
  * The root load should land on a genuinely graph-first workspace
- * with the interactive graph as the primary visible surface,
- * not a hero-first landing.
+ * with the interactive graph as the primary visible surface.
+ * The hero/brand band is integrated at the top of the atlas section,
+ * not as a separate standalone section. (VAL-VISUAL-026)
  *
  * VAL-ROADMAP-014: Default loaded state is a pure graph workspace
  * VAL-CROSS-014: Graph workspace with investor-path entry, no separate handoff
+ * VAL-VISUAL-026: Single hero/brand surface inside graph workspace
  */
 import { render, screen } from "@testing-library/react";
 import Home from "../page";
 
 describe("Graph-first default landing", () => {
-  it("renders the graph workspace as the first major content section, before the hero", () => {
+  it("atlas section contains the hero/brand band and graph shell as one workspace", () => {
     render(<Home />);
+    const atlas = document.getElementById("atlas");
+    expect(atlas).toBeInTheDocument();
+
+    // Both the hero and graph shell are INSIDE the atlas section
     const graphShell = screen.getByTestId("graph-shell");
     const hero = screen.getByTestId("hero-section");
+    expect(atlas!.contains(graphShell)).toBe(true);
+    expect(atlas!.contains(hero)).toBe(true);
+  });
 
-    // The graph shell should appear before the hero in DOM order
-    // (graph-first means graph comes first in the visual layout)
-    const position = graphShell.compareDocumentPosition(hero);
+  it("hero/brand band appears before the graph shell inside the atlas (VAL-VISUAL-026)", () => {
+    render(<Home />);
+    const hero = screen.getByTestId("hero-section");
+    const graphShell = screen.getByTestId("graph-shell");
+
+    // The hero/brand band should come BEFORE the graph shell in DOM order
+    const position = hero.compareDocumentPosition(graphShell);
     expect(position & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 
-  it("the atlas/graph workspace is the topmost content section", () => {
+  it("the atlas is the topmost content section", () => {
     render(<Home />);
     const atlas = document.getElementById("atlas");
-    const hero = screen.getByTestId("hero-section");
+    const proof = screen.getByTestId("proof-section");
 
     expect(atlas).toBeInTheDocument();
-    // Atlas should come before the hero section in DOM order
-    const position = atlas!.compareDocumentPosition(hero);
+    // Atlas should come before the proof section in DOM order
+    const position = atlas!.compareDocumentPosition(proof);
     expect(position & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 

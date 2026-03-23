@@ -81,9 +81,14 @@ describe("Home page", () => {
     expect(graphNodes.length).toBeGreaterThanOrEqual(7);
   });
 
-  // The atlas section wraps the graph shell
-  it("renders the BETTER Atlas section heading", () => {
+  // The atlas section wraps the hero/brand band and graph shell (VAL-VISUAL-026)
+  it("atlas section contains the hero/brand band and graph shell", () => {
     render(<Home />);
-    expect(screen.getByText("Explore the Ecosystem")).toBeInTheDocument();
+    const atlas = document.getElementById("atlas");
+    expect(atlas).toBeInTheDocument();
+    const graphShell = screen.getByTestId("graph-shell");
+    expect(atlas!.contains(graphShell)).toBe(true);
+    const hero = screen.getByTestId("hero-section");
+    expect(atlas!.contains(hero)).toBe(true);
   });
 });
