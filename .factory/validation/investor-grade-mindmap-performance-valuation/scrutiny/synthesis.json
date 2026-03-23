@@ -1,6 +1,6 @@
 {
   "milestone": "investor-grade-mindmap-performance-valuation",
-  "round": 2,
+  "round": 3,
   "status": "fail",
   "validatorsRun": {
     "test": {
@@ -20,8 +20,8 @@
     }
   },
   "reviewsSummary": {
-    "total": 4,
-    "passed": 2,
+    "total": 2,
+    "passed": 0,
     "failed": 2,
     "failedFeatures": [
       "investor-roadmap-execution-plan-coverage-and-proof-gate-observability-fix",
@@ -32,51 +32,33 @@
     {
       "featureId": "investor-roadmap-execution-plan-coverage-and-proof-gate-observability-fix",
       "severity": "blocking",
-      "description": "The execution-plan coverage fix added dedicated treatment for the previously omitted stages, but `pe-terminal-open` still allows a private audit report merely provided to BETTER, so the proof gate is not consistently externally observable/investor-verifiable under VAL-ROADMAP-016."
+      "description": "Current HEAD still leaves the `pe-terminal-open` audit gate satisfiable via a private report merely provided to BETTER, so the proof gate is not consistently externally observable/investor-verifiable under VAL-ROADMAP-016."
     },
     {
       "featureId": "investor-roadmap-execution-plan-coverage-and-proof-gate-observability-fix",
       "severity": "blocking",
-      "description": "The enterprise-data proof gate still hinges on a private signed agreement and documented API usage over 30 days, which remains an internal/private criterion rather than an externally observable proof surface under VAL-ROADMAP-016."
+      "description": "Current HEAD still leaves the `re-enterprise-data` proof gate dependent on a private signed agreement plus internal usage evidence, so the gate remains non-observable externally under VAL-ROADMAP-016."
     },
     {
       "featureId": "investor-visual-parity-mobile-motion-and-evidence-gaps-fix",
       "severity": "blocking",
-      "description": "The visual parity follow-up added low-cost constrained motion and committed tradebetter comparison evidence, but the recorded validation still never measures runtime smoothness on the actual enhanced desktop motion stack; the desktop evidence remained in `data-visual-state=fallback` / `data-motion-layers=0`, so the runtime-smoothness half of VAL-VISUAL-025 is still unproven."
+      "description": "Current HEAD still has no concrete runtime smoothness evidence from an actually active enhanced desktop motion session; the latest recorded desktop observation remains fallback-only (`data-visual-state=fallback`, `data-motion-layers=0`), so the runtime-smoothness half of VAL-VISUAL-025 remains unresolved."
     }
   ],
-  "appliedUpdates": [
-    {
-      "target": "library",
-      "description": "Extended `.factory/library/testing.md` with the headless-WebGL limitation observed during VAL-VISUAL-025 rerun work: fallback-state checks can run headless, but enhanced-path runtime smoothness evidence needs a headed/GPU-capable browser session.",
-      "sourceFeature": "investor-visual-parity-mobile-motion-and-evidence-gaps-fix"
-    },
-    {
-      "target": "library",
-      "description": "Extended `.factory/library/content-model.md` to note that `SourceCue.note` is not currently rendered by `EvidenceHook`, so data-only note edits will not change visible evidence-hook copy without a component change.",
-      "sourceFeature": "investor-vault-assumption-calculation-alignment-polish"
-    }
-  ],
+  "appliedUpdates": [],
   "suggestedGuidanceUpdates": [
     {
-      "target": "frontend-experience-worker + content-strategy-worker skills",
-      "suggestion": "When a procedure requires reading `.factory/library/*.md` (or `design-system.md` for shell/landing changes), require transcript-visible reads or an explicit deviation; otherwise workers should not report `followedProcedure=true`.",
-      "evidence": "The rerun reviews for `investor-graph-workspace-graph-first-landing-and-valuation-gate-fix` and `investor-roadmap-execution-plan-coverage-and-proof-gate-observability-fix` both found missing transcript-visible library/design-system reads before implementation while the handoffs still reported `followedProcedure=true`.",
-      "isSystemic": true
-    },
-    {
-      "target": "AGENTS.md",
-      "suggestion": "Define which visible roadmap nodes count as `primary roadmap stages` for VAL-ROADMAP-016 so workers do not keep inventing local heuristics for execution-plan coverage.",
-      "evidence": "The original execution-plan feature omitted visible planned stages, and the fix now encodes its own rule in `src/content/__tests__/execution-plans.test.ts` that every visible non-live/non-speculative roadmap node is primary, but that convention is still not documented in mission shared state.",
-      "isSystemic": true
-    },
-    {
-      "target": "frontend-experience-worker skill / browser-validation guidance",
-      "suggestion": "Make the headless WebGL fallback limitation explicit and require a headed/GPU-capable browser session whenever a contract calls for enhanced-path motion evidence or runtime smoothness observations.",
-      "evidence": "The rerun for `investor-visual-parity-mobile-motion-and-evidence-gaps-fix` captured desktop fallback timings only because the browser session remained in `data-visual-state=fallback` / `data-motion-layers=0` under a headless WebGL limitation, leaving the enhanced-path runtime-smoothness requirement unresolved.",
+      "target": "content-strategy-worker skill",
+      "suggestion": "Require transcript-visible `.factory/library/*.md` reads before content-model edits, or an explicit handoff deviation when workers proceed without them.",
+      "evidence": "The round-3 review for `investor-roadmap-execution-plan-coverage-and-proof-gate-observability-fix` again found no transcript-visible library read before the first edit while the handoff still reported `followedProcedure=true`.",
       "isSystemic": true
     }
   ],
-  "rejectedObservations": [],
-  "previousRound": ".factory/validation/investor-grade-mindmap-performance-valuation/scrutiny/synthesis.round1.json"
+  "rejectedObservations": [
+    {
+      "observation": "Repeat the prior frontend-experience-worker guidance about requiring headed/GPU-capable enhanced-path evidence for VAL-VISUAL-025.",
+      "reason": "already-addressed by current HEAD changes to `.factory/skills/frontend-experience-worker/SKILL.md` in commit `1bbe15f`"
+    }
+  ],
+  "previousRound": ".factory/validation/investor-grade-mindmap-performance-valuation/scrutiny/synthesis.round2.json"
 }

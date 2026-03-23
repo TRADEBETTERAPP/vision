@@ -1,28 +1,22 @@
 {
   "featureId": "investor-visual-parity-mobile-motion-and-evidence-gaps-fix",
-  "reviewedAt": "2026-03-23T04:11:59Z",
+  "reviewedAt": "2026-03-23T04:27:18Z",
   "commitId": "2be94f8be9826e51f1b7bef8442ab55a4f653dfc",
   "transcriptSkeletonReviewed": true,
   "diffReviewed": true,
   "status": "fail",
   "codeReview": {
-    "summary": "The follow-up closes two of the three original blockers: constrained/mobile clients now get a real low-cost motion path, and the repo now contains an explicit tradebetter comparison artifact sourced from a fresh FetchUrl extraction. I did not find a new regression against VAL-VISUAL-021 or VAL-VISUAL-024 in the touched code. However, the rerun still does not provide a credible runtime smoothness observation for the animated enhanced desktop path, so the performance-evidence portion of VAL-VISUAL-025 remains unresolved.",
+    "summary": "Current HEAD still does not resolve the round-2 enhanced-path runtime smoothness blocker. I reviewed the fix feature's handoff, transcript skeleton, and commit `2be94f8`, then compared `2be94f8..HEAD`. Since round 2, the repo gained shared-state/metadata updates (including the new headed/GPU-capable validation requirement in `frontend-experience-worker/SKILL.md`) plus unrelated tokenomics changes, but there were no relevant implementation changes in `src/app/globals.css`, `src/components/visual/**`, or `.factory/library/tradebetter-comparison-evidence.md`. The latest feature evidence therefore remains the same fallback-only desktop observation from the original rerun, so VAL-VISUAL-025 still lacks a concrete runtime smoothness or jank observation from a session where the enhanced desktop path was actually active.",
     "issues": [
       {
         "file": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/handoffs/2026-03-23T04-00-39-962Z__investor-visual-parity-mobile-motion-and-evidence-gaps-fix__0fd58073-46cd-4051-bfc5-388e28eea48d.json",
         "line": 39,
         "severity": "blocking",
-        "description": "The new validation evidence still never measures runtime smoothness on the actual enhanced desktop motion stack. The recorded desktop check is explicitly in `data-visual-state=fallback` with `data-motion-layers=0` because of the headless WebGL limitation, and the only quantitative numbers captured there are first-paint/FCP/load timings for that fallback state. The later deferred-mount note at lines 58-59 does satisfy the initial-load/deferred-heavy-layer half of VAL-VISUAL-025, but there is still no frame-rate, long-task, dropped-frame, GPU-layer, or equivalent observation from a session where the animated enhanced path is actually running. That means the original blocker around concrete runtime smoothness evidence is not fully resolved."
+        "description": "The only recorded desktop runtime evidence for this feature is still the fallback-state observation `data-visual-state=fallback` / `data-motion-layers=0` caused by the headless WebGL limitation. No later implementation or evidence change landed on current HEAD to replace that with a headed/GPU-capable enhanced-path run, so there is still no frame-rate, jank, dropped-frame, long-task, GPU-layer, or equivalent runtime smoothness observation from an actually active enhanced desktop session as required by VAL-VISUAL-025."
       }
     ]
   },
-  "sharedStateObservations": [
-    {
-      "area": "skills",
-      "observation": "The shared browser-validation guidance still does not make the headless WebGL limitation explicit for VAL-VISUAL-025-style checks, which makes it easy for workers to collect fallback-only evidence and treat it as motion-performance proof for the enhanced path.",
-      "evidence": "This fix session's handoff records a desktop browser check that remained in `data-visual-state=fallback` / `data-motion-layers=0` because of a 'headless WebGL limitation' (`/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/handoffs/2026-03-23T04-00-39-962Z__investor-visual-parity-mobile-motion-and-evidence-gaps-fix__0fd58073-46cd-4051-bfc5-388e28eea48d.json:38-39`). `frontend-experience-worker/SKILL.md:16-20` requires browser validation of moving shader/ASCII behavior and enhanced-vs-fallback distinction, but it does not clearly say that a headed/GPU-capable session is required when headless agent-browser falls back out of WebGL."
-    }
-  ],
+  "sharedStateObservations": [],
   "addressesFailureFrom": "investor-visual-parity-and-balanced-performance-retune",
-  "summary": "Fail. The fix does land the missing constrained-motion path and adds the explicit tradebetter comparison artifact, but the rerun still stops short of credible runtime smoothness evidence for the enhanced desktop motion stack, so the VAL-VISUAL-025 performance-evidence blocker is still open."
+  "summary": "Fail. No relevant implementation changes landed after the round-2 review, so the fallback-only desktop evidence from the original rerun still stands unchanged and the enhanced-path runtime smoothness blocker remains unresolved on current HEAD."
 }
