@@ -87,9 +87,9 @@ describe("VAL-VISUAL-017: Enhanced visual state is dramatically distinct from st
     render(<Home />);
     const system = screen.getByTestId("hero-visual-system");
     const state = system.getAttribute("data-visual-state");
-    // In test env without WebGL, should be 'fallback' or 'static'
+    // In test env without WebGL, should be 'fallback', 'constrained', or 'static'
     expect(state).toBeTruthy();
-    expect(["enhanced", "fallback", "static", "reduced-motion"]).toContain(state);
+    expect(["enhanced", "fallback", "constrained", "static", "reduced-motion"]).toContain(state);
   });
 
   it("enhanced state is exposed when WebGL is available", async () => {

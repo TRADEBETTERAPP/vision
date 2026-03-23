@@ -246,8 +246,8 @@ describe("VAL-VISUAL-025: Deferred heavy-layer loading", () => {
 // VAL-VISUAL-025: Constrained motion fallback
 // ---------------------------------------------------------------------------
 
-describe("VAL-VISUAL-025: Constrained states use cheaper motion", () => {
-  it("data-device-class=constrained results in 0 motion layers", () => {
+describe("VAL-VISUAL-025: Constrained states use real low-cost motion", () => {
+  it("data-device-class=constrained results in 1 motion layer (CSS animation)", () => {
     mockMatchMedia({
       "(pointer: coarse)": true,
       "(max-width: 1024px)": true,
@@ -256,7 +256,8 @@ describe("VAL-VISUAL-025: Constrained states use cheaper motion", () => {
     render(<Home />);
     const system = screen.getByTestId("hero-visual-system");
     const motionLayers = system.getAttribute("data-motion-layers");
-    expect(Number(motionLayers)).toBe(0);
+    // Constrained devices get 1 low-cost CSS animation layer instead of 0
+    expect(Number(motionLayers)).toBe(1);
   });
 
   it("visual hierarchy is preserved in constrained mode (scanline + gradient remain)", () => {
@@ -269,6 +270,48 @@ describe("VAL-VISUAL-025: Constrained states use cheaper motion", () => {
     // Fallback gradient layer is still there
     const fallback = screen.getByTestId("hero-radiant-fallback");
     expect(fallback).toBeInTheDocument();
+  });
+
+  it("CSS contains a @keyframes animation for constrained low-cost motion", () => {
+    const css = getGlobalsCss();
+    // Must define a keyframes animation for constrained gradient shift
+    expect(css).toMatch(/@keyframes\s+constrained-drift/);
+    // Must apply that animation on constrained .hero-radiant-fallback
+    expect(css).toMatch(
+      /\[data-device-class="constrained"\]\s+\.hero-radiant-fallback[\s\S]*?animation[\s\S]*?constrained-drift/
+    );
+  });
+
+  it("constrained CSS animation targets only background-position for GPU efficiency", () => {
+    const css = getGlobalsCss();
+    // The keyframes should animate background-position (not opacity, transform, or filter)
+    // for GPU-efficient compositing on mobile
+    const keyframesMatch = css.match(
+      /@keyframes\s+constrained-drift\s*\{[\s\S]*?\}\s*\}/
+    );
+    expect(keyframesMatch).not.toBeNull();
+    expect(keyframesMatch![0]).toContain("background-position");
+  });
+
+  it("constrained visual state is 'constrained' not 'fallback'", () => {
+    mockMatchMedia({
+      "(pointer: coarse)": true,
+      "(max-width: 1024px)": true,
+    });
+
+    render(<Home />);
+    const system = screen.getByTestId("hero-visual-system");
+    const visualState = system.getAttribute("data-visual-state");
+    // Constrained devices should have their own visual state
+    expect(visualState).toBe("constrained");
+  });
+
+  it("site atmosphere also applies constrained low-cost animation", () => {
+    const css = getGlobalsCss();
+    // The site-atmosphere-gradient on constrained also gets the animation
+    expect(css).toMatch(
+      /\[data-device-class="constrained"\]\s+\.site-atmosphere-gradient[\s\S]*?animation[\s\S]*?constrained-drift/
+    );
   });
 });
 
@@ -309,5 +352,24 @@ describe("VAL-VISUAL-021: tradebetter parity documented with reference evidence"
       "utf-8",
     );
     expect(shellSrc).toContain("bg-surface");
+  });
+
+  it("explicit tradebetter comparison evidence document exists and covers required attributes", () => {
+    // VAL-VISUAL-021 requires committed side-by-side comparison evidence
+    const evidencePath = path.resolve(
+      __dirname,
+      "../../../../.factory/library/tradebetter-comparison-evidence.md",
+    );
+    expect(fs.existsSync(evidencePath)).toBe(true);
+    const evidence = fs.readFileSync(evidencePath, "utf-8");
+    // Must document concrete shared attributes
+    expect(evidence.toLowerCase()).toContain("color");
+    expect(evidence.toLowerCase()).toContain("font");
+    expect(evidence.toLowerCase()).toContain("spacing");
+    expect(evidence.toLowerCase()).toContain("tradebetter.app");
+    // Must include measured values for side-by-side comparison
+    expect(evidence).toContain("#455eff");
+    expect(evidence).toContain("#0a0a0c");
+    expect(evidence).toContain("IBM Plex Mono");
   });
 });

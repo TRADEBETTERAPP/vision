@@ -98,20 +98,24 @@ function HeroVisualSystemInner({
 
   // Compute visual state for data attribute (VAL-VISUAL-017)
   // Enhanced: WebGL shader is ready, motion is allowed, AND device is desktop-class
-  // Fallback: WebGL failed, unavailable, or device is constrained
+  // Constrained: mobile/tablet — CSS-only low-cost gradient drift animation
+  // Fallback: WebGL failed on desktop
   // Reduced-motion: user prefers reduced motion
   const visualState = reducedMotion
     ? "reduced-motion"
     : ready && !fallback && isDesktopCapable
       ? "enhanced"
-      : "fallback";
+      : !isDesktopCapable
+        ? "constrained"
+        : "fallback";
 
   // Count active motion layers (VAL-VISUAL-018)
-  // In enhanced mode on desktop: shader (1) + ASCII canvas (1) = 2
-  // In fallback or constrained: 0 (no active motion layers)
-  // In reduced-motion: 0
+  // Enhanced (desktop): shader (1) + ASCII canvas (1) = 2
+  // Constrained (mobile/tablet): CSS gradient drift animation = 1
+  // Fallback (desktop WebGL fail): 0 (truly static)
+  // Reduced-motion: 0
   const motionLayers =
-    visualState === "enhanced" ? 2 : 0;
+    visualState === "enhanced" ? 2 : visualState === "constrained" ? 1 : 0;
 
   return (
     <div

@@ -294,6 +294,18 @@ body {
   opacity: 0.4;
 }
 
+/* Constrained state (mobile/tablet): CSS gradient carries the atmosphere
+   with a low-cost drift animation providing visible motion. No WebGL
+   shader or ASCII canvas layers — those are desktop-only. The animated
+   gradient shift gives a premium feel without GPU-heavy live rendering. */
+[data-visual-state="constrained"] .hero-radiant-fallback {
+  opacity: 1;
+}
+
+[data-visual-state="constrained"] .scanline-overlay {
+  opacity: 0.35;
+}
+
 /* Reduced-motion state: all layers static, dimmed for readability.
    Atmospheric presence is preserved but motion is completely suppressed. */
 [data-visual-state="reduced-motion"] .hero-radiant-fallback {
@@ -413,25 +425,32 @@ body {
    CSS gradient + scanline texture for atmosphere.
    ----------------------------------------------------------------------- */
 
+/* -----------------------------------------------------------------------
+   Low-cost motion for constrained/mobile states (VAL-VISUAL-025)
+   Instead of full shader/canvas animation, constrained devices get a
+   real CSS-driven gradient drift animation — visibly animated without
+   GPU-heavy WebGL or canvas layers. Uses background-position animation
+   for efficient compositing on mobile GPUs.
+   ----------------------------------------------------------------------- */
+
+@keyframes constrained-drift {
+  0% {
+    background-position: 0% 50%, 30% 40%, 70% 50%;
+  }
+  33% {
+    background-position: 10% 55%, 25% 45%, 75% 45%;
+  }
+  66% {
+    background-position: 5% 45%, 35% 35%, 65% 55%;
+  }
+  100% {
+    background-position: 0% 50%, 30% 40%, 70% 50%;
+  }
+}
+
 [data-device-class="constrained"] .hero-radiant-fallback {
   opacity: 1;
   transition: none;
-}
-
-[data-device-class="constrained"] .scanline-overlay {
-  opacity: 0.35;
-}
-
-/* On constrained devices the site-atmosphere gradient is the primary
-   atmospheric layer — boost it slightly for visual continuity */
-[data-device-class="constrained"] .site-atmosphere-gradient {
-  opacity: 1;
-}
-
-/* Smoother low-cost motion for constrained states (VAL-VISUAL-025)
-   Instead of full shader/canvas animation, constrained devices get
-   a subtle CSS-driven gradient shift for premium feel without GPU cost */
-[data-device-class="constrained"] .hero-radiant-fallback {
   background:
     radial-gradient(
       ellipse 120% 80% at 50% 60%,
@@ -449,6 +468,20 @@ body {
       rgba(50, 60, 180, 0.08) 0%,
       transparent 55%
     );
+  background-size: 200% 200%, 200% 200%, 200% 200%;
+  animation: constrained-drift 12s ease-in-out infinite;
+}
+
+[data-device-class="constrained"] .scanline-overlay {
+  opacity: 0.35;
+}
+
+/* On constrained devices the site-atmosphere gradient is the primary
+   atmospheric layer — boost it with the same low-cost drift animation */
+[data-device-class="constrained"] .site-atmosphere-gradient {
+  opacity: 1;
+  background-size: 200% 200%, 200% 200%, 200% 200%;
+  animation: constrained-drift 16s ease-in-out infinite;
 }
 
 /* -----------------------------------------------------------------------
