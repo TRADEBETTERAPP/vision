@@ -63,9 +63,11 @@ function EvidenceExplainerCard({
         </h3>
       </div>
       <p className="mb-3 text-sm text-secondary">{description}</p>
-      <p className="rounded border border-border bg-background px-3 py-2 font-terminal text-xs text-muted">
-        Example: {example}
-      </p>
+      <LiquidMetalCard className="px-3 py-2">
+        <p className="font-terminal text-xs text-muted">
+          Example: {example}
+        </p>
+      </LiquidMetalCard>
     </LiquidMetalCard>
   );
 }

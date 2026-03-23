@@ -162,8 +162,8 @@ function SubsystemCostBand({
 
 function PhaseCard({ phase, index }: { phase: CostBandPhase; index: number }) {
   return (
-    <div
-      className="rounded-md border border-border bg-background p-3"
+    <LiquidMetalCard
+      className="p-3"
       data-testid="cost-band-phase"
     >
       <div className="mb-2 flex flex-wrap items-center gap-2">
@@ -209,6 +209,6 @@ function PhaseCard({ phase, index }: { phase: CostBandPhase; index: number }) {
       )}
 
       <EvidenceHook source={phase.source} />
-    </div>
+    </LiquidMetalCard>
   );
 }

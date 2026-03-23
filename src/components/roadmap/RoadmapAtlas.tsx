@@ -381,9 +381,9 @@ export default function RoadmapAtlas() {
 
       {/* Invalid deep link fallback */}
       {invalidDeepLink && (
-        <div
+        <LiquidMetalCard
           data-testid="roadmap-invalid-link-fallback"
-          className="rounded-lg border border-white/15 bg-white/[0.03] p-4 text-center"
+          className="p-4 text-center"
           role="alert"
           ref={fallbackRef}
           tabIndex={-1}
@@ -402,7 +402,7 @@ export default function RoadmapAtlas() {
           >
             Reset &amp; Explore Roadmap
           </button>
-        </div>
+        </LiquidMetalCard>
       )}
 
       {/* Main layout: Story panels + Branch explorer */}

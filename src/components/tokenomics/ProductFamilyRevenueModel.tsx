@@ -71,19 +71,19 @@ export default function ProductFamilyRevenueModel() {
             <p className="mb-3 text-sm text-secondary">{model.revenueDescription}</p>
 
             <div className="grid gap-3 sm:grid-cols-2">
-              <div className="rounded border border-border/50 bg-background px-3 py-2">
+              <LiquidMetalCard className="px-3 py-2">
                 <span className="block font-terminal text-[10px] font-medium uppercase tracking-wider text-muted">
                   Return Path
                 </span>
                 <p className="text-xs text-secondary">{model.returnPath}</p>
-              </div>
+              </LiquidMetalCard>
               {model.estimatedRange && (
-                <div className="rounded border border-border/50 bg-background px-3 py-2">
+                <LiquidMetalCard className="px-3 py-2">
                   <span className="block font-terminal text-[10px] font-medium uppercase tracking-wider text-muted">
                     Estimated Range
                   </span>
                   <p className="font-terminal text-xs text-accent">{model.estimatedRange}</p>
-                </div>
+                </LiquidMetalCard>
               )}
             </div>
 

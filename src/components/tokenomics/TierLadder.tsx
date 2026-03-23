@@ -200,13 +200,13 @@ function BenefitItem({
   highlight?: boolean;
 }) {
   return (
-    <div className="rounded border border-border/50 bg-background px-2.5 py-1.5">
+    <LiquidMetalCard className="px-2.5 py-1.5">
       <span className="block font-terminal text-[10px] font-medium uppercase tracking-wider text-muted">
         {label}
       </span>
       <span className={`text-sm ${highlight ? "font-semibold text-accent" : "text-secondary"}`}>
         {value}
       </span>
-    </div>
+    </LiquidMetalCard>
   );
 }

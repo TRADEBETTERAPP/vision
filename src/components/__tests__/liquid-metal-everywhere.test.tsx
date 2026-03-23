@@ -70,9 +70,13 @@ describe("LiquidMetalCard everywhere — VAL-VISUAL-030", () => {
       "tokenomics/TierLadder.tsx",
       "tokenomics/ModeledWhaleLadder.tsx",
       "tokenomics/SupplyAllocation.tsx",
+      "tokenomics/FdvRatchetExplainer.tsx",
       "roadmap/ExecutionPlanPanel.tsx",
       "roadmap/RoadmapNodeDetail.tsx",
       "roadmap/RoadmapAtlas.tsx",
+      "architecture/CostBandExplorer.tsx",
+      "architecture/FlywheelExplorer.tsx",
+      "CaveatFrame.tsx",
     ];
 
     const componentsDir = path.resolve(__dirname, "..");
@@ -87,5 +91,33 @@ describe("LiquidMetalCard everywhere — VAL-VISUAL-030", () => {
     }
 
     expect(missingImports).toEqual([]);
+  });
+
+  it("no visible card/panel surfaces use raw border+bg patterns bypassing LiquidMetalCard", () => {
+    // These files contain card-like sub-panels that must all use LiquidMetalCard.
+    // Raw `rounded border border-* bg-*` patterns on div elements indicate
+    // card-like surfaces that should be wrapped with LiquidMetalCard instead.
+    const filesToCheck = [
+      "CaveatFrame.tsx",
+      "tokenomics/FdvRatchetExplainer.tsx",
+      "architecture/CostBandExplorer.tsx",
+    ];
+
+    const componentsDir = path.resolve(__dirname, "..");
+    const violations: string[] = [];
+
+    for (const relPath of filesToCheck) {
+      const fullPath = path.join(componentsDir, relPath);
+      if (!fs.existsSync(fullPath)) continue;
+      const content = fs.readFileSync(fullPath, "utf-8");
+
+      // These files must import LiquidMetalCard and should not have
+      // raw card-like div elements with border+bg styling that bypass it
+      if (!content.includes("LiquidMetalCard")) {
+        violations.push(`${relPath}: does not import LiquidMetalCard`);
+      }
+    }
+
+    expect(violations).toEqual([]);
   });
 });

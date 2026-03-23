@@ -64,22 +64,22 @@ export default function ModeledWhaleLadder() {
               </div>
               <p className="mb-3 text-sm text-secondary">{product.description}</p>
               <div className="grid gap-3 sm:grid-cols-2">
-                <div className="rounded border border-border/50 bg-background px-3 py-2">
+                <LiquidMetalCard className="px-3 py-2">
                   <span className="block font-terminal text-[10px] font-medium uppercase tracking-wider text-muted">
                     Modeled Minimum
                   </span>
                   <span className="font-terminal font-semibold text-foreground">
                     ≥ {formatNumber(product.modeledMinimumBetter)} BETTER
                   </span>
-                </div>
-                <div className="rounded border border-border/50 bg-background px-3 py-2">
+                </LiquidMetalCard>
+                <LiquidMetalCard className="px-3 py-2">
                   <span className="block font-terminal text-[10px] font-medium uppercase tracking-wider text-muted">
                     Required Tier
                   </span>
                   <span className="font-terminal font-semibold text-accent">
                     {tier?.name ?? product.minimumTierId}
                   </span>
-                </div>
+                </LiquidMetalCard>
               </div>
               <div className="mt-3">
                 <EvidenceHook source={product.source} />

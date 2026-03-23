@@ -67,12 +67,12 @@ export default function RoadmapNodeDetail({
 
       {/* Unlocks */}
       {node.unlocks && (
-        <div className="mb-3 rounded border border-accent/10 bg-accent/5 px-3 py-2">
+        <LiquidMetalCard className="mb-3 px-3 py-2">
           <p className="text-xs text-accent">
             <span className="mr-1 font-terminal font-semibold">Unlocks:</span>
             {node.unlocks}
           </p>
-        </div>
+        </LiquidMetalCard>
       )}
 
       {/* Dependencies — resolved to readable titles */}

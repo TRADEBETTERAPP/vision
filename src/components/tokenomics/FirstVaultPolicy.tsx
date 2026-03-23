@@ -97,30 +97,30 @@ export default function FirstVaultPolicy() {
           diminishing returns.
         </p>
         <div className="grid gap-3 sm:grid-cols-3">
-          <div className="rounded border border-border/50 bg-background px-3 py-2">
+          <LiquidMetalCard className="px-3 py-2">
             <span className="block font-terminal text-[10px] font-medium uppercase tracking-wider text-muted">
               Tapering
             </span>
             <span className="font-terminal font-semibold text-foreground">
               √-weighted (α = {BIDDING_MODEL_PARAMS.alpha})
             </span>
-          </div>
-          <div className="rounded border border-border/50 bg-background px-3 py-2">
+          </LiquidMetalCard>
+          <LiquidMetalCard className="px-3 py-2">
             <span className="block font-terminal text-[10px] font-medium uppercase tracking-wider text-muted">
               Per-Staker Cap
             </span>
             <span className="font-terminal font-semibold text-foreground">
               max(V/N, V×{BIDDING_MODEL_PARAMS.perStakerCapRatio * 100}%)
             </span>
-          </div>
-          <div className="rounded border border-border/50 bg-background px-3 py-2">
+          </LiquidMetalCard>
+          <LiquidMetalCard className="px-3 py-2">
             <span className="block font-terminal text-[10px] font-medium uppercase tracking-wider text-muted">
               Minimum Floor
             </span>
             <span className="font-terminal font-semibold text-foreground">
               ${BIDDING_MODEL_PARAMS.minimumFloorUsd} USDC
             </span>
-          </div>
+          </LiquidMetalCard>
         </div>
         <p className="mt-3 text-xs text-muted">
           The hybrid model compresses whale allocations via √-tapering, bounds maximum
@@ -149,7 +149,7 @@ export default function FirstVaultPolicy() {
         </p>
         <div className="space-y-2">
           {MULTI_VAULT_PROGRESSION.stages.map((stage, i) => (
-            <div key={i} className="flex items-center gap-3 rounded border border-border/50 bg-background px-3 py-2">
+            <LiquidMetalCard key={i} className="flex items-center gap-3 px-3 py-2">
               <MaturityBadge status={stage.maturity} />
               <div>
                 <span className="font-terminal text-sm font-semibold text-foreground">
@@ -166,7 +166,7 @@ export default function FirstVaultPolicy() {
                   </span>
                 )}
               </div>
-            </div>
+            </LiquidMetalCard>
           ))}
         </div>
       </LiquidMetalCard>
@@ -207,30 +207,30 @@ export default function FirstVaultPolicy() {
             </div>
             {ex.qualifies && (
               <div className="grid gap-3 sm:grid-cols-3">
-                <div className="rounded border border-border/50 bg-background px-3 py-2">
+                <LiquidMetalCard className="px-3 py-2">
                   <span className="block font-terminal text-[10px] font-medium uppercase tracking-wider text-muted">
                     √-Weight
                   </span>
                   <span className="font-terminal font-semibold text-foreground">
                     {ex.sqrtWeight.toLocaleString("en-US", { maximumFractionDigits: 0 })}
                   </span>
-                </div>
-                <div className="rounded border border-border/50 bg-background px-3 py-2">
+                </LiquidMetalCard>
+                <LiquidMetalCard className="px-3 py-2">
                   <span className="block font-terminal text-[10px] font-medium uppercase tracking-wider text-muted">
                     Estimated Allocation
                   </span>
                   <span className="font-terminal font-semibold text-accent">
                     ${formatNumber(ex.estimatedAllocationUsd)}
                   </span>
-                </div>
-                <div className="rounded border border-border/50 bg-background px-3 py-2">
+                </LiquidMetalCard>
+                <LiquidMetalCard className="px-3 py-2">
                   <span className="block font-terminal text-[10px] font-medium uppercase tracking-wider text-muted">
                     % of Vault
                   </span>
                   <span className="font-terminal font-semibold text-foreground">
                     {ex.percentOfVault.toFixed(1)}%
                   </span>
-                </div>
+                </LiquidMetalCard>
               </div>
             )}
             <p className="mt-2 text-xs text-muted">{ex.explanation}</p>

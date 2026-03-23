@@ -42,9 +42,9 @@ export default function ExecutionPlanPanel({ plan }: { plan: ExecutionPlan }) {
       </div>
 
       {/* Timing Window */}
-      <div
+      <LiquidMetalCard
         data-testid="execution-plan-timing"
-        className="rounded border border-accent/10 bg-accent/5 px-3 py-2"
+        className="px-3 py-2"
       >
         <div className="flex flex-wrap items-center gap-2">
           <span className="font-terminal text-[10px] font-medium uppercase tracking-widest text-accent">
@@ -60,7 +60,7 @@ export default function ExecutionPlanPanel({ plan }: { plan: ExecutionPlan }) {
             {plan.timingWindow.mainConstraint}
           </p>
         )}
-      </div>
+      </LiquidMetalCard>
 
       {/* Workstreams — Internal (AI-agent-compressible) */}
       {internalWorkstreams.length > 0 && (
@@ -77,9 +77,10 @@ export default function ExecutionPlanPanel({ plan }: { plan: ExecutionPlan }) {
           </h5>
           <ul className="space-y-2">
             {internalWorkstreams.map((ws, i) => (
-              <li
+              <LiquidMetalCard
+                as="li"
                 key={i}
-                className="rounded border border-border/50 bg-surface/50 px-3 py-2"
+                className="px-3 py-2"
               >
                 <span className="text-xs font-semibold text-foreground">
                   {ws.label}
@@ -87,7 +88,7 @@ export default function ExecutionPlanPanel({ plan }: { plan: ExecutionPlan }) {
                 <p className="mt-0.5 text-xs leading-relaxed text-muted">
                   {ws.description}
                 </p>
-              </li>
+              </LiquidMetalCard>
             ))}
           </ul>
         </div>
@@ -108,9 +109,10 @@ export default function ExecutionPlanPanel({ plan }: { plan: ExecutionPlan }) {
           </h5>
           <ul className="space-y-2">
             {externalWorkstreams.map((ws, i) => (
-              <li
+              <LiquidMetalCard
+                as="li"
                 key={i}
-                className="rounded border border-white/10 bg-white/[0.03] px-3 py-2"
+                className="px-3 py-2"
               >
                 <span className="text-xs font-semibold text-foreground">
                   {ws.label}
@@ -118,7 +120,7 @@ export default function ExecutionPlanPanel({ plan }: { plan: ExecutionPlan }) {
                 <p className="mt-0.5 text-xs leading-relaxed text-muted">
                   {ws.description}
                 </p>
-              </li>
+              </LiquidMetalCard>
             ))}
           </ul>
         </div>
@@ -154,9 +156,10 @@ export default function ExecutionPlanPanel({ plan }: { plan: ExecutionPlan }) {
         </h5>
         <ul className="space-y-2">
           {plan.proofGates.map((gate, i) => (
-            <li
+            <LiquidMetalCard
+              as="li"
               key={i}
-              className="rounded border border-accent/10 bg-surface/50 px-3 py-2"
+              className="px-3 py-2"
             >
               <div className="flex items-start justify-between gap-2">
                 <span className="text-xs font-semibold text-accent">
@@ -167,7 +170,7 @@ export default function ExecutionPlanPanel({ plan }: { plan: ExecutionPlan }) {
               <p className="mt-1 text-xs leading-relaxed text-secondary">
                 {gate.criterion}
               </p>
-            </li>
+            </LiquidMetalCard>
           ))}
         </ul>
       </div>

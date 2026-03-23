@@ -490,9 +490,9 @@ export function GraphShell({ surfaces = {} }: GraphShellProps) {
 
         {/* Invalid deep link fallback (VAL-ROADMAP-007) */}
         {invalidLink && (
-          <div
+          <LiquidMetalCard
             data-testid="graph-invalid-link-fallback"
-            className="mb-4 rounded-lg border border-white/15 bg-white/[0.03] p-4 text-center"
+            className="mb-4 p-4 text-center"
             role="alert"
             ref={fallbackRef}
             tabIndex={-1}
@@ -510,7 +510,7 @@ export function GraphShell({ surfaces = {} }: GraphShellProps) {
             >
               Reset &amp; Explore
             </button>
-          </div>
+          </LiquidMetalCard>
         )}
 
         {/* Graph node map — the explorable mindmap (VAL-ROADMAP-001, VAL-ROADMAP-011) */}

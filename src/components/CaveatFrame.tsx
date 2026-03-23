@@ -1,4 +1,5 @@
 import type { ConfidenceFrame } from "@/content";
+import { LiquidMetalCard } from "./LiquidMetalCard";
 
 /**
  * Renders nearby caveat / confidence framing for aggressive or future-facing claims.
@@ -12,8 +13,8 @@ export default function CaveatFrame({
   className?: string;
 }) {
   return (
-    <div
-      className={`rounded border border-white/15 bg-white/5 px-3 py-2 ${className}`}
+    <LiquidMetalCard
+      className={`px-3 py-2 ${className}`}
       role="note"
       aria-label="Confidence and caveat framing"
       data-testid="caveat-frame"
@@ -28,6 +29,6 @@ export default function CaveatFrame({
           {confidence.dependencies.join(", ")}
         </p>
       )}
-    </div>
+    </LiquidMetalCard>
   );
 }

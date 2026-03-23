@@ -118,7 +118,7 @@ export default function ValuationCorridors() {
 
               {/* Numeric bounds + implied token price */}
               <div className="mb-4 grid gap-3 sm:grid-cols-3">
-                <div className="rounded border border-border/50 bg-background px-3 py-2">
+                <LiquidMetalCard className="px-3 py-2">
                   <span className="block font-terminal text-[10px] font-medium uppercase tracking-wider text-muted">
                     FDV Range
                   </span>
@@ -128,8 +128,8 @@ export default function ValuationCorridors() {
                   >
                     ${formatNumber(corridor.lowerBoundM)}M – ${formatNumber(corridor.upperBoundM)}M
                   </span>
-                </div>
-                <div className="rounded border border-border/50 bg-background px-3 py-2">
+                </LiquidMetalCard>
+                <LiquidMetalCard className="px-3 py-2">
                   <span className="block font-terminal text-[10px] font-medium uppercase tracking-wider text-muted">
                     Implied Token Price
                   </span>
@@ -139,15 +139,15 @@ export default function ValuationCorridors() {
                   >
                     {formatPrice(lowPrice)} – {formatPrice(highPrice)}
                   </span>
-                </div>
-                <div className="rounded border border-border/50 bg-background px-3 py-2">
+                </LiquidMetalCard>
+                <LiquidMetalCard className="px-3 py-2">
                   <span className="block font-terminal text-[10px] font-medium uppercase tracking-wider text-muted">
                     Comparables
                   </span>
                   <span className="text-xs text-secondary" data-testid="corridor-comparables">
                     {corridor.comparableCategories.join("; ")}
                   </span>
-                </div>
+                </LiquidMetalCard>
               </div>
 
               {/* Proof gates */}

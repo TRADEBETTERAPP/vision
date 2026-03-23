@@ -204,12 +204,12 @@ export default function FeeStackValueFlow() {
                 <MaturityBadge status={fee.status} />
               </div>
               <p className="mb-2 text-sm text-secondary">{fee.description}</p>
-              <div className="rounded border border-border bg-background px-3 py-2" data-testid="fee-example">
+              <LiquidMetalCard className="px-3 py-2" data-testid="fee-example">
                 <span className="font-terminal text-xs font-medium uppercase tracking-wider text-accent">
                   Worked Example
                 </span>
                 <p className="mt-0.5 text-sm text-secondary">{fee.example}</p>
-              </div>
+              </LiquidMetalCard>
               <div className="mt-2">
                 <EvidenceHook source={fee.source} />
               </div>

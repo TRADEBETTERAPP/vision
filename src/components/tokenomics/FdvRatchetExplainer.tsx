@@ -7,6 +7,7 @@
 
 import EvidenceHook from "@/components/EvidenceHook";
 import CaveatFrame from "@/components/CaveatFrame";
+import { LiquidMetalCard } from "@/components/LiquidMetalCard";
 import type { SourceCue, ConfidenceFrame } from "@/content";
 
 const ratchetSource: SourceCue = {
@@ -93,7 +94,7 @@ export default function FdvRatchetExplainer() {
       </div>
 
       {/* How it works */}
-      <div className="mb-6 rounded-lg border border-accent/20 bg-accent/5 p-4">
+      <LiquidMetalCard className="mb-6 p-4">
         <h4 className="mb-2 font-terminal text-sm font-semibold text-accent">
           How It Works
         </h4>
@@ -123,21 +124,18 @@ export default function FdvRatchetExplainer() {
             , the threshold drops again.
           </li>
         </ol>
-      </div>
+      </LiquidMetalCard>
 
       {/* Worked Example */}
       <h4 className="mb-3 font-terminal text-sm font-semibold uppercase tracking-wider text-muted">
         Worked Example
       </h4>
-      <div className="space-y-0" data-testid="ratchet-worked-example">
+      <div className="space-y-2" data-testid="ratchet-worked-example">
         {WORKED_EXAMPLE.map((step, index) => (
-          <div
+          <LiquidMetalCard
             key={index}
-            className={`flex items-start gap-4 border-l-2 py-3 pl-4 ${
-              step.highlight
-                ? "border-accent bg-accent/5"
-                : "border-border"
-            }`}
+            variant={step.highlight ? "active" : "default"}
+            className="flex items-start gap-4 py-3 pl-4 pr-3"
             data-testid="ratchet-step"
           >
             <div className="shrink-0 pt-0.5">
@@ -167,7 +165,7 @@ export default function FdvRatchetExplainer() {
               </div>
               <p className="mt-1 text-sm text-secondary">{step.explanation}</p>
             </div>
-          </div>
+          </LiquidMetalCard>
         ))}
       </div>
 

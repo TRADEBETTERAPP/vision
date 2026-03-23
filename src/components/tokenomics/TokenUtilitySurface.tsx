@@ -269,12 +269,12 @@ function UtilityCard({
       </div>
       <p className="mb-3 text-sm text-secondary">{mechanic.description}</p>
 
-      <div className="mb-3 rounded border border-accent/20 bg-accent/5 px-3 py-2">
+      <LiquidMetalCard className="mb-3 px-3 py-2">
         <span className="font-terminal text-xs font-medium uppercase tracking-wider text-accent">
           Token Role
         </span>
         <p className="mt-0.5 text-sm text-secondary">{mechanic.tokenRole}</p>
-      </div>
+      </LiquidMetalCard>
 
       {/* Use-case depth analysis (VAL-TOKEN-021) */}
       {analysis && <UseCaseDepthSection analysis={analysis} />}
@@ -291,8 +291,8 @@ function UseCaseDepthSection({ analysis }: { analysis: UseCaseAnalysis }) {
   return (
     <div className="mb-3 space-y-2">
       {/* Comparable Market Size */}
-      <div
-        className="rounded border border-border/50 bg-background px-3 py-2"
+      <LiquidMetalCard
+        className="px-3 py-2"
         data-testid="use-case-market-size"
       >
         <span className="block font-terminal text-[10px] font-medium uppercase tracking-wider text-muted">
@@ -301,11 +301,11 @@ function UseCaseDepthSection({ analysis }: { analysis: UseCaseAnalysis }) {
         <p className="mt-0.5 text-xs text-secondary">
           {analysis.comparableMarketSize}
         </p>
-      </div>
+      </LiquidMetalCard>
 
       {/* Revenue Model */}
-      <div
-        className="rounded border border-border/50 bg-background px-3 py-2"
+      <LiquidMetalCard
+        className="px-3 py-2"
         data-testid="use-case-revenue-model"
       >
         <span className="block font-terminal text-[10px] font-medium uppercase tracking-wider text-muted">
@@ -314,11 +314,11 @@ function UseCaseDepthSection({ analysis }: { analysis: UseCaseAnalysis }) {
         <p className="mt-0.5 text-xs text-secondary">
           {analysis.revenueModel}
         </p>
-      </div>
+      </LiquidMetalCard>
 
       {/* Estimated Revenue Range */}
-      <div
-        className="rounded border border-accent/20 bg-accent/5 px-3 py-2"
+      <LiquidMetalCard
+        className="px-3 py-2"
         data-testid="use-case-revenue-range"
       >
         <span className="block font-terminal text-[10px] font-medium uppercase tracking-wider text-accent">
@@ -327,11 +327,11 @@ function UseCaseDepthSection({ analysis }: { analysis: UseCaseAnalysis }) {
         <p className="mt-0.5 font-terminal text-xs text-accent">
           {analysis.estimatedRevenueRange}
         </p>
-      </div>
+      </LiquidMetalCard>
 
       {/* Token Demand Implications */}
-      <div
-        className="rounded border border-border/50 bg-background px-3 py-2"
+      <LiquidMetalCard
+        className="px-3 py-2"
         data-testid="use-case-token-demand"
       >
         <span className="block font-terminal text-[10px] font-medium uppercase tracking-wider text-muted">
@@ -340,11 +340,11 @@ function UseCaseDepthSection({ analysis }: { analysis: UseCaseAnalysis }) {
         <p className="mt-0.5 text-xs text-secondary">
           {analysis.tokenDemandImplications}
         </p>
-      </div>
+      </LiquidMetalCard>
 
       {/* Realistic Timeline */}
-      <div
-        className="rounded border border-border/50 bg-background px-3 py-2"
+      <LiquidMetalCard
+        className="px-3 py-2"
         data-testid="use-case-timeline"
       >
         <span className="block font-terminal text-[10px] font-medium uppercase tracking-wider text-muted">
@@ -353,11 +353,11 @@ function UseCaseDepthSection({ analysis }: { analysis: UseCaseAnalysis }) {
         <p className="mt-0.5 text-xs text-secondary">
           {analysis.realisticTimeline}
         </p>
-      </div>
+      </LiquidMetalCard>
 
       {/* Key Dependencies */}
       {analysis.keyDependencies.length > 0 && (
-        <div className="rounded border border-border/50 bg-background px-3 py-2">
+        <LiquidMetalCard className="px-3 py-2">
           <span className="block font-terminal text-[10px] font-medium uppercase tracking-wider text-muted">
             Key Dependencies
           </span>
@@ -366,7 +366,7 @@ function UseCaseDepthSection({ analysis }: { analysis: UseCaseAnalysis }) {
               <li key={i}>{dep}</li>
             ))}
           </ul>
-        </div>
+        </LiquidMetalCard>
       )}
     </div>
   );

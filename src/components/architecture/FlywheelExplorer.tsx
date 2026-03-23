@@ -255,7 +255,7 @@ export default function FlywheelExplorer() {
 
           {/* Feeds into */}
           {selectedNode.feedsInto.length > 0 && (
-            <div className="rounded border border-accent/10 bg-accent/5 px-3 py-2">
+            <LiquidMetalCard className="px-3 py-2">
               <p className="text-xs text-accent">
                 <span className="mr-1 font-terminal font-semibold">
                   Feeds into:
@@ -264,7 +264,7 @@ export default function FlywheelExplorer() {
                   .map((id) => getNodeTitle(id))
                   .join(" → ")}
               </p>
-            </div>
+            </LiquidMetalCard>
           )}
 
           {/* Which nodes feed into this one */}
@@ -274,14 +274,14 @@ export default function FlywheelExplorer() {
             );
             if (feedsFrom.length === 0) return null;
             return (
-              <div className="mt-2 rounded border border-white/[0.06] bg-white/[0.03] px-3 py-2">
+              <LiquidMetalCard className="mt-2 px-3 py-2">
                 <p className="text-xs text-[#e6e6e6]">
                   <span className="mr-1 font-terminal font-semibold">
                     Fed by:
                   </span>
                   {feedsFrom.map((n) => n.title).join(", ")}
                 </p>
-              </div>
+              </LiquidMetalCard>
             );
           })()}
         </LiquidMetalCard>

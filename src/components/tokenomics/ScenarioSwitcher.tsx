@@ -232,7 +232,7 @@ export default function ScenarioSwitcher() {
         {(parsedBalance > 0 || parsedDeposit > 0) && (
           <div className="mt-4" data-testid="allocation-preview">
             <div className="grid gap-3 sm:grid-cols-3">
-              <div className="rounded border border-border/50 bg-background px-3 py-2">
+              <LiquidMetalCard className="px-3 py-2">
                 <span className="block font-terminal text-[10px] font-medium uppercase tracking-wider text-muted">
                   Your Tier
                 </span>
@@ -242,24 +242,24 @@ export default function ScenarioSwitcher() {
                 >
                   {resolvedTier.name}
                 </span>
-              </div>
-              <div className="rounded border border-border/50 bg-background px-3 py-2">
+              </LiquidMetalCard>
+              <LiquidMetalCard className="px-3 py-2">
                 <span className="block font-terminal text-[10px] font-medium uppercase tracking-wider text-muted">
                   √-Weight
                 </span>
                 <span className="font-terminal text-secondary">
                   {sqrtWeightFormatted}
                 </span>
-              </div>
+              </LiquidMetalCard>
               {parsedBalance >= 100_000 && (
-                <div className="rounded border border-border/50 bg-background px-3 py-2">
+                <LiquidMetalCard className="px-3 py-2">
                   <span className="block font-terminal text-[10px] font-medium uppercase tracking-wider text-muted">
                     Vault Eligible
                   </span>
                   <span className="font-terminal font-semibold text-accent">
                     ✓ Qualifies
                   </span>
-                </div>
+                </LiquidMetalCard>
               )}
             </div>
             <div className="mt-2">

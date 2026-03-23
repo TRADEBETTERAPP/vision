@@ -103,11 +103,11 @@ export default function NonLinearAllocation() {
         <h4 className="mb-2 font-terminal text-sm font-semibold text-accent">
           How It Works
         </h4>
-        <div className="mb-3 rounded border border-border bg-background px-4 py-3 font-terminal text-sm text-foreground">
+        <LiquidMetalCard className="mb-3 px-4 py-3 font-terminal text-sm text-foreground">
           <code>
             Weight = √(Staked BETTER) &nbsp;|&nbsp; Cap = max(V/N, V×20%) &nbsp;|&nbsp; Floor = $100
           </code>
-        </div>
+        </LiquidMetalCard>
         <p className="mb-2 text-sm text-secondary">
           The <span className="font-semibold text-foreground">square root</span> of each staker&apos;s
           BETTER commitment determines their weight. This creates diminishing returns for larger stakes:
