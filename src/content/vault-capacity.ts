@@ -46,13 +46,29 @@ export interface VaultCapacityEstimate {
   capConstrained: boolean;
 }
 
+/**
+ * Role of an assumption in the vault capacity model.
+ *
+ * - "calculation_input": The assumption directly feeds into the capacity estimate math.
+ * - "informational": The assumption provides market-context framing only — it does not
+ *   drive the capacity estimate calculation. Displayed so users can evaluate the broader
+ *   market environment the model sits within.
+ */
+export type AssumptionRole = "calculation_input" | "informational";
+
 export interface WhaleVaultAssumptions {
   /** Assumed number of whale-tier+ participants */
   assumedWhaleCount: number;
+  /** Role of the whale-count assumption in the model */
+  whaleCountRole: AssumptionRole;
   /** Human-readable description of assumed stake distribution */
   assumedStakeDistribution: string;
+  /** Role of the stake-distribution assumption in the model */
+  stakeDistributionRole: AssumptionRole;
   /** Assumed total vault capacity in USD for a modeled whale vault */
   assumedVaultCapacityUsd: number;
+  /** Role of the vault-capacity assumption in the model */
+  vaultCapacityRole: AssumptionRole;
   /** Source/assumption cue */
   source: SourceCue;
 }
@@ -85,14 +101,17 @@ const UNCERTAINTY_HIGH_FACTOR = 1.2;
  */
 export const WHALE_VAULT_ASSUMPTIONS: WhaleVaultAssumptions = {
   assumedWhaleCount: 50,
+  whaleCountRole: "informational",
   assumedStakeDistribution:
     "Modeled as a concentrated distribution where the top 50 whale-tier holders (≥500,000 BETTER each) collectively stake ~40% of total staked BETTER. Remaining 60% is distributed among Standard and Lite-tier holders.",
+  stakeDistributionRole: "informational",
   assumedVaultCapacityUsd: 5_000_000,
+  vaultCapacityRole: "calculation_input",
   source: {
     type: "scenario_based" as const,
     label: "BETTER Vault Capacity Model",
     note:
-      "Whale count, stake distribution, and vault capacity are modeled assumptions — not guaranteed parameters. Actual values will depend on market conditions, participation rates, and vault sizing decisions.",
+      "Whale count and stake distribution are informational-only context assumptions — they do not drive the capacity estimate calculation. Vault capacity directly feeds the model. Actual values will depend on market conditions, participation rates, and vault sizing decisions.",
   },
 };
 

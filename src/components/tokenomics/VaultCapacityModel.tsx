@@ -300,6 +300,10 @@ export default function VaultCapacityModel() {
         <h4 className="mb-2 font-terminal text-sm font-semibold text-foreground">
           Modeled Whale-Vault Assumptions
         </h4>
+        <p className="mb-3 text-xs text-secondary">
+          Whale count and stake distribution are <span className="font-semibold text-accent-warn">informational-only context</span> — they do not drive the capacity estimate calculation.
+          Only vault capacity feeds directly into the model as a calculation input.
+        </p>
         <div className="grid gap-3 sm:grid-cols-3">
           <div>
             <span className="block font-terminal text-[10px] font-medium uppercase tracking-wider text-muted">
@@ -308,6 +312,12 @@ export default function VaultCapacityModel() {
             <span className="font-terminal font-semibold text-foreground">
               {WHALE_VAULT_ASSUMPTIONS.assumedWhaleCount} whales
             </span>
+            <span
+              className="mt-1 block rounded bg-accent-warn/10 px-1.5 py-0.5 font-terminal text-[10px] font-medium text-accent-warn w-fit"
+              data-testid="assumption-role-informational"
+            >
+              Informational Only
+            </span>
           </div>
           <div>
             <span className="block font-terminal text-[10px] font-medium uppercase tracking-wider text-muted">
@@ -315,6 +325,12 @@ export default function VaultCapacityModel() {
             </span>
             <span className="font-terminal font-semibold text-foreground">
               ${formatNumber(WHALE_VAULT_ASSUMPTIONS.assumedVaultCapacityUsd)}
+            </span>
+            <span
+              className="mt-1 block rounded bg-accent/10 px-1.5 py-0.5 font-terminal text-[10px] font-medium text-accent w-fit"
+              data-testid="assumption-role-calculation"
+            >
+              Calculation Input
             </span>
           </div>
           <div>
@@ -330,6 +346,12 @@ export default function VaultCapacityModel() {
           <span className="font-semibold text-foreground">Stake Distribution:</span>{" "}
           {WHALE_VAULT_ASSUMPTIONS.assumedStakeDistribution}
         </p>
+        <span
+          className="mt-1 inline-block rounded bg-accent-warn/10 px-1.5 py-0.5 font-terminal text-[10px] font-medium text-accent-warn"
+          data-testid="assumption-role-informational"
+        >
+          Informational Only
+        </span>
         <div className="mt-3">
           <EvidenceHook source={WHALE_VAULT_ASSUMPTIONS.source} />
         </div>

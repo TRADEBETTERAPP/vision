@@ -125,6 +125,29 @@ describe("VaultCapacityModel UI", () => {
     expect(screen.getByTestId("whale-stake-distribution")).toBeInTheDocument();
   });
 
+  it("labels whale-count and stake-distribution as informational-only context", () => {
+    render(<VaultCapacityModel />);
+    const assumptions = screen.getByTestId("whale-vault-assumptions");
+    // Both whale-count and stake-distribution should carry informational-only badges
+    const infoBadges = assumptions.querySelectorAll('[data-testid="assumption-role-informational"]');
+    expect(infoBadges.length).toBeGreaterThanOrEqual(2);
+  });
+
+  it("labels vault-capacity as a calculation input", () => {
+    render(<VaultCapacityModel />);
+    const assumptions = screen.getByTestId("whale-vault-assumptions");
+    const calcBadges = assumptions.querySelectorAll('[data-testid="assumption-role-calculation"]');
+    expect(calcBadges.length).toBeGreaterThanOrEqual(1);
+  });
+
+  it("explains the informational-only role near the assumption display", () => {
+    render(<VaultCapacityModel />);
+    // Should have a visible explanation that informational assumptions provide context but do not drive the model
+    expect(
+      screen.getByText(/do not drive the capacity estimate/i)
+    ).toBeInTheDocument();
+  });
+
   it("shows supply ceiling error for invalid total staked", () => {
     render(<VaultCapacityModel />);
     const totalInput = screen.getByTestId("vault-total-staked-input");

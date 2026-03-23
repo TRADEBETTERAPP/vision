@@ -171,6 +171,18 @@ describe("Vault-Capacity Modeling (VAL-TOKEN-016)", () => {
       expect(WHALE_VAULT_ASSUMPTIONS.assumedVaultCapacityUsd).toBeGreaterThan(0);
       expect(WHALE_VAULT_ASSUMPTIONS.source).toBeDefined();
     });
+
+    it("labels whale-count as informational-only (does not drive the calculation)", () => {
+      expect(WHALE_VAULT_ASSUMPTIONS.whaleCountRole).toBe("informational");
+    });
+
+    it("labels stake-distribution as informational-only (does not drive the calculation)", () => {
+      expect(WHALE_VAULT_ASSUMPTIONS.stakeDistributionRole).toBe("informational");
+    });
+
+    it("labels vault-capacity as a calculation input (drives the model)", () => {
+      expect(WHALE_VAULT_ASSUMPTIONS.vaultCapacityRole).toBe("calculation_input");
+    });
   });
 
   describe("computeVaultCapacityEstimate", () => {

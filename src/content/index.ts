@@ -144,4 +144,5 @@ export type {
   VaultCapacityInput,
   VaultCapacityEstimate,
   WhaleVaultAssumptions,
+  AssumptionRole,
 } from "./vault-capacity";
