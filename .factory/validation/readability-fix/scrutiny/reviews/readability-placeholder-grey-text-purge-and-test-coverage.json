@@ -1,0 +1,21 @@
+{
+  "featureId": "readability-placeholder-grey-text-purge-and-test-coverage",
+  "reviewedAt": "2026-03-23T22:48:22Z",
+  "commitId": "8520d3f05bc7136d56e9a5b46d6de22044cc0b7e",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "pass",
+  "codeReview": {
+    "summary": "This rerun adequately fixes the prior blocking scrutiny failure. Relative to the original failed commit `5edc93267cf563ad65b6613d429bf2b5629aaa11`, the fix commit replaces both remaining `placeholder:text-muted` usages in `ScenarioSwitcher.tsx` with `placeholder:text-white/60`, and the current codebase has no remaining `placeholder:text-muted`, `placeholder:text-secondary`, `placeholder:text-[#a0a0a0]`, or `placeholder:text-[#707070]` matches anywhere under `src/components`. The enforcement test was broadened from the original single `text-[#a0a0a0]` scan to explicit checks for all four forbidden placeholder patterns plus direct `text-muted` class usage in component class strings, which closes the regression gap called out in the prior review.",
+    "issues": []
+  },
+  "sharedStateObservations": [
+    {
+      "area": "knowledge",
+      "observation": "The shared library still gives conflicting guidance on whether `--text-muted` is border-only or an allowed muted text token, which can mislead future readability sweeps.",
+      "evidence": "`/Users/test/vision/.factory/library/design-system.md:35-38` says `--text-muted` is for non-interactive dividers/borders only and never for text, but `/Users/test/vision/.factory/library/tradebetter-exact-design-reference.md:805-808` still labels `--text-muted` as `deemphasized`, and `/Users/test/vision/.factory/library/tradebetter-comparison-evidence.md:42-43` plus `:58-59` still document `--text-muted` as tradebetter muted text."
+    }
+  ],
+  "addressesFailureFrom": "/Users/test/vision/.factory/validation/readability-fix/scrutiny/reviews/readability-white-text-everywhere-and-token-overhaul.json",
+  "summary": "Pass. The fix removes the remaining grey placeholder text in `ScenarioSwitcher`, purges the specified forbidden placeholder-grey patterns from component files, and extends the white-text enforcement test to cover the regression that caused the prior failure. The only follow-up is a shared-state documentation inconsistency about whether `--text-muted` may ever be used for text."
+}

@@ -1,0 +1,65 @@
+{
+  "milestone": "readability-fix",
+  "round": 1,
+  "status": "fail",
+  "validatorsRun": {
+    "test": {
+      "passed": true,
+      "command": "npm --prefix \"/Users/test/vision\" run test",
+      "exitCode": 0
+    },
+    "typecheck": {
+      "passed": true,
+      "command": "npx --prefix \"/Users/test/vision\" tsc --noEmit -p \"/Users/test/vision/tsconfig.json\"",
+      "exitCode": 0
+    },
+    "lint": {
+      "passed": true,
+      "command": "npm --prefix \"/Users/test/vision\" run lint",
+      "exitCode": 0
+    },
+    "build": {
+      "passed": true,
+      "command": "npm --prefix \"/Users/test/vision\" run build",
+      "exitCode": 0
+    }
+  },
+  "reviewsSummary": {
+    "total": 2,
+    "passed": 1,
+    "failed": 1,
+    "failedFeatures": [
+      "readability-white-text-everywhere-and-token-overhaul"
+    ]
+  },
+  "blockingIssues": [
+    {
+      "featureId": "readability-white-text-everywhere-and-token-overhaul",
+      "severity": "blocking",
+      "description": "ScenarioSwitcher still renders grey placeholder text via `placeholder:text-muted` on its initially empty token balance and deposit inputs, so the site does not yet satisfy the all-white-text contract."
+    }
+  ],
+  "appliedUpdates": [],
+  "suggestedGuidanceUpdates": [
+    {
+      "target": "frontend-experience-worker skill",
+      "suggestion": "When a feature contract bans non-white text or other full-surface color regressions, require placeholder/pseudo-element inspection in browser or computed-style sweeps and in regression coverage, not only audits of standard text nodes.",
+      "evidence": "The failing review for `readability-white-text-everywhere-and-token-overhaul` found the worker's browser audit queried common text tags only, while `src/components/tokenomics/ScenarioSwitcher.tsx` still shipped grey placeholders via `placeholder:text-muted`.",
+      "isSystemic": false
+    },
+    {
+      "target": "frontend-experience-worker skill",
+      "suggestion": "Clarify that `skillFeedback.followedProcedure` should be false when required pre-change `.factory/library` review is omitted or only appears later in the transcript after implementation has started.",
+      "evidence": "The passing review for `readability-transparent-liquid-metal-cards-complement-shader` found the handoff reported `followedProcedure: true` even though transcript-visible `.factory/library` review appeared only later in the session.",
+      "isSystemic": false
+    },
+    {
+      "target": "mission library",
+      "suggestion": "Align shared readability and design-reference docs so `--text-muted` is consistently documented as border-only and liquid-metal card tokens consistently reflect the approved 0.04 / 0.08 / 0.12 no-blur card treatment.",
+      "evidence": "Reviewer reports found `.factory/library` references still describing `--text-muted` as a text token and several shared design docs still listing older 0.10 / 0.15 / 0.20 card values even after the approved readability-fix card pass.",
+      "isSystemic": true
+    }
+  ],
+  "rejectedObservations": [],
+  "previousRound": null
+}

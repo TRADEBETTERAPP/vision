@@ -39,8 +39,8 @@ implementation guidance.
 - `--bg-elevated`: `#252530`
 - `--bg-raised`: `#2c2c38`
 - `--text-primary`: `#ffffff` (pure white — exact tradebetter match)
-- `--text-secondary`: `#a0a0a0` (exact tradebetter body text gray)
-- `--text-muted`: `#707070` (exact tradebetter mid-gray)
+- `--text-secondary`: `#ffffff` (BETTER readability override — all user-facing text stays white)
+- `--text-muted`: `#707070` (retained for borders/dividers only — never for text)
 - `--accent-primary`: `#455eff` (tradebetter electric blue — exact match)
 - `--accent-primary-bright`: `#6b7fff`
 - `--accent-primary-dim`: `#3348cc`
@@ -55,8 +55,8 @@ implementation guidance.
 | Secondary background    | `#191a1d` (card/panel)            | `--bg-secondary: #191a1d`        | ✅ Exact match — tradebetter card backgrounds |
 | Surface elevation       | Subtle warm-neutral lifts         | 5-level hierarchy: `#191a1d` → `#1e1e24` → `#252530` → `#2c2c38` | ✅ Multi-level tonal hierarchy matching tradebetter depth model |
 | Primary text            | `#ffffff` (pure white headings)   | `--text-primary: #ffffff`        | ✅ Exact match — pure white |
-| Secondary text          | `#a0a0a0` (muted gray)           | `--text-secondary: #a0a0a0`     | ✅ Exact match — tradebetter body text |
-| Muted text              | `#707070` (mid gray)             | `--text-muted: #707070`          | ✅ Exact match — tradebetter mid-gray |
+| Secondary text          | `#a0a0a0` (muted gray)           | `--text-secondary: #ffffff`     | ⚠️ Deliberate divergence — BETTER readability pass forces all visible text to white |
+| Muted text              | `#707070` (mid gray)             | `--text-muted: #707070` (borders/dividers only) | ⚠️ Deliberate divergence in usage — token retained for non-text surfaces only |
 | Primary accent          | `#455eff` (electric blue)         | `--accent-primary: #455eff`      | ✅ Exact match — atmospheric gradients only |
 | Green accent (live)     | `#00ff00` (neon green)            | `--accent-green: #00ff00`        | ✅ Exact match — status dots only |
 | Competing accents       | None (only green + blue)          | None (warn/danger removed)       | ✅ Only 2 accents — tradebetter restraint |

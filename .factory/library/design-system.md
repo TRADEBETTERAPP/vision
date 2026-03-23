@@ -24,8 +24,8 @@ The experience reads as a **dynamic graph workspace with an investor-readable st
 |---|---|---|
 | `--bg-primary` | `#101010` | Page background / main canvas |
 | `--bg-secondary` | `#191a1d` | Card backgrounds, section panels |
-| `--bg-card` | `rgba(255, 255, 255, 0.10)` | Glass-morphism card surface |
-| `--bg-card-hover` | `rgba(255, 255, 255, 0.15)` | Card hover state |
+| `--bg-card` | `rgba(255, 255, 255, 0.04)` | Nearly-transparent glass card surface so the shader remains visible through cards |
+| `--bg-card-hover` | `rgba(255, 255, 255, 0.08)` | Card hover state with stronger sheen but still transparent |
 | `--bg-card-emphasis` | `rgba(255, 255, 255, 0.30)` | Emphasized glass surface |
 | `--bg-overlay-dark` | `rgba(0, 0, 0, 0.65)` | Image darkening overlay |
 
@@ -55,7 +55,7 @@ The experience reads as a **dynamic graph workspace with an investor-readable st
 
 | Token | Value | Usage |
 |---|---|---|
-| `--border-card` | `rgba(255, 255, 255, 0.20)` | Card borders |
+| `--border-card` | `rgba(255, 255, 255, 0.12)` | Subtle card borders that do not overpower the background |
 | `--border-emphasis` | `rgba(255, 255, 255, 0.50)` | Active/focused borders |
 | `--border-default` | `#fff6` | White 40% — outlined elements |
 | `--border-gray` | `#707070` | Mid-gray borders |

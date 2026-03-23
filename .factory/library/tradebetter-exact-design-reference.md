@@ -804,7 +804,7 @@ ROADMAP // REVENUE // REALISED
   /* ====== TEXT ====== */
   --text-primary: #ffffff;                  /* headings — pure white */
   --text-secondary: #ffffff;               /* OVERRIDDEN: all text white per user directive */
-  --text-muted: #707070;                   /* deemphasized */
+  --text-muted: #707070;                   /* borders/dividers only — never for text */
   --text-subtle: #404040;                  /* very subtle */
   --text-bright: #e6e6e6;                  /* emphasized body */
   --text-disabled: #575757;                /* disabled/inactive */
@@ -818,7 +818,7 @@ ROADMAP // REVENUE // REALISED
   --accent-sky: #0099ff;                   /* sky blue — links, data accent */
 
   /* ====== BORDERS ====== */
-  --border-card: rgba(255, 255, 255, 0.20); /* card borders */
+  --border-card: rgba(255, 255, 255, 0.12); /* subtle card borders */
   --border-emphasis: rgba(255, 255, 255, 0.50); /* active/focused borders */
   --border-default: #fff6;                 /* white 40% — outlined elements */
   --border-gray: #707070;                  /* mid-gray borders */
