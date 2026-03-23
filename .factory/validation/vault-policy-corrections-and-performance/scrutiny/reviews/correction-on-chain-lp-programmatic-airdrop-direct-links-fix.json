@@ -1,0 +1,26 @@
+{
+  "featureId": "correction-on-chain-lp-programmatic-airdrop-direct-links-fix",
+  "reviewedAt": "2026-03-23T11:56:16.150030+00:00",
+  "commitId": "8d7200cbf86d35962fd62773cf6a6ba280291726",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "pass",
+  "codeReview": {
+    "summary": "The original fix made the on-chain notes visible but left LP / Liquidity, Programmatic Funding, and Airdrop / Migration on generic token/search targets. The follow-up commit resolves that blocker: those rows now render direct wallet-specific Basescan targets in the UI, and the regression tests now explicitly reject generic token/search URLs at both the rendered-row and data-model levels.",
+    "issues": []
+  },
+  "sharedStateObservations": [
+    {
+      "area": "skills",
+      "observation": "The content-strategy-worker skill requires agent-browser verification for visible UI changes, but this fix session still reported followedProcedure=true without transcript-visible agent-browser usage or any interactiveChecks in the handoff.",
+      "evidence": "`/Users/test/vision/.factory/skills/content-strategy-worker/SKILL.md:14-16,32` requires `agent-browser` for rendered-page changes. The transcript skeleton for worker session `f0aaf79f-ea8a-4cd4-8f4d-f01c12c62fdc` contains no `agent-browser` step, and `/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/handoffs/2026-03-23T11-52-24-741Z__correction-on-chain-lp-programmatic-airdrop-direct-links-fix__f0aaf79f-ea8a-4cd4-8f4d-f01c12c62fdc.json` has no `verification.interactiveChecks` even though `skillFeedback.followedProcedure=true`."
+    },
+    {
+      "area": "knowledge",
+      "observation": "The mission library documents the verified on-chain allocation amounts, but not the wallet-specific LP / Programmatic / Airdrop citation targets that were needed to fix this scrutiny blocker. That left the worker dependent on `/Users/test/dune_query_results.md` and prior scrutiny context for the exact stable link targets.",
+      "evidence": "`/Users/test/vision/.factory/library/economics.md:52-57` lists the verified allocation amounts only. The wallet addresses used by the fix live in `/Users/test/dune_query_results.md:24-28,54-56`, which identifies LP wallets `0x80e29f...` and `0x498581...`, programmatic wallets `0x2d407b...` and `0x1b33f3...`, and the deployer `0x1bbdc9...`."
+    }
+  ],
+  "addressesFailureFrom": "/Users/test/vision/.factory/validation/vault-policy-corrections-and-performance/scrutiny/reviews/correction-on-chain-citations-visible-links-fix.json",
+  "summary": "Pass: reviewing the original failed feature and the follow-up fix together shows the blocker is resolved. The three previously generic rows now expose direct wallet-specific Basescan links in the rendered UI, and the updated tests explicitly guard against regression to generic token/search URLs."
+}

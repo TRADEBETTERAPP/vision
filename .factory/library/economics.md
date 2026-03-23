@@ -55,6 +55,11 @@ Worker-facing economic facts and roadmap expansion guidance for BETTER.
 - **SERV (OpenServ) allocation:** ~50M BETTER
 - **LP allocation:** ~60.9M BETTER
 - These figures are verified from on-chain data (Base contract + basescan + Dune queries) and supersede earlier percentage-based splits where they conflict
+- Wallet-specific citation targets used in the token-allocation UI:
+  - **LP / Liquidity:** `0x80e29ff551400fb8313af916a8fa164ca310c0d7` and `0x498581ff718922c3f8e6a244956af099b2652b2b`
+  - **Programmatic Funding:** `0x2d407b5a24800a058b8f34b04e6b7b18ad0cae16` and `0x1b33f383e297f71c85ae55da5d42aea7a08f1a60`
+  - **Airdrop / Migration verification source:** deployer `0x1bbdc95d322b8fd76e6a00e6c318dfb421d7d322` transfer history on Basescan
+  - Source for these wallet targets: `/Users/test/dune_query_results.md`
 
 ## Vault-share modeling guidance
 - The first-vault and modeled whale-vault surfaces should let users estimate how their staked BETTER compares to total staked BETTER and how that ratio maps to an estimated share of initial deposit capacity.
