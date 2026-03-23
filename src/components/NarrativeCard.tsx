@@ -2,12 +2,15 @@ import type { NarrativeBlock } from "@/content";
 import MaturityBadge from "./MaturityBadge";
 import EvidenceHook from "./EvidenceHook";
 import CaveatFrame from "./CaveatFrame";
+import { LiquidMetalCard } from "./LiquidMetalCard";
 
 /**
  * A narrative content card that visibly carries:
  * - Maturity badge (VAL-NARR-006)
  * - Evidence hook / source cue (VAL-NARR-008)
  * - Caveat / confidence framing for future-facing items (VAL-NARR-009)
+ *
+ * VAL-VISUAL-030: Glass-morphism + liquid metal interactive finish.
  */
 export default function NarrativeCard({
   block,
@@ -19,8 +22,9 @@ export default function NarrativeCard({
   const isFutureFacing = block.status !== "live";
 
   return (
-    <article
-      className={`rounded-lg border border-border bg-surface p-5 ${className}`}
+    <LiquidMetalCard
+      as="article"
+      className={`p-5 ${className}`}
       data-testid="narrative-card"
       data-status={block.status}
     >
@@ -35,6 +39,6 @@ export default function NarrativeCard({
       {isFutureFacing && block.confidence && (
         <CaveatFrame confidence={block.confidence} className="mt-3" />
       )}
-    </article>
+    </LiquidMetalCard>
   );
 }

@@ -45,6 +45,7 @@ import {
   getGateIndexForNode,
 } from "@/content/investor-pitch-path";
 import MaturityBadge from "@/components/MaturityBadge";
+import { LiquidMetalCard } from "@/components/LiquidMetalCard";
 import { GraphShellPersistenceProvider } from "./GraphShellPersistence";
 
 // ---------------------------------------------------------------------------
@@ -531,7 +532,7 @@ export function GraphShell({ surfaces = {} }: GraphShellProps) {
       {/* ---------------------------------------------------------------- */}
       <div data-testid="graph-sticky-inspector" className="sticky top-16 z-30">
         {focusedNode ? (
-          <div className="rounded-lg border border-accent/20 bg-surface/80 px-4 py-2 backdrop-blur-sm">
+          <LiquidMetalCard variant="active" className="px-4 py-2">
             <div className="flex items-center gap-3">
               <span className="font-terminal text-accent" aria-hidden="true">
                 {focusedNode.icon}
@@ -549,9 +550,9 @@ export function GraphShell({ surfaces = {} }: GraphShellProps) {
                 </span>
               )}
             </div>
-          </div>
+          </LiquidMetalCard>
         ) : (
-          <div className="rounded-lg border border-border/50 bg-surface/60 px-4 py-2 backdrop-blur-sm">
+          <LiquidMetalCard className="px-4 py-2">
             <p className="text-center font-terminal text-xs text-muted">
               Select a node to inspect · or{" "}
               <button
@@ -562,7 +563,7 @@ export function GraphShell({ surfaces = {} }: GraphShellProps) {
                 start the investor path
               </button>
             </p>
-          </div>
+          </LiquidMetalCard>
         )}
       </div>
 
@@ -570,11 +571,11 @@ export function GraphShell({ surfaces = {} }: GraphShellProps) {
       {/* Focused Surface (VAL-ROADMAP-011, VAL-ROADMAP-012)              */}
       {/* ---------------------------------------------------------------- */}
       {focusedNode && (
-        <div
+        <LiquidMetalCard
           data-testid="graph-focused-surface"
           ref={focusedSurfaceRef}
           tabIndex={-1}
-          className="rounded-lg border border-accent/20 bg-surface/50 backdrop-blur-sm"
+          variant="active"
         >
           {/* Pitch path progress bar (VAL-ROADMAP-015, VAL-ROADMAP-017) */}
           {pitchPath.active && (
@@ -696,7 +697,7 @@ export function GraphShell({ surfaces = {} }: GraphShellProps) {
               </div>
             )}
           </div>
-        </div>
+        </LiquidMetalCard>
       )}
     </div>
     </GraphShellPersistenceProvider>
@@ -840,7 +841,13 @@ function PersistentMinimap({
   return (
     <div
       data-testid="graph-persistent-minimap"
-      className="mt-3 flex flex-wrap items-center gap-1 rounded-md border border-border/30 bg-background/40 px-3 py-1.5 backdrop-blur-sm"
+      className="mt-3 flex flex-wrap items-center gap-1 rounded-lg px-3 py-1.5"
+      style={{
+        background: "rgba(255, 255, 255, 0.06)",
+        border: "1px solid rgba(255, 255, 255, 0.12)",
+        backdropFilter: "blur(10px)",
+        WebkitBackdropFilter: "blur(10px)",
+      } as React.CSSProperties}
       role="navigation"
       aria-label="Graph position minimap"
     >
@@ -902,21 +909,16 @@ function GraphNodeMap({
         const isFocused = node.id === focusedNodeId;
 
         return (
-          <button
+          <LiquidMetalCard
             key={node.id}
-            type="button"
+            as="button"
+            variant={isFocused ? "focused" : isActive ? "active" : "default"}
             data-testid="graph-node-button"
             data-active={isActive ? "true" : "false"}
             onClick={() => onNodeSelect(node.id)}
             aria-label={node.label}
             aria-pressed={isFocused}
-            className={`group relative flex items-start gap-3 rounded-lg border p-3 text-left transition-all ${
-              isFocused
-                ? "border-accent/50 bg-accent/10 ring-1 ring-accent/30"
-                : isActive
-                  ? "border-accent/30 bg-accent/5"
-                  : "border-border bg-surface hover:border-accent/30 hover:bg-accent/5"
-            }`}
+            className="group relative flex items-start gap-3 p-3 text-left transition-all"
           >
             {/* Node icon */}
             <span
@@ -954,7 +956,7 @@ function GraphNodeMap({
                 {node.related.length}
               </span>
             )}
-          </button>
+          </LiquidMetalCard>
         );
       })}
 

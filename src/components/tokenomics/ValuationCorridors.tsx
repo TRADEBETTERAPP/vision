@@ -61,7 +61,7 @@ export default function ValuationCorridors() {
 
       {/* Basis declaration */}
       <div
-        className="mb-6 rounded-lg border border-accent/20 bg-accent/5 p-4"
+        className="glass-card mb-6 p-4"
         data-testid="corridor-basis-declaration"
       >
         <div className="grid gap-4 sm:grid-cols-2">
@@ -97,10 +97,8 @@ export default function ValuationCorridors() {
           return (
             <div
               key={corridor.id}
-              className={`rounded-lg border p-4 ${
-                corridor.isLiveAnchor
-                  ? "border-accent/40 bg-accent/10"
-                  : "border-border bg-surface"
+              className={`glass-card p-4 ${
+                corridor.isLiveAnchor ? "ring-1 ring-[rgba(69,94,255,0.30)]" : ""
               }`}
               data-testid="valuation-corridor"
               data-corridor-id={corridor.id}

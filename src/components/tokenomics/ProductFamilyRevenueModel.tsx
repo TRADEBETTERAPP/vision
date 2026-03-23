@@ -53,7 +53,7 @@ export default function ProductFamilyRevenueModel() {
         {PRODUCT_FAMILY_REVENUE_MODELS.map((model) => (
           <div
             key={model.id}
-            className="rounded-lg border border-border bg-surface p-4"
+            className="glass-card p-4"
             data-testid="product-revenue-line"
             data-product-id={model.id}
           >

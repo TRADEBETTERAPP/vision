@@ -1,6 +1,8 @@
 /**
  * EvidenceSurface — the "Evidence & Sources" graph surface content.
  */
+import { LiquidMetalCard } from "@/components/LiquidMetalCard";
+
 export function EvidenceSurface() {
   return (
     <div className="space-y-6">
@@ -51,7 +53,7 @@ function EvidenceExplainerCard({
   example: string;
 }) {
   return (
-    <div className="rounded-lg border border-border bg-background/50 p-5" data-testid="evidence-explainer">
+    <LiquidMetalCard className="p-5" data-testid="evidence-explainer">
       <div className="mb-2 flex items-center gap-2">
         <span className="font-terminal text-lg text-accent" aria-hidden="true">
           {icon}
@@ -64,6 +66,6 @@ function EvidenceExplainerCard({
       <p className="rounded border border-border bg-background px-3 py-2 font-terminal text-xs text-muted">
         Example: {example}
       </p>
-    </div>
+    </LiquidMetalCard>
   );
 }

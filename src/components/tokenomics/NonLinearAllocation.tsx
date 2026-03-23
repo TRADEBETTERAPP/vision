@@ -98,7 +98,7 @@ export default function NonLinearAllocation() {
       </div>
 
       {/* Formula explanation */}
-      <div className="mb-6 rounded-lg border border-accent/20 bg-accent/5 p-4">
+      <div className="glass-card mb-6 p-4">
         <h4 className="mb-2 font-terminal text-sm font-semibold text-accent">
           How It Works
         </h4>
@@ -187,7 +187,7 @@ export default function NonLinearAllocation() {
       </div>
 
       {/* Key takeaway */}
-      <div className="mt-4 rounded-lg border border-border bg-surface p-4">
+      <div className="glass-card mt-4 p-4">
         <h4 className="mb-2 font-terminal text-xs font-semibold uppercase tracking-wider text-muted">
           Key Takeaway
         </h4>

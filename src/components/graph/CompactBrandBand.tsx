@@ -49,7 +49,15 @@ export function CompactBrandBand() {
 
       {/* Live vs future status framing (VAL-NARR-002) — compact inline */}
       <div className="mx-auto mb-4 max-w-2xl" data-testid="hero-status-framing">
-        <div className="inline-flex flex-wrap items-center justify-center gap-x-6 gap-y-2 rounded-lg border border-border/50 bg-background/40 px-5 py-2 backdrop-blur-sm">
+        <div
+          className="inline-flex flex-wrap items-center justify-center gap-x-6 gap-y-2 rounded-lg px-5 py-2"
+          style={{
+            background: "rgba(255, 255, 255, 0.08)",
+            border: "1px solid rgba(255, 255, 255, 0.15)",
+            backdropFilter: "blur(10px)",
+            WebkitBackdropFilter: "blur(10px)",
+          }}
+        >
           {/* Live status */}
           {heroLiveToday && (
             <div

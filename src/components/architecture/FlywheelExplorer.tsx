@@ -12,6 +12,7 @@
 import React, { useState, useCallback } from "react";
 import MaturityBadge from "@/components/MaturityBadge";
 import CaveatFrame from "@/components/CaveatFrame";
+import { LiquidMetalCard } from "@/components/LiquidMetalCard";
 import type { MaturityStatus } from "@/content";
 
 // ---------------------------------------------------------------------------
@@ -194,16 +195,13 @@ export default function FlywheelExplorer() {
                 {nodes.map((node) => {
                   const isSelected = selectedNodeId === node.id;
                   return (
-                    <button
+                    <LiquidMetalCard
                       key={node.id}
-                      type="button"
+                      as="button"
+                      variant={isSelected ? "active" : "default"}
                       onClick={() => handleNodeClick(node.id)}
                       aria-pressed={isSelected}
-                      className={`w-full rounded-md border p-3 text-left transition-all ${
-                        isSelected
-                          ? `${style.bg} border-2`
-                          : "border-border bg-surface hover:bg-elevated"
-                      }`}
+                      className="w-full p-3 text-left transition-all"
                       data-testid="flywheel-node"
                       data-node-id={node.id}
                     >
@@ -219,7 +217,7 @@ export default function FlywheelExplorer() {
                       <p className="text-xs text-muted line-clamp-2">
                         {node.summary}
                       </p>
-                    </button>
+                    </LiquidMetalCard>
                   );
                 })}
               </div>
@@ -230,8 +228,9 @@ export default function FlywheelExplorer() {
 
       {/* Selected node detail panel */}
       {selectedNode && (
-        <div
-          className="mt-6 rounded-lg border border-accent/20 bg-surface p-5"
+        <LiquidMetalCard
+          variant="active"
+          className="mt-6 p-5"
           data-testid="flywheel-detail"
           role="region"
           aria-label={`Flywheel detail for ${selectedNode.title}`}
@@ -285,7 +284,7 @@ export default function FlywheelExplorer() {
               </div>
             );
           })()}
-        </div>
+        </LiquidMetalCard>
       )}
 
       <CaveatFrame

@@ -442,11 +442,12 @@ export default function RoadmapAtlas() {
                   }}
                   aria-expanded={isExpanded}
                   aria-label={BRANCH_FAMILY_LABELS[family]}
-                  className={`group flex w-full items-center gap-3 rounded-lg border p-4 text-left transition-all ${
-                    isExpanded
-                      ? "border-accent/30 bg-accent/5"
-                      : "border-border bg-surface hover:border-border-active"
-                  }`}
+                  className="group flex w-full items-center gap-3 rounded-lg p-4 text-left transition-all"
+                  style={{
+                    background: isExpanded ? "rgba(255, 255, 255, 0.14)" : "rgba(255, 255, 255, 0.10)",
+                    border: "1px solid rgba(255, 255, 255, 0.20)",
+                    backdropFilter: "blur(10px)",
+                  }}
                   data-testid="roadmap-branch-toggle"
                 >
                   {/* Expand/collapse chevron */}
@@ -530,7 +531,7 @@ export default function RoadmapAtlas() {
 
       {/* Mobile story panels (visible below lg) */}
       <div className="lg:hidden">
-        <details className="rounded-lg border border-border bg-surface">
+        <details className="glass-card">
           <summary className="cursor-pointer p-4 font-terminal text-sm font-medium text-secondary">
             Branch Family Overview
           </summary>
@@ -568,11 +569,12 @@ function RoadmapNodeItem({
       onClick={onSelect}
       aria-label={node.title}
       aria-pressed={isSelected}
-      className={`flex w-full items-center gap-3 rounded-md border p-3 text-left transition-all ${
-        isSelected
-          ? "border-accent/40 bg-accent/10"
-          : "border-border bg-background hover:border-border-active hover:bg-surface"
-      }`}
+      className="flex w-full items-center gap-3 rounded-lg p-3 text-left transition-all"
+      style={{
+        background: isSelected ? "rgba(255, 255, 255, 0.14)" : "rgba(255, 255, 255, 0.10)",
+        border: "1px solid rgba(255, 255, 255, 0.20)",
+        backdropFilter: "blur(10px)",
+      }}
       data-testid="roadmap-node-item"
       data-node-id={node.id}
     >

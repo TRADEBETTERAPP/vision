@@ -25,7 +25,11 @@ export function ProofModuleSkeleton() {
           {Array.from({ length: 4 }).map((_, i) => (
             <div
               key={i}
-              className="rounded-lg border border-accent-green/10 bg-accent-green/5 p-5"
+              className="rounded-lg p-5"
+              style={{
+                background: "rgba(255, 255, 255, 0.06)",
+                border: "1px solid rgba(255, 255, 255, 0.12)",
+              }}
             >
               <div className="mb-3 flex items-center gap-3">
                 <div className="h-5 w-14 rounded bg-surface/40" />

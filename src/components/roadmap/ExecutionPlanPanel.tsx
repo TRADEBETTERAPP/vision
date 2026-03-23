@@ -25,7 +25,7 @@ export default function ExecutionPlanPanel({ plan }: { plan: ExecutionPlan }) {
   return (
     <div
       data-testid="execution-plan-panel"
-      className="mt-4 space-y-4 rounded-lg border border-accent/15 bg-elevated/50 p-4"
+      className="glass-card mt-4 space-y-4 p-4"
     >
       {/* Header with confidence label */}
       <div className="flex flex-wrap items-start justify-between gap-3">

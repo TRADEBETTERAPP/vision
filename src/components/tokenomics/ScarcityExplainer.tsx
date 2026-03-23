@@ -81,7 +81,7 @@ export default function ScarcityExplainer() {
         {SCARCITY_RULES.map((rule) => (
           <div
             key={rule.title}
-            className="rounded-lg border border-border bg-surface p-4"
+            className="glass-card p-4"
             data-testid="scarcity-rule"
           >
             <h4 className="mb-2 font-semibold text-foreground">{rule.title}</h4>

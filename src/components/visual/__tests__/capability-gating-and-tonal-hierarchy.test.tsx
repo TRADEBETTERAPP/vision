@@ -337,12 +337,13 @@ describe("VAL-VISUAL-021: tradebetter parity documented with reference evidence"
   });
 
   it("shell surfaces reference tradebetter theme across detail panels and overlays", () => {
-    // The graph shell uses bg-surface, bg-elevated (tradebetter tonal levels)
+    // The graph shell uses LiquidMetalCard glass-morphism (tradebetter-exact design)
+    // and glass-card pattern for tonal hierarchy
     const shellSrc = fs.readFileSync(
       path.resolve(__dirname, "../../graph/GraphShell.tsx"),
       "utf-8",
     );
-    expect(shellSrc).toContain("bg-surface");
+    expect(shellSrc).toContain("LiquidMetalCard");
   });
 
   it("explicit tradebetter comparison evidence document exists and covers required attributes", () => {

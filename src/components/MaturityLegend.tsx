@@ -4,6 +4,7 @@ import {
   type MaturityStatus,
 } from "@/content";
 import MaturityBadge from "./MaturityBadge";
+import { LiquidMetalCard } from "./LiquidMetalCard";
 
 const ORDERED_STATUSES: MaturityStatus[] = [
   "live",
@@ -15,11 +16,12 @@ const ORDERED_STATUSES: MaturityStatus[] = [
 /**
  * Visible legend explaining what each maturity label means.
  * Satisfies VAL-NARR-007: users can find an explanation of the maturity labels.
+ * VAL-VISUAL-030: Glass-morphism + liquid metal interactive finish.
  */
 export default function MaturityLegend({ className = "" }: { className?: string }) {
   return (
-    <div
-      className={`rounded-lg border border-border bg-surface p-6 ${className}`}
+    <LiquidMetalCard
+      className={`p-6 ${className}`}
       role="region"
       aria-label="Maturity label legend"
       data-testid="maturity-legend"
@@ -47,6 +49,6 @@ export default function MaturityLegend({ className = "" }: { className?: string 
           </div>
         ))}
       </dl>
-    </div>
+    </LiquidMetalCard>
   );
 }

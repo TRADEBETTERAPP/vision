@@ -36,7 +36,11 @@ export function GraphExplorerSkeleton() {
         {Array.from({ length: 8 }).map((_, i) => (
           <div
             key={i}
-            className="flex items-start gap-3 rounded-lg border border-border/40 bg-surface/30 p-3"
+            className="flex items-start gap-3 rounded-lg p-3"
+            style={{
+              background: "rgba(255, 255, 255, 0.06)",
+              border: "1px solid rgba(255, 255, 255, 0.12)",
+            }}
           >
             <div className="h-5 w-5 shrink-0 rounded bg-muted/20" />
             <div className="flex-1 space-y-2">

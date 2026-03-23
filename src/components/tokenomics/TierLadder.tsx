@@ -136,10 +136,8 @@ function TierDetailCard({ tier }: { tier: TokenTier }) {
 
   return (
     <div
-      className={`rounded-lg border p-4 ${
-        isWhaleOrAbove
-          ? "border-accent/20 bg-accent/5"
-          : "border-border bg-surface"
+      className={`glass-card p-4 ${
+        isWhaleOrAbove ? "ring-1 ring-[rgba(69,94,255,0.30)]" : ""
       }`}
       data-testid="tier-detail-card"
       data-tier-id={tier.id}

@@ -13,6 +13,7 @@
 
 import MaturityBadge from "@/components/MaturityBadge";
 import EvidenceHook from "@/components/EvidenceHook";
+import { LiquidMetalCard } from "@/components/LiquidMetalCard";
 import type { MaturityStatus, SourceCue } from "@/content";
 
 // ---------------------------------------------------------------------------
@@ -136,9 +137,9 @@ export default function StackLayers() {
 
       <div className="space-y-3">
         {ARCHITECTURE_LAYERS.map((layer) => (
-          <div
+          <LiquidMetalCard
             key={layer.id}
-            className="rounded-lg border border-border bg-surface p-4"
+            className="p-4"
             data-testid="architecture-layer"
           >
             <div className="mb-2 flex flex-wrap items-center gap-2">
@@ -167,7 +168,7 @@ export default function StackLayers() {
             )}
 
             <EvidenceHook source={layer.source} />
-          </div>
+          </LiquidMetalCard>
         ))}
       </div>
     </div>

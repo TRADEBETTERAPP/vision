@@ -59,7 +59,7 @@ export default function FirstVaultPolicy() {
 
       {/* Policy rules */}
       <div className="mb-6 grid gap-4 sm:grid-cols-2">
-        <div className="rounded-lg border border-accent/20 bg-accent/5 p-4">
+        <div className="glass-card p-4">
           <span className="font-terminal text-xs font-medium uppercase tracking-wider text-accent">
             Universal Minimum Stake
           </span>
@@ -70,7 +70,7 @@ export default function FirstVaultPolicy() {
             Required for all quant-team vaults (Standard tier or above).
           </p>
         </div>
-        <div className="rounded-lg border border-accent/20 bg-accent/5 p-4">
+        <div className="glass-card p-4">
           <span className="font-terminal text-xs font-medium uppercase tracking-wider text-accent">
             Total Vault Cap
           </span>
@@ -84,7 +84,7 @@ export default function FirstVaultPolicy() {
       </div>
 
       {/* Bidding model explanation */}
-      <div className="mb-6 rounded-lg border border-border bg-surface p-4" data-testid="bidding-model-explanation">
+      <div className="glass-card mb-6 p-4" data-testid="bidding-model-explanation">
         <h4 className="mb-2 font-terminal text-sm font-semibold text-foreground">
           √-Weighted Bidding Allocation Model
         </h4>
@@ -129,7 +129,7 @@ export default function FirstVaultPolicy() {
       </div>
 
       {/* Social vault differentiation */}
-      <div className="mb-6 rounded-lg border border-border bg-surface p-4" data-testid="social-vault-differentiation">
+      <div className="glass-card mb-6 p-4" data-testid="social-vault-differentiation">
         <h4 className="mb-2 font-terminal text-sm font-semibold text-foreground">
           Social Vault Minimum: {formatNumber(SOCIAL_VAULT_PARAMS.minimumStake)} BETTER
         </h4>
@@ -139,7 +139,7 @@ export default function FirstVaultPolicy() {
       </div>
 
       {/* Multi-vault progression */}
-      <div className="mb-6 rounded-lg border border-border bg-surface p-4" data-testid="multi-vault-progression">
+      <div className="glass-card mb-6 p-4" data-testid="multi-vault-progression">
         <h4 className="mb-2 font-terminal text-sm font-semibold text-foreground">
           Multi-Vault Progression
         </h4>
@@ -178,10 +178,8 @@ export default function FirstVaultPolicy() {
         {FIRST_VAULT_WORKED_EXAMPLES.map((ex) => (
           <div
             key={ex.label}
-            className={`rounded-lg border p-4 ${
-              ex.qualifies
-                ? "border-accent/20 bg-accent/5"
-                : "border-border bg-surface"
+            className={`glass-card p-4 ${
+              ex.qualifies ? "ring-1 ring-[rgba(69,94,255,0.30)]" : ""
             }`}
             data-testid="first-vault-example"
             data-qualifies={String(ex.qualifies)}

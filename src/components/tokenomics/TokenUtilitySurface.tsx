@@ -258,7 +258,7 @@ function UtilityCard({
 }) {
   return (
     <div
-      className="rounded-lg border border-border bg-surface p-4"
+      className="glass-card p-4"
       data-testid="utility-card"
       data-utility-id={mechanic.id}
     >

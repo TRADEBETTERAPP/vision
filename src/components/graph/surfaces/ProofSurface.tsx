@@ -5,6 +5,7 @@
 import { getBlocksBySurface } from "@/content";
 import MaturityBadge from "@/components/MaturityBadge";
 import EvidenceHook from "@/components/EvidenceHook";
+import { LiquidMetalCard } from "@/components/LiquidMetalCard";
 
 export function ProofSurface() {
   const proofBlocks = getBlocksBySurface("proof");
@@ -18,9 +19,9 @@ export function ProofSurface() {
 
       <div className="grid gap-4 sm:grid-cols-2">
         {proofBlocks.map((block) => (
-          <div
+          <LiquidMetalCard
             key={block.id}
-            className="rounded-lg border border-accent-green/20 bg-accent-green/5 p-4"
+            className="p-4"
           >
             <div className="mb-2 flex items-center gap-2">
               <MaturityBadge status={block.status} />
@@ -30,7 +31,7 @@ export function ProofSurface() {
               {block.title}
             </h4>
             <p className="text-xs leading-relaxed text-secondary">{block.body}</p>
-          </div>
+          </LiquidMetalCard>
         ))}
       </div>
 

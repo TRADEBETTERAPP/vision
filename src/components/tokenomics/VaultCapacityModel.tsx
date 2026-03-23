@@ -147,11 +147,15 @@ export default function VaultCapacityModel() {
             <button
               key={key}
               onClick={() => setActiveScenario(key)}
-              className={`rounded-lg border px-4 py-2 font-terminal text-sm transition-colors ${
+              className={`rounded-lg px-4 py-2 font-terminal text-sm transition-colors ${
                 activeScenario === key
-                  ? "border-accent bg-accent/10 text-accent"
-                  : "border-border bg-surface text-secondary hover:text-foreground"
+                  ? "text-accent ring-1 ring-[rgba(69,94,255,0.30)]"
+                  : "text-secondary hover:text-foreground"
               }`}
+              style={{
+                background: activeScenario === key ? "rgba(255, 255, 255, 0.14)" : "rgba(255, 255, 255, 0.10)",
+                border: "1px solid rgba(255, 255, 255, 0.20)",
+              }}
               data-testid={`vault-scenario-${key}`}
             >
               {VAULT_SCENARIOS[key].label}
@@ -213,7 +217,7 @@ export default function VaultCapacityModel() {
       {estimate ? (
         <div className="mb-6 space-y-4" data-testid="vault-capacity-results">
           {/* Share percentage */}
-          <div className="rounded-lg border border-accent/20 bg-accent/5 p-4">
+          <div className="glass-card p-4">
             <span className="font-terminal text-xs font-medium uppercase tracking-wider text-accent">
               Your Share of Staked Pool
             </span>
@@ -227,7 +231,7 @@ export default function VaultCapacityModel() {
 
           {/* Modeled allocation range vs total vault cap */}
           <div className="grid gap-4 sm:grid-cols-2">
-            <div className="rounded-lg border border-border bg-surface p-4" data-testid="vault-modeled-allocation">
+            <div className="glass-card p-4" data-testid="vault-modeled-allocation">
               <span className="font-terminal text-xs font-medium uppercase tracking-wider text-accent">
                 Modeled Capacity Share (Range)
               </span>
@@ -241,7 +245,7 @@ export default function VaultCapacityModel() {
               </p>
             </div>
             <div
-              className="rounded-lg border border-border bg-surface p-4"
+              className="glass-card p-4"
               data-testid="vault-total-cap"
             >
               <span className="font-terminal text-xs font-medium uppercase tracking-wider text-accent-warn">
@@ -260,7 +264,7 @@ export default function VaultCapacityModel() {
           </div>
 
           {/* Effective deposit */}
-          <div className="rounded-lg border border-accent/20 bg-accent/5 p-4" data-testid="vault-effective-deposit">
+          <div className="glass-card p-4" data-testid="vault-effective-deposit">
             <span className="font-terminal text-xs font-medium uppercase tracking-wider text-accent">
               Effective Allocation Estimate
             </span>
@@ -284,7 +288,7 @@ export default function VaultCapacityModel() {
           </div>
         </div>
       ) : (
-        <div className="mb-6 rounded-lg border border-border bg-surface p-4 text-center text-sm text-muted" data-testid="vault-no-results">
+        <div className="glass-card mb-6 p-4 text-center text-sm text-muted" data-testid="vault-no-results">
           {!totalStakedValid
             ? "Fix the total staked input to see results."
             : !userStakeValid
@@ -294,7 +298,7 @@ export default function VaultCapacityModel() {
       )}
 
       {/* Whale-vault assumptions (always visible) */}
-      <div className="mb-4 rounded-lg border border-border bg-surface p-4" data-testid="whale-vault-assumptions">
+      <div className="glass-card mb-4 p-4" data-testid="whale-vault-assumptions">
         <h4 className="mb-2 font-terminal text-sm font-semibold text-foreground">
           Modeled Whale-Vault Assumptions
         </h4>

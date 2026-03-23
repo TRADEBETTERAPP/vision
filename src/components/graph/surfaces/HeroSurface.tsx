@@ -6,6 +6,7 @@ import { getBlocksBySurface } from "@/content";
 import MaturityBadge from "@/components/MaturityBadge";
 import EvidenceHook from "@/components/EvidenceHook";
 import CaveatFrame from "@/components/CaveatFrame";
+import { LiquidMetalCard } from "@/components/LiquidMetalCard";
 
 export function HeroSurface() {
   const heroBlocks = getBlocksBySurface("hero");
@@ -16,19 +17,19 @@ export function HeroSurface() {
   return (
     <div className="space-y-6">
       {heroDefinition && (
-        <div className="rounded-lg border border-border bg-background/50 p-5">
+        <LiquidMetalCard className="p-5">
           <h3 className="mb-2 text-lg font-bold text-foreground">
             What is BETTER?
           </h3>
           <p className="text-sm leading-relaxed text-secondary">
             {heroDefinition.body}
           </p>
-        </div>
+        </LiquidMetalCard>
       )}
 
       <div className="grid gap-4 sm:grid-cols-2">
         {heroLiveToday && (
-          <div className="rounded-lg border border-accent-green/20 bg-accent-green/5 p-4">
+          <LiquidMetalCard className="p-4">
             <div className="mb-2 flex items-center gap-2">
               <MaturityBadge status="live" />
               <EvidenceHook source={heroLiveToday.source} />
@@ -37,11 +38,11 @@ export function HeroSurface() {
               {heroLiveToday.title}
             </h4>
             <p className="text-xs text-secondary">{heroLiveToday.body}</p>
-          </div>
+          </LiquidMetalCard>
         )}
 
         {heroVision && (
-          <div className="rounded-lg border border-accent-warn/20 bg-accent-warn/5 p-4">
+          <LiquidMetalCard className="p-4">
             <div className="mb-2 flex items-center gap-2">
               <MaturityBadge status="planned" />
               <EvidenceHook source={heroVision.source} />
@@ -53,7 +54,7 @@ export function HeroSurface() {
             {heroVision.confidence && (
               <CaveatFrame confidence={heroVision.confidence} className="mt-3" />
             )}
-          </div>
+          </LiquidMetalCard>
         )}
       </div>
     </div>

@@ -1,6 +1,8 @@
 /**
  * RisksSurface — the "Risks & Caveats" graph surface content.
  */
+import { LiquidMetalCard } from "@/components/LiquidMetalCard";
+
 export function RisksSurface() {
   return (
     <div className="space-y-6">
@@ -49,12 +51,12 @@ export function RisksSurface() {
 
 function RiskItem({ title, body }: { title: string; body: string }) {
   return (
-    <div
-      className="rounded-lg border border-accent-warn/20 bg-accent-warn/5 p-4"
+    <LiquidMetalCard
+      className="p-4"
       data-testid="risk-item"
     >
       <h3 className="mb-1 text-sm font-semibold text-accent-warn">{title}</h3>
       <p className="text-sm text-secondary">{body}</p>
-    </div>
+    </LiquidMetalCard>
   );
 }

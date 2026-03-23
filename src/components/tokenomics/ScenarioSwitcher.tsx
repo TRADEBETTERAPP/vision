@@ -156,11 +156,15 @@ export default function ScenarioSwitcher() {
             aria-selected={activeLevel === level}
             aria-controls={`scenario-panel-${level}`}
             onClick={() => handleScenarioChange(level)}
-            className={`flex-1 rounded-lg border px-4 py-3 text-center font-terminal text-sm font-medium transition-all ${
+            className={`flex-1 rounded-lg px-4 py-3 text-center font-terminal text-sm font-medium transition-all ${
               activeLevel === level
-                ? "border-accent bg-accent/10 text-accent"
-                : "border-border bg-surface text-secondary hover:border-border-active hover:text-foreground"
+                ? "text-accent ring-1 ring-[rgba(69,94,255,0.30)]"
+                : "text-secondary hover:text-foreground"
             }`}
+            style={{
+              background: activeLevel === level ? "rgba(255, 255, 255, 0.14)" : "rgba(255, 255, 255, 0.10)",
+              border: "1px solid rgba(255, 255, 255, 0.20)",
+            }}
             data-testid="scenario-tab"
             data-scenario={level}
           >
@@ -171,7 +175,7 @@ export default function ScenarioSwitcher() {
 
       {/* User-editable inputs — persisted independently from scenario level */}
       <div
-        className="mb-6 rounded-lg border border-border bg-surface p-4"
+        className="glass-card mb-6 p-4"
         data-testid="user-inputs-panel"
       >
         <h4 className="mb-3 font-terminal text-sm font-semibold uppercase tracking-wider text-muted">
@@ -272,7 +276,7 @@ export default function ScenarioSwitcher() {
         data-testid="scenario-panel"
       >
         {/* Scenario description */}
-        <div className="mb-6 rounded-lg border border-accent/20 bg-accent/5 p-4">
+        <div className="glass-card mb-6 p-4">
           <h4 className="mb-1 font-terminal text-sm font-semibold text-accent">
             {activeScenario.label} Scenario
           </h4>
@@ -288,7 +292,7 @@ export default function ScenarioSwitcher() {
             {activeScenario.assumptions.map((assumption) => (
               <div
                 key={assumption.dimension}
-                className="rounded-lg border border-border bg-surface p-3"
+                className="glass-card p-3"
                 data-testid="assumption-card"
               >
                 <span className="font-terminal text-xs font-medium uppercase tracking-wider text-muted">
@@ -399,7 +403,7 @@ function ProjectionCard({
 
   return (
     <div
-      className="rounded-lg border border-border bg-surface p-4"
+      className="glass-card p-4"
       data-testid="projection-card"
     >
       <span className="font-terminal text-xs font-medium uppercase tracking-wider text-muted">

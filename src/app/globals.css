@@ -138,6 +138,26 @@ body {
 }
 
 /* -----------------------------------------------------------------------
+   Glass-morphism card base — VAL-VISUAL-030
+   Tradebetter-matching glass-morphism for all content cards.
+   Applied via the .glass-card utility class for non-interactive cards
+   that don't need the full LiquidMetalCard component.
+   ----------------------------------------------------------------------- */
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.20);
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: background 0.2s ease;
+}
+
+.glass-card:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* -----------------------------------------------------------------------
    Glow effects — BETTER blue accent
    ----------------------------------------------------------------------- */
 

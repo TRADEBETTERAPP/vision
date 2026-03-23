@@ -50,7 +50,7 @@ export default function ModeledWhaleLadder() {
           return (
             <div
               key={product.id}
-              className="rounded-lg border border-border bg-surface p-4"
+              className="glass-card p-4"
               data-testid="modeled-whale-product"
               data-product-id={product.id}
             >

@@ -195,7 +195,7 @@ export default function FeeStackValueFlow() {
           {FEE_STACK.map((fee) => (
             <div
               key={fee.title}
-              className="rounded-lg border border-border bg-surface p-4"
+              className="glass-card p-4"
               data-testid="fee-item"
             >
               <div className="mb-2 flex flex-wrap items-center gap-2">
@@ -231,7 +231,7 @@ export default function FeeStackValueFlow() {
           {VALUE_FLOWS.map((flow) => (
             <div
               key={flow.segment}
-              className="rounded-lg border border-border bg-surface p-4"
+              className="glass-card p-4"
               data-testid="value-flow-card"
             >
               <div className="mb-2 flex flex-wrap items-center gap-3">

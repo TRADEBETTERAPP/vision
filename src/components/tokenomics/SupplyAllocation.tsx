@@ -37,7 +37,7 @@ export default function SupplyAllocation() {
         BETTER tokens on the Base contract — on-chain verified via Dune Analytics
         and basescan.
       </p>
-      <div className="mb-4 rounded border border-accent/20 bg-accent/5 px-3 py-2 text-xs text-secondary">
+      <div className="glass-card mb-4 px-3 py-2 text-xs text-secondary">
         <span className="font-terminal font-medium text-accent">Base Contract:</span>{" "}
         <code className="font-terminal text-foreground">{BASE_CONTRACT.address}</code>
         <span className="ml-2 text-muted">({BASE_CONTRACT.chain})</span>

@@ -27,7 +27,7 @@ export default function RoadmapNodeDetail({
   return (
     <div
       data-testid="roadmap-node-detail"
-      className="rounded-lg border border-accent/20 bg-surface p-5"
+      className="glass-card p-5"
       role="region"
       aria-label={`Details for ${node.title}`}
     >

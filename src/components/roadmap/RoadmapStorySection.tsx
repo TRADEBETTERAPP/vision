@@ -62,11 +62,12 @@ export default function RoadmapStorySection({
             aria-selected={isActive}
             data-testid="roadmap-story-panel"
             data-active={isActive ? "true" : "false"}
-            className={`w-full rounded-lg border p-4 text-left transition-all ${
-              isActive
-                ? "border-accent/40 bg-accent/5"
-                : "border-border bg-surface hover:border-border-active"
-            }`}
+            className="w-full rounded-lg p-4 text-left transition-all"
+            style={{
+              background: isActive ? "rgba(255, 255, 255, 0.14)" : "rgba(255, 255, 255, 0.10)",
+              border: "1px solid rgba(255, 255, 255, 0.20)",
+              backdropFilter: "blur(10px)",
+            }}
             onClick={() => onActiveFamilyChange(index)}
           >
             <h3
