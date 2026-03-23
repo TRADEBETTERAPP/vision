@@ -1,46 +1,22 @@
 {
   "milestone": "visual-re-engineering",
-  "round": 1,
-  "status": "fail",
+  "round": 2,
+  "status": "pass",
   "assertionsSummary": {
-    "total": 10,
-    "passed": 4,
-    "failed": 6,
+    "total": 5,
+    "passed": 5,
+    "failed": 0,
     "blocked": 0
   },
   "passedAssertions": [
-    "VAL-VISUAL-015",
-    "VAL-VISUAL-028",
-    "VAL-VISUAL-029",
-    "VAL-VISUAL-032"
+    "VAL-VISUAL-017",
+    "VAL-VISUAL-018",
+    "VAL-VISUAL-030",
+    "VAL-VISUAL-031",
+    "VAL-VISUAL-033"
   ],
-  "failedAssertions": [
-    {
-      "id": "VAL-VISUAL-016",
-      "reason": "No ASCII renderer is present because the shipped visual re-engineering intentionally removes ASCII entirely; this aligns with current mission guidance but fails the stale assertion wording."
-    },
-    {
-      "id": "VAL-VISUAL-017",
-      "reason": "Enhanced and forced-fallback screenshots differed by only 0.04%, so the rendered page is not materially distinct between states."
-    },
-    {
-      "id": "VAL-VISUAL-018",
-      "reason": "Headed browser validation captured only trace-level frame diffs (0.01% / 0.00%), so visible background motion could not be confirmed."
-    },
-    {
-      "id": "VAL-VISUAL-030",
-      "reason": "Cards have the glass base but no cursor-tracking metallic sheen or equivalent liquid-metal interaction."
-    },
-    {
-      "id": "VAL-VISUAL-031",
-      "reason": "The shell uses some required tokens, but the hero heading remains sentence case with normal tracking instead of the required all-uppercase, tight-tracked typography."
-    },
-    {
-      "id": "VAL-VISUAL-033",
-      "reason": "The roadmap-focused workspace still shows multiple simultaneous control layers instead of one clean navigation model."
-    }
-  ],
+  "failedAssertions": [],
   "blockedAssertions": [],
   "appliedUpdates": [],
-  "previousRound": null
+  "previousRound": ".factory/validation/visual-re-engineering/user-testing/synthesis.round-1.json"
 }

@@ -1,0 +1,219 @@
+{
+  "groupId": "visual-fixes-rerun",
+  "testedAt": "2026-03-23T17:32:15.958805+00:00",
+  "isolation": {
+    "milestone": "visual-re-engineering",
+    "missionDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83",
+    "repoRoot": "/Users/test/vision",
+    "appUrl": "http://127.0.0.1:3100",
+    "surface": "browser",
+    "tool": "agent-browser",
+    "browserSessions": [
+      "visual-rerun-main",
+      "visual-rerun-fallback"
+    ],
+    "mode": "headed",
+    "fallbackComparison": {
+      "method": "separate headed Chrome launched before page load with --disable-gpu --disable-webgl and connected over CDP",
+      "cdpPort": 9233
+    }
+  },
+  "toolsUsed": [
+    "agent-browser",
+    "Read"
+  ],
+  "assertions": [
+    {
+      "id": "VAL-VISUAL-017",
+      "title": "Enhanced visual state is dramatically distinct from static fallback",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Open the site in a normal headed browser session at 1440\u00d71600 and capture the enhanced state.",
+          "expected": "The enhanced state should show materially richer atmospheric depth than fallback.",
+          "observed": "The enhanced state showed bright electric-blue liquid swirls behind the hero, atlas cards, and proof cards, with visible contouring through the center of the page."
+        },
+        {
+          "action": "Relaunch the page in a separate headed Chrome instance with WebGL disabled before page load and capture the forced fallback state.",
+          "expected": "Fallback should collapse to a flatter, darker, more static atmospheric layer.",
+          "observed": "The forced fallback state lost the live swirling contour and read as a dimmer, flatter blue wash behind the same shell content."
+        },
+        {
+          "action": "Compare enhanced and forced-fallback screenshots.",
+          "expected": "The difference should be visible to a real user, not only in state flags.",
+          "observed": "The screenshot diff found 15,600 different pixels out of 2,304,000 (0.68% mismatch), concentrated across the central shader field; visually the enhanced state was noticeably more sculpted and dramatic than fallback."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "visual-re-engineering/visual-fixes-rerun/VAL-VISUAL-018-motion-frame-a.png",
+          "visual-re-engineering/visual-fixes-rerun/VAL-VISUAL-017-static-fallback-state-1440.png",
+          "visual-re-engineering/visual-fixes-rerun/VAL-VISUAL-017-enhanced-vs-fallback-diff-1440.png"
+        ],
+        "screenRecordings": [
+          "visual-re-engineering/visual-fixes-rerun/VAL-VISUAL-018-headed-background-motion.webm",
+          "visual-re-engineering/visual-fixes-rerun/VAL-VISUAL-017-fallback-static.webm"
+        ],
+        "consoleErrors": "none; enhanced session console only showed the React DevTools suggestion and `[HMR] connected`, while the fallback comparison session logged no runtime errors.",
+        "network": "No app/API requests were involved in this visual comparison; `agent-browser network requests` remained empty for these local-page-only flows.",
+        "numericObservation": "Enhanced vs fallback diff: 15,600 / 2,304,000 pixels = 0.68% mismatch, with changes concentrated in the central atmospheric field rather than static UI chrome."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-VISUAL-018",
+      "title": "Headed browser validation shows visible background motion",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Run the root page in a headed browser and observe the shader behind the hero and first content cards.",
+          "expected": "The background should show visibly perceptible motion over time in the real browser surface.",
+          "observed": "The shader showed slow but perceptible liquid motion in the central blue field behind the hero and atlas cards."
+        },
+        {
+          "action": "Capture frame A, wait roughly 2.5 seconds, then capture frame B and generate a diff.",
+          "expected": "Frame-to-frame comparison should show real movement, not a static background.",
+          "observed": "Frame B visibly shifted several swirl contours relative to frame A; the diff highlighted motion across the hero-background field and lower proof section."
+        },
+        {
+          "action": "Record a short headed-browser clip for direct evidence.",
+          "expected": "The recording should preserve the moving background in the enhanced state.",
+          "observed": "A 3.5 second recording captured the same slow-moving liquid background visible during interactive review."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "visual-re-engineering/visual-fixes-rerun/VAL-VISUAL-018-motion-frame-a.png",
+          "visual-re-engineering/visual-fixes-rerun/VAL-VISUAL-018-motion-frame-b.png",
+          "visual-re-engineering/visual-fixes-rerun/VAL-VISUAL-018-motion-diff.png"
+        ],
+        "screenRecordings": [
+          "visual-re-engineering/visual-fixes-rerun/VAL-VISUAL-018-headed-background-motion.webm"
+        ],
+        "consoleErrors": "none; browser errors were empty and console only showed the React DevTools tip plus `[HMR] connected`.",
+        "network": "No app/API requests were triggered during the motion check; this was a pure local rendering validation.",
+        "numericObservation": "Motion diff after ~2.5s: 8,661 / 2,304,000 pixels = 0.38% mismatch, concentrated across the animated shader field."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-VISUAL-030",
+      "title": "Liquid metal card finish with glass-morphism",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Inspect the default atlas and proof cards in the desktop shell.",
+          "expected": "Cards should read as glass-morphism surfaces with translucent white fill and low-opacity white borders.",
+          "observed": "Cards rendered as frosted panels with translucent white surfaces and thin white borders over the dark atmosphere."
+        },
+        {
+          "action": "Hover a content card and inspect the interaction state.",
+          "expected": "Hover should reveal a visible metallic sheen or equivalent liquid-metal highlight that tracks the cursor area.",
+          "observed": "Hovering the Live Terminal card produced a large bright radial metallic hotspot across the card face, giving it a clear liquid-metal finish instead of a flat opacity change."
+        },
+        {
+          "action": "Cross-check the rendered shell styles captured from the page.",
+          "expected": "The glass base should match the approved card tokens.",
+          "observed": "Computed styles from graph cards resolved to `backgroundColor: rgba(255, 255, 255, 0.1)`, `border: 1px solid rgba(255, 255, 255, 0.2)`, and `borderRadius: 8px`."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "visual-re-engineering/visual-fixes-rerun/initial-annotated.png",
+          "visual-re-engineering/visual-fixes-rerun/VAL-VISUAL-030-card-metallic-sheen-on-hover.png"
+        ],
+        "consoleErrors": "none; browser errors remained empty during the hover check.",
+        "network": "No app/API requests were triggered by the hover interaction.",
+        "styleChecks": "Graph card buttons resolved to rgba(255,255,255,0.10) backgrounds with 1px solid rgba(255,255,255,0.20) borders and 8px radii; the hover screenshot showed the added metallic radial sheen on top of that base."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-VISUAL-031",
+      "title": "Tradebetter-exact design language",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Inspect the hero and shell composition in the headed desktop browser.",
+          "expected": "The shell should show the tradebetter-led atoms: near-black background, uppercase/tight-tracked headings, square CTAs, mono body copy, green-only status indicators, and generous spacing.",
+          "observed": "The hero and proof shell presented uppercase/tight-tracked headings (`PREDICTION-MARKET INTELLIGENCE, AUTOMATED.` and `BUILT AND SHIPPING`), square white/outlined CTAs, mono body copy, and green live dots on a near-black shell."
+        },
+        {
+          "action": "Read computed page styles from the live page.",
+          "expected": "Core style tokens should match the approved atoms.",
+          "observed": "Computed styles returned `body.backgroundColor = rgb(16, 16, 16)` (#101010) and `body.fontFamily = IBM Plex Mono`; the shell used pure-white primary text and grayscale secondary copy."
+        },
+        {
+          "action": "Cross-check the spacing and status treatment in the first content handoff.",
+          "expected": "Section spacing should feel generous and status color should stay green-only for live states.",
+          "observed": "The handoff from the atlas strip to the `BUILT AND SHIPPING` proof block kept a large vertical gap, and live states consistently used green dots while non-live labels stayed monochrome."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "visual-re-engineering/visual-fixes-rerun/VAL-VISUAL-031-uppercase-headings-and-square-ctas.png",
+          "visual-re-engineering/visual-fixes-rerun/VAL-VISUAL-031-green-status-dots-and-spacing.png"
+        ],
+        "consoleErrors": "none; browser errors were empty during the style checks.",
+        "network": "No app/API requests were involved in these visual-atom checks.",
+        "styleChecks": "Live computed styles: body background `rgb(16, 16, 16)`; body font `IBM Plex Mono`; visible CTA buttons were square-cornered; headings in the hero/proof shell rendered uppercase; live statuses used neon-green dots only."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-VISUAL-033",
+      "title": "Clean graph workspace without chrome clutter",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Navigate into the roadmap-focused workspace state from the main browser session.",
+          "expected": "The workspace should read as one clean exploration model without stacked chrome systems fighting each other.",
+          "observed": "The focused workspace kept the global top nav plus a simple prev/next pair for local traversal, while the main surface remained the roadmap cards and branch list."
+        },
+        {
+          "action": "Check for competing chrome layers in the focused workspace.",
+          "expected": "No simultaneous minimap, breadcrumb bar, inspector dock, and extra context panel stack should be visible.",
+          "observed": "No minimap, breadcrumb bar, inspector dock, or extra context side panel was visible; the roadmap state felt substantially cleaner and more glanceable than the earlier cluttered shell."
+        },
+        {
+          "action": "Verify runtime cleanliness after the navigation flow.",
+          "expected": "The focused workspace should remain stable with no browser/runtime errors.",
+          "observed": "Browser errors remained empty and the only console output was the standard React DevTools tip plus `[HMR] connected`."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "visual-re-engineering/visual-fixes-rerun/VAL-VISUAL-033-clean-graph-workspace.png",
+          "visual-re-engineering/visual-fixes-rerun/initial-annotated.png"
+        ],
+        "consoleErrors": "none; browser errors output was empty after entering `#graph-roadmap`.",
+        "network": "No app/API requests were triggered by the focused-roadmap navigation flow."
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [
+    {
+      "description": "Forcing the visual fallback required a separate headed Chrome launch because the local `agent-browser open` flow does not accept raw Chromium launch flags.",
+      "resolved": true,
+      "resolution": "Launched isolated Chrome with `--disable-gpu --disable-webgl` on port 9233, connected via `agent-browser connect`, and captured the fallback evidence there.",
+      "affectedAssertions": [
+        "VAL-VISUAL-017"
+      ]
+    },
+    {
+      "description": "`agent-browser network requests` did not retain a useful request log for these passive local-page rendering checks.",
+      "resolved": true,
+      "resolution": "Recorded network evidence as \u201cno app/API requests involved\u201d because all rerun assertions were visual-only browser-surface checks against a local page.",
+      "affectedAssertions": [
+        "VAL-VISUAL-017",
+        "VAL-VISUAL-018",
+        "VAL-VISUAL-030",
+        "VAL-VISUAL-031",
+        "VAL-VISUAL-033"
+      ]
+    }
+  ],
+  "blockers": [],
+  "summary": "Tested 5 rerun assertions for visual-re-engineering. All 5 passed: enhanced vs fallback states are materially distinct, headed motion is visibly perceptible, liquid-metal card sheen is visible on hover, the tradebetter-led design atoms are present in the hero/shell, and the roadmap-focused workspace now reads as a cleaner single navigation model."
+}
