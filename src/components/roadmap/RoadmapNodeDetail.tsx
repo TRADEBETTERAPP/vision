@@ -3,6 +3,7 @@ import { getNodeById, getExecutionPlanForNode } from "@/content";
 import MaturityBadge from "@/components/MaturityBadge";
 import EvidenceHook from "@/components/EvidenceHook";
 import CaveatFrame from "@/components/CaveatFrame";
+import { LiquidMetalCard } from "@/components/LiquidMetalCard";
 import ExecutionPlanPanel from "./ExecutionPlanPanel";
 
 /**
@@ -25,9 +26,9 @@ export default function RoadmapNodeDetail({
   const executionPlan = getExecutionPlanForNode(node.id);
 
   return (
-    <div
+    <LiquidMetalCard
       data-testid="roadmap-node-detail"
-      className="glass-card p-5"
+      className="p-5"
       role="region"
       aria-label={`Details for ${node.title}`}
     >
@@ -100,6 +101,6 @@ export default function RoadmapNodeDetail({
 
       {/* Per-stage execution plan (VAL-ROADMAP-016) */}
       {executionPlan && <ExecutionPlanPanel plan={executionPlan} />}
-    </div>
+    </LiquidMetalCard>
   );
 }

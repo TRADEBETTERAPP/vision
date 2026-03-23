@@ -9,6 +9,7 @@
 import MaturityBadge from "@/components/MaturityBadge";
 import EvidenceHook from "@/components/EvidenceHook";
 import CaveatFrame from "@/components/CaveatFrame";
+import { LiquidMetalCard } from "@/components/LiquidMetalCard";
 import type { MaturityStatus, SourceCue, ConfidenceFrame } from "@/content";
 
 // ---------------------------------------------------------------------------
@@ -193,9 +194,9 @@ export default function FeeStackValueFlow() {
 
         <div className="space-y-3">
           {FEE_STACK.map((fee) => (
-            <div
+            <LiquidMetalCard
               key={fee.title}
-              className="glass-card p-4"
+              className="p-4"
               data-testid="fee-item"
             >
               <div className="mb-2 flex flex-wrap items-center gap-2">
@@ -212,7 +213,7 @@ export default function FeeStackValueFlow() {
               <div className="mt-2">
                 <EvidenceHook source={fee.source} />
               </div>
-            </div>
+            </LiquidMetalCard>
           ))}
         </div>
       </div>
@@ -229,9 +230,9 @@ export default function FeeStackValueFlow() {
 
         <div className="space-y-4">
           {VALUE_FLOWS.map((flow) => (
-            <div
+            <LiquidMetalCard
               key={flow.segment}
-              className="glass-card p-4"
+              className="p-4"
               data-testid="value-flow-card"
             >
               <div className="mb-2 flex flex-wrap items-center gap-3">
@@ -254,7 +255,7 @@ export default function FeeStackValueFlow() {
                   ))}
                 </ul>
               </div>
-            </div>
+            </LiquidMetalCard>
           ))}
         </div>
 

@@ -337,8 +337,8 @@ describe("VAL-VISUAL-021: tradebetter parity documented with reference evidence"
   });
 
   it("shell surfaces reference tradebetter theme across detail panels and overlays", () => {
-    // The graph shell uses LiquidMetalCard glass-morphism (tradebetter-exact design)
-    // and glass-card pattern for tonal hierarchy
+    // The graph shell uses LiquidMetalCard glass-morphism with cursor-tracking
+    // metallic sheen (tradebetter-exact design) for tonal hierarchy
     const shellSrc = fs.readFileSync(
       path.resolve(__dirname, "../../graph/GraphShell.tsx"),
       "utf-8",

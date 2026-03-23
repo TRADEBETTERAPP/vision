@@ -16,6 +16,7 @@ import {
 } from "@/content/valuation-corridors";
 import EvidenceHook from "@/components/EvidenceHook";
 import CaveatFrame from "@/components/CaveatFrame";
+import { LiquidMetalCard } from "@/components/LiquidMetalCard";
 import type { ConfidenceFrame } from "@/content";
 
 /** Format a number with commas */
@@ -60,8 +61,8 @@ export default function ValuationCorridors() {
       </p>
 
       {/* Basis declaration */}
-      <div
-        className="glass-card mb-6 p-4"
+      <LiquidMetalCard
+        className="mb-6 p-4"
         data-testid="corridor-basis-declaration"
       >
         <div className="grid gap-4 sm:grid-cols-2">
@@ -86,7 +87,7 @@ export default function ValuationCorridors() {
           All corridors use the same valuation and supply basis so they are
           directly comparable. No corridor silently switches framing.
         </p>
-      </div>
+      </LiquidMetalCard>
 
       {/* Corridor table */}
       <div className="space-y-4" data-testid="corridor-list">
@@ -95,9 +96,9 @@ export default function ValuationCorridors() {
           const highPrice = computeImpliedTokenPrice(corridor.upperBoundM);
 
           return (
-            <div
+            <LiquidMetalCard
               key={corridor.id}
-              className={`glass-card p-4 ${
+              className={`p-4 ${
                 corridor.isLiveAnchor ? "ring-1 ring-[rgba(69,94,255,0.30)]" : ""
               }`}
               data-testid="valuation-corridor"
@@ -165,7 +166,7 @@ export default function ValuationCorridors() {
               </div>
 
               <EvidenceHook source={corridor.source} />
-            </div>
+            </LiquidMetalCard>
           );
         })}
       </div>

@@ -1,6 +1,7 @@
 import type { ExecutionPlan } from "@/content/types";
 import { CONFIDENCE_LABEL_DESCRIPTIONS } from "@/content/types";
 import EvidenceHook from "@/components/EvidenceHook";
+import { LiquidMetalCard } from "@/components/LiquidMetalCard";
 
 /**
  * ExecutionPlanPanel — renders a per-stage execution plan treatment.
@@ -23,9 +24,9 @@ export default function ExecutionPlanPanel({ plan }: { plan: ExecutionPlan }) {
   );
 
   return (
-    <div
+    <LiquidMetalCard
       data-testid="execution-plan-panel"
-      className="glass-card mt-4 space-y-4 p-4"
+      className="mt-4 space-y-4 p-4"
     >
       {/* Header with confidence label */}
       <div className="flex flex-wrap items-start justify-between gap-3">
@@ -175,7 +176,7 @@ export default function ExecutionPlanPanel({ plan }: { plan: ExecutionPlan }) {
       <div className="flex items-center justify-end gap-2 border-t border-border/30 pt-2">
         <EvidenceHook source={plan.source} />
       </div>
-    </div>
+    </LiquidMetalCard>
   );
 }
 

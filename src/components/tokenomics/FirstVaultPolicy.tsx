@@ -20,6 +20,7 @@ import {
 import EvidenceHook from "@/components/EvidenceHook";
 import CaveatFrame from "@/components/CaveatFrame";
 import MaturityBadge from "@/components/MaturityBadge";
+import { LiquidMetalCard } from "@/components/LiquidMetalCard";
 import type { ConfidenceFrame } from "@/content";
 
 /** Format a large number with commas */
@@ -59,7 +60,7 @@ export default function FirstVaultPolicy() {
 
       {/* Policy rules */}
       <div className="mb-6 grid gap-4 sm:grid-cols-2">
-        <div className="glass-card p-4">
+        <LiquidMetalCard className="p-4">
           <span className="font-terminal text-xs font-medium uppercase tracking-wider text-accent">
             Universal Minimum Stake
           </span>
@@ -69,8 +70,8 @@ export default function FirstVaultPolicy() {
           <p className="mt-1 text-xs text-secondary">
             Required for all quant-team vaults (Standard tier or above).
           </p>
-        </div>
-        <div className="glass-card p-4">
+        </LiquidMetalCard>
+        <LiquidMetalCard className="p-4">
           <span className="font-terminal text-xs font-medium uppercase tracking-wider text-accent">
             Total Vault Cap
           </span>
@@ -80,11 +81,11 @@ export default function FirstVaultPolicy() {
           <p className="mt-1 text-xs text-secondary">
             Total deposits across ALL qualifying stakers for the first vault. Individual allocations use the per-staker bidding model.
           </p>
-        </div>
+        </LiquidMetalCard>
       </div>
 
       {/* Bidding model explanation */}
-      <div className="glass-card mb-6 p-4" data-testid="bidding-model-explanation">
+      <LiquidMetalCard className="mb-6 p-4" data-testid="bidding-model-explanation">
         <h4 className="mb-2 font-terminal text-sm font-semibold text-foreground">
           √-Weighted Bidding Allocation Model
         </h4>
@@ -126,20 +127,20 @@ export default function FirstVaultPolicy() {
           individual exposure via the hard cap, and guarantees meaningful participation
           for every qualifier via the $100 floor.
         </p>
-      </div>
+      </LiquidMetalCard>
 
       {/* Social vault differentiation */}
-      <div className="glass-card mb-6 p-4" data-testid="social-vault-differentiation">
+      <LiquidMetalCard className="mb-6 p-4" data-testid="social-vault-differentiation">
         <h4 className="mb-2 font-terminal text-sm font-semibold text-foreground">
           Social Vault Minimum: {formatNumber(SOCIAL_VAULT_PARAMS.minimumStake)} BETTER
         </h4>
         <p className="text-sm text-secondary">
           {SOCIAL_VAULT_PARAMS.differentiationNote}
         </p>
-      </div>
+      </LiquidMetalCard>
 
       {/* Multi-vault progression */}
-      <div className="glass-card mb-6 p-4" data-testid="multi-vault-progression">
+      <LiquidMetalCard className="mb-6 p-4" data-testid="multi-vault-progression">
         <h4 className="mb-2 font-terminal text-sm font-semibold text-foreground">
           Multi-Vault Progression
         </h4>
@@ -168,7 +169,7 @@ export default function FirstVaultPolicy() {
             </div>
           ))}
         </div>
-      </div>
+      </LiquidMetalCard>
 
       {/* Worked examples */}
       <h4 className="mb-3 font-terminal text-sm font-semibold uppercase tracking-wider text-muted">
@@ -176,9 +177,9 @@ export default function FirstVaultPolicy() {
       </h4>
       <div className="space-y-3" data-testid="first-vault-worked-examples">
         {FIRST_VAULT_WORKED_EXAMPLES.map((ex) => (
-          <div
+          <LiquidMetalCard
             key={ex.label}
-            className={`glass-card p-4 ${
+            className={`p-4 ${
               ex.qualifies ? "ring-1 ring-[rgba(69,94,255,0.30)]" : ""
             }`}
             data-testid="first-vault-example"
@@ -233,7 +234,7 @@ export default function FirstVaultPolicy() {
               </div>
             )}
             <p className="mt-2 text-xs text-muted">{ex.explanation}</p>
-          </div>
+          </LiquidMetalCard>
         ))}
       </div>
 

@@ -9,6 +9,7 @@ import { REFERRAL_INCENTIVE_POLICY } from "@/content";
 import EvidenceHook from "@/components/EvidenceHook";
 import CaveatFrame from "@/components/CaveatFrame";
 import MaturityBadge from "@/components/MaturityBadge";
+import { LiquidMetalCard } from "@/components/LiquidMetalCard";
 import type { ConfidenceFrame } from "@/content";
 
 const referralCaveat: ConfidenceFrame = {
@@ -43,39 +44,39 @@ export default function ReferralIncentives() {
       </div>
 
       {/* Payout Source */}
-      <div className="glass-card mb-4 p-4" data-testid="referral-payout-source">
+      <LiquidMetalCard className="mb-4 p-4" data-testid="referral-payout-source">
         <h4 className="mb-2 font-terminal text-sm font-semibold text-foreground">
           Payout Source
         </h4>
         <p className="text-sm text-secondary">{policy.rewardSourceDescription}</p>
-      </div>
+      </LiquidMetalCard>
 
       {/* Reward Basis */}
-      <div className="glass-card mb-4 p-4" data-testid="referral-reward-basis">
+      <LiquidMetalCard className="mb-4 p-4" data-testid="referral-reward-basis">
         <h4 className="mb-2 font-terminal text-sm font-semibold text-foreground">
           How Rewards Are Earned
         </h4>
         <p className="text-sm text-secondary">{policy.rewardBasis}</p>
-      </div>
+      </LiquidMetalCard>
 
       {/* Caps */}
       <div className="mb-4 grid gap-4 sm:grid-cols-2">
-        <div className="glass-card p-4" data-testid="referral-cap-per-referrer">
+        <LiquidMetalCard className="p-4" data-testid="referral-cap-per-referrer">
           <span className="font-terminal text-xs font-medium uppercase tracking-wider text-accent">
             Per-Referrer Cap
           </span>
           <p className="mt-1 text-sm text-secondary">{policy.payoutCapPerReferrer}</p>
-        </div>
-        <div className="glass-card p-4" data-testid="referral-cap-per-referral">
+        </LiquidMetalCard>
+        <LiquidMetalCard className="p-4" data-testid="referral-cap-per-referral">
           <span className="font-terminal text-xs font-medium uppercase tracking-wider text-accent">
             Per-Referral Cap
           </span>
           <p className="mt-1 text-sm text-secondary">{policy.payoutCapPerReferral}</p>
-        </div>
+        </LiquidMetalCard>
       </div>
 
       {/* Anti-Abuse Measures */}
-      <div className="glass-card mb-4 p-4" data-testid="referral-anti-abuse">
+      <LiquidMetalCard className="mb-4 p-4" data-testid="referral-anti-abuse">
         <h4 className="mb-2 font-terminal text-sm font-semibold text-foreground">
           Anti-Abuse Measures
         </h4>
@@ -84,15 +85,15 @@ export default function ReferralIncentives() {
             <li key={i}>{measure}</li>
           ))}
         </ul>
-      </div>
+      </LiquidMetalCard>
 
       {/* Sustainability Logic */}
-      <div className="glass-card p-4" data-testid="referral-sustainability">
+      <LiquidMetalCard className="p-4" data-testid="referral-sustainability">
         <h4 className="mb-2 font-terminal text-sm font-semibold text-accent">
           Sustainability Logic
         </h4>
         <p className="text-sm text-secondary">{policy.sustainabilityLogic}</p>
-      </div>
+      </LiquidMetalCard>
 
       <CaveatFrame confidence={referralCaveat} className="mt-4" />
     </div>

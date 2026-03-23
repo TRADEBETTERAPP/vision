@@ -11,6 +11,7 @@
 import MaturityBadge from "@/components/MaturityBadge";
 import EvidenceHook from "@/components/EvidenceHook";
 import CaveatFrame from "@/components/CaveatFrame";
+import { LiquidMetalCard } from "@/components/LiquidMetalCard";
 import type { MaturityStatus, SourceCue, ConfidenceFrame, UseCaseAnalysis } from "@/content";
 import { USE_CASE_ANALYSES } from "@/content";
 
@@ -257,8 +258,8 @@ function UtilityCard({
   analysis?: UseCaseAnalysis;
 }) {
   return (
-    <div
-      className="glass-card p-4"
+    <LiquidMetalCard
+      className="p-4"
       data-testid="utility-card"
       data-utility-id={mechanic.id}
     >
@@ -282,7 +283,7 @@ function UtilityCard({
       {mechanic.confidence && (
         <CaveatFrame confidence={mechanic.confidence} className="mt-2" />
       )}
-    </div>
+    </LiquidMetalCard>
   );
 }
 

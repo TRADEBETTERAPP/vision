@@ -10,6 +10,7 @@ import {
   type RoadmapNode,
 } from "@/content";
 import MaturityBadge from "@/components/MaturityBadge";
+import { LiquidMetalCard } from "@/components/LiquidMetalCard";
 import RoadmapNodeDetail from "./RoadmapNodeDetail";
 import RoadmapStorySection, { FAMILY_KEYS } from "./RoadmapStorySection";
 import { useGraphShellPersistence } from "@/components/graph/GraphShellPersistence";
@@ -531,7 +532,7 @@ export default function RoadmapAtlas() {
 
       {/* Mobile story panels (visible below lg) */}
       <div className="lg:hidden">
-        <details className="glass-card">
+        <LiquidMetalCard as="details">
           <summary className="cursor-pointer p-4 font-terminal text-sm font-medium text-secondary">
             Branch Family Overview
           </summary>
@@ -541,7 +542,7 @@ export default function RoadmapAtlas() {
               onActiveFamilyChange={handleStoryFamilyChange}
             />
           </div>
-        </details>
+        </LiquidMetalCard>
       </div>
     </div>
   );

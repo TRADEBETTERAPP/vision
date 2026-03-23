@@ -7,6 +7,7 @@
 
 import { getTiersSorted, type TokenTier } from "@/content";
 import EvidenceHook from "@/components/EvidenceHook";
+import { LiquidMetalCard } from "@/components/LiquidMetalCard";
 
 /** Format a large number with commas */
 function formatNumber(n: number): string {
@@ -135,8 +136,8 @@ function TierDetailCard({ tier }: { tier: TokenTier }) {
   const isWhaleOrAbove = tier.feeMultiplier < 1;
 
   return (
-    <div
-      className={`glass-card p-4 ${
+    <LiquidMetalCard
+      className={`p-4 ${
         isWhaleOrAbove ? "ring-1 ring-[rgba(69,94,255,0.30)]" : ""
       }`}
       data-testid="tier-detail-card"
@@ -185,7 +186,7 @@ function TierDetailCard({ tier }: { tier: TokenTier }) {
           </div>
         </div>
       )}
-    </div>
+    </LiquidMetalCard>
   );
 }
 

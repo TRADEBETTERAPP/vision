@@ -26,6 +26,7 @@ import {
 } from "@/content";
 import EvidenceHook from "@/components/EvidenceHook";
 import CaveatFrame from "@/components/CaveatFrame";
+import { LiquidMetalCard } from "@/components/LiquidMetalCard";
 import type { ConfidenceFrame, SourceCue } from "@/content";
 import { useGraphShellPersistence } from "@/components/graph/GraphShellPersistence";
 
@@ -174,8 +175,8 @@ export default function ScenarioSwitcher() {
       </div>
 
       {/* User-editable inputs — persisted independently from scenario level */}
-      <div
-        className="glass-card mb-6 p-4"
+      <LiquidMetalCard
+        className="mb-6 p-4"
         data-testid="user-inputs-panel"
       >
         <h4 className="mb-3 font-terminal text-sm font-semibold uppercase tracking-wider text-muted">
@@ -266,7 +267,7 @@ export default function ScenarioSwitcher() {
             </div>
           </div>
         )}
-      </div>
+      </LiquidMetalCard>
 
       {/* Active scenario panel */}
       <div
@@ -276,12 +277,12 @@ export default function ScenarioSwitcher() {
         data-testid="scenario-panel"
       >
         {/* Scenario description */}
-        <div className="glass-card mb-6 p-4">
+        <LiquidMetalCard className="mb-6 p-4">
           <h4 className="mb-1 font-terminal text-sm font-semibold text-accent">
             {activeScenario.label} Scenario
           </h4>
           <p className="text-sm text-secondary">{activeScenario.description}</p>
-        </div>
+        </LiquidMetalCard>
 
         {/* Assumptions panel */}
         <div className="mb-6" data-testid="assumptions-panel">
@@ -290,9 +291,9 @@ export default function ScenarioSwitcher() {
           </h4>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {activeScenario.assumptions.map((assumption) => (
-              <div
+              <LiquidMetalCard
                 key={assumption.dimension}
-                className="glass-card p-3"
+                className="p-3"
                 data-testid="assumption-card"
               >
                 <span className="font-terminal text-xs font-medium uppercase tracking-wider text-muted">
@@ -308,7 +309,7 @@ export default function ScenarioSwitcher() {
                 <div className="mt-2">
                   <EvidenceHook source={assumption.source} />
                 </div>
-              </div>
+              </LiquidMetalCard>
             ))}
           </div>
         </div>
@@ -402,8 +403,8 @@ function ProjectionCard({
     .slice(0, 3);
 
   return (
-    <div
-      className="glass-card p-4"
+    <LiquidMetalCard
+      className="p-4"
       data-testid="projection-card"
     >
       <span className="font-terminal text-xs font-medium uppercase tracking-wider text-muted">
@@ -425,6 +426,6 @@ function ProjectionCard({
           </p>
         </div>
       )}
-    </div>
+    </LiquidMetalCard>
   );
 }

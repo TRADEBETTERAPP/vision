@@ -10,6 +10,7 @@ import EvidenceHook from "@/components/EvidenceHook";
 import CaveatFrame from "@/components/CaveatFrame";
 import type { SourceCue, ConfidenceFrame } from "@/content";
 import MaturityBadge from "@/components/MaturityBadge";
+import { LiquidMetalCard } from "@/components/LiquidMetalCard";
 
 const allocationSource: SourceCue = {
   type: "canonical",
@@ -98,7 +99,7 @@ export default function NonLinearAllocation() {
       </div>
 
       {/* Formula explanation */}
-      <div className="glass-card mb-6 p-4">
+      <LiquidMetalCard className="mb-6 p-4">
         <h4 className="mb-2 font-terminal text-sm font-semibold text-accent">
           How It Works
         </h4>
@@ -125,7 +126,7 @@ export default function NonLinearAllocation() {
         <p className="mt-2 text-xs text-muted">
           A 130× difference in stake translates to only an 11.4× difference in allocation weight.
         </p>
-      </div>
+      </LiquidMetalCard>
 
       {/* Worked examples table — 20-staker scenario */}
       <h4 className="mb-3 font-terminal text-sm font-semibold uppercase tracking-wider text-muted">
@@ -187,7 +188,7 @@ export default function NonLinearAllocation() {
       </div>
 
       {/* Key takeaway */}
-      <div className="glass-card mt-4 p-4">
+      <LiquidMetalCard className="mt-4 p-4">
         <h4 className="mb-2 font-terminal text-xs font-semibold uppercase tracking-wider text-muted">
           Key Takeaway
         </h4>
@@ -198,7 +199,7 @@ export default function NonLinearAllocation() {
           share increases from 0.7% to <span className="font-semibold text-accent">2.3%</span>. Staking more still earns meaningfully
           more allocation, but the advantage tapers — creating a fairer distribution while preserving whale incentives.
         </p>
-      </div>
+      </LiquidMetalCard>
 
       <CaveatFrame confidence={allocationCaveat} className="mt-4" />
     </div>

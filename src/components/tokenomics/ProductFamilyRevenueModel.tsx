@@ -10,6 +10,7 @@ import { PRODUCT_FAMILY_REVENUE_MODELS } from "@/content";
 import EvidenceHook from "@/components/EvidenceHook";
 import CaveatFrame from "@/components/CaveatFrame";
 import MaturityBadge from "@/components/MaturityBadge";
+import { LiquidMetalCard } from "@/components/LiquidMetalCard";
 import type { ConfidenceFrame } from "@/content";
 
 const revenueCaveat: ConfidenceFrame = {
@@ -51,9 +52,9 @@ export default function ProductFamilyRevenueModel() {
 
       <div className="space-y-3">
         {PRODUCT_FAMILY_REVENUE_MODELS.map((model) => (
-          <div
+          <LiquidMetalCard
             key={model.id}
-            className="glass-card p-4"
+            className="p-4"
             data-testid="product-revenue-line"
             data-product-id={model.id}
           >
@@ -89,7 +90,7 @@ export default function ProductFamilyRevenueModel() {
             <div className="mt-3">
               <EvidenceHook source={model.source} />
             </div>
-          </div>
+          </LiquidMetalCard>
         ))}
       </div>
 

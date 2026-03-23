@@ -10,6 +10,7 @@ import { MODELED_WHALE_PRODUCTS, getTierById } from "@/content";
 import EvidenceHook from "@/components/EvidenceHook";
 import CaveatFrame from "@/components/CaveatFrame";
 import MaturityBadge from "@/components/MaturityBadge";
+import { LiquidMetalCard } from "@/components/LiquidMetalCard";
 import type { ConfidenceFrame, MaturityStatus } from "@/content";
 
 /** Format a large number with commas */
@@ -48,9 +49,9 @@ export default function ModeledWhaleLadder() {
         {MODELED_WHALE_PRODUCTS.map((product) => {
           const tier = getTierById(product.minimumTierId);
           return (
-            <div
+            <LiquidMetalCard
               key={product.id}
-              className="glass-card p-4"
+              className="p-4"
               data-testid="modeled-whale-product"
               data-product-id={product.id}
             >
@@ -83,7 +84,7 @@ export default function ModeledWhaleLadder() {
               <div className="mt-3">
                 <EvidenceHook source={product.source} />
               </div>
-            </div>
+            </LiquidMetalCard>
           );
         })}
       </div>
