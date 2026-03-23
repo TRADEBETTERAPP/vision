@@ -6,15 +6,17 @@ import { useVisualEffects } from "./VisualEffectsProvider";
  * HeroVisualSystem — immersive BETTER atmosphere for the hero section.
  *
  * VAL-VISUAL-029: Only ONE Radiant Fluid Amber shader instance runs site-wide
- * via SiteAtmosphere. This component provides ONLY CSS layers for the hero:
- *   - Radiant fallback gradient (CSS-only)
- *   - Scanline overlay (CSS-only terminal texture)
- * The WebGL shader canvas is NOT rendered here — it lives exclusively in
- * SiteAtmosphere to enforce the single-shader-instance rule.
+ * via SiteAtmosphere. This component provides ONLY a CSS fallback gradient
+ * layer for the hero. The WebGL shader canvas is NOT rendered here — it lives
+ * exclusively in SiteAtmosphere to enforce the single-shader-instance rule.
+ *
+ * Approved visual stack (two layers only):
+ *   1. Radiant Fluid Amber shader at reduced opacity (in SiteAtmosphere)
+ *   2. Film grain GIF overlay at 5% opacity (in SiteAtmosphere)
+ * No scanlines, no vignettes, no additional texture overlays.
  *
  * Visual layers (back to front):
  * 1. CSS-only radiant fallback gradient — atmospheric depth
- * 2. Scanline overlay — CSS-only terminal texture
  *
  * Motion strategy (VAL-VISUAL-011): exactly 2 intentional motions:
  *   M1 — Shader canvas: slow organic drift (in SiteAtmosphere, not here)
@@ -98,12 +100,6 @@ export function HeroVisualSystem({
         className="hero-radiant-fallback absolute inset-0"
         aria-hidden="true"
         data-testid="hero-radiant-fallback"
-      />
-
-      {/* Layer 1: CSS scanline overlay — terminal texture (all devices) */}
-      <div
-        className="scanline-overlay absolute inset-0 z-[3]"
-        aria-hidden="true"
       />
 
       {/* Layer 10: Content — M2 entrance animation via CSS */}

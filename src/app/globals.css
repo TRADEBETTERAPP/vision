@@ -189,21 +189,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* -----------------------------------------------------------------------
-   Scanline overlay — terminal texture
-   ----------------------------------------------------------------------- */
-
-.scanline-overlay {
-  pointer-events: none;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(0, 0, 0, 0.04) 2px,
-    rgba(0, 0, 0, 0.04) 4px
-  );
-}
-
-/* -----------------------------------------------------------------------
    Glass-morphism card base — VAL-VISUAL-030
    Tradebetter-matching glass-morphism for all content cards.
    Applied via the .glass-card utility class for non-interactive cards
@@ -282,20 +267,12 @@ h1, h2, h3, h4, h5, h6 {
   transition: opacity 0.8s ease;
 }
 
-[data-visual-state="enhanced"] .scanline-overlay {
-  opacity: 0.6;
-}
-
 /* Fallback state: no WebGL shader — the CSS gradient must carry the
    atmospheric load alone. Stronger gradient for atmospheric presence,
    but the result is clearly static compared to enhanced. */
 [data-visual-state="fallback"] .hero-radiant-fallback {
   opacity: 1;
   transition: opacity 0.8s ease;
-}
-
-[data-visual-state="fallback"] .scanline-overlay {
-  opacity: 0.4;
 }
 
 /* Constrained state (mobile/tablet): CSS gradient carries the atmosphere
@@ -306,18 +283,10 @@ h1, h2, h3, h4, h5, h6 {
   opacity: 1;
 }
 
-[data-visual-state="constrained"] .scanline-overlay {
-  opacity: 0.35;
-}
-
 /* Reduced-motion state: all layers static, dimmed for readability.
    Atmospheric presence is preserved but motion is completely suppressed. */
 [data-visual-state="reduced-motion"] .hero-radiant-fallback {
   opacity: 0.85;
-}
-
-[data-visual-state="reduced-motion"] .scanline-overlay {
-  opacity: 0.3;
 }
 
 /* -----------------------------------------------------------------------
@@ -402,8 +371,8 @@ h1, h2, h3, h4, h5, h6 {
    Constrained device capability gating (VAL-VISUAL-025)
    Mobile, tablet, and other constrained device classes do not run heavy
    shader or continuous-animation layers. They receive a visibly cheaper
-   but hierarchy-preserving fallback that relies on the CSS gradient +
-   scanline texture for atmosphere.
+   but hierarchy-preserving fallback that relies on the CSS gradient
+   for atmosphere.
    ----------------------------------------------------------------------- */
 
 /* -----------------------------------------------------------------------
@@ -451,10 +420,6 @@ h1, h2, h3, h4, h5, h6 {
     );
   background-size: 200% 200%, 200% 200%, 200% 200%;
   animation: constrained-drift 12s ease-in-out infinite;
-}
-
-[data-device-class="constrained"] .scanline-overlay {
-  opacity: 0.35;
 }
 
 /* On constrained devices the site-atmosphere gradient is the primary

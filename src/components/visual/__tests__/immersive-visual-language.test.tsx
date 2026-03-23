@@ -287,7 +287,7 @@ describe("VAL-VISUAL-000: Signature BETTER visual system is present (upgraded)",
     expect(screen.getByTestId("hero-radiant-fallback")).toBeInTheDocument();
   });
 
-  it("visual layers are ordered: fallback → shader → scanline → vignette → content", () => {
+  it("visual layers are ordered: fallback → content (no scanline/vignette overlays)", () => {
     render(<Home />);
     const system = screen.getByTestId("hero-visual-system");
     const children = Array.from(system.children);
@@ -301,8 +301,14 @@ describe("VAL-VISUAL-000: Signature BETTER visual system is present (upgraded)",
       (c as HTMLElement).dataset?.testid === "hero-content"
     );
 
-    // Content should be last (highest z-index)
+    // Content should be after fallback (highest z-index)
     expect(contentIdx).toBeGreaterThan(fallbackIdx);
+
+    // No scanline overlay should exist in the hero visual system
+    const scanlineLayer = children.find((c) =>
+      c.className?.includes("scanline-overlay")
+    );
+    expect(scanlineLayer).toBeUndefined();
   });
 });
 

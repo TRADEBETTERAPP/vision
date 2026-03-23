@@ -137,7 +137,7 @@ describe("Dynamic import structure (VAL-VISUAL-027)", () => {
 
     // VAL-VISUAL-029: HeroVisualSystem no longer imports HeroShaderCanvas —
     // the single shader instance lives exclusively in SiteAtmosphere.
-    // HeroVisualSystem provides only CSS layers (fallback gradient + scanline).
+    // HeroVisualSystem provides only a CSS fallback gradient layer.
     expect(source).not.toMatch(/import\(.*HeroShaderCanvas/);
     // VAL-VISUAL-028: ASCII components have been permanently removed
     expect(source).not.toMatch(/AsciiCanvasRenderer/);

@@ -5,10 +5,14 @@
  * VAL-VISUAL-001: Content-first hero renders before effects initialize.
  * VAL-VISUAL-027: Skeleton screens for progressive loading.
  *
- * Shows the CSS-only radiant fallback gradient and scanline overlay
- * immediately, matching the static fallback appearance. Children
- * (hero content) render inside the skeleton so text is visible
- * before the heavy visual layers arrive.
+ * Shows the CSS-only radiant fallback gradient immediately, matching
+ * the static fallback appearance. Children (hero content) render inside
+ * the skeleton so text is visible before the heavy visual layers arrive.
+ *
+ * Approved visual stack (two layers only):
+ *   1. Radiant Fluid Amber shader at reduced opacity (in SiteAtmosphere)
+ *   2. Film grain GIF overlay at 5% opacity (in SiteAtmosphere)
+ * No scanlines, no vignettes, no additional texture overlays.
  */
 export function HeroVisualSkeleton({
   children,
@@ -23,12 +27,6 @@ export function HeroVisualSkeleton({
       {/* CSS-only radiant fallback gradient — matches HeroVisualSystem layer 0 */}
       <div
         className="hero-radiant-fallback absolute inset-0"
-        aria-hidden="true"
-      />
-
-      {/* Scanline overlay — matches HeroVisualSystem layer 1 */}
-      <div
-        className="scanline-overlay absolute inset-0 z-[3]"
         aria-hidden="true"
       />
 

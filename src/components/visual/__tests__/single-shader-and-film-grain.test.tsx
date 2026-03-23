@@ -204,3 +204,102 @@ describe("Atmosphere is visible but does not compete with content", () => {
     }
   });
 });
+
+// ---------------------------------------------------------------------------
+// Scanline/vignette/texture overlay enforcement (two-layer-only atmosphere)
+// The approved atmosphere is ONLY: shader + film grain. No scanlines, no
+// vignettes, no additional texture overlays of any kind.
+// ---------------------------------------------------------------------------
+
+describe("Two-layer-only atmosphere enforcement: no scanlines, vignettes, or texture overlays", () => {
+  it("globals.css does not contain .scanline-overlay class", () => {
+    const cssSrc = fs.readFileSync(
+      path.resolve(__dirname, "../../../app/globals.css"),
+      "utf-8"
+    );
+    expect(cssSrc).not.toContain(".scanline-overlay");
+  });
+
+  it("globals.css does not contain scanline-related CSS selectors", () => {
+    const cssSrc = fs.readFileSync(
+      path.resolve(__dirname, "../../../app/globals.css"),
+      "utf-8"
+    );
+    expect(cssSrc).not.toMatch(/scanline/i);
+  });
+
+  it("HeroVisualSystem does not render a scanline overlay layer", () => {
+    const src = fs.readFileSync(
+      path.resolve(__dirname, "../HeroVisualSystem.tsx"),
+      "utf-8"
+    );
+    expect(src).not.toContain('className="scanline-overlay');
+    expect(src).not.toContain("scanline-overlay");
+  });
+
+  it("HeroVisualSkeleton does not render a scanline overlay layer", () => {
+    const src = fs.readFileSync(
+      path.resolve(__dirname, "../../skeletons/HeroVisualSkeleton.tsx"),
+      "utf-8"
+    );
+    expect(src).not.toContain('className="scanline-overlay');
+    expect(src).not.toContain("scanline-overlay");
+  });
+
+  it("SiteAtmosphere does not render a scanline overlay layer", () => {
+    const src = fs.readFileSync(
+      path.resolve(__dirname, "../SiteAtmosphere.tsx"),
+      "utf-8"
+    );
+    expect(src).not.toContain('className="scanline-overlay');
+    expect(src).not.toContain("scanline-overlay");
+  });
+
+  it("no scanline-overlay elements exist in the rendered DOM", () => {
+    render(
+      <SiteAtmosphere>
+        <div>test content</div>
+      </SiteAtmosphere>
+    );
+    const scanlines = document.querySelectorAll(".scanline-overlay");
+    expect(scanlines.length).toBe(0);
+  });
+
+  it("globals.css does not contain .hero-vignette class", () => {
+    const cssSrc = fs.readFileSync(
+      path.resolve(__dirname, "../../../app/globals.css"),
+      "utf-8"
+    );
+    expect(cssSrc).not.toContain(".hero-vignette");
+  });
+
+  it("no vignette overlay elements exist in the rendered hero DOM", () => {
+    render(
+      <SiteAtmosphere>
+        <div>test content</div>
+      </SiteAtmosphere>
+    );
+    const vignettes = document.querySelectorAll('[class*="vignette"]');
+    expect(vignettes.length).toBe(0);
+  });
+
+  it("only approved atmosphere layers exist: shader + film grain + CSS gradient fallback", () => {
+    const atmosphereSrc = fs.readFileSync(
+      path.resolve(__dirname, "../SiteAtmosphere.tsx"),
+      "utf-8"
+    );
+    // The only visual overlays allowed are:
+    // 1. site-atmosphere-gradient (CSS fallback)
+    // 2. site-atmosphere-shader (Radiant Fluid Amber WebGL)
+    // 3. FilmGrainOverlay (film grain at 5% opacity)
+    expect(atmosphereSrc).toContain("site-atmosphere-gradient");
+    expect(atmosphereSrc).toContain("site-atmosphere-shader");
+    expect(atmosphereSrc).toContain("FilmGrainOverlay");
+    // Must NOT contain any additional texture overlay CSS class names or elements
+    expect(atmosphereSrc).not.toContain("scanline-overlay");
+    expect(atmosphereSrc).not.toContain("texture-overlay");
+    // Must NOT render a vignette element (className check, not docblock policy text)
+    expect(atmosphereSrc).not.toMatch(/className="[^"]*vignette/);
+    expect(atmosphereSrc).not.toMatch(/className='[^']*vignette/);
+  });
+});

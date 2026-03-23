@@ -10,8 +10,7 @@ import { FilmGrainOverlay } from "./FilmGrainOverlay";
  *
  * VAL-VISUAL-027: HeroShaderCanvas (WebGL) is dynamically imported with
  * ssr:false so it does not block first meaningful paint. The CSS-only
- * radiant fallback gradient and scanline overlay render immediately for
- * content-first loading.
+ * radiant fallback gradient renders immediately for content-first loading.
  */
 const HeroShaderCanvas = dynamic(
   () => import("./HeroShaderCanvas").then((mod) => mod.HeroShaderCanvas),
@@ -34,13 +33,11 @@ const HeroShaderCanvas = dynamic(
  * opacity with mix-blend-mode:lighten) creates tradebetter's analog
  * texture feel across the entire viewport.
  *
- * This component wraps the <main> content and renders a persistent
- * atmospheric background:
- *
- *   - Vendored Radiant Fluid Amber WebGL shader (reduced opacity, desktop only)
- *   - CSS radiant fallback gradient (always visible, for WebGL-fail cases)
- *   - Scanline overlay for terminal texture continuity
- *   - Film grain overlay (5% opacity, mix-blend-mode:lighten, pointer-events:none)
+ * Approved visual stack (two layers only):
+ *   1. Vendored Radiant Fluid Amber WebGL shader (reduced opacity, desktop only)
+ *      + CSS radiant fallback gradient (always visible, for WebGL-fail cases)
+ *   2. Film grain overlay (5% opacity, mix-blend-mode:lighten, pointer-events:none)
+ * No scanlines, no vignettes, no additional texture overlays.
  *
  * The atmosphere uses pointer-events:none and stays behind content (z-0)
  * so it never blocks interactions or reduces readability.
@@ -100,9 +97,6 @@ function SiteAtmosphereInner({
             <HeroShaderCanvas />
           </div>
         )}
-
-        {/* Scanline overlay — lightweight terminal texture (all devices) */}
-        <div className="scanline-overlay absolute inset-0 opacity-30" />
       </div>
 
       {/* Film grain overlay — tradebetter analog texture (VAL-VISUAL-029)

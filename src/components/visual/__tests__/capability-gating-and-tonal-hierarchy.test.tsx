@@ -251,7 +251,7 @@ describe("VAL-VISUAL-025: Constrained states use real low-cost motion", () => {
     expect(Number(motionLayers)).toBe(1);
   });
 
-  it("visual hierarchy is preserved in constrained mode (scanline + gradient remain)", () => {
+  it("visual hierarchy is preserved in constrained mode (gradient remains)", () => {
     mockMatchMedia({
       "(pointer: coarse)": true,
       "(max-width: 1024px)": true,
