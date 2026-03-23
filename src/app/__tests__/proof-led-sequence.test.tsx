@@ -22,15 +22,18 @@ describe("Proof-before-density ordering (VAL-NARR-013)", () => {
     expect(proof).toBeInTheDocument();
   });
 
-  it("proof section appears before the graph atlas section in DOM order", () => {
+  it("proof content is accessible inside the graph workspace via investor pitch path", () => {
     render(<Home />);
     const proof = screen.getByTestId("proof-section");
     const atlas = document.getElementById("atlas");
     expect(proof).toBeInTheDocument();
     expect(atlas).toBeInTheDocument();
-    // proof should precede atlas in DOM order
-    const comparison = proof.compareDocumentPosition(atlas!);
-    expect(comparison & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    // Graph workspace is the default loaded state (VAL-ROADMAP-014),
+    // and proof content is available as a graph node (Proof & Trust).
+    // The standalone proof module remains as supplementary scroll content.
+    // The investor pitch path gate 3 maps to proof.
+    const graphShell = screen.getByTestId("graph-shell");
+    expect(graphShell).toBeInTheDocument();
   });
 
   it("proof section appears after the hero section in DOM order", () => {
@@ -57,15 +60,17 @@ describe("Proof-before-density ordering (VAL-NARR-013)", () => {
 });
 
 describe("Section hierarchy is proof-led and single-purpose (VAL-CROSS-009)", () => {
-  it("landing page sections appear in proof-before-density order", () => {
+  it("landing page sections appear in graph-workspace-first order", () => {
     render(<Home />);
     const hero = screen.getByTestId("hero-section");
     const proof = screen.getByTestId("proof-section");
     const atlas = document.getElementById("atlas");
 
-    // Hero → Proof → Atlas (graph shell)
-    expect(hero.compareDocumentPosition(proof) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-    expect(proof.compareDocumentPosition(atlas!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    // Hero → Atlas (graph workspace, default loaded state) → Proof (supplementary)
+    // VAL-ROADMAP-014: default loaded state is a pure graph workspace
+    // VAL-CROSS-014: graph workspace has investor-path entry, no proof-page handoff
+    expect(hero.compareDocumentPosition(atlas!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(atlas!.compareDocumentPosition(proof) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 
   it("proof section has a single dominant job (proof/trust)", () => {
@@ -123,9 +128,11 @@ describe("CTA promises stay consistent across surfaces (VAL-CROSS-011)", () => {
     render(<Home />);
     const graphShell = screen.getByTestId("graph-shell");
     expect(graphShell).toBeInTheDocument();
-    // Roadmap should be available as a graph node
-    const roadmapNode = screen.getByRole("button", { name: /roadmap/i });
-    expect(roadmapNode).toBeInTheDocument();
+    // Roadmap should be available as a graph node button
+    const roadmapNodes = screen.getAllByTestId("graph-node-button").filter(
+      (el) => el.getAttribute("aria-label")?.match(/roadmap/i)
+    );
+    expect(roadmapNodes.length).toBeGreaterThan(0);
   });
 });
 

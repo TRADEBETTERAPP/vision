@@ -22,6 +22,16 @@ beforeEach(() => {
   Element.prototype.scrollIntoView = jest.fn();
 });
 
+/** Helper: get a graph node button from the main node grid (not minimap) */
+function getNodeButton(name: RegExp) {
+  const nodeButtons = screen.getAllByTestId("graph-node-button");
+  const match = nodeButtons.find((el) =>
+    el.getAttribute("aria-label")?.match(name)
+  );
+  if (!match) throw new Error(`No graph-node-button matching ${name}`);
+  return match;
+}
+
 describe("Graph traversal visible context (VAL-ROADMAP-012)", () => {
   // -------------------------------------------------------------------------
   // A compact graph context minimap must appear inside the focused surface
@@ -32,7 +42,7 @@ describe("Graph traversal visible context (VAL-ROADMAP-012)", () => {
     render(<GraphShell />);
 
     // Focus on Roadmap
-    const roadmapNode = screen.getByRole("button", { name: /roadmap/i });
+    const roadmapNode = getNodeButton(/roadmap/i);
     await user.click(roadmapNode);
 
     const focusedSurface = screen.getByTestId("graph-focused-surface");
@@ -45,7 +55,7 @@ describe("Graph traversal visible context (VAL-ROADMAP-012)", () => {
     const user = userEvent.setup();
     render(<GraphShell />);
 
-    const roadmapNode = screen.getByRole("button", { name: /roadmap/i });
+    const roadmapNode = getNodeButton(/roadmap/i);
     await user.click(roadmapNode);
 
     const focusedSurface = screen.getByTestId("graph-focused-surface");
@@ -60,7 +70,7 @@ describe("Graph traversal visible context (VAL-ROADMAP-012)", () => {
     const user = userEvent.setup();
     render(<GraphShell />);
 
-    const roadmapNode = screen.getByRole("button", { name: /roadmap/i });
+    const roadmapNode = getNodeButton(/roadmap/i);
     await user.click(roadmapNode);
 
     const focusedSurface = screen.getByTestId("graph-focused-surface");
@@ -78,7 +88,7 @@ describe("Graph traversal visible context (VAL-ROADMAP-012)", () => {
     const user = userEvent.setup();
     render(<GraphShell />);
 
-    const roadmapNode = screen.getByRole("button", { name: /roadmap/i });
+    const roadmapNode = getNodeButton(/roadmap/i);
     await user.click(roadmapNode);
 
     const focusedSurface = screen.getByTestId("graph-focused-surface");
@@ -100,7 +110,7 @@ describe("Graph traversal visible context (VAL-ROADMAP-012)", () => {
     render(<GraphShell />);
 
     // Focus on Roadmap
-    const roadmapNode = screen.getByRole("button", { name: /roadmap/i });
+    const roadmapNode = getNodeButton(/roadmap/i);
     await user.click(roadmapNode);
 
     // Traverse to a related node (e.g. Tokenomics)
@@ -128,7 +138,7 @@ describe("Graph traversal visible context (VAL-ROADMAP-012)", () => {
     render(<GraphShell />);
 
     // Focus on Roadmap
-    const roadmapNode = screen.getByRole("button", { name: /roadmap/i });
+    const roadmapNode = getNodeButton(/roadmap/i);
     await user.click(roadmapNode);
 
     const focusedSurface = screen.getByTestId("graph-focused-surface");
@@ -158,7 +168,7 @@ describe("Graph traversal visible context (VAL-ROADMAP-012)", () => {
     render(<GraphShell />);
 
     // First focus — this can scroll to start (initial navigation)
-    const roadmapNode = screen.getByRole("button", { name: /roadmap/i });
+    const roadmapNode = getNodeButton(/roadmap/i);
     await user.click(roadmapNode);
     scrollSpy.mockClear();
 
@@ -181,7 +191,7 @@ describe("Graph traversal visible context (VAL-ROADMAP-012)", () => {
     const user = userEvent.setup();
     render(<GraphShell />);
 
-    const roadmapNode = screen.getByRole("button", { name: /roadmap/i });
+    const roadmapNode = getNodeButton(/roadmap/i);
     await user.click(roadmapNode);
 
     // Traverse to related

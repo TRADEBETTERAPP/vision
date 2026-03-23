@@ -25,6 +25,16 @@ beforeEach(() => {
   Element.prototype.scrollIntoView = jest.fn();
 });
 
+/** Helper: get a graph node button from the main node grid (not minimap) */
+function getNodeButton(name: RegExp) {
+  const nodeButtons = screen.getAllByTestId("graph-node-button");
+  const match = nodeButtons.find((el) =>
+    el.getAttribute("aria-label")?.match(name)
+  );
+  if (!match) throw new Error(`No graph-node-button matching ${name}`);
+  return match;
+}
+
 describe("GraphShell", () => {
   // VAL-ROADMAP-001: Shell reads as a graph-first explorable mindmap
   it("renders a graph overview with visible nodes and exploration affordances", () => {
@@ -51,8 +61,8 @@ describe("GraphShell", () => {
     const user = userEvent.setup();
     render(<GraphShell />);
 
-    // Click the Roadmap graph node
-    const roadmapNode = screen.getByRole("button", { name: /roadmap/i });
+    // Click the Roadmap graph node (from the main node grid)
+    const roadmapNode = getNodeButton(/roadmap/i);
     await user.click(roadmapNode);
 
     // Should show focused surface content
@@ -66,7 +76,7 @@ describe("GraphShell", () => {
     render(<GraphShell />);
 
     // Focus on Roadmap
-    const roadmapNode = screen.getByRole("button", { name: /roadmap/i });
+    const roadmapNode = getNodeButton(/roadmap/i);
     await user.click(roadmapNode);
 
     // Should show related node links
@@ -80,7 +90,7 @@ describe("GraphShell", () => {
     render(<GraphShell />);
 
     // Focus on Roadmap
-    const roadmapNode = screen.getByRole("button", { name: /roadmap/i });
+    const roadmapNode = getNodeButton(/roadmap/i);
     await user.click(roadmapNode);
 
     // Click a related node
@@ -108,7 +118,7 @@ describe("GraphShell", () => {
     render(<GraphShell />);
 
     // Focus on Architecture
-    const archNode = screen.getByRole("button", { name: /architecture/i });
+    const archNode = getNodeButton(/architecture/i);
     await user.click(archNode);
 
     const breadcrumb = screen.getByTestId("graph-breadcrumb");
@@ -177,7 +187,7 @@ describe("GraphShell", () => {
     render(<GraphShell />);
 
     // Navigate from hero to architecture directly
-    const archNode = screen.getByRole("button", { name: /architecture/i });
+    const archNode = getNodeButton(/architecture/i);
     await user.click(archNode);
 
     // Then to tokenomics directly
@@ -198,7 +208,7 @@ describe("GraphShell", () => {
     const user = userEvent.setup();
     render(<GraphShell />);
 
-    const roadmapNode = screen.getByRole("button", { name: /roadmap/i });
+    const roadmapNode = getNodeButton(/roadmap/i);
     await user.click(roadmapNode);
 
     expect(window.location.hash).toBe("#graph-roadmap");
@@ -210,7 +220,7 @@ describe("GraphShell", () => {
     render(<GraphShell />);
 
     // Focus on a node
-    const archNode = screen.getByRole("button", { name: /architecture/i });
+    const archNode = getNodeButton(/architecture/i);
     await user.click(archNode);
     expect(screen.getByTestId("graph-focused-surface")).toBeInTheDocument();
 
@@ -244,7 +254,7 @@ describe("GraphShell", () => {
     const user = userEvent.setup();
     render(<GraphShell />);
 
-    const roadmapNode = screen.getByRole("button", { name: /roadmap/i });
+    const roadmapNode = getNodeButton(/roadmap/i);
     await user.click(roadmapNode);
     expect(screen.getByTestId("graph-focused-surface")).toBeInTheDocument();
 
@@ -272,7 +282,7 @@ describe("GraphShell mobile", () => {
     const user = userEvent.setup();
     render(<GraphShell />);
 
-    const roadmapNode = screen.getByRole("button", { name: /roadmap/i });
+    const roadmapNode = getNodeButton(/roadmap/i);
     await user.click(roadmapNode);
 
     // Should have a back/overview recovery button (focused panel has "Back to overview")

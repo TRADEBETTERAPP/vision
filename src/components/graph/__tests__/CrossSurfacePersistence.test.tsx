@@ -16,16 +16,20 @@
  * - Back/forward browser history preserves cross-surface context
  */
 import React from "react";
-import { render, screen, within, act } from "@testing-library/react";
+import { render, screen, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { GraphShell } from "../GraphShell";
 import { TokenomicsSurface } from "../surfaces/TokenomicsSurface";
 import { RoadmapSurface } from "../surfaces/RoadmapSurface";
 
-/** Helper: click a graph node button in the overview panel */
+/** Helper: click a graph node button in the main node grid (not minimap) */
 function getOverviewNodeButton(name: RegExp) {
-  const overview = screen.getByTestId("graph-overview");
-  return within(overview).getByRole("button", { name });
+  const nodeButtons = screen.getAllByTestId("graph-node-button");
+  const match = nodeButtons.find((el) =>
+    el.getAttribute("aria-label")?.match(name)
+  );
+  if (!match) throw new Error(`No graph-node-button matching ${name}`);
+  return match;
 }
 
 beforeEach(() => {

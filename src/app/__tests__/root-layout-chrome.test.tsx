@@ -74,7 +74,7 @@ describe("RootLayout shared chrome — Footer", () => {
 });
 
 describe("RootLayout shared chrome — Section structure", () => {
-  it("page renders hero, proof, and atlas sections in correct order", () => {
+  it("page renders hero, atlas, and proof sections in correct order", () => {
     render(<Home />);
     const hero = document.getElementById("what-is-better");
     const proof = document.getElementById("proof");
@@ -84,9 +84,10 @@ describe("RootLayout shared chrome — Section structure", () => {
     expect(proof).toBeInTheDocument();
     expect(atlas).toBeInTheDocument();
 
-    // Hero → Proof → Atlas order
-    expect(hero!.compareDocumentPosition(proof!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-    expect(proof!.compareDocumentPosition(atlas!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    // Hero → Atlas (graph workspace default) → Proof (supplementary)
+    // VAL-ROADMAP-014: default loaded state is a pure graph workspace
+    expect(hero!.compareDocumentPosition(atlas!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(atlas!.compareDocumentPosition(proof!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 
   it("hero section explains BETTER before requiring scroll (VAL-CROSS-001)", () => {

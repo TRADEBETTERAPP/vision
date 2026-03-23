@@ -10,16 +10,20 @@
  * - VAL-CROSS-013: Proof-led entry obviously hands off into focused graph exploration
  */
 import React from "react";
-import { render, screen, within, act } from "@testing-library/react";
+import { render, screen, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { GraphShell } from "../GraphShell";
 import { GRAPH_NODES } from "@/content/graph-nodes";
 import ProofModule from "@/components/ProofModule";
 
-/** Helper: click a graph node button in the overview (not related links) */
+/** Helper: click a graph node button in the main node grid (not minimap/related) */
 function getOverviewNodeButton(name: RegExp) {
-  const overview = screen.getByTestId("graph-overview");
-  return within(overview).getByRole("button", { name });
+  const nodeButtons = screen.getAllByTestId("graph-node-button");
+  const match = nodeButtons.find((el) =>
+    el.getAttribute("aria-label")?.match(name)
+  );
+  if (!match) throw new Error(`No graph-node-button matching ${name}`);
+  return match;
 }
 
 beforeEach(() => {
@@ -166,10 +170,13 @@ describe("VAL-CROSS-012: Shell coherence across major surfaces", () => {
 
     // Visit each surface and verify it renders inside the shell
     for (const node of GRAPH_NODES) {
-      // Use overview-scoped query to avoid matching related link buttons
-      const overview = screen.getByTestId("graph-overview");
-      const btn = within(overview).getByRole("button", { name: node.label });
-      await user.click(btn);
+      // Use graph-node-button testid to avoid matching minimap/related buttons
+      const nodeButtons = screen.getAllByTestId("graph-node-button");
+      const btn = nodeButtons.find((el) =>
+        el.getAttribute("aria-label") === node.label
+      );
+      expect(btn).toBeDefined();
+      await user.click(btn!);
 
       const shell = screen.getByTestId("graph-shell");
       const focused = screen.getByTestId("graph-focused-surface");
