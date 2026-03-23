@@ -132,12 +132,13 @@ describe("Dynamic import structure (VAL-VISUAL-027)", () => {
     expect(source).not.toMatch(/AsciiBackground/);
   });
 
-  it("HeroVisualSystem dynamically imports heavy visual components", () => {
+  it("HeroVisualSystem does not duplicate heavy visual imports (single-shader rule)", () => {
     const source = readSource("../../components/visual/HeroVisualSystem.tsx");
 
-    // Should use next/dynamic for HeroShaderCanvas
-    expect(source).toMatch(/dynamic\s*\(/);
-    expect(source).toMatch(/import\(.*HeroShaderCanvas/);
+    // VAL-VISUAL-029: HeroVisualSystem no longer imports HeroShaderCanvas —
+    // the single shader instance lives exclusively in SiteAtmosphere.
+    // HeroVisualSystem provides only CSS layers (fallback gradient + scanline).
+    expect(source).not.toMatch(/import\(.*HeroShaderCanvas/);
     // VAL-VISUAL-028: ASCII components have been permanently removed
     expect(source).not.toMatch(/AsciiCanvasRenderer/);
     expect(source).not.toMatch(/AsciiBackground/);

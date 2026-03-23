@@ -1,93 +1,64 @@
 "use client";
 
-import dynamic from "next/dynamic";
-import { useSyncExternalStore } from "react";
-import { VisualEffectsProvider, useVisualEffects } from "./VisualEffectsProvider";
-
-/**
- * Dynamic imports for heavy visual components — aggressive bundle splitting.
- *
- * VAL-VISUAL-027: HeroShaderCanvas (WebGL) is dynamically imported with
- * ssr:false so it does not block first meaningful paint. The CSS-only
- * layers (radiant fallback gradient, scanline overlay, vignette) render
- * immediately.
- */
-const HeroShaderCanvas = dynamic(
-  () => import("./HeroShaderCanvas").then((mod) => mod.HeroShaderCanvas),
-  { ssr: false }
-);
+import { useVisualEffects } from "./VisualEffectsProvider";
 
 /**
  * HeroVisualSystem — immersive BETTER atmosphere for the hero section.
  *
  * VAL-VISUAL-028: All ASCII layers have been permanently removed.
- * VAL-VISUAL-029: Only ONE Radiant Fluid Amber shader instance runs site-wide.
+ * VAL-VISUAL-029: Only ONE Radiant Fluid Amber shader instance runs site-wide
+ * via SiteAtmosphere. This component provides ONLY CSS layers for the hero:
+ *   - Radiant fallback gradient (CSS-only)
+ *   - Scanline overlay (CSS-only terminal texture)
+ * The WebGL shader canvas is NOT rendered here — it lives exclusively in
+ * SiteAtmosphere to enforce the single-shader-instance rule.
+ * Vignette gradient overlays have been removed per redesign spec.
  *
  * Visual layers (back to front):
- * 1. Vendored Radiant Fluid Amber shader canvas — real Radiant asset (WebGL, client-only)
- *    Vendored asset: radiant-fluid-amber.glsl.ts
- *    Original source: https://github.com/pbakaus/radiant/blob/main/static/fluid-amber.html
- *    Site reference: https://radiant-shaders.com/shader/fluid-amber
- *    License: MIT (Copyright (c) 2025 Paul Bakaus)
+ * 1. CSS-only radiant fallback gradient — atmospheric depth
  * 2. Scanline overlay — CSS-only terminal texture
- * 3. Vignette gradient — readability protection for hero content
  *
  * Motion strategy (VAL-VISUAL-011): exactly 2 intentional motions:
- *   M1 — Shader canvas: slow organic drift (TIME_SCALE 0.15, Radiant convention)
+ *   M1 — Shader canvas: slow organic drift (in SiteAtmosphere, not here)
  *   M2 — Hero entrance: content fades in on mount via CSS (one-shot, no loop)
  *
  * Content-first (VAL-VISUAL-001): children render at z-10 immediately.
- * CSS-only layers render on server; WebGL mounts after hydration.
+ * CSS-only layers render on server.
  *
  * Reduced-motion (VAL-VISUAL-003): all motions stop; static layers persist.
- * Fallback (VAL-VISUAL-004): WebGL failure → CSS gradient remains.
+ * Fallback (VAL-VISUAL-004): CSS gradient remains as the atmosphere.
  *
  * Visual state differentiation (VAL-VISUAL-017):
- *   Enhanced state: WebGL shader animating → dramatic moving depth.
+ *   Enhanced state: SiteAtmosphere WebGL shader is animating.
  *   Fallback state: CSS gradient → coherent but truly static.
  *   The data-visual-state attribute exposes which mode is active for
  *   headed-browser validation (VAL-VISUAL-018).
- *   data-motion-layers tracks the count of active motion systems (shader = 1).
+ *   data-motion-layers tracks active motion systems from SiteAtmosphere.
  *
  * Provenance (VAL-VISUAL-014, VAL-VISUAL-015):
  *   Radiant adaptation: vendored Radiant Fluid Amber shader asset
  *     → radiant-fluid-amber.glsl.ts (simplex noise, mod289/permute, q→r→f domain warp)
- *     → HeroShaderCanvas.tsx (WebGL renderer using vendored asset)
+ *     → HeroShaderCanvas.tsx (WebGL renderer in SiteAtmosphere)
+ *   Source: https://radiant-shaders.com/shader/fluid-amber
+ *   Repository: https://github.com/pbakaus/radiant/blob/main/static/fluid-amber.html
  */
 
-const emptySubscribe = () => () => {};
-
+/**
+ * HeroVisualSystem consumes the VisualEffectsProvider from the parent
+ * SiteAtmosphere rather than creating its own. This ensures the visual
+ * state (enhanced/fallback/constrained/reduced-motion) reflects the
+ * actual shader state from SiteAtmosphere's single shader instance.
+ *
+ * Exposes data-visual-state and data-motion-layers attributes on the
+ * wrapper div so headed browser validation (VAL-VISUAL-018) can
+ * distinguish the enhanced state from fallback/reduced-motion modes.
+ */
 export function HeroVisualSystem({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <VisualEffectsProvider>
-      <HeroVisualSystemInner>{children}</HeroVisualSystemInner>
-    </VisualEffectsProvider>
-  );
-}
-
-/**
- * Inner component that consumes the VisualEffectsProvider context.
- * Exposes data-visual-state and data-motion-layers attributes on the
- * wrapper div so headed browser validation (VAL-VISUAL-018) can
- * distinguish the enhanced state from fallback/reduced-motion modes.
- */
-function HeroVisualSystemInner({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
   const { ready, reducedMotion, fallback, isDesktopCapable } = useVisualEffects();
-
-  // SSR-safe mount detection for client-only layers
-  const hasMounted = useSyncExternalStore(
-    emptySubscribe,
-    () => true,
-    () => false,
-  );
 
   // Device class for capability gating (VAL-VISUAL-025)
   // Heavy shader and continuous-animation layers only activate on
@@ -131,18 +102,9 @@ function HeroVisualSystemInner({
         data-testid="hero-radiant-fallback"
       />
 
-      {/* Layer 1: WebGL Radiant shader — desktop only (VAL-VISUAL-025) */}
-      {hasMounted && isDesktopCapable && <HeroShaderCanvas />}
-
-      {/* Layer 2: CSS scanline overlay — terminal texture (all devices) */}
+      {/* Layer 1: CSS scanline overlay — terminal texture (all devices) */}
       <div
         className="scanline-overlay absolute inset-0 z-[3]"
-        aria-hidden="true"
-      />
-
-      {/* Layer 3: Vignette + readability gradient */}
-      <div
-        className="hero-vignette absolute inset-0 z-[4]"
         aria-hidden="true"
       />
 

@@ -271,7 +271,7 @@ body {
 
 .site-atmosphere-shader {
   pointer-events: none;
-  opacity: 0.10;
+  opacity: 0.25;
 }
 
 .site-atmosphere-shader canvas {
@@ -280,14 +280,17 @@ body {
 }
 
 /* -----------------------------------------------------------------------
-   Vignette gradient for hero text readability
+   Film grain overlay — tradebetter analog texture (VAL-VISUAL-029)
+   Animated noise across the entire viewport at 5% opacity with
+   mix-blend-mode:lighten. Creates subtle analog/cinematic warmth
+   matching tradebetter.app's grain overlay technique.
    ----------------------------------------------------------------------- */
 
-.hero-vignette {
+.film-grain-overlay {
   pointer-events: none;
-  background:
-    radial-gradient(ellipse 100% 100% at 50% 50%, transparent 25%, var(--bg-primary) 100%),
-    linear-gradient(to bottom, var(--bg-primary) 0%, transparent 12%, transparent 88%, var(--bg-primary) 100%);
+  mix-blend-mode: lighten;
+  opacity: 0.05;
+  z-index: 5;
 }
 
 /* -----------------------------------------------------------------------

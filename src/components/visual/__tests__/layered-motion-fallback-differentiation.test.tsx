@@ -14,6 +14,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import Home from "@/app/page";
 import { HeroShaderCanvas } from "../HeroShaderCanvas";
 import { VisualEffectsProvider } from "../VisualEffectsProvider";
+import { SiteAtmosphere } from "../SiteAtmosphere";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -85,7 +86,8 @@ beforeEach(() => {
 
 describe("VAL-VISUAL-017: Enhanced visual state is dramatically distinct from static fallback", () => {
   it("HeroVisualSystem exposes data-visual-state attribute for browser validation", () => {
-    render(<Home />);
+    // VAL-VISUAL-029: HeroVisualSystem consumes VisualEffectsProvider from SiteAtmosphere
+    render(<SiteAtmosphere><Home /></SiteAtmosphere>);
     const system = screen.getByTestId("hero-visual-system");
     const state = system.getAttribute("data-visual-state");
     // In test env without WebGL, should be 'fallback', 'constrained', or 'static'
@@ -93,7 +95,11 @@ describe("VAL-VISUAL-017: Enhanced visual state is dramatically distinct from st
     expect(["enhanced", "fallback", "constrained", "static", "reduced-motion"]).toContain(state);
   });
 
-  it("enhanced state is exposed when WebGL is available", async () => {
+  it("enhanced state is exposed when WebGL is available (via SiteAtmosphere shader)", async () => {
+    // VAL-VISUAL-029: The single shader instance lives in SiteAtmosphere.
+    // HeroVisualSystem consumes the parent VisualEffectsProvider from
+    // SiteAtmosphere, so we must wrap Home in SiteAtmosphere to reach
+    // "enhanced" state when WebGL succeeds.
     HTMLCanvasElement.prototype.getContext = jest
       .fn()
       .mockImplementation((type: string) => {
@@ -121,26 +127,26 @@ describe("VAL-VISUAL-017: Enhanced visual state is dramatically distinct from st
       width: 800, height: 600, top: 0, left: 0, right: 800, bottom: 600,
     });
 
-    render(<Home />);
+    render(<SiteAtmosphere><Home /></SiteAtmosphere>);
     await waitFor(() => {
       const system = screen.getByTestId("hero-visual-system");
       expect(system.getAttribute("data-visual-state")).toBe("enhanced");
     });
   });
 
-  it("fallback state is exposed when WebGL fails", () => {
+  it("fallback state is exposed when WebGL fails (via SiteAtmosphere)", () => {
     HTMLCanvasElement.prototype.getContext = jest.fn().mockReturnValue(null);
 
-    render(<Home />);
+    render(<SiteAtmosphere><Home /></SiteAtmosphere>);
     const system = screen.getByTestId("hero-visual-system");
     const state = system.getAttribute("data-visual-state");
     expect(state).toBe("fallback");
   });
 
-  it("reduced-motion state is exposed when reduced motion is active", () => {
+  it("reduced-motion state is exposed when reduced motion is active (via SiteAtmosphere)", () => {
     mockReducedMotion(true);
 
-    render(<Home />);
+    render(<SiteAtmosphere><Home /></SiteAtmosphere>);
     const system = screen.getByTestId("hero-visual-system");
     expect(system.getAttribute("data-visual-state")).toBe("reduced-motion");
   });
@@ -200,7 +206,8 @@ describe("VAL-VISUAL-017: Enhanced visual state is dramatically distinct from st
     expect(shaderOpacity).toBeGreaterThanOrEqual(0.7);
   });
 
-  it("enhanced state exposes data-motion-layers count for validation", async () => {
+  it("enhanced state exposes data-motion-layers count for validation (via SiteAtmosphere)", async () => {
+    // VAL-VISUAL-029: Single shader in SiteAtmosphere — must wrap Home
     HTMLCanvasElement.prototype.getContext = jest
       .fn()
       .mockImplementation((type: string) => {
@@ -228,7 +235,7 @@ describe("VAL-VISUAL-017: Enhanced visual state is dramatically distinct from st
       width: 800, height: 600, top: 0, left: 0, right: 800, bottom: 600,
     });
 
-    render(<Home />);
+    render(<SiteAtmosphere><Home /></SiteAtmosphere>);
     // Enhanced state must have 1 active motion layer (shader only, ASCII removed)
     await waitFor(() => {
       const system = screen.getByTestId("hero-visual-system");
@@ -244,7 +251,7 @@ describe("VAL-VISUAL-017: Enhanced visual state is dramatically distinct from st
 
 describe("VAL-VISUAL-018: System exposes metadata for headed browser motion validation", () => {
   it("HeroVisualSystem exposes data-visual-state for browser validation scripts", () => {
-    render(<Home />);
+    render(<SiteAtmosphere><Home /></SiteAtmosphere>);
     const system = screen.getByTestId("hero-visual-system");
     expect(system.hasAttribute("data-visual-state")).toBe(true);
   });
@@ -263,7 +270,7 @@ describe("VAL-VISUAL-018: System exposes metadata for headed browser motion vali
   });
 
   it("visual system wrapper with data-visual-state and data-motion-layers enables browser pixel comparison", () => {
-    render(<Home />);
+    render(<SiteAtmosphere><Home /></SiteAtmosphere>);
     const system = screen.getByTestId("hero-visual-system");
     // Must have both attributes for browser validation to distinguish states
     expect(system.hasAttribute("data-visual-state")).toBe(true);

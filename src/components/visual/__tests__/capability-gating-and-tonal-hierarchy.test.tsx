@@ -9,6 +9,7 @@ import fs from "fs";
 import path from "path";
 import { render, screen } from "@testing-library/react";
 import Home from "@/app/page";
+import { SiteAtmosphere } from "../SiteAtmosphere";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -141,7 +142,8 @@ describe("VAL-VISUAL-025: Explicit desktop capability gating", () => {
   });
 
   it("HeroVisualSystem exposes data-device-class attribute", () => {
-    render(<Home />);
+    // VAL-VISUAL-029: HeroVisualSystem consumes context from SiteAtmosphere
+    render(<SiteAtmosphere><Home /></SiteAtmosphere>);
     const system = screen.getByTestId("hero-visual-system");
     expect(system.hasAttribute("data-device-class")).toBe(true);
     const deviceClass = system.getAttribute("data-device-class");
@@ -167,7 +169,7 @@ describe("VAL-VISUAL-025: Explicit desktop capability gating", () => {
       "(prefers-reduced-motion: reduce)": false,
     });
 
-    render(<Home />);
+    render(<SiteAtmosphere><Home /></SiteAtmosphere>);
     // On constrained devices, the WebGL shader canvas must not render
     const shaderCanvases = screen.queryAllByTestId("hero-shader-canvas");
     expect(shaderCanvases.length).toBe(0);
@@ -179,7 +181,7 @@ describe("VAL-VISUAL-025: Explicit desktop capability gating", () => {
       "(max-width: 1024px)": true,
     });
 
-    render(<Home />);
+    render(<SiteAtmosphere><Home /></SiteAtmosphere>);
     // Radiant fallback gradient should still be present
     const fallback = screen.getByTestId("hero-radiant-fallback");
     expect(fallback).toBeInTheDocument();
@@ -198,31 +200,32 @@ describe("VAL-VISUAL-025: Explicit desktop capability gating", () => {
 
 describe("VAL-VISUAL-025: Deferred heavy-layer loading", () => {
   it("heavy visual layers use dynamic import or deferred mounting", () => {
-    // The SiteAtmosphere/HeroVisualSystem should defer heavy layers.
-    // Check the source uses dynamic import or useSyncExternalStore mount guard.
+    // VAL-VISUAL-029: The single shader instance lives in SiteAtmosphere.
+    // SiteAtmosphere defers the shader via dynamic import + hasMounted guard.
+    // HeroVisualSystem no longer renders heavy layers — it provides CSS-only
+    // layers and consumes the parent VisualEffectsProvider from SiteAtmosphere.
     const atmosphereSrc = fs.readFileSync(
       path.resolve(__dirname, "../SiteAtmosphere.tsx"),
       "utf-8",
     );
-    const heroSrc = fs.readFileSync(
-      path.resolve(__dirname, "../HeroVisualSystem.tsx"),
-      "utf-8",
-    );
-    // Must have mount guard (hasMounted pattern) or dynamic import
+    // SiteAtmosphere must have mount guard (hasMounted pattern) or dynamic import
     const hasDeferral =
       atmosphereSrc.includes("hasMounted") ||
       atmosphereSrc.includes("dynamic(") ||
       atmosphereSrc.includes("lazy(");
     expect(hasDeferral).toBe(true);
-    const heroDeferral =
-      heroSrc.includes("hasMounted") ||
-      heroSrc.includes("dynamic(") ||
-      heroSrc.includes("lazy(");
-    expect(heroDeferral).toBe(true);
+    // HeroVisualSystem should NOT import or render HeroShaderCanvas — CSS-only
+    const heroSrc = fs.readFileSync(
+      path.resolve(__dirname, "../HeroVisualSystem.tsx"),
+      "utf-8",
+    );
+    // No import of HeroShaderCanvas (comments mentioning it are acceptable)
+    expect(heroSrc).not.toMatch(/import.*HeroShaderCanvas/);
+    expect(heroSrc).not.toMatch(/<HeroShaderCanvas/);
   });
 
   it("content layer renders at higher z-index than atmosphere layers", () => {
-    render(<Home />);
+    render(<SiteAtmosphere><Home /></SiteAtmosphere>);
     const content = screen.getByTestId("hero-content");
     expect(content).toBeInTheDocument();
     // Content should be above visual layers
@@ -241,7 +244,7 @@ describe("VAL-VISUAL-025: Constrained states use real low-cost motion", () => {
       "(max-width: 1024px)": true,
     });
 
-    render(<Home />);
+    render(<SiteAtmosphere><Home /></SiteAtmosphere>);
     const system = screen.getByTestId("hero-visual-system");
     const motionLayers = system.getAttribute("data-motion-layers");
     // Constrained devices get 1 low-cost CSS animation layer instead of 0
@@ -254,7 +257,7 @@ describe("VAL-VISUAL-025: Constrained states use real low-cost motion", () => {
       "(max-width: 1024px)": true,
     });
 
-    render(<Home />);
+    render(<SiteAtmosphere><Home /></SiteAtmosphere>);
     // Fallback gradient layer is still there
     const fallback = screen.getByTestId("hero-radiant-fallback");
     expect(fallback).toBeInTheDocument();
@@ -287,7 +290,7 @@ describe("VAL-VISUAL-025: Constrained states use real low-cost motion", () => {
       "(max-width: 1024px)": true,
     });
 
-    render(<Home />);
+    render(<SiteAtmosphere><Home /></SiteAtmosphere>);
     const system = screen.getByTestId("hero-visual-system");
     const visualState = system.getAttribute("data-visual-state");
     // Constrained devices should have their own visual state

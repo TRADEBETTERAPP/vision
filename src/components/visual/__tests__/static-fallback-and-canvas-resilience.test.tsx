@@ -8,6 +8,7 @@
  */
 import { render, screen, waitFor } from "@testing-library/react";
 import Home from "@/app/page";
+import { SiteAtmosphere } from "../SiteAtmosphere";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -131,16 +132,19 @@ describe("VAL-VISUAL-028: No ASCII layers in the visual system", () => {
 // ---------------------------------------------------------------------------
 
 describe("HeroVisualSystem motion metadata matches actual rendered state", () => {
-  it("fallback state reports 0 motion layers", () => {
+  it("fallback state reports 0 motion layers (via SiteAtmosphere)", () => {
+    // VAL-VISUAL-029: HeroVisualSystem consumes VisualEffectsProvider from
+    // the parent SiteAtmosphere. Without it, there's no provider context.
     HTMLCanvasElement.prototype.getContext = jest.fn().mockReturnValue(null);
 
-    render(<Home />);
+    render(<SiteAtmosphere><Home /></SiteAtmosphere>);
     const system = screen.getByTestId("hero-visual-system");
     expect(system.getAttribute("data-visual-state")).toBe("fallback");
     expect(system.getAttribute("data-motion-layers")).toBe("0");
   });
 
-  it("enhanced state with WebGL reports 1 motion layer (shader only)", async () => {
+  it("enhanced state with WebGL reports 1 motion layer (shader only, via SiteAtmosphere)", async () => {
+    // VAL-VISUAL-029: Single shader in SiteAtmosphere — must wrap Home
     HTMLCanvasElement.prototype.getContext = jest
       .fn()
       .mockImplementation((type: string) => {
@@ -151,7 +155,7 @@ describe("HeroVisualSystem motion metadata matches actual rendered state", () =>
         return null;
       });
 
-    render(<Home />);
+    render(<SiteAtmosphere><Home /></SiteAtmosphere>);
     await waitFor(() => {
       const system = screen.getByTestId("hero-visual-system");
       expect(system.getAttribute("data-visual-state")).toBe("enhanced");
@@ -159,10 +163,11 @@ describe("HeroVisualSystem motion metadata matches actual rendered state", () =>
     });
   });
 
-  it("reduced-motion state reports 0 motion layers", () => {
+  it("reduced-motion state reports 0 motion layers (via SiteAtmosphere)", () => {
+    // VAL-VISUAL-029: HeroVisualSystem consumes VisualEffectsProvider from SiteAtmosphere
     mockReducedMotion(true);
 
-    render(<Home />);
+    render(<SiteAtmosphere><Home /></SiteAtmosphere>);
     const system = screen.getByTestId("hero-visual-system");
     expect(system.getAttribute("data-visual-state")).toBe("reduced-motion");
     expect(system.getAttribute("data-motion-layers")).toBe("0");

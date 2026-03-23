@@ -26,15 +26,9 @@ export function HeroVisualSkeleton({
         aria-hidden="true"
       />
 
-      {/* Scanline overlay — matches HeroVisualSystem layer 3 */}
+      {/* Scanline overlay — matches HeroVisualSystem layer 1 */}
       <div
         className="scanline-overlay absolute inset-0 z-[3]"
-        aria-hidden="true"
-      />
-
-      {/* Vignette — matches HeroVisualSystem layer 4 */}
-      <div
-        className="hero-vignette absolute inset-0 z-[4]"
         aria-hidden="true"
       />
 
