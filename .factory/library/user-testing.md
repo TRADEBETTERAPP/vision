@@ -48,6 +48,7 @@ Core flows to validate:
 - Explicitly note whether the first viewport reads as one composition, whether BETTER branding is unmistakable, and whether shader/ascii layers improve the surface without obscuring readability.
 - For the graph-first overhaul, explicitly note whether the experience feels like an explorable mindmap rather than a standard stacked scroll page, and capture the orientation-recovery method the user can rely on.
 - Explicitly note whether the graph also functions as an investor-readable pitch path without forcing the user to hunt across disconnected nodes.
+- For `VAL-ROADMAP-016`, do not stop at the summary Roadmap Gates cards; expand the `Interactive Roadmap Atlas` branch families and click the stage/node controls to inspect the dedicated per-stage execution-plan panels where workstreams, external dependencies, proof gates, and bounded timing windows are rendered.
 - When validating the immersive system, record which concrete Radiant and Hermes ASCII-video source resources are present in the shipped implementation and how they show up on the page.
 - Validate that the global atmospheric layer remains visibly present after the hero and across major graph/detail states.
 - Validate that primary text appears as crisp pure white against the dark shell and that secondary text, not the main body copy, carries the grey tone.

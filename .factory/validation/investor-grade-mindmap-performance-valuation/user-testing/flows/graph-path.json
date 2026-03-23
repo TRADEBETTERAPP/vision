@@ -1,0 +1,214 @@
+{
+  "groupId": "graph-path",
+  "surface": "browser",
+  "testedAt": "2026-03-23T05:03:11Z",
+  "isolation": {
+    "appUrl": "http://127.0.0.1:3100",
+    "browserSession": "47dd285dd7a9__u1",
+    "missionDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83",
+    "evidenceRoot": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/evidence/investor-grade-mindmap-performance-valuation",
+    "surface": "browser"
+  },
+  "toolsUsed": [
+    "agent-browser"
+  ],
+  "assertions": [
+    {
+      "id": "VAL-CROSS-014",
+      "title": "Graph-first default landing exposes investor-path entry without a separate proof-page handoff",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Open the root route at http://127.0.0.1:3100 with a desktop viewport.",
+          "expected": "The default landing mode should already be a graph-first workspace with the investor-path entry visible in the same surface.",
+          "observed": "The initial viewport loaded on the BETTER Atlas workspace with the node grid, map row, overview control, and Investor Pitch Path affordance visible before the hero/proof section, which remained below the fold."
+        },
+        {
+          "action": "Inspect the primary graph workspace controls before any scrolling or route changes.",
+          "expected": "Users should be able to see a visible investor-path start affordance directly inside the graph workspace.",
+          "observed": "Both the prominent 'Investor Pitch Path' button and the secondary 'start the investor path' affordance were present inside the root graph workspace."
+        },
+        {
+          "action": "Click the graph-workspace Investor Pitch Path control.",
+          "expected": "The guided path should begin immediately inside the same graph workspace without a separate proof-page handoff.",
+          "observed": "Clicking 'Investor Pitch Path' entered gate 1/8 in-place, keeping the graph cards and atlas context on screen rather than routing to a different landing/proof page."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "graph-path/VAL-CROSS-014-default-graph-workspace-with-investor-entry.png",
+          "graph-path/VAL-CROSS-014-visible-investor-path-start-affordance.png"
+        ],
+        "recordings": [
+          "graph-path/VAL-CROSS-014-investor-path-entry-from-graph-workspace.webm"
+        ],
+        "consoleErrors": "none; console output only showed repeated React DevTools info banners and [HMR] connected logs from the local Next.js dev server",
+        "network": "No failing requests observed; entering the investor path was an in-page graph state change rather than a separate proof-page navigation."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-ROADMAP-014",
+      "title": "The default loaded exploration state is a pure graph workspace",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Load the root route and inspect the first desktop viewport.",
+          "expected": "Core exploration should default to a graph workspace rather than a proof/shell handoff, with the graph as the primary visible surface.",
+          "observed": "The first viewport was the graph workspace: BETTER Atlas heading, node grid, overview control, persistent map row, and investor-path entry were all visible immediately; the hero/proof composition appeared only below the fold."
+        },
+        {
+          "action": "Inspect orientation recovery and graph-position cues in the workspace.",
+          "expected": "A persistent minimap or orientation cue should remain visible so users can recover position inside the graph.",
+          "observed": "The workspace kept a visible orientation frame via the overview button plus the persistent MAP/minimap row listing all atlas nodes while the graph remained onscreen."
+        },
+        {
+          "action": "Enter the guided path and then switch to Roadmap / Back to overview inside the workspace.",
+          "expected": "A sticky inspector or equivalent detail surface should remain available alongside the graph, and direct node traversal should stay inside the workspace.",
+          "observed": "Starting the path converted the lower inspector into a persistent detail surface while the graph cards stayed visible above it, and the recorded Roadmap → Back to overview flow stayed entirely inside the workspace with direct node traversal controls."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "graph-path/VAL-ROADMAP-014-default-loaded-graph-workspace.png",
+          "graph-path/VAL-ROADMAP-014-graph-with-sticky-inspector.png",
+          "graph-path/VAL-ROADMAP-014-minimap-or-orientation-frame.png"
+        ],
+        "recordings": [
+          "graph-path/VAL-ROADMAP-014-workspace-persistent-graph-and-inspector-v2.webm"
+        ],
+        "consoleErrors": "none; console output only showed repeated React DevTools info banners and [HMR] connected logs from the local Next.js dev server",
+        "network": "No failing requests observed; tested workspace traversals were local graph/hash state transitions."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-ROADMAP-015",
+      "title": "The graph exposes a coherent VC-friendly pitch path with enforced gate ordering",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Start the Investor Pitch Path from the graph workspace.",
+          "expected": "The graph should expose the ordered gates problem → wedge → proof → moat → business model → roadmap gates → valuation → appendix/evidence inside one continuous path.",
+          "observed": "Gate chips and the gate counter rendered the full ordered sequence in one strip: Problem, Wedge, Proof, Moat, Business Model, Roadmap Gates, Valuation, Appendix / Evidence."
+        },
+        {
+          "action": "Advance through the guided path using the next-gate controls.",
+          "expected": "Traversal should stay in the same graph workspace while progressing through the ordered pitch gates without disconnected hunting.",
+          "observed": "A single recording successfully advanced through all eight gates in order inside the same workspace, with each gate keeping the graph cards, map cues, and gate-strip context visible."
+        },
+        {
+          "action": "Inspect the path at the Valuation and Appendix / Evidence gates.",
+          "expected": "Valuation and Appendix / Evidence should appear as ordered late-path gates rather than disconnected destinations.",
+          "observed": "The Valuation view appeared as gate 7/8 with the ordered strip intact, and clicking Appendix / Evidence moved directly to the Evidence & Sources node as gate 8/8 in the same sequence."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "graph-path/investor-path-gate1-annotated.png",
+          "graph-path/VAL-ROADMAP-015-problem-to-valuation-ordered-path.png",
+          "graph-path/VAL-ROADMAP-015-appendix-or-evidence-node-in-path.png"
+        ],
+        "recordings": [
+          "graph-path/VAL-ROADMAP-015-investor-pitch-path-through-graph.webm"
+        ],
+        "consoleErrors": "none; console output only showed repeated React DevTools info banners and [HMR] connected logs from the local Next.js dev server",
+        "network": "No failing requests observed; the guided pitch traversal used in-page graph state changes."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-ROADMAP-016",
+      "title": "Every primary roadmap stage has its own execution-plan treatment with falsifiable proof gates and bounded timing windows",
+      "status": "fail",
+      "steps": [
+        {
+          "action": "Open the guided path's Roadmap Gates stage and inspect the default roadmap-stage viewport.",
+          "expected": "Each visible primary roadmap stage should surface its own execution-plan treatment with workstreams, external dependencies, falsifiable public proof gates, and bounded timing windows.",
+          "observed": "The Roadmap Gates stage rendered roadmap cards with maturity labels, descriptions, caveats, and 'Depends on' text, but no visible execution-plan sections, workstream lists, proof-gate framing, or bounded timing windows."
+        },
+        {
+          "action": "Scroll farther down within the same roadmap-stage view.",
+          "expected": "Lower in the same view, users should still be able to find the dedicated execution-plan treatment for the visible stages.",
+          "observed": "Further scrolling revealed the interactive roadmap atlas branch-family list and counts, but still no per-stage execution-plan content for the stages visible in this flow."
+        },
+        {
+          "action": "Check the rendered page text for execution-plan signals.",
+          "expected": "Execution-plan copy should expose terms/structures equivalent to workstreams, external dependencies, proof gates, and bounded timing windows.",
+          "observed": "Browser text inspection found no rendered 'Execution plan', 'Workstreams', 'External dependencies', 'Proof gates', 'Timing window', 'weeks after', or 'Q3 2026' strings in the tested Roadmap Gates surface."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "graph-path/roadmap-node-current.png",
+          "graph-path/VAL-ROADMAP-016-roadmap-lower-scroll.png"
+        ],
+        "consoleErrors": "none; console output only showed repeated React DevTools info banners and [HMR] connected logs from the local Next.js dev server",
+        "network": "No failing requests observed; the failure was visible in rendered content rather than network behavior.",
+        "observations": [
+          "The visible roadmap-stage cards only exposed summary, caveat, and dependency snippets.",
+          "The lower-scroll roadmap atlas showed branch families and node counts, not execution-plan panels.",
+          "The tested surface did not expose falsifiable public proof gates or bounded timing windows for the visible stages."
+        ]
+      },
+      "issues": "VAL-ROADMAP-016 failed because the Roadmap Gates surface still reads as summary cards plus branch listings, not as dedicated per-stage execution plans with explicit workstreams, external dependencies, falsifiable public proof gates, and bounded timing windows."
+    },
+    {
+      "id": "VAL-ROADMAP-017",
+      "title": "Guided investor path is visibly discoverable and resumable inside the graph workspace",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Inspect the default graph workspace before entering the guided path.",
+          "expected": "A clearly visible investor-path entry affordance should exist inside the graph workspace.",
+          "observed": "The root graph workspace exposed a prominent 'Investor Pitch Path' control plus a secondary 'start the investor path' affordance."
+        },
+        {
+          "action": "Advance to gate 3 and inspect progress UI.",
+          "expected": "The path should show progress or return cues so users can tell where they are in the sequence.",
+          "observed": "At Proof & Trust, the workspace showed 'INVESTOR PATH — GATE 3/8', a '3 OF 8' counter, and the full gate-chip strip with the current gate highlighted."
+        },
+        {
+          "action": "Leave the path for a detour and then return.",
+          "expected": "After a detour, users should be able to resume the last visited gate rather than restarting from the beginning.",
+          "observed": "Detouring to Risks & Caveats surfaced a 'Resume at “Proof”' button, and the rerun recording showed that clicking it returned the user directly to the Proof gate state."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "graph-path/VAL-CROSS-014-visible-investor-path-start-affordance.png",
+          "graph-path/VAL-ROADMAP-017-investor-path-progress-cues.png",
+          "graph-path/detour-risks-annotated.png"
+        ],
+        "recordings": [
+          "graph-path/VAL-ROADMAP-017-investor-path-resume-after-detour-v2.webm"
+        ],
+        "consoleErrors": "none; console output only showed repeated React DevTools info banners and [HMR] connected logs from the local Next.js dev server",
+        "network": "No failing requests observed; detour/resume behavior was handled inside the graph workspace."
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [
+    {
+      "description": "Several controls share the same accessible names across graph cards and minimap rows (for example 'Roadmap' and 'Risks & Caveats'), which caused strict-locator collisions during automation.",
+      "resolved": true,
+      "resolution": "Switched to explicit element refs or reran the capture from a state where the intended control was unambiguous; final evidence uses the successful reruns.",
+      "affectedAssertions": [
+        "VAL-ROADMAP-014",
+        "VAL-ROADMAP-017"
+      ]
+    },
+    {
+      "description": "The secondary footer affordance 'start the investor path' timed out when clicked by ref, and a first resume recording could not be overwritten after a partial strict-mode failure.",
+      "resolved": true,
+      "resolution": "Used the primary 'Investor Pitch Path' control for the stable path-entry flow and saved the successful detour/resume rerun as `VAL-ROADMAP-017-investor-path-resume-after-detour-v2.webm`.",
+      "affectedAssertions": [
+        "VAL-CROSS-014",
+        "VAL-ROADMAP-017"
+      ]
+    }
+  ],
+  "blockers": [],
+  "summary": "Tested 5 assertions: 4 passed and 1 failed. VAL-CROSS-014, VAL-ROADMAP-014, VAL-ROADMAP-015, and VAL-ROADMAP-017 passed: the root loads as a graph-first atlas, investor-path entry is visible directly in that workspace, the guided pitch path stays ordered through valuation and appendix/evidence, and detour/resume works with visible progress cues. VAL-ROADMAP-016 failed because the Roadmap Gates surface still renders summary cards and branch listings without visible per-stage execution-plan workstreams, falsifiable public proof gates, or bounded timing windows. No browser runtime errors were observed; console output only showed repeated React DevTools info banners and [HMR] connected logs from the local Next.js dev server."
+}

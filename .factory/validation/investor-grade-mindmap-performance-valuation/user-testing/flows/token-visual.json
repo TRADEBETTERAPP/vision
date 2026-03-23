@@ -1,0 +1,227 @@
+{
+  "groupId": "token-visual",
+  "surface": "browser",
+  "testedAt": "2026-03-23T05:17:11Z",
+  "isolation": {
+    "appUrl": "http://127.0.0.1:3100",
+    "browserSession": "47dd285dd7a9__u2",
+    "missionDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83",
+    "evidenceRoot": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/evidence/investor-grade-mindmap-performance-valuation",
+    "surface": "browser"
+  },
+  "toolsUsed": [
+    "agent-browser"
+  ],
+  "assertions": [
+    {
+      "id": "VAL-TOKEN-015",
+      "title": "Valuation corridors are conservative, stage-based, proof-gated, basis-consistent, numerically bounded, and token-price-reconciled",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Open the Valuation graph surface and inspect the Stage-Based Valuation Corridors block.",
+          "expected": "The surface should show bounded conservative corridors, a current/live anchor, explicit valuation + supply basis, comparable labels, proof gates, and implied token-price reconciliation.",
+          "observed": "The visible corridor header declared 'Fully Diluted Valuation (FDV)' and 'Minted supply: 709,001,940 BETTER (Base contract)', then rendered 5 corridors including a 'Current State (Live Anchor)' card."
+        },
+        {
+          "action": "Capture the top and lower corridor states and extract rendered text from the corridor list.",
+          "expected": "Every corridor should expose lower/upper numeric bounds, implied per-token values, comparable categories, and explicit proof-gate bullets.",
+          "observed": "Browser extraction recorded 5 corridor cards with bounded FDV ranges from '$3M – $8M' through '$250M – $750M', paired implied token prices from '$0.0042 – $0.011' through '$0.353 – $1.06', comparable-category labels, and proof-gate lists on every card."
+        },
+        {
+          "action": "Check whether the live anchor is grounded in present observable state rather than hype-only projection.",
+          "expected": "The set should begin from a current observable anchor corridor before future stages.",
+          "observed": "The first card was explicitly labeled 'Current State (Live Anchor)' and tied to present-day observable conditions: Terminal closed beta, Aerodrome LP trading live, and first vault not yet launched."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "token-visual/VAL-TOKEN-015-valuation-corridors-top.png",
+          "token-visual/VAL-TOKEN-015-valuation-corridors-lower.png"
+        ],
+        "artifacts": [
+          "token-visual/valuation-corridors-observation.json"
+        ],
+        "consoleErrors": "none; agent-browser errors returned no runtime exceptions during the valuation flow.",
+        "network": "agent-browser network requests reported 'No requests captured'; no failed document, chunk, or asset requests were visible during the in-page valuation flow."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-TOKEN-016",
+      "title": "Stake-share modeling estimates first-vault and whale-vault capacity with user-adjustable inputs, supply-validated totals, and dollar-denominated output",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Inspect the Stake-to-Vault Capacity Model with the default first-vault scenario.",
+          "expected": "The surface should expose explicit user stake + total staked inputs, a visible default total-staked reference, uncertainty-aware share output, dollar allocation, and a clear distinction between modeled share and policy cap.",
+          "observed": "The model loaded with editable inputs of '200,000' BETTER stake and '100,000,000' total staked, showed the default reference as ~14% of minted supply, computed a 0.2000% staked-pool share, returned a '$800 – $1,200' modeled capacity-share range, separated that from the '$25,000' per-wallet deposit cap, and displayed an effective deposit estimate of '$1,200'."
+        },
+        {
+          "action": "Force an impossible total-staked input above minted supply.",
+          "expected": "The model should reject totals above the 709,001,940 minted-supply ceiling instead of silently accepting impossible values.",
+          "observed": "Entering '800000000' surfaced the red validation message 'Must be between 1 and 709,001,940 BETTER (minted supply ceiling)'."
+        },
+        {
+          "action": "Switch to the Modeled Whale Vault scenario and inspect the assumptions block.",
+          "expected": "The surface should expose whale-vault assumptions including assumed whale count, stake distribution, vault capacity, and policy-vs-modeled framing.",
+          "observed": "The whale-vault state remained interactive and kept the assumptions block visible with '50 whales', '$5,000,000' assumed vault capacity, the minted-supply ceiling, and a stake-distribution note explicitly labeled as informational-only context while vault capacity stayed the calculation input."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "token-visual/vault-model-annotated.png",
+          "token-visual/VAL-TOKEN-016-supply-validation-error.png",
+          "token-visual/VAL-TOKEN-016-whale-vault-assumptions.png"
+        ],
+        "artifacts": [
+          "token-visual/vault-capacity-observation.json"
+        ],
+        "consoleErrors": "none; agent-browser errors returned no runtime exceptions during the vault-model flow.",
+        "network": "agent-browser network requests reported 'No requests captured'; validation was entirely client-side with no visible failing requests."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-VISUAL-021",
+      "title": "tradebetter theme parity extends across the full shell with explicit reference evidence",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Capture the local shell at graph-rest, hero, focused valuation detail, and mobile overlay states.",
+          "expected": "tradebetter-led signals should remain coherent across header, hero, graph shell, focused panels, and overlays rather than appearing only in one section.",
+          "observed": "The local shell kept the same near-black foundation, electric-blue accents, mono UI treatment, and hard-edged modules across the root graph workspace, the hero/proof section, the focused valuation surface, and the opened mobile overlay."
+        },
+        {
+          "action": "Capture a live tradebetter.app reference screenshot and compare it against the local shell.",
+          "expected": "The validation package should include explicit reference evidence rather than only subjective wording.",
+          "observed": "The public tradebetter.app reference was captured in-browser and visually matched the local shell's near-black + electric-blue + mono identity; the repo also already contained the committed extracted-theme comparison document at '.factory/library/tradebetter-comparison-evidence.md'."
+        },
+        {
+          "action": "Inspect computed styles from the local shell surfaces.",
+          "expected": "Primary shell tokens should align with the tradebetter-led palette and typography hierarchy.",
+          "observed": "Computed styles showed body text at rgb(245, 245, 250) over rgb(10, 10, 12), blue-tinted focused panels and corridor cards, and a near-black mobile overlay with 95% opacity, matching the committed extracted-theme evidence's color and tonal model."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "token-visual/VAL-VISUAL-021-shell-theme-parity-overview.png",
+          "token-visual/VAL-VISUAL-021-hero-theme-parity.png",
+          "token-visual/VAL-VISUAL-021-mobile-overlay-theme-parity.png",
+          "token-visual/VAL-VISUAL-021-tradebetter-reference-comparison.png"
+        ],
+        "artifacts": [
+          "token-visual/desktop-theme-style-observation.json",
+          "token-visual/mobile-overlay-style-observation.json"
+        ],
+        "referenceEvidence": [
+          ".factory/library/tradebetter-comparison-evidence.md"
+        ],
+        "consoleErrors": "none; agent-browser errors remained empty through the desktop and mobile theme-parity checks.",
+        "network": "No failed requests were visible during the local-shell and tradebetter reference captures; agent-browser request capture did not record any local requests for these in-page checks."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-VISUAL-024",
+      "title": "tradebetter parity uses crisp white text, sharper near-black tone separation, and tonal hierarchy across multiple shell surface levels",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Inspect the hero and focused valuation detail text contrast.",
+          "expected": "Primary text should read as crisp near-pure white rather than muddy grey-white across major shell states.",
+          "observed": "Computed styles and screenshots showed primary text at rgb(245, 245, 250) on a near-black base, including the hero tagline and focused valuation content."
+        },
+        {
+          "action": "Inspect layered desktop surfaces inside the valuation state.",
+          "expected": "Canvas, focused panels, and elevated cards should remain visually distinct through deliberate tonal steps rather than collapsing into one flat dark plane.",
+          "observed": "The focused surface rendered as a darker translucent panel, the basis panel used a lighter blue-tinted wash, and the live-anchor corridor card stepped up again with a stronger accent-tinted background and border."
+        },
+        {
+          "action": "Open the mobile navigation overlay.",
+          "expected": "Overlays should preserve the near-black hierarchy and crisp text rather than flattening into the same tone as the base canvas.",
+          "observed": "The opened overlay used a deeper near-black background at roughly 95% opacity with lighter logotype/text above it, maintaining a visible tonal step above the underlying shell."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "token-visual/VAL-VISUAL-024-detail-panel-contrast.png",
+          "token-visual/VAL-VISUAL-024-overlay-near-black-tone-separation.png",
+          "token-visual/VAL-VISUAL-021-hero-theme-parity.png"
+        ],
+        "artifacts": [
+          "token-visual/desktop-theme-style-observation.json",
+          "token-visual/mobile-overlay-style-observation.json"
+        ],
+        "consoleErrors": "none; no contrast- or rendering-related console/runtime errors were reported.",
+        "network": "No failing requests were visible during the tonal-hierarchy checks."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-VISUAL-025",
+      "title": "Premium motion stays smooth through explicit capability gating, an enforced constrained-device negative case, and observed initial-load and runtime performance",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Run a headed desktop pass on the local root route and inspect the visual-state data attributes.",
+          "expected": "Desktop-class clients should activate the enhanced path with heavy WebGL + ASCII layers only when the capability gate passes.",
+          "observed": "The desktop headed session reported data-visual-state='enhanced', data-motion-layers='2', data-device-class='desktop', canvasReady='true', and 4 active canvases including 2 WebGL contexts."
+        },
+        {
+          "action": "Measure runtime timing on the active enhanced desktop path and capture motion evidence.",
+          "expected": "Validation should include a concrete runtime/jank observation plus visible motion evidence from the rendered page.",
+          "observed": "The desktop runtime observation recorded median frame time 16.7 ms, p95 58.6 ms, effective FPS 34.8, zero severe jank frames over 100 ms, zero long tasks, DOM interactive at 183 ms, and first/contentful paint at 220 ms; paired screenshots and a webm recording showed live background motion while the enhanced path remained active."
+        },
+        {
+          "action": "Switch to an iPhone 14 emulation pass and inspect the constrained fallback state.",
+          "expected": "Constrained/mobile states should avoid the heavy live layers, keep cheaper motion, and preserve shell hierarchy.",
+          "observed": "The constrained pass reported data-visual-state='constrained', data-motion-layers='1', data-device-class='constrained', canvasCount=0, and canvasReady='false'; the mobile recording kept a low-cost animated background while the overlay and graph shell remained readable."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "token-visual/VAL-VISUAL-025-desktop-motion-frame-a.png",
+          "token-visual/VAL-VISUAL-025-desktop-motion-frame-b.png",
+          "token-visual/VAL-VISUAL-025-mobile-tablet-no-heavy-layers.png",
+          "token-visual/VAL-VISUAL-025-low-cost-motion-rest-state.png"
+        ],
+        "recordings": [
+          "token-visual/VAL-VISUAL-025-desktop-premium-motion.webm",
+          "token-visual/VAL-VISUAL-025-constrained-fallback-motion.webm"
+        ],
+        "artifacts": [
+          "token-visual/VAL-VISUAL-025-desktop-runtime-observation.json",
+          "token-visual/VAL-VISUAL-025-constrained-state-observation.json"
+        ],
+        "consoleErrors": "none; agent-browser errors was empty after the desktop enhanced-path run and the constrained mobile rerun.",
+        "network": "No failing requests were visible during the capability-gating checks; the local request capture file contains no recorded requests."
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [
+    {
+      "description": "agent-browser's request logger did not capture the local dev-server document/chunk traffic for these flows and wrote 'No requests captured'.",
+      "resolved": true,
+      "resolution": "I treated network evidence as 'no visible failing requests' and relied on rendered-surface behavior plus empty console-error output for the final assessment.",
+      "affectedAssertions": [
+        "VAL-TOKEN-015",
+        "VAL-TOKEN-016",
+        "VAL-VISUAL-021",
+        "VAL-VISUAL-024",
+        "VAL-VISUAL-025"
+      ]
+    },
+    {
+      "description": "iPhone 14 emulation still reported matchMedia('(pointer: fine)') = true in this environment.",
+      "resolved": true,
+      "resolution": "The app's composite gate still entered the constrained path because the emulated viewport stayed below 1025px and the rendered data attributes confirmed 'constrained' with one low-cost motion layer and zero canvases.",
+      "affectedAssertions": [
+        "VAL-VISUAL-025"
+      ]
+    }
+  ],
+  "blockers": [],
+  "summary": "Tested 5 assertions: 5 passed. VAL-TOKEN-015 and VAL-TOKEN-016 passed with live browser evidence showing bounded FDV corridors, proof-gate and basis consistency, implied token-price reconciliation, editable stake/total-staked inputs, minted-supply validation, uncertainty-aware dollar outputs, and clear policy-vs-modeled vault framing. VAL-VISUAL-021 and VAL-VISUAL-024 passed because the headed browser showed tradebetter-style near-black + electric-blue + mono parity across the shell with crisp rgb(245,245,250) text over rgb(10,10,12) foundations and clear multi-level surface separation, while the repo also already contained the explicit extracted-theme comparison document. VAL-VISUAL-025 passed because the headed desktop run activated the enhanced path (2 motion layers, 4 canvases / 2 WebGL), showed visible live motion, recorded median 16.7 ms frame timing with zero severe jank and zero long tasks, and the mobile rerun correctly fell back to a constrained 1-layer, zero-canvas state with cheaper motion. No browser runtime errors were observed."
+}

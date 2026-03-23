@@ -1,0 +1,84 @@
+{
+  "groupId": "roadmap-execution-plans",
+  "surface": "browser",
+  "testedAt": "2026-03-23T05:24:29Z",
+  "isolation": {
+    "appUrl": "http://127.0.0.1:3100",
+    "browserSession": "47dd285dd7a9__u3",
+    "missionDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83",
+    "evidenceRoot": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/evidence/investor-grade-mindmap-performance-valuation",
+    "surface": "browser"
+  },
+  "toolsUsed": [
+    "agent-browser"
+  ],
+  "assertions": [
+    {
+      "id": "VAL-ROADMAP-016",
+      "title": "Every primary roadmap stage has its own execution-plan treatment with falsifiable proof gates and bounded timing windows",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Open the graph workspace's Roadmap Gates surface and identify the user-visible roadmap controls.",
+          "expected": "The rendered roadmap surface should expose the primary roadmap stages and a user-visible way to inspect dedicated stage details rather than only a shared summary.",
+          "observed": "The Roadmap Gates view showed five directly openable branch families under Interactive Roadmap Atlas \u2014 Product Evolution, Token Utility & Access Tiers, Revenue Expansion, Technical Infrastructure, and Social & Agent Ecosystem \u2014 plus clickable stage nodes inside each branch. The narrative summary cards above the atlas were not the deepest user-visible detail surface."
+        },
+        {
+          "action": "Expand every branch family and click stage nodes that the surface exposes for direct inspection.",
+          "expected": "Direct stage-node traversal should open dedicated per-stage detail treatments with workstreams, external dependencies, falsifiable proof gates, and bounded timing windows.",
+          "observed": "Branch expansion and node clicks opened dedicated detail panels for Social Vaults & vBETTER, Whale-First Tier Ladder, HyperEVM Integration (Phase 1), Enterprise Data & API Licensing, Autonomous Strategy Agents, Agent-Native Token Utility, Bonded Agent Registry, and Agent Delegation & Backing. Each panel used the same per-stage structure: Execution Plan, Internal Workstreams (AI-agent-compressible), External Workstreams (outside constraints \u2014 not AI-compressible), External Dependencies, and Proof Gates (externally observable success criteria)."
+        },
+        {
+          "action": "Inspect the timing and proof-gate framing inside those stage detail panels.",
+          "expected": "Timing should be bounded or dependency-relative, and proof gates should be concrete public success criteria rather than vague milestone labels.",
+          "observed": "The opened panels used bounded windows such as 'Q2 2026\u2013Q3 2026, dependent on audit completion' (Social Vaults & vBETTER), 'Q2 2026\u2013Q3 2026, dependent on HyperEVM mainnet readiness' (HyperEVM Integration), 'Q3 2026\u2013Q1 2027, 6\u201312 weeks after social vault launch' (Autonomous Strategy Agents), 'Q2 2027\u2013Q4 2027, 3\u20136 months after enterprise data pipeline readiness' (Enterprise Data & API Licensing), and 'Q4 2026\u2013Q2 2027, 8\u201316 weeks after strategy agent launch' (Agent-Native Token Utility). Proof gates were falsifiable and public-facing, e.g. first social vault deposits visible on Base mainnet, on-chain whale-tier verification queries, successful HyperEVM cross-chain transfer in chain explorers, publicly referenceable enterprise pilot evidence, public bonded-agent registry status, and visible delegation/P&L dashboards."
+        },
+        {
+          "action": "Check browser runtime and console output after the deeper stage-node traversal.",
+          "expected": "The rerun should surface any runtime or console problems encountered while opening the stage details.",
+          "observed": "No console or runtime errors were emitted during the rerun, and no failing network requests were captured after the log clear."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "roadmap-execution-plans/VAL-ROADMAP-016-root-annotated.png",
+          "roadmap-execution-plans/VAL-ROADMAP-016-roadmap-entry-annotated.png",
+          "roadmap-execution-plans/VAL-ROADMAP-016-product-evolution-detail.png",
+          "roadmap-execution-plans/VAL-ROADMAP-016-token-utility-detail.png",
+          "roadmap-execution-plans/VAL-ROADMAP-016-technical-infrastructure-detail.png",
+          "roadmap-execution-plans/VAL-ROADMAP-016-revenue-detail.png",
+          "roadmap-execution-plans/VAL-ROADMAP-016-autonomous-agents-detail.png",
+          "roadmap-execution-plans/VAL-ROADMAP-016-social-agent-detail.png"
+        ],
+        "consoleErrors": "none",
+        "network": "No requests were captured after the explicit log clear; during the in-page atlas traversal no failing requests were observed.",
+        "observations": [
+          "The decisive user path is Roadmap Gates \u2192 expand a branch family in Interactive Roadmap Atlas \u2192 click a node button to open its dedicated detail panel.",
+          "The atlas detail panels explicitly separate AI-agent-compressible internal work from slower outside constraints such as audits, legal review, sales cycles, partner coordination, venue integrations, and chain readiness.",
+          "The narrative summary card 'Agent-Native Ecosystem' is not itself a clickable atlas node, but its directly openable dependency nodes (Agent-Native Token Utility, Bonded Agent Registry, Agent Delegation & Backing) each expose the same dedicated execution-plan schema through the atlas controls."
+        ]
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [
+    {
+      "description": "The first visible roadmap material includes non-interactive summary cards above the actual atlas controls, which can make the surface look summary-only on a shallow pass.",
+      "resolved": true,
+      "resolution": "Used the lower Interactive Roadmap Atlas branch-family accordions and node buttons as the natural user-visible controls for direct stage-detail traversal.",
+      "affectedAssertions": [
+        "VAL-ROADMAP-016"
+      ]
+    },
+    {
+      "description": "After changing node selections, stale element refs for the previous detail region timed out once during evidence collection.",
+      "resolved": true,
+      "resolution": "Re-snapshotted after each node switch and continued using fresh refs/state captures.",
+      "affectedAssertions": [
+        "VAL-ROADMAP-016"
+      ]
+    }
+  ],
+  "blockers": [],
+  "summary": "Re-ran VAL-ROADMAP-016 as a pass. The decisive result came from direct atlas traversal: expanding each visible branch family and clicking stage nodes opened dedicated per-stage execution-plan panels with bounded timing windows, AI-compressible vs outside-constraint workstreams, external dependencies, and falsifiable publicly observable proof gates. No browser runtime or console issues were observed during the rerun."
+}
