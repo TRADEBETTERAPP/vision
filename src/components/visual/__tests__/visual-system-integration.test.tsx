@@ -31,14 +31,18 @@ beforeEach(() => {
 });
 
 describe("VAL-VISUAL-000: Signature visual system is present", () => {
-  it("renders the canvas-based ASCII renderer (VAL-VISUAL-016)", () => {
+  it("renders the canvas-based ASCII renderer (VAL-VISUAL-016)", async () => {
     render(<Home />);
-    expect(screen.getByTestId("ascii-canvas-renderer")).toBeInTheDocument();
+    // AsciiCanvasRenderer loads via dynamic import (VAL-VISUAL-027)
+    const asciiCanvas = await screen.findByTestId("ascii-canvas-renderer");
+    expect(asciiCanvas).toBeInTheDocument();
   });
 
-  it("renders the ASCII-video-inspired background treatment (legacy fallback)", () => {
+  it("renders the ASCII-video-inspired background treatment (legacy fallback)", async () => {
     render(<Home />);
-    expect(screen.getByTestId("ascii-background")).toBeInTheDocument();
+    // AsciiBackground loads via dynamic import (VAL-VISUAL-027)
+    const asciiBg = await screen.findByTestId("ascii-background");
+    expect(asciiBg).toBeInTheDocument();
   });
 
   it("renders the hero shader canvas container (even if WebGL fails)", () => {

@@ -14,32 +14,34 @@ import { render, screen } from "@testing-library/react";
 import Home from "../page";
 
 describe("Graph-first default landing", () => {
-  it("atlas section contains the hero/brand band and graph shell as one workspace", () => {
+  it("atlas section contains the hero/brand band and graph shell as one workspace", async () => {
     render(<Home />);
     const atlas = document.getElementById("atlas");
     expect(atlas).toBeInTheDocument();
 
     // Both the hero and graph shell are INSIDE the atlas section
-    const graphShell = screen.getByTestId("graph-shell");
+    // GraphShell loads via dynamic import (VAL-VISUAL-027)
+    const graphShell = await screen.findByTestId("graph-shell");
     const hero = screen.getByTestId("hero-section");
     expect(atlas!.contains(graphShell)).toBe(true);
     expect(atlas!.contains(hero)).toBe(true);
   });
 
-  it("hero/brand band appears before the graph shell inside the atlas (VAL-VISUAL-026)", () => {
+  it("hero/brand band appears before the graph shell inside the atlas (VAL-VISUAL-026)", async () => {
     render(<Home />);
     const hero = screen.getByTestId("hero-section");
-    const graphShell = screen.getByTestId("graph-shell");
+    const graphShell = await screen.findByTestId("graph-shell");
 
     // The hero/brand band should come BEFORE the graph shell in DOM order
     const position = hero.compareDocumentPosition(graphShell);
     expect(position & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 
-  it("the atlas is the topmost content section", () => {
+  it("the atlas is the topmost content section", async () => {
     render(<Home />);
     const atlas = document.getElementById("atlas");
-    const proof = screen.getByTestId("proof-section");
+    // ProofModule loads via dynamic import (VAL-VISUAL-027)
+    const proof = await screen.findByTestId("proof-section");
 
     expect(atlas).toBeInTheDocument();
     // Atlas should come before the proof section in DOM order
@@ -47,9 +49,10 @@ describe("Graph-first default landing", () => {
     expect(position & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 
-  it("investor-path entry affordance is visible in the first graph workspace", () => {
+  it("investor-path entry affordance is visible in the first graph workspace", async () => {
     render(<Home />);
-    const startAffordance = screen.getByTestId("investor-path-start");
+    // GraphExplorer loads via dynamic import (VAL-VISUAL-027)
+    const startAffordance = await screen.findByTestId("investor-path-start");
     expect(startAffordance).toBeInTheDocument();
   });
 });

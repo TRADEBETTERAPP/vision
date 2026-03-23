@@ -1,12 +1,29 @@
+import dynamic from "next/dynamic";
 import { getBlocksBySurface } from "@/content";
 import MaturityBadge from "@/components/MaturityBadge";
 import EvidenceHook from "@/components/EvidenceHook";
 import CaveatFrame from "@/components/CaveatFrame";
-import ProofModule from "@/components/ProofModule";
 import { BetterLogotype } from "@/components/BetterLogotype";
 import { HeroVisualSystem } from "@/components/visual";
 import { Section } from "@/components/ui";
-import { GraphExplorer } from "@/components/graph/GraphExplorer";
+import { LazyGraphExplorer } from "@/components/graph/LazyGraphExplorer";
+import { ProofModuleSkeleton } from "@/components/skeletons";
+
+/**
+ * Dynamic imports for below-fold content — aggressive bundle splitting.
+ *
+ * VAL-VISUAL-027: ProofModule (below-fold content) is dynamically imported
+ * so it does not block first meaningful paint. The GraphExplorer is loaded
+ * via LazyGraphExplorer (a client component that uses next/dynamic with
+ * ssr:false) to ensure the graph workspace and its heavy dependencies
+ * load entirely on the client after first paint.
+ */
+const ProofModule = dynamic(
+  () => import("@/components/ProofModule"),
+  {
+    loading: () => <ProofModuleSkeleton />,
+  }
+);
 
 export default function Home() {
   const heroBlocks = getBlocksBySurface("hero");
@@ -137,7 +154,7 @@ export default function Home() {
 
           {/* Graph explorer — the explorable mindmap */}
           <div className="mt-6">
-            <GraphExplorer />
+            <LazyGraphExplorer />
           </div>
         </div>
       </Section>

@@ -173,14 +173,15 @@ describe("AsciiCanvasRenderer becomes static in fallback state", () => {
 // ---------------------------------------------------------------------------
 
 describe("Non-canvas fallback visible when 2D canvas fails", () => {
-  it("AsciiCanvasRenderer signals canvas failure so DOM fallback can show", () => {
+  it("AsciiCanvasRenderer signals canvas failure so DOM fallback can show", async () => {
     // When canvas.getContext("2d") returns null, the canvas renderer
     // should not render or should signal that canvas is unavailable
     HTMLCanvasElement.prototype.getContext = jest.fn().mockReturnValue(null);
 
     render(<Home />);
+    // AsciiBackground loads via dynamic import (VAL-VISUAL-027)
     // The DOM-based AsciiBackground should become visible when canvas fails
-    const domAscii = screen.getByTestId("ascii-background");
+    const domAscii = await screen.findByTestId("ascii-background");
     expect(domAscii).toBeInTheDocument();
     // The wrapper should indicate canvas is not available so CSS can reveal DOM fallback
     const system = screen.getByTestId("hero-visual-system");

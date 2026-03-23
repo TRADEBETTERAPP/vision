@@ -5,6 +5,9 @@
  * that target the graph shell's focus states rather than section anchors.
  * The hero, proof, and atlas sections are always rendered on the page.
  *
+ * Updated for dynamic imports (VAL-VISUAL-027): GraphExplorer and ProofModule
+ * are dynamically imported, so tests use async findBy* queries.
+ *
  * VAL-NARR-004: Navigation opens graph destinations and focus states
  * VAL-NARR-005: Navigation labels are understandable
  */
@@ -22,8 +25,10 @@ describe("RootLayout shared chrome — Header", () => {
     }
   });
 
-  it("graph node IDs in navigation match valid graph nodes", () => {
+  it("graph node IDs in navigation match valid graph nodes", async () => {
     render(<Home />);
+    // GraphExplorer loads via dynamic import (VAL-VISUAL-027)
+    await screen.findByTestId("graph-shell");
     // Each nav item's graph target should correspond to a graph node button
     const graphNodes = screen.getAllByTestId("graph-node-button");
     const graphNodeLabels = graphNodes.map((n) =>
@@ -74,10 +79,11 @@ describe("RootLayout shared chrome — Footer", () => {
 });
 
 describe("RootLayout shared chrome — Section structure", () => {
-  it("page renders hero, atlas, and proof sections in correct order", () => {
+  it("page renders hero, atlas, and proof sections in correct order", async () => {
     render(<Home />);
     const hero = document.getElementById("what-is-better");
-    const proof = document.getElementById("proof");
+    // ProofModule loads via dynamic import (VAL-VISUAL-027)
+    const proof = await screen.findByTestId("proof-section");
     const atlas = document.getElementById("atlas");
 
     expect(hero).toBeInTheDocument();
@@ -87,7 +93,7 @@ describe("RootLayout shared chrome — Section structure", () => {
     // Atlas (graph workspace, genuinely first) → Hero → Proof (supplementary)
     // VAL-ROADMAP-014: default loaded state is a pure graph workspace — graph-first
     expect(atlas!.compareDocumentPosition(hero!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-    expect(hero!.compareDocumentPosition(proof!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(hero!.compareDocumentPosition(proof) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 
   it("hero section explains BETTER before requiring scroll (VAL-CROSS-001)", () => {
@@ -101,11 +107,12 @@ describe("RootLayout shared chrome — Section structure", () => {
     expect(futureStatus).toBeInTheDocument();
   });
 
-  it("atlas section contains the graph shell", () => {
+  it("atlas section contains the graph shell", async () => {
     render(<Home />);
     const atlas = document.getElementById("atlas");
     expect(atlas).toBeInTheDocument();
-    const graphShell = screen.getByTestId("graph-shell");
+    // GraphExplorer loads via dynamic import (VAL-VISUAL-027)
+    const graphShell = await screen.findByTestId("graph-shell");
     expect(atlas!.contains(graphShell)).toBe(true);
   });
 });

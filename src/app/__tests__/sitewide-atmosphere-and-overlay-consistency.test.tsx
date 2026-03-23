@@ -86,17 +86,17 @@ describe("Site-wide atmosphere includes real Radiant/Hermes layers (VAL-VISUAL-0
     expect(content).toContain("HeroShaderCanvas");
   });
 
-  it("site atmosphere layer includes ascii-canvas-renderer and shader in DOM", () => {
+  it("site atmosphere layer includes ascii-canvas-renderer and shader in DOM", async () => {
     renderWithAtmosphere();
     const atmosphere = document.querySelector('[data-testid="site-atmosphere"]');
     expect(atmosphere).toBeInTheDocument();
-    // The atmosphere must contain a canvas renderer data-testid
-    const asciiCanvas = atmosphere!.querySelector(
-      '[data-testid="ascii-canvas-renderer"]'
-    );
+    // AsciiCanvasRenderer loads via dynamic import (VAL-VISUAL-027)
+    // Wait for dynamically imported components to resolve.
+    // Multiple instances may exist (SiteAtmosphere + HeroVisualSystem inside Home).
+    const asciiCanvases = await screen.findAllByTestId("ascii-canvas-renderer");
     // Note: AsciiCanvasRenderer renders a <canvas> element
     // In test (JSDOM) the canvas may not init WebGL, but the element should be present
-    expect(asciiCanvas || atmosphere!.querySelector('canvas')).toBeTruthy();
+    expect(asciiCanvases.length).toBeGreaterThan(0);
   });
 
   it("SiteAtmosphere applies reduced opacity to its Radiant/Hermes layers for readability", () => {

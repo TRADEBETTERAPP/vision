@@ -1,10 +1,31 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useSyncExternalStore } from "react";
 import { VisualEffectsProvider, useVisualEffects } from "./VisualEffectsProvider";
-import { HeroShaderCanvas } from "./HeroShaderCanvas";
-import { AsciiCanvasRenderer } from "./AsciiCanvasRenderer";
-import { AsciiBackground } from "./AsciiBackground";
+
+/**
+ * Dynamic imports for heavy visual components — aggressive bundle splitting.
+ *
+ * VAL-VISUAL-027: HeroShaderCanvas (WebGL), AsciiCanvasRenderer (canvas),
+ * and AsciiBackground (DOM fallback) are dynamically imported with ssr:false
+ * so they do not block first meaningful paint. The CSS-only radiant fallback
+ * gradient and scanline overlay render immediately for content-first loading.
+ */
+const HeroShaderCanvas = dynamic(
+  () => import("./HeroShaderCanvas").then((mod) => mod.HeroShaderCanvas),
+  { ssr: false }
+);
+
+const AsciiCanvasRenderer = dynamic(
+  () => import("./AsciiCanvasRenderer").then((mod) => mod.AsciiCanvasRenderer),
+  { ssr: false }
+);
+
+const AsciiBackground = dynamic(
+  () => import("./AsciiBackground").then((mod) => mod.AsciiBackground),
+  { ssr: false }
+);
 
 /**
  * SiteAtmosphere — extends the real Radiant/Hermes immersive background

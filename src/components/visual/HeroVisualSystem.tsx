@@ -1,10 +1,31 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useSyncExternalStore } from "react";
 import { VisualEffectsProvider, useVisualEffects } from "./VisualEffectsProvider";
-import { HeroShaderCanvas } from "./HeroShaderCanvas";
-import { AsciiBackground } from "./AsciiBackground";
-import { AsciiCanvasRenderer } from "./AsciiCanvasRenderer";
+
+/**
+ * Dynamic imports for heavy visual components — aggressive bundle splitting.
+ *
+ * VAL-VISUAL-027: HeroShaderCanvas (WebGL), AsciiCanvasRenderer (canvas),
+ * and AsciiBackground (DOM fallback) are dynamically imported with ssr:false
+ * so they do not block first meaningful paint. The CSS-only layers (radiant
+ * fallback gradient, scanline overlay, vignette) render immediately.
+ */
+const HeroShaderCanvas = dynamic(
+  () => import("./HeroShaderCanvas").then((mod) => mod.HeroShaderCanvas),
+  { ssr: false }
+);
+
+const AsciiCanvasRenderer = dynamic(
+  () => import("./AsciiCanvasRenderer").then((mod) => mod.AsciiCanvasRenderer),
+  { ssr: false }
+);
+
+const AsciiBackground = dynamic(
+  () => import("./AsciiBackground").then((mod) => mod.AsciiBackground),
+  { ssr: false }
+);
 
 /**
  * HeroVisualSystem — immersive BETTER atmosphere for the hero section.
