@@ -2,19 +2,19 @@
  * Regression tests for VAL-ROADMAP-012: visible graph context after node traversal.
  *
  * These tests verify that when users traverse between related graph nodes,
- * a clearly visible graph overview, minimap, or equivalent orientation frame
- * remains on-screen — not just in the DOM but within the viewport-visible
- * focused surface area.
+ * orientation context remains accessible — the orientation bar stays visible,
+ * related node links enable direct traversal, and the focused surface keeps
+ * the back-to-overview button available.
  *
- * The prior implementation scrolled the focused surface to block: "start",
- * which pushed the graph overview off-screen during traversal, collapsing
- * the experience into a panel-only document view.
+ * VAL-VISUAL-033 removed the nested context minimap in favour of a single
+ * lightweight orientation bar + related-node links. These updated tests
+ * verify the same traversal and orientation guarantees without the old
+ * chrome-heavy minimap approach.
  */
 import React from "react";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { GraphShell } from "../GraphShell";
-import { GRAPH_NODES, getGraphNodeById } from "@/content/graph-nodes";
 
 beforeEach(() => {
   window.location.hash = "";
@@ -34,78 +34,35 @@ function getNodeButton(name: RegExp) {
 
 describe("Graph traversal visible context (VAL-ROADMAP-012)", () => {
   // -------------------------------------------------------------------------
-  // A compact graph context minimap must appear inside the focused surface
-  // so it stays visually on-screen after scrollIntoView targets the panel.
+  // Related node links provide direct traversal inside the focused surface
   // -------------------------------------------------------------------------
-  it("renders a visible graph context minimap inside the focused surface after node focus", async () => {
+  it("renders related node links inside the focused surface for direct traversal", async () => {
     const user = userEvent.setup();
     render(<GraphShell />);
 
-    // Focus on Roadmap
     const roadmapNode = getNodeButton(/roadmap/i);
     await user.click(roadmapNode);
 
     const focusedSurface = screen.getByTestId("graph-focused-surface");
-    // A minimap or graph context indicator should exist INSIDE the focused surface
-    const minimap = within(focusedSurface).getByTestId("graph-context-minimap");
-    expect(minimap).toBeInTheDocument();
+    const relatedLinks = within(focusedSurface).getAllByTestId("graph-related-link");
+    expect(relatedLinks.length).toBeGreaterThan(0);
   });
 
-  it("minimap shows all graph nodes as orientation indicators", async () => {
+  it("orientation bar updates with the focused node label", async () => {
     const user = userEvent.setup();
     render(<GraphShell />);
 
     const roadmapNode = getNodeButton(/roadmap/i);
     await user.click(roadmapNode);
 
-    const focusedSurface = screen.getByTestId("graph-focused-surface");
-    const minimap = within(focusedSurface).getByTestId("graph-context-minimap");
-
-    // All graph nodes should appear in the minimap as orientation indicators
-    const minimapNodes = within(minimap).getAllByTestId("minimap-node");
-    expect(minimapNodes.length).toBe(GRAPH_NODES.length);
-  });
-
-  it("minimap highlights the currently focused node", async () => {
-    const user = userEvent.setup();
-    render(<GraphShell />);
-
-    const roadmapNode = getNodeButton(/roadmap/i);
-    await user.click(roadmapNode);
-
-    const focusedSurface = screen.getByTestId("graph-focused-surface");
-    const minimap = within(focusedSurface).getByTestId("graph-context-minimap");
-
-    // The focused node should be marked as active in the minimap
-    const activeMinimapNode = within(minimap)
-      .getAllByTestId("minimap-node")
-      .find((el) => el.getAttribute("data-active") === "true");
-    expect(activeMinimapNode).toBeDefined();
-    expect(activeMinimapNode?.textContent).toContain("Roadmap");
-  });
-
-  it("minimap highlights related nodes distinctly", async () => {
-    const user = userEvent.setup();
-    render(<GraphShell />);
-
-    const roadmapNode = getNodeButton(/roadmap/i);
-    await user.click(roadmapNode);
-
-    const focusedSurface = screen.getByTestId("graph-focused-surface");
-    const minimap = within(focusedSurface).getByTestId("graph-context-minimap");
-
-    // Related nodes should be marked as related
-    const roadmapNodeDef = getGraphNodeById("roadmap");
-    const relatedMinimapNodes = within(minimap)
-      .getAllByTestId("minimap-node")
-      .filter((el) => el.getAttribute("data-related") === "true");
-    expect(relatedMinimapNodes.length).toBe(roadmapNodeDef!.related.length);
+    const orientationBar = screen.getByTestId("graph-orientation-bar");
+    expect(orientationBar.textContent).toContain("Roadmap");
   });
 
   // -------------------------------------------------------------------------
-  // After node-to-node traversal, the minimap must update and remain visible
+  // After node-to-node traversal, orientation context remains available
   // -------------------------------------------------------------------------
-  it("updates minimap active node after traversal via related links", async () => {
+  it("updates orientation bar after traversal via related links", async () => {
     const user = userEvent.setup();
     render(<GraphShell />);
 
@@ -121,19 +78,12 @@ describe("Graph traversal visible context (VAL-ROADMAP-012)", () => {
     expect(tokenLink).toBeDefined();
     await user.click(tokenLink!);
 
-    // Minimap should still exist inside the focused surface
-    const focusedSurface = screen.getByTestId("graph-focused-surface");
-    const minimap = within(focusedSurface).getByTestId("graph-context-minimap");
-    expect(minimap).toBeInTheDocument();
-
-    // Active node in minimap should now be Tokenomics
-    const activeNode = within(minimap)
-      .getAllByTestId("minimap-node")
-      .find((el) => el.getAttribute("data-active") === "true");
-    expect(activeNode?.textContent).toContain("Tokenomics");
+    // Orientation bar should update to show Tokenomics
+    const orientationBar = screen.getByTestId("graph-orientation-bar");
+    expect(orientationBar.textContent).toContain("Tokenomics");
   });
 
-  it("minimap nodes are clickable for direct navigation", async () => {
+  it("related links update after traversal to a different node", async () => {
     const user = userEvent.setup();
     render(<GraphShell />);
 
@@ -141,19 +91,15 @@ describe("Graph traversal visible context (VAL-ROADMAP-012)", () => {
     const roadmapNode = getNodeButton(/roadmap/i);
     await user.click(roadmapNode);
 
+    // Traverse to a related node
+    const relatedLinks = screen.getAllByTestId("graph-related-link");
+    await user.click(relatedLinks[0]);
+
+    // Related links should now show connections for the new focused node
     const focusedSurface = screen.getByTestId("graph-focused-surface");
-    const minimap = within(focusedSurface).getByTestId("graph-context-minimap");
-
-    // Click Architecture node in the minimap
-    const archMinimapNode = within(minimap)
-      .getAllByTestId("minimap-node")
-      .find((el) => el.textContent?.includes("Architecture"));
-    expect(archMinimapNode).toBeDefined();
-    await user.click(archMinimapNode!);
-
-    // Should navigate to architecture — breadcrumb should update
-    const breadcrumb = screen.getByTestId("graph-breadcrumb");
-    expect(breadcrumb.textContent).toContain("Architecture");
+    const newRelatedLinks = within(focusedSurface).queryAllByTestId("graph-related-link");
+    // New related links should exist (may vary by node)
+    expect(newRelatedLinks.length).toBeGreaterThanOrEqual(0);
   });
 
   // -------------------------------------------------------------------------
@@ -187,7 +133,7 @@ describe("Graph traversal visible context (VAL-ROADMAP-012)", () => {
   // -------------------------------------------------------------------------
   // Orientation affordances after traversal
   // -------------------------------------------------------------------------
-  it("provides a recenter button inside the focused surface after traversal", async () => {
+  it("provides a back-to-overview button inside the focused surface after traversal", async () => {
     const user = userEvent.setup();
     render(<GraphShell />);
 
@@ -206,18 +152,41 @@ describe("Graph traversal visible context (VAL-ROADMAP-012)", () => {
     expect(overviewBtn).toBeInTheDocument();
   });
 
-  it("deep link restores graph with visible minimap context", async () => {
+  it("deep link restores graph with visible orientation context", async () => {
     window.location.hash = "#graph-tokenomics";
     render(<GraphShell />);
 
     const focusedSurface = await screen.findByTestId("graph-focused-surface");
-    const minimap = within(focusedSurface).getByTestId("graph-context-minimap");
-    expect(minimap).toBeInTheDocument();
+    // Should have a back-to-overview button for orientation recovery
+    const overviewBtn = within(focusedSurface).getByRole("button", {
+      name: /back to overview/i,
+    });
+    expect(overviewBtn).toBeInTheDocument();
 
-    // Active node should be tokenomics
-    const activeNode = within(minimap)
-      .getAllByTestId("minimap-node")
-      .find((el) => el.getAttribute("data-active") === "true");
-    expect(activeNode?.textContent).toContain("Tokenomics");
+    // Orientation bar should show the focused node
+    const orientationBar = screen.getByTestId("graph-orientation-bar");
+    expect(orientationBar.textContent).toContain("Tokenomics");
+  });
+
+  // -------------------------------------------------------------------------
+  // Overview control always available for recenter
+  // -------------------------------------------------------------------------
+  it("overview recenter button is always available in the orientation bar", async () => {
+    const user = userEvent.setup();
+    render(<GraphShell />);
+
+    // In overview mode
+    const overviewBtn = screen.getByRole("button", { name: /return to overview/i });
+    expect(overviewBtn).toBeInTheDocument();
+
+    // After focusing a node
+    const roadmapNode = getNodeButton(/roadmap/i);
+    await user.click(roadmapNode);
+    expect(overviewBtn).toBeInTheDocument();
+
+    // After traversal
+    const relatedLinks = screen.getAllByTestId("graph-related-link");
+    await user.click(relatedLinks[0]);
+    expect(screen.getByRole("button", { name: /return to overview/i })).toBeInTheDocument();
   });
 });

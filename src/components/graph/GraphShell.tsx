@@ -17,13 +17,14 @@
  * - VAL-ROADMAP-011: Node-first exploration is primary interaction model
  * - VAL-ROADMAP-012: Direct traversal between related nodes
  * - VAL-ROADMAP-013: Major transitions without linear scrolling
- * - VAL-ROADMAP-014: Default state is pure graph workspace with sticky inspector + minimap
+ * - VAL-ROADMAP-014: Default state is pure graph workspace
+ * - VAL-VISUAL-033: Clean graph workspace without chrome clutter
  * - VAL-ROADMAP-015: Guided VC-friendly pitch path through ordered gates
  * - VAL-ROADMAP-017: Discoverable start affordance + resumable with progress cues
  * - VAL-CROSS-014: Investor-path entry from default graph workspace
  */
 
-import React, {
+import {
   useReducer,
   useEffect,
   useCallback,
@@ -424,9 +425,6 @@ export function GraphShell({ surfaces = {} }: GraphShellProps) {
   const activeNodeId = focusedNodeId ?? DEFAULT_GRAPH_NODE;
 
   // Pitch path derived state
-  const currentGate = pitchPath.active
-    ? INVESTOR_PITCH_GATES[pitchPath.currentGateIndex]
-    : null;
   const hasNextGate = pitchPath.active && pitchPath.currentGateIndex < TOTAL_GATES - 1;
   const hasPrevGate = pitchPath.active && pitchPath.currentGateIndex > 0;
   const showResumeAffordance =
@@ -439,10 +437,15 @@ export function GraphShell({ surfaces = {} }: GraphShellProps) {
     <div data-testid="graph-shell" className="space-y-6">
       {/* ---------------------------------------------------------------- */}
       {/* Graph Overview — visual node map (VAL-ROADMAP-001)               */}
+      {/* VAL-VISUAL-033: Clean workspace — one lightweight orientation    */}
+      {/* bar + graph node grid. No competing chrome layers.               */}
       {/* ---------------------------------------------------------------- */}
       <div data-testid="graph-overview" className="relative">
-        {/* Orientation header */}
-        <div className="mb-4 flex items-center justify-between">
+        {/* Single lightweight orientation bar (VAL-VISUAL-033, VAL-ROADMAP-002) */}
+        <div
+          data-testid="graph-orientation-bar"
+          className="mb-4 flex items-center justify-between"
+        >
           <div className="flex items-center gap-3">
             <span className="font-terminal text-xs font-medium uppercase tracking-widest text-accent">
               BETTER Atlas
@@ -517,58 +520,12 @@ export function GraphShell({ surfaces = {} }: GraphShellProps) {
           focusedNodeId={focusedNodeId}
           onNodeSelect={focusNode}
         />
-
-        {/* Persistent minimap / orientation (VAL-ROADMAP-014) — always visible */}
-        <PersistentMinimap
-          nodes={GRAPH_NODES}
-          activeNodeId={activeNodeId}
-          focusedNodeId={focusedNodeId}
-          onNodeSelect={focusNode}
-        />
-      </div>
-
-      {/* ---------------------------------------------------------------- */}
-      {/* Sticky Inspector — persistent detail dock (VAL-ROADMAP-014)     */}
-      {/* ---------------------------------------------------------------- */}
-      <div data-testid="graph-sticky-inspector" className="sticky top-16 z-30">
-        {focusedNode ? (
-          <LiquidMetalCard variant="active" className="px-4 py-2">
-            <div className="flex items-center gap-3">
-              <span className="font-terminal text-accent" aria-hidden="true">
-                {focusedNode.icon}
-              </span>
-              <span className="text-sm font-semibold text-foreground">
-                {focusedNode.label}
-              </span>
-              <MaturityBadge
-                status={focusedNode.dominantStatus}
-                className="text-[10px]"
-              />
-              {currentGate && (
-                <span className="ml-auto font-terminal text-[10px] uppercase tracking-widest text-accent">
-                  Investor Path — Gate {pitchPath.currentGateIndex + 1}/{TOTAL_GATES}
-                </span>
-              )}
-            </div>
-          </LiquidMetalCard>
-        ) : (
-          <LiquidMetalCard className="px-4 py-2">
-            <p className="text-center font-terminal text-xs text-muted">
-              Select a node to inspect · or{" "}
-              <button
-                type="button"
-                onClick={startPitchPath}
-                className="text-accent underline underline-offset-2 hover:text-foreground"
-              >
-                start the investor path
-              </button>
-            </p>
-          </LiquidMetalCard>
-        )}
       </div>
 
       {/* ---------------------------------------------------------------- */}
       {/* Focused Surface (VAL-ROADMAP-011, VAL-ROADMAP-012)              */}
+      {/* VAL-VISUAL-033: Clean focused panel — no nested minimaps,       */}
+      {/* no progress bars, no inspector docks. Just content + traversal. */}
       {/* ---------------------------------------------------------------- */}
       {focusedNode && (
         <LiquidMetalCard
@@ -577,19 +534,7 @@ export function GraphShell({ surfaces = {} }: GraphShellProps) {
           tabIndex={-1}
           variant="active"
         >
-          {/* Pitch path progress bar (VAL-ROADMAP-015, VAL-ROADMAP-017) */}
-          {pitchPath.active && (
-            <InvestorPathProgress
-              currentIndex={pitchPath.currentGateIndex}
-              visitedGates={pitchPath.visitedGates}
-              onGateSelect={(idx) => {
-                const gate = INVESTOR_PITCH_GATES[idx];
-                if (gate) focusNode(gate.graphNodeId);
-              }}
-            />
-          )}
-
-          {/* Focus header with breadcrumb and related nodes */}
+          {/* Focus header with back button, node info, and related nodes */}
           <div className="border-b border-border p-4">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div className="flex items-center gap-3">
@@ -648,14 +593,6 @@ export function GraphShell({ surfaces = {} }: GraphShellProps) {
               </div>
             )}
           </div>
-
-          {/* Graph context minimap — visible orientation frame (VAL-ROADMAP-012) */}
-          <GraphContextMinimap
-            nodes={GRAPH_NODES}
-            activeNodeId={focusedNodeId!}
-            relatedNodeIds={focusedNode.related}
-            onNodeSelect={focusNode}
-          />
 
           {/* Pitch path navigation controls (VAL-ROADMAP-015) */}
           {pitchPath.active && (
@@ -753,135 +690,7 @@ function InvestorPathAffordance({
   );
 }
 
-// ---------------------------------------------------------------------------
-// InvestorPathProgress — Gate progress bar (VAL-ROADMAP-015, VAL-ROADMAP-017)
-// ---------------------------------------------------------------------------
 
-function InvestorPathProgress({
-  currentIndex,
-  visitedGates,
-  onGateSelect,
-}: {
-  currentIndex: number;
-  visitedGates: Set<number>;
-  onGateSelect: (idx: number) => void;
-}) {
-  return (
-    <div
-      data-testid="investor-path-progress"
-      className="flex items-center gap-1 overflow-x-auto border-b border-accent/20 bg-accent/5 px-4 py-2"
-      role="navigation"
-      aria-label="Investor pitch path progress"
-    >
-      <span className="mr-2 shrink-0 font-terminal text-[10px] uppercase tracking-widest text-accent">
-        {currentIndex + 1} of {TOTAL_GATES}
-      </span>
-      {INVESTOR_PITCH_GATES.map((gate, idx) => {
-        const isCurrent = idx === currentIndex;
-        const isVisited = visitedGates.has(idx) && !isCurrent;
-
-        const gateState: "current" | "visited" | "upcoming" = isCurrent
-          ? "current"
-          : isVisited
-            ? "visited"
-            : "upcoming";
-
-        return (
-          <React.Fragment key={gate.id}>
-            {idx > 0 && (
-              <span
-                className={`h-px w-3 shrink-0 ${
-                  isVisited || isCurrent ? "bg-accent/50" : "bg-border"
-                }`}
-                aria-hidden="true"
-              />
-            )}
-            <button
-              type="button"
-              data-testid="investor-gate-indicator"
-              data-state={gateState}
-              onClick={() => onGateSelect(idx)}
-              aria-label={`${gate.label} — gate ${idx + 1}`}
-              aria-current={isCurrent ? "step" : undefined}
-              className={`inline-flex shrink-0 items-center gap-1 rounded px-2 py-0.5 font-terminal text-[10px] transition-colors ${
-                isCurrent
-                  ? "bg-accent/20 text-accent ring-1 ring-accent/40"
-                  : isVisited
-                    ? "bg-accent/10 text-secondary hover:text-foreground"
-                    : "text-muted hover:bg-elevated hover:text-secondary"
-              }`}
-            >
-              <span aria-hidden="true">{gate.icon}</span>
-              <span className="hidden lg:inline">{gate.label}</span>
-            </button>
-          </React.Fragment>
-        );
-      })}
-    </div>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// PersistentMinimap — always-visible orientation cue (VAL-ROADMAP-014)
-// Shows a compact minimap bar below the node grid in both overview and
-// focused states, ensuring users always know where they are.
-// ---------------------------------------------------------------------------
-
-function PersistentMinimap({
-  nodes,
-  activeNodeId,
-  focusedNodeId,
-  onNodeSelect,
-}: {
-  nodes: GraphNode[];
-  activeNodeId: string;
-  focusedNodeId: string | null;
-  onNodeSelect: (nodeId: string) => void;
-}) {
-  return (
-    <div
-      data-testid="graph-persistent-minimap"
-      className="mt-3 flex flex-wrap items-center gap-1 rounded-lg px-3 py-1.5"
-      style={{
-        background: "rgba(255, 255, 255, 0.06)",
-        border: "1px solid rgba(255, 255, 255, 0.12)",
-        backdropFilter: "blur(10px)",
-        WebkitBackdropFilter: "blur(10px)",
-      } as React.CSSProperties}
-      role="navigation"
-      aria-label="Graph position minimap"
-    >
-      <span className="mr-1 font-terminal text-[9px] uppercase tracking-widest text-muted">
-        Map
-      </span>
-      {nodes.map((node) => {
-        const isActive = node.id === activeNodeId;
-        const isFocused = node.id === focusedNodeId;
-
-        return (
-          <button
-            key={node.id}
-            type="button"
-            data-testid="persistent-minimap-node"
-            data-active={isActive ? "true" : "false"}
-            onClick={() => onNodeSelect(node.id)}
-            aria-label={node.label}
-            className={`inline-flex items-center gap-0.5 rounded px-1.5 py-0.5 font-terminal text-[10px] transition-colors ${
-              isFocused
-                ? "bg-accent/20 text-accent ring-1 ring-accent/30"
-                : isActive
-                  ? "bg-accent/10 text-accent"
-                  : "text-muted hover:bg-elevated hover:text-secondary"
-            }`}
-          >
-            <span aria-hidden="true">{node.icon}</span>
-            <span className="hidden md:inline">{node.label}</span>
-          </button>
-        );
-      })}
-    </div>
-  );
-}
 
 // ---------------------------------------------------------------------------
 // GraphNodeMap — Visual node grid with category grouping
@@ -966,68 +775,7 @@ function GraphNodeMap({
   );
 }
 
-// ---------------------------------------------------------------------------
-// GraphContextMinimap — Compact inline graph orientation bar (VAL-ROADMAP-012)
-//
-// Rendered inside the focused surface so it always stays within the viewport
-// when the panel is visible. Highlights the active node, related nodes, and
-// provides click-to-navigate traversal without requiring users to scroll back
-// up to the full overview map.
-// ---------------------------------------------------------------------------
 
-function GraphContextMinimap({
-  nodes,
-  activeNodeId,
-  relatedNodeIds,
-  onNodeSelect,
-}: {
-  nodes: GraphNode[];
-  activeNodeId: string;
-  relatedNodeIds: string[];
-  onNodeSelect: (nodeId: string) => void;
-}) {
-  const relatedSet = new Set(relatedNodeIds);
-
-  return (
-    <div
-      data-testid="graph-context-minimap"
-      className="flex flex-wrap items-center gap-1.5 border-b border-border/50 bg-background/30 px-4 py-2"
-      role="navigation"
-      aria-label="Graph context minimap"
-    >
-      <span className="mr-1 font-terminal text-[10px] uppercase tracking-widest text-muted">
-        Atlas
-      </span>
-      {nodes.map((node) => {
-        const isActive = node.id === activeNodeId;
-        const isRelated = relatedSet.has(node.id);
-
-        return (
-          <button
-            key={node.id}
-            type="button"
-            data-testid="minimap-node"
-            data-active={isActive ? "true" : "false"}
-            data-related={isRelated ? "true" : "false"}
-            onClick={() => onNodeSelect(node.id)}
-            aria-label={node.label}
-            aria-current={isActive ? "true" : undefined}
-            className={`inline-flex items-center gap-1 rounded px-2 py-0.5 font-terminal text-[11px] transition-colors ${
-              isActive
-                ? "bg-accent/20 text-accent ring-1 ring-accent/30"
-                : isRelated
-                  ? "bg-accent/5 text-secondary hover:bg-accent/10 hover:text-foreground"
-                  : "text-muted hover:bg-elevated hover:text-secondary"
-            }`}
-          >
-            <span aria-hidden="true">{node.icon}</span>
-            <span className="hidden sm:inline">{node.label}</span>
-          </button>
-        );
-      })}
-    </div>
-  );
-}
 
 // ---------------------------------------------------------------------------
 // Export for the graph overview map for use in other places

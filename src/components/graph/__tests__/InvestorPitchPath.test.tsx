@@ -4,6 +4,8 @@
  * VAL-ROADMAP-015: Guided pitch path through ordered gates
  * VAL-ROADMAP-017: Discoverable start affordance, resumable with progress cues
  * VAL-CROSS-014: Default graph workspace exposes investor-path entry affordance
+ * VAL-VISUAL-033: Clean graph workspace — no chrome clutter (progress bars,
+ *   sticky inspectors, persistent minimaps removed)
  */
 import React from "react";
 import { render, screen } from "@testing-library/react";
@@ -41,9 +43,9 @@ describe("Investor Pitch Path (VAL-ROADMAP-015)", () => {
     const focusedSurface = screen.getByTestId("graph-focused-surface");
     expect(focusedSurface).toBeInTheDocument();
 
-    // Should show the pitch path progress bar
-    const progressBar = screen.getByTestId("investor-path-progress");
-    expect(progressBar).toBeInTheDocument();
+    // Pitch path navigation (prev/next) should be inside the focused surface
+    const nextBtn = screen.getByTestId("investor-path-next");
+    expect(nextBtn).toBeInTheDocument();
   });
 
   // ------------------------------------------------------------------
@@ -96,20 +98,6 @@ describe("Investor Pitch Path (VAL-ROADMAP-015)", () => {
   });
 
   // ------------------------------------------------------------------
-  // Progress cues show the current gate position
-  // ------------------------------------------------------------------
-  it("shows progress cues indicating current gate position out of total", async () => {
-    const user = userEvent.setup();
-    render(<GraphShell />);
-
-    await user.click(screen.getByTestId("investor-path-start"));
-
-    const progress = screen.getByTestId("investor-path-progress");
-    // Should indicate gate 1 of N
-    expect(progress.textContent).toMatch(/1.*of.*8|1\s*\/\s*8/i);
-  });
-
-  // ------------------------------------------------------------------
   // All 8 gates are traversable in order
   // ------------------------------------------------------------------
   it("allows traversal through all 8 gates in order", async () => {
@@ -142,23 +130,19 @@ describe("Investor Pitch Path (VAL-ROADMAP-015)", () => {
   });
 
   // ------------------------------------------------------------------
-  // Gate indicators show visited/current/upcoming states
+  // Breadcrumb shows the current gate in the orientation bar
   // ------------------------------------------------------------------
-  it("renders gate indicators with visited, current, and upcoming states", async () => {
+  it("shows the current gate label in the orientation breadcrumb", async () => {
     const user = userEvent.setup();
     render(<GraphShell />);
 
     await user.click(screen.getByTestId("investor-path-start"));
 
-    // Should have gate indicators
-    const gateIndicators = screen.getAllByTestId("investor-gate-indicator");
-    expect(gateIndicators.length).toBe(TOTAL_GATES);
-
-    // First gate should be marked as current
-    expect(gateIndicators[0].getAttribute("data-state")).toBe("current");
-
-    // Others should be upcoming
-    expect(gateIndicators[1].getAttribute("data-state")).toBe("upcoming");
+    // Orientation bar should show the current gate label
+    const breadcrumb = screen.getByTestId("graph-breadcrumb");
+    expect(breadcrumb).toBeInTheDocument();
+    // First gate should be "What is BETTER"
+    expect(breadcrumb.textContent).toContain("What is BETTER");
   });
 });
 
@@ -215,9 +199,9 @@ describe("Investor Path Resume Behavior (VAL-ROADMAP-017)", () => {
   });
 
   // ------------------------------------------------------------------
-  // Progress cues show previously visited gates
+  // Resume shows the pitch path controls
   // ------------------------------------------------------------------
-  it("marks previously visited gates as visited in progress cues", async () => {
+  it("shows pitch path controls after resuming", async () => {
     const user = userEvent.setup();
     render(<GraphShell />);
 
@@ -226,34 +210,38 @@ describe("Investor Path Resume Behavior (VAL-ROADMAP-017)", () => {
     await user.click(screen.getByTestId("investor-path-next"));
     await user.click(screen.getByTestId("investor-path-next"));
 
-    const gateIndicators = screen.getAllByTestId("investor-gate-indicator");
-    // Gates 1 and 2 should be visited
-    expect(gateIndicators[0].getAttribute("data-state")).toBe("visited");
-    expect(gateIndicators[1].getAttribute("data-state")).toBe("visited");
-    // Gate 3 should be current
-    expect(gateIndicators[2].getAttribute("data-state")).toBe("current");
+    // Leave the path
+    await user.click(
+      screen.getByRole("button", { name: "Return to overview" })
+    );
+
+    // Resume
+    await user.click(screen.getByTestId("investor-path-resume"));
+
+    // Should have prev and next controls
+    expect(screen.getByTestId("investor-path-prev")).toBeInTheDocument();
+    expect(screen.getByTestId("investor-path-next")).toBeInTheDocument();
   });
 });
 
-describe("Default Graph Workspace (VAL-ROADMAP-014, VAL-CROSS-014)", () => {
+describe("Default Graph Workspace (VAL-ROADMAP-014, VAL-VISUAL-033, VAL-CROSS-014)", () => {
   // ------------------------------------------------------------------
-  // The graph workspace must have a sticky inspector
+  // VAL-VISUAL-033: Clean workspace — single lightweight orientation bar
+  // replaces the old sticky inspector and persistent minimap
   // ------------------------------------------------------------------
-  it("renders a sticky inspector element in the graph shell", () => {
+  it("renders a lightweight orientation bar in the graph shell", () => {
     render(<GraphShell />);
-    const inspector = screen.getByTestId("graph-sticky-inspector");
-    expect(inspector).toBeInTheDocument();
+    const orientationBar = screen.getByTestId("graph-orientation-bar");
+    expect(orientationBar).toBeInTheDocument();
   });
 
   // ------------------------------------------------------------------
-  // The minimap/orientation cue must be always visible, not just
-  // inside the focused surface
+  // The orientation bar serves as the single wayfinding mechanism
   // ------------------------------------------------------------------
-  it("renders a persistent minimap visible in overview mode (no focused node)", () => {
+  it("orientation bar shows overview state by default", () => {
     render(<GraphShell />);
-    // Even without a focused node, there should be an orientation minimap
-    const minimap = screen.getByTestId("graph-persistent-minimap");
-    expect(minimap).toBeInTheDocument();
+    const orientationBar = screen.getByTestId("graph-orientation-bar");
+    expect(orientationBar.textContent).toContain("Overview");
   });
 
   // ------------------------------------------------------------------

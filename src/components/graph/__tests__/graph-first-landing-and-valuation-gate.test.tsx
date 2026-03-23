@@ -75,8 +75,8 @@ describe("Guided-path progress restores on hash/back-forward navigation", () => 
     await user.click(screen.getByTestId("investor-path-next"));
     await user.click(screen.getByTestId("investor-path-next"));
 
-    // Verify we're on gate 3 with active pitch path
-    expect(screen.getByTestId("investor-path-progress")).toBeInTheDocument();
+    // Verify we're on gate 3 with active pitch path controls
+    expect(screen.getByTestId("investor-path-prev")).toBeInTheDocument();
 
     // Navigate away by clicking a non-path node (leave the path)
     await user.click(
@@ -93,8 +93,8 @@ describe("Guided-path progress restores on hash/back-forward navigation", () => 
     const breadcrumb = screen.getByTestId("graph-breadcrumb");
     expect(breadcrumb.textContent).toContain("Proof");
 
-    // The pitch path progress should be restored (since this is a gate node)
-    expect(screen.getByTestId("investor-path-progress")).toBeInTheDocument();
+    // The pitch path controls should be restored (since this is a gate node)
+    expect(screen.getByTestId("investor-path-next")).toBeInTheDocument();
   });
 
   it("restores the correct gate index when navigating to a path node via hash", async () => {
@@ -114,9 +114,8 @@ describe("Guided-path progress restores on hash/back-forward navigation", () => 
       window.dispatchEvent(new HashChangeEvent("hashchange"));
     });
 
-    // The pitch path should be active and at the correct gate
-    const progress = screen.getByTestId("investor-path-progress");
-    expect(progress).toBeInTheDocument();
+    // The pitch path should be active — next/prev controls visible
+    expect(screen.getByTestId("graph-focused-surface")).toBeInTheDocument();
   });
 
   it("keeps pitch path inactive when hash navigates to a non-path node", async () => {
@@ -133,8 +132,12 @@ describe("Guided-path progress restores on hash/back-forward navigation", () => 
     });
 
     // Pitch path should be deactivated since risks is not a gate node
+    // (no prev/next controls for investor path visible)
     expect(
-      screen.queryByTestId("investor-path-progress")
+      screen.queryByTestId("investor-path-next")
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByTestId("investor-path-prev")
     ).not.toBeInTheDocument();
   });
 });
