@@ -1,0 +1,26 @@
+{
+  "featureId": "readability-transparent-liquid-metal-cards-complement-shader",
+  "reviewedAt": "2026-03-23T22:35:48.541007Z",
+  "commitId": "b6c9687f78cdf991e6ea4c778baace5181ce4a8d",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "pass",
+  "codeReview": {
+    "summary": "Pass. The commit updates LiquidMetalCard to the requested 0.04/0.08/0.12 transparency treatment, preserves the 0.38/0.12 cursor-tracking sheen, removes card blur, adds the hover inner glow, and updates LiquidMetalCard tests for the new opacity contract. The ancillary raw card surfaces touched in roadmap/tokenomics/hero chrome were also aligned to the same transparency and border values, and I found no feature-scope implementation defects in the reviewed diff.",
+    "issues": []
+  },
+  "sharedStateObservations": [
+    {
+      "area": "knowledge",
+      "observation": "The mission's shared design references are internally inconsistent on liquid-metal card tokens. Workers currently have multiple sources that disagree about whether card surfaces are 0.10/0.15/0.20 or 0.04/0.08/0.12, which likely explains why this worker edited shared reference docs during a component-focused change.",
+      "evidence": "Mission AGENTS already specifies 0.04/0.12/0.08 and no backdrop blur at /Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/AGENTS.md:133-149. But /Users/test/vision/.factory/library/design-system.md:27-28 and :58 still say 0.10/0.15/0.20, /Users/test/vision/.factory/library/architecture.md:22 still says 0.10 background plus 0.20 border, and even the updated /Users/test/vision/.factory/library/tradebetter-exact-design-reference.md still has stale card values at :187, :728, and :821."
+    },
+    {
+      "area": "skills",
+      "observation": "`frontend-experience-worker` says to read the relevant `.factory/library/*.md` files before making changes, but this session's transcript only shows `.factory/library` access late in the run when the worker started editing the design reference. The handoff still marks `followedProcedure: true`, so either the skill expectations or the compliance reporting are drifting.",
+      "evidence": "The skill requirement is at /Users/test/vision/.factory/skills/frontend-experience-worker/SKILL.md:20. The handoff sets `followedProcedure` to true at /Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/handoffs/2026-03-23T22-29-27-946Z__readability-transparent-liquid-metal-cards-complement-shader__939c660d-08cd-46f6-8a60-095c4ea71d48.json:86. A targeted parse of the session transcript found no `design-system.md` reference, and the first `.factory/library/tradebetter-exact-design-reference.md` occurrence appears only later in the skeleton while the worker was updating docs rather than before the component/test edits."
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "Pass. The reviewed commit implements the requested card-transparency changes correctly and updates the relevant component tests. I found no blocking or non-blocking code defects in the feature diff, but I did note stale/inconsistent shared design guidance and a skill-procedure reporting mismatch around pre-change library review."
+}

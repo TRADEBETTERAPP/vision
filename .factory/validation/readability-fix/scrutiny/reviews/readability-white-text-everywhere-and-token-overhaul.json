@@ -1,0 +1,39 @@
+{
+  "featureId": "readability-white-text-everywhere-and-token-overhaul",
+  "reviewedAt": "2026-03-23T22:34:33Z",
+  "commitId": "5edc93267cf563ad65b6613d429bf2b5629aaa11",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "fail",
+  "codeReview": {
+    "summary": "The commit does most of the requested overhaul correctly: the core text tokens are flipped to white, `body`/`foreground` now resolve to `--text-primary`, hardcoded `text-[#a0a0a0]` classes were removed across the app, MaturityBadge now uses white-opacity hierarchy, and a dedicated regression test was added. But the feature does not fully satisfy its own contract yet. `ScenarioSwitcher` still renders grey placeholder text through `placeholder:text-muted`, which leaves visible non-white text on first load and violates the requirement that `--text-muted` never be used for text. The new enforcement test is also too narrow to catch that regression.",
+    "issues": [
+      {
+        "file": "src/components/tokenomics/ScenarioSwitcher.tsx",
+        "line": 206,
+        "severity": "blocking",
+        "description": "`tokenBalance` and `depositAmount` both default to empty strings (`src/components/tokenomics/ScenarioSwitcher.tsx:85`, `:88`), so the placeholders are visible on initial render. Those two inputs still use `placeholder:text-muted` (`:206`, `:225`), and `globals.css` keeps `--text-muted: #707070` for non-text uses. That means the page still shows grey placeholder text, violating both \"Every text element on the page is white\" and \"--text-muted is NEVER used for text, only borders.\""
+      },
+      {
+        "file": "src/app/__tests__/white-text-everywhere.test.ts",
+        "line": 36,
+        "severity": "non_blocking",
+        "description": "The new regression test only scans for the literal `text-[#a0a0a0]` string (`:36-45`). It does not check `text-muted`, placeholder styling, or any computed text color behavior, so the suite can still pass while visible grey text remains in the UI (as it currently does in `ScenarioSwitcher`)."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "skills",
+      "observation": "The shared frontend validation procedure is missing a reminder that text-color sweeps must include input placeholders / pseudo-elements when a feature says all text must be white. The reviewed worker reported zero grey text after scanning common text tags, but the remaining bug is in `input::placeholder` styling.",
+      "evidence": "`frontend-experience-worker` step 22 in `/Users/test/vision/.factory/skills/frontend-experience-worker/SKILL.md` requires browser validation but does not call out placeholder/pseudo-element text. The handoff at `/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/handoffs/2026-03-23T22-20-35-446Z__readability-white-text-everywhere-and-token-overhaul__3319043f-c4fe-43f6-82d1-9657186e69c7.json` says the browser audit queried only `p, span, a, li, td, th, h1-h6, label, summary` for grey colors, while `src/components/tokenomics/ScenarioSwitcher.tsx:206` and `:225` still use `placeholder:text-muted`."
+    },
+    {
+      "area": "knowledge",
+      "observation": "The shared library is internally inconsistent about whether `--text-muted` is allowed for text. Some docs now say it is border-only, while other reference material still describes it as a muted text token. That contradiction can mislead future workers during text-color audits.",
+      "evidence": "`/Users/test/vision/.factory/library/design-system.md:38` says `--text-muted` is \"Non-interactive dividers/borders ONLY \u2014 never for text\", but `/Users/test/vision/.factory/library/tradebetter-exact-design-reference.md:807` still comments `--text-muted` as `deemphasized`, and `/Users/test/vision/.factory/library/tradebetter-comparison-evidence.md:43` and `:59` still describe it as tradebetter muted text."
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "Fail. The feature is close, but `ScenarioSwitcher` still renders grey placeholder text via `placeholder:text-muted`, so the site does not yet meet the all-white-text contract. The added enforcement test is narrower than the requirement, and shared-state docs still send mixed signals about `--text-muted`."
+}
