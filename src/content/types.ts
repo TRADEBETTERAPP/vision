@@ -399,3 +399,118 @@ export function calculateTotalCostRange(
   const high = phases.reduce((sum, p) => sum + p.costHigh, 0);
   return { low, high };
 }
+
+// ---------------------------------------------------------------------------
+// Execution Plan Model
+// ---------------------------------------------------------------------------
+
+/**
+ * Public confidence label for timing windows.
+ *
+ * - Committed: Firm timeline with allocated resources and active execution
+ * - Planned: Scheduled with a bounded window but subject to dependency resolution
+ * - Directional: Intent is clear but timing depends on external factors or sequencing
+ *
+ * See economics.md for full definitions.
+ */
+export type ConfidenceLabel = "Committed" | "Planned" | "Directional";
+
+export const CONFIDENCE_LABEL_DESCRIPTIONS: Record<ConfidenceLabel, string> = {
+  Committed:
+    "Firm timeline with allocated resources and active execution underway.",
+  Planned:
+    "Scheduled with a bounded window, but subject to dependency resolution.",
+  Directional:
+    "Intent is clear, but timing depends on external factors or sequencing that is not yet resolved.",
+};
+
+/**
+ * A single workstream within an execution plan.
+ */
+export interface Workstream {
+  /** Short label for the workstream */
+  label: string;
+  /** Whether this work is internal (AI-agent-compressible) or external (slower outside constraint) */
+  nature: "internal" | "external";
+  /** Brief description of what this workstream covers */
+  description: string;
+}
+
+/**
+ * A falsifiable proof gate — a concrete, externally observable success criterion.
+ */
+export interface ProofGate {
+  /** Short label for the proof gate */
+  label: string;
+  /** Concrete, externally observable success criterion */
+  criterion: string;
+  /** Source cue for this proof gate */
+  source: SourceCue;
+}
+
+/**
+ * A bounded timing window expressed as a range or dependency-relative window.
+ * Examples: "4–8 weeks after audit completion", "Q3 2026–Q4 2026"
+ */
+export interface TimingWindow {
+  /** Human-readable timing expression (range or dependency-relative) */
+  display: string;
+  /** Optional structured lower bound (ISO date or relative expression) */
+  lowerBound?: string;
+  /** Optional structured upper bound (ISO date or relative expression) */
+  upperBound?: string;
+  /** The main dependency or constraint that could extend this window */
+  mainConstraint?: string;
+}
+
+/**
+ * Per-stage execution plan for a primary roadmap stage.
+ *
+ * Satisfies VAL-ROADMAP-016: Every primary roadmap stage has its own
+ * dedicated execution-plan treatment with workstreams, external dependencies,
+ * falsifiable proof gates, bounded timing windows, and confidence labeling.
+ */
+export interface ExecutionPlan {
+  /** The roadmap node ID this plan belongs to */
+  nodeId: string;
+  /** Public confidence label: Committed / Planned / Directional */
+  confidenceLabel: ConfidenceLabel;
+  /** Main workstreams for this stage */
+  workstreams: Workstream[];
+  /** External dependencies — slower outside constraints */
+  externalDependencies: string[];
+  /** Falsifiable proof gates — concrete, externally observable success criteria */
+  proofGates: ProofGate[];
+  /** Bounded timing window for this stage */
+  timingWindow: TimingWindow;
+  /** Investor-facing summary of why this stage matters */
+  investorSummary: string;
+  /** Source cue for the overall execution plan */
+  source: SourceCue;
+}
+
+/**
+ * Validate that an execution plan has the required structural integrity:
+ * - At least one workstream
+ * - At least one proof gate
+ * - A non-empty timing window
+ * - At least one external dependency or an explicit note that all work is internal
+ * - Workstreams include at least one internal and at least one external entry,
+ *   or the externalDependencies list is non-empty to cover the external constraint requirement
+ */
+export function validateExecutionPlan(plan: ExecutionPlan): boolean {
+  if (plan.workstreams.length === 0) return false;
+  if (plan.proofGates.length === 0) return false;
+  if (!plan.timingWindow.display) return false;
+  if (!plan.investorSummary) return false;
+
+  // Must distinguish internal from external:
+  // Either workstreams include both natures, or externalDependencies is non-empty
+  const hasInternal = plan.workstreams.some((w) => w.nature === "internal");
+  const hasExternal =
+    plan.workstreams.some((w) => w.nature === "external") ||
+    plan.externalDependencies.length > 0;
+  if (!hasInternal || !hasExternal) return false;
+
+  return true;
+}

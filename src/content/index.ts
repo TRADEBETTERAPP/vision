@@ -22,6 +22,11 @@ export type {
   CostBandPhase,
   CostBandModel,
   NarrativeBlock,
+  ConfidenceLabel,
+  Workstream,
+  ProofGate,
+  TimingWindow,
+  ExecutionPlan,
 } from "./types";
 
 export {
@@ -32,9 +37,11 @@ export {
   SCENARIO_DIMENSION_LABELS,
   SCENARIO_LEVEL_LABELS,
   INFRA_SUBSYSTEM_LABELS,
+  CONFIDENCE_LABEL_DESCRIPTIONS,
   validateTierMonotonicity,
   validateProjectionOrdering,
   calculateTotalCostRange,
+  validateExecutionPlan,
 } from "./types";
 
 // Roadmap nodes
@@ -107,3 +114,10 @@ export {
   graphNodeHash,
 } from "./graph-nodes";
 export type { GraphNode } from "./graph-nodes";
+
+// Execution plans
+export {
+  EXECUTION_PLANS,
+  getExecutionPlanForNode,
+  getPrimaryRoadmapStageIds,
+} from "./execution-plans";

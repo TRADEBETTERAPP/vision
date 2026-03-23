@@ -1,8 +1,9 @@
 import type { RoadmapNode } from "@/content/types";
-import { getNodeById } from "@/content";
+import { getNodeById, getExecutionPlanForNode } from "@/content";
 import MaturityBadge from "@/components/MaturityBadge";
 import EvidenceHook from "@/components/EvidenceHook";
 import CaveatFrame from "@/components/CaveatFrame";
+import ExecutionPlanPanel from "./ExecutionPlanPanel";
 
 /**
  * Detail panel for a selected roadmap node.
@@ -10,6 +11,8 @@ import CaveatFrame from "@/components/CaveatFrame";
  * Satisfies:
  * - VAL-ROADMAP-005: Shows title, maturity status, summary, and confidence framing
  * - VAL-ROADMAP-006: Deep-linkable via URL hash
+ * - VAL-ROADMAP-016: Shows per-stage execution plan with workstreams, external
+ *   dependencies, falsifiable proof gates, bounded timing, and confidence labels
  */
 export default function RoadmapNodeDetail({
   node,
@@ -19,6 +22,7 @@ export default function RoadmapNodeDetail({
   onClose: () => void;
 }) {
   const isFutureFacing = node.status !== "live";
+  const executionPlan = getExecutionPlanForNode(node.id);
 
   return (
     <div
@@ -93,6 +97,9 @@ export default function RoadmapNodeDetail({
           className="mt-3"
         />
       )}
+
+      {/* Per-stage execution plan (VAL-ROADMAP-016) */}
+      {executionPlan && <ExecutionPlanPanel plan={executionPlan} />}
     </div>
   );
 }
