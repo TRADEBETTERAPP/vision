@@ -12,24 +12,28 @@ describe("MaturityBadge", () => {
     expect(badge).toHaveAttribute("data-status", status);
   });
 
-  it("renders 'Live' for live status", () => {
+  it("renders 'Live' for live status with a green dot", () => {
     render(<MaturityBadge status="live" />);
     expect(screen.getByText("Live")).toBeInTheDocument();
+    expect(screen.getByTestId("status-dot")).toBeInTheDocument();
   });
 
-  it("renders 'In Progress' for in_progress status", () => {
+  it("renders 'In Progress' for in_progress status without a dot", () => {
     render(<MaturityBadge status="in_progress" />);
     expect(screen.getByText("In Progress")).toBeInTheDocument();
+    expect(screen.queryByTestId("status-dot")).not.toBeInTheDocument();
   });
 
-  it("renders 'Planned' for planned status", () => {
+  it("renders 'Planned' for planned status without a dot", () => {
     render(<MaturityBadge status="planned" />);
     expect(screen.getByText("Planned")).toBeInTheDocument();
+    expect(screen.queryByTestId("status-dot")).not.toBeInTheDocument();
   });
 
-  it("renders 'Speculative' for speculative status", () => {
+  it("renders 'Speculative' for speculative status without a dot", () => {
     render(<MaturityBadge status="speculative" />);
     expect(screen.getByText("Speculative")).toBeInTheDocument();
+    expect(screen.queryByTestId("status-dot")).not.toBeInTheDocument();
   });
 
   it("applies custom className", () => {
