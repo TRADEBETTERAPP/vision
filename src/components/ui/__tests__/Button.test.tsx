@@ -9,28 +9,42 @@ describe("Button", () => {
     render(<Button>Click me</Button>);
     const btn = screen.getByRole("button", { name: "Click me" });
     expect(btn).toBeInTheDocument();
-    expect(btn.className).toContain("bg-accent");
+    // Primary CTA: white bg, square corners (rounded-none)
+    expect(btn.className).toContain("bg-white");
     expect(btn.className).toContain("h-10");
+    expect(btn.className).toContain("rounded-none");
   });
 
   it("renders secondary variant with border styling", () => {
     render(<Button variant="secondary">Secondary</Button>);
     const btn = screen.getByRole("button", { name: "Secondary" });
     expect(btn.className).toContain("border");
-    expect(btn.className).toContain("text-secondary");
+    expect(btn.className).toContain("text-white");
   });
 
   it("renders ghost variant", () => {
     render(<Button variant="ghost">Ghost</Button>);
     const btn = screen.getByRole("button", { name: "Ghost" });
     expect(btn.className).toContain("text-secondary");
-    expect(btn.className).not.toContain("border");
   });
 
   it("renders live variant with green accent", () => {
     render(<Button variant="live">Live Action</Button>);
     const btn = screen.getByRole("button", { name: "Live Action" });
     expect(btn.className).toContain("bg-accent-green");
+  });
+
+  it("has SQUARE corners (0px radius) — tradebetter brutalist style", () => {
+    render(<Button>Square CTA</Button>);
+    const btn = screen.getByRole("button", { name: "Square CTA" });
+    expect(btn.className).toContain("rounded-none");
+  });
+
+  it("has uppercase and tight tracking — tradebetter typography", () => {
+    render(<Button>Typed CTA</Button>);
+    const btn = screen.getByRole("button", { name: "Typed CTA" });
+    expect(btn.className).toContain("uppercase");
+    expect(btn.className).toContain("tracking-");
   });
 
   it("applies small size", () => {

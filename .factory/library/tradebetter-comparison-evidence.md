@@ -26,32 +26,35 @@ these structural changes; this document provides fresh evidence against the curr
 - CTA button (BUY $BETTER): white bg `rgb(255, 255, 255)`, 0px border radius
 
 ### Extracted from BETTER Vision (runtime computed CSS variables)
-- `--bg-primary`: `#0a0a0c` (near-black, slightly cooler to support shader atmosphere)
-- `--bg-secondary`: `#111114`
-- `--bg-surface`: `#18181e`
-- `--bg-elevated`: `#1f1f28`
-- `--bg-raised`: `#272732`
-- `--text-primary`: `#f5f5fa` (near-pure white)
-- `--text-secondary`: `#a0a0b8`
+- `--bg-primary`: `#101010` (exact tradebetter page canvas)
+- `--bg-secondary`: `#191a1d` (exact tradebetter card/panel backgrounds)
+- `--bg-surface`: `#1e1e24`
+- `--bg-elevated`: `#252530`
+- `--bg-raised`: `#2c2c38`
+- `--text-primary`: `#ffffff` (pure white — exact tradebetter match)
+- `--text-secondary`: `#a0a0a0` (exact tradebetter body text gray)
+- `--text-muted`: `#707070` (exact tradebetter mid-gray)
 - `--accent-primary`: `#455eff` (tradebetter electric blue — exact match)
 - `--accent-primary-bright`: `#6b7fff`
 - `--accent-primary-dim`: `#3348cc`
-- `--border-default`: `#1e1e30`
+- `--accent-green`: `#00ff00` (exact tradebetter neon green — status dots only)
+- `--border-default`: `#1e1e28`
 - `--border-accent`: `#455eff40` (40% opacity electric blue)
 
 ### Comparison Table
 
 | Attribute               | tradebetter.app (extracted)       | BETTER Vision (shipped)          | Match |
 |-------------------------|-----------------------------------|----------------------------------|-------|
-| Primary background      | `#101010` (near-black)            | `--bg-primary: #0a0a0c`         | ✅ Near-black, slightly cooler to support shader atmosphere |
-| Surface elevation       | Subtle warm-neutral lifts         | 5-level hierarchy: `#111114` → `#18181e` → `#1f1f28` → `#272732` | ✅ Multi-level tonal hierarchy matching tradebetter depth model |
-| Primary text            | `#ffffff` (pure white headings)   | `--text-primary: #f5f5fa`        | ✅ Near-pure white; reads as crisp white against near-black |
-| Secondary text          | Muted grey (`~#a0a0b0` range)    | `--text-secondary: #a0a0b8`     | ✅ Matched muted grey range |
-| Primary accent          | `#455eff` (electric blue)         | `--accent-primary: #455eff`      | ✅ Exact match — tradebetter electric blue |
-| Accent bright variant   | Brighter blue on hover states     | `--accent-primary-bright: #6b7fff` | ✅ Brighter variant for hover/emphasis |
-| Accent dim variant      | Darker blue in backgrounds        | `--accent-primary-dim: #3348cc`  | ✅ Darker variant for background accents |
-| Green accent (live)     | Green for status/live indicators  | `--accent-green: #00ff88`        | ✅ Bright green for live status |
-| Border default          | Thin dark borders                 | `--border-default: #1e1e30`      | ✅ Near-invisible dark borders |
+| Primary background      | `#101010` (near-black)            | `--bg-primary: #101010`          | ✅ Exact match — tradebetter page canvas |
+| Secondary background    | `#191a1d` (card/panel)            | `--bg-secondary: #191a1d`        | ✅ Exact match — tradebetter card backgrounds |
+| Surface elevation       | Subtle warm-neutral lifts         | 5-level hierarchy: `#191a1d` → `#1e1e24` → `#252530` → `#2c2c38` | ✅ Multi-level tonal hierarchy matching tradebetter depth model |
+| Primary text            | `#ffffff` (pure white headings)   | `--text-primary: #ffffff`        | ✅ Exact match — pure white |
+| Secondary text          | `#a0a0a0` (muted gray)           | `--text-secondary: #a0a0a0`     | ✅ Exact match — tradebetter body text |
+| Muted text              | `#707070` (mid gray)             | `--text-muted: #707070`          | ✅ Exact match — tradebetter mid-gray |
+| Primary accent          | `#455eff` (electric blue)         | `--accent-primary: #455eff`      | ✅ Exact match — atmospheric gradients only |
+| Green accent (live)     | `#00ff00` (neon green)            | `--accent-green: #00ff00`        | ✅ Exact match — status dots only |
+| Competing accents       | None (only green + blue)          | None (warn/danger removed)       | ✅ Only 2 accents — tradebetter restraint |
+| Border default          | Thin dark borders                 | `--border-default: #1e1e28`      | ✅ Near-invisible dark borders |
 | Border accent           | Blue-tinted borders on focus      | `--border-accent: #455eff40`     | ✅ Electric-blue accent borders |
 
 ## 2. Font Stacks — Side-by-Side
@@ -139,9 +142,11 @@ The performance optimization commit (`ad9537a`) added lazy loading and bundle sp
 
 ---
 
-**Conclusion:** The BETTER Vision site maintains concrete tradebetter.app theme parity across
-the updated shell (post hero deduplication and performance optimization). All key theme signals
-are preserved: near-black `#0a0a0c` backgrounds, `#455eff` electric-blue accent, `#f5f5fa`
-near-pure-white primary text, IBM Plex Mono terminal typography, Geist Sans display typography,
-hard-edged module borders, 5-level tonal hierarchy, and consistent application across header,
-hero, graph shell, detail panels, tokenomics, architecture, mobile, and overlay surfaces.
+**Conclusion:** The BETTER Vision site maintains tradebetter-exact theme parity across
+the updated shell. All key theme signals now exactly match tradebetter.app:
+exact `#101010` background, exact `#191a1d` card surfaces, pure white `#ffffff` primary text,
+exact `#a0a0a0` body text, exact `#707070` muted gray, `#455eff` electric-blue for atmospheric
+gradients only, `#00ff00` neon green for status dots only, IBM Plex Mono terminal typography,
+Geist Sans (Helvetica Neue Medium equivalent) display typography with UPPERCASE + -0.06em tracking,
+square 0px-radius CTA buttons with white glow hover, 100-136px section spacing, and all
+competing accent colors (orange, red) removed from the token system.

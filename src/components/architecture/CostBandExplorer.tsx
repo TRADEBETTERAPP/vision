@@ -186,7 +186,7 @@ function PhaseCard({ phase, index }: { phase: CostBandPhase; index: number }) {
 
       {/* Assumption basis */}
       <div className="mb-2" data-testid="assumption-basis">
-        <span className="font-terminal text-xs font-medium uppercase tracking-wider text-accent-warn">
+        <span className="font-terminal text-xs font-medium uppercase tracking-wider text-[#a0a0a0]">
           Assumption Basis
         </span>
         <p className="text-sm text-secondary">{phase.assumptionBasis}</p>

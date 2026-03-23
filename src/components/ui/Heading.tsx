@@ -1,9 +1,11 @@
 /**
  * Heading — typography primitive for section headings in the BETTER design system.
  *
- * Supports a terminal-accented label, main heading, and description.
- * Designed for the tradebetter-led visual hierarchy: bold, compressed,
- * and unmistakably BETTER.
+ * tradebetter-exact heading treatment (VAL-VISUAL-031):
+ * - ALL headings: UPPERCASE, -0.06em tracking, pure white
+ * - Font: Helvetica Neue Medium (shipped as Geist Sans via --font-display)
+ * - Label: IBM Plex Mono, uppercase, tight tracking, accent color
+ * - Description: IBM Plex Mono, #a0a0a0
  */
 import { type HTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
@@ -37,17 +39,17 @@ export function Heading({
       {...props}
     >
       {label && (
-        <p className="mb-2 font-terminal text-xs font-medium uppercase tracking-widest text-accent">
+        <p className="mb-2 font-terminal text-xs font-medium uppercase tracking-[-0.08em] text-accent">
           {label}
         </p>
       )}
-      <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+      <h2 className="font-display text-3xl font-medium uppercase tracking-[-0.06em] text-white sm:text-4xl">
         {title}
       </h2>
       {description && (
         <p
           className={cn(
-            "mt-4 text-lg text-secondary",
+            "mt-4 font-terminal text-lg text-secondary tracking-[-0.04em]",
             align === "center" && "mx-auto max-w-2xl"
           )}
         >

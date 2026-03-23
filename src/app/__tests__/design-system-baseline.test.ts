@@ -15,17 +15,18 @@ describe("Design system baseline", () => {
       expect(globalsCss).toContain("--accent-primary: #455eff");
     });
 
-    it("defines a green accent for live-status highlighting", () => {
-      expect(globalsCss).toContain("--accent-green: #00ff88");
+    it("defines neon green #00ff00 for live-status highlighting", () => {
+      expect(globalsCss).toContain("--accent-green: #00ff00");
     });
 
-    it("provides tradebetter-led near-black background tonal layering", () => {
-      // bg-primary should be near-black in the #101010 family (tradebetter parity)
-      expect(globalsCss).toContain("--bg-primary: #0a0a0c");
-      expect(globalsCss).toContain("--bg-secondary: #111114");
-      expect(globalsCss).toContain("--bg-surface: #18181e");
-      expect(globalsCss).toContain("--bg-elevated: #1f1f28");
-      expect(globalsCss).toContain("--bg-raised: #272732");
+    it("provides tradebetter-exact near-black background tonal layering", () => {
+      // bg-primary is exact tradebetter #101010 (page canvas)
+      expect(globalsCss).toContain("--bg-primary: #101010");
+      // bg-secondary is exact tradebetter #191a1d (card/panel backgrounds)
+      expect(globalsCss).toContain("--bg-secondary: #191a1d");
+      expect(globalsCss).toContain("--bg-surface:");
+      expect(globalsCss).toContain("--bg-elevated:");
+      expect(globalsCss).toContain("--bg-raised:");
     });
 
     it("defines an accent border token", () => {

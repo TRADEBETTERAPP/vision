@@ -199,7 +199,7 @@ export default function FirstVaultPolicy() {
                 {ex.qualifies ? "✓ Qualifies" : "✗ Does not qualify"}
               </span>
               {ex.capped && (
-                <span className="rounded-full bg-accent-warn/10 px-2 py-0.5 font-terminal text-xs text-accent-warn">
+                <span className="rounded-full bg-white/5 px-2 py-0.5 font-terminal text-xs text-[#a0a0a0]">
                   Capped
                 </span>
               )}

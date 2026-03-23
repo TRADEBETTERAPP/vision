@@ -361,7 +361,7 @@ describe("VAL-VISUAL-021: tradebetter parity documented with reference evidence"
     expect(evidence.toLowerCase()).toContain("tradebetter.app");
     // Must include measured values for side-by-side comparison
     expect(evidence).toContain("#455eff");
-    expect(evidence).toContain("#0a0a0c");
+    expect(evidence).toContain("#101010");
     expect(evidence).toContain("IBM Plex Mono");
   });
 });

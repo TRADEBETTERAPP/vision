@@ -13,12 +13,12 @@ export default function CaveatFrame({
 }) {
   return (
     <div
-      className={`rounded border border-accent-warn/20 bg-accent-warn/5 px-3 py-2 ${className}`}
+      className={`rounded border border-white/15 bg-white/5 px-3 py-2 ${className}`}
       role="note"
       aria-label="Confidence and caveat framing"
       data-testid="caveat-frame"
     >
-      <p className="text-xs text-accent-warn">
+      <p className="text-xs text-[#a0a0a0]">
         <span className="mr-1 font-terminal font-semibold">⚠ Caveat:</span>
         {confidence.caveat}
       </p>

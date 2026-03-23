@@ -248,7 +248,7 @@ export default function VaultCapacityModel() {
               className="glass-card p-4"
               data-testid="vault-total-cap"
             >
-              <span className="font-terminal text-xs font-medium uppercase tracking-wider text-accent-warn">
+              <span className="font-terminal text-xs font-medium uppercase tracking-wider text-[#a0a0a0]">
                 Total Vault Cap (Policy)
               </span>
               <div className="mt-1 font-terminal text-lg font-bold text-foreground">
@@ -274,7 +274,7 @@ export default function VaultCapacityModel() {
             <p className="mt-1 text-xs text-muted">
               {estimate.capConstrained ? (
                 <>
-                  <span className="text-accent-warn">Cap-constrained</span> — your modeled share
+                  <span className="text-[#a0a0a0]">Cap-constrained</span> — your modeled share
                   ({formatUsd(estimate.estimatedAllocationHighUsd)}) exceeds the per-staker cap
                   derived from max(V/N, V×{BIDDING_MODEL_PARAMS.perStakerCapRatio * 100}%), so the cap applies.
                 </>
@@ -303,7 +303,7 @@ export default function VaultCapacityModel() {
           Modeled Whale-Vault Assumptions
         </h4>
         <p className="mb-3 text-xs text-secondary">
-          Whale count and stake distribution are <span className="font-semibold text-accent-warn">informational-only context</span> — they do not drive the capacity estimate calculation.
+          Whale count and stake distribution are <span className="font-semibold text-[#a0a0a0]">informational-only context</span> — they do not drive the capacity estimate calculation.
           Only vault capacity feeds directly into the model as a calculation input.
         </p>
         <div className="grid gap-3 sm:grid-cols-3">
@@ -315,7 +315,7 @@ export default function VaultCapacityModel() {
               {WHALE_VAULT_ASSUMPTIONS.assumedWhaleCount} whales
             </span>
             <span
-              className="mt-1 block rounded bg-accent-warn/10 px-1.5 py-0.5 font-terminal text-[10px] font-medium text-accent-warn w-fit"
+              className="mt-1 block rounded bg-white/5 px-1.5 py-0.5 font-terminal text-[10px] font-medium text-[#a0a0a0] w-fit"
               data-testid="assumption-role-informational"
             >
               Informational Only
@@ -349,7 +349,7 @@ export default function VaultCapacityModel() {
           {WHALE_VAULT_ASSUMPTIONS.assumedStakeDistribution}
         </p>
         <span
-          className="mt-1 inline-block rounded bg-accent-warn/10 px-1.5 py-0.5 font-terminal text-[10px] font-medium text-accent-warn"
+          className="mt-1 inline-block rounded bg-white/5 px-1.5 py-0.5 font-terminal text-[10px] font-medium text-[#a0a0a0]"
           data-testid="assumption-role-informational"
         >
           Informational Only

@@ -489,12 +489,12 @@ export function GraphShell({ surfaces = {} }: GraphShellProps) {
         {invalidLink && (
           <div
             data-testid="graph-invalid-link-fallback"
-            className="mb-4 rounded-lg border border-accent-warn/30 bg-accent-warn/5 p-4 text-center"
+            className="mb-4 rounded-lg border border-white/15 bg-white/[0.03] p-4 text-center"
             role="alert"
             ref={fallbackRef}
             tabIndex={-1}
           >
-            <p className="text-sm text-accent-warn">
+            <p className="text-sm text-[#a0a0a0]">
               The graph destination you linked to wasn&apos;t found.
             </p>
             <p className="mt-1 text-xs text-muted">
@@ -503,7 +503,7 @@ export function GraphShell({ surfaces = {} }: GraphShellProps) {
             <button
               type="button"
               onClick={recenter}
-              className="mt-3 inline-flex items-center rounded border border-accent-warn/30 px-4 py-1.5 font-terminal text-xs text-accent-warn transition-colors hover:border-accent-warn hover:text-foreground"
+              className="mt-3 inline-flex items-center rounded border border-white/15 px-4 py-1.5 font-terminal text-xs text-[#a0a0a0] transition-colors hover:border-white/20 hover:text-foreground"
             >
               Reset &amp; Explore
             </button>
@@ -728,7 +728,7 @@ function InvestorPathAffordance({
         type="button"
         data-testid="investor-path-start"
         onClick={onStart}
-        className="inline-flex items-center gap-2 rounded-md border border-accent/30 bg-accent/5 px-4 py-2 font-terminal text-xs font-medium text-accent transition-colors hover:bg-accent/10 hover:text-foreground"
+        className="inline-flex items-center gap-2 rounded-none border border-white/20 bg-white/5 px-4 py-2 font-terminal text-xs font-medium uppercase tracking-[-0.08em] text-white transition-colors hover:bg-white/10"
       >
         <span aria-hidden="true">▶</span>
         Investor Pitch Path
@@ -739,7 +739,7 @@ function InvestorPathAffordance({
           type="button"
           data-testid="investor-path-resume"
           onClick={onResume}
-          className="inline-flex items-center gap-2 rounded-md border border-accent/20 px-4 py-2 font-terminal text-xs text-secondary transition-colors hover:border-accent hover:text-foreground"
+          className="inline-flex items-center gap-2 rounded-none border border-white/15 px-4 py-2 font-terminal text-xs uppercase tracking-[-0.08em] text-secondary transition-colors hover:border-white/30 hover:text-foreground"
         >
           <span aria-hidden="true">↩</span>
           Resume at &ldquo;{resumeGate.label}&rdquo;

@@ -151,13 +151,13 @@ export default function ValuationCorridors() {
 
               {/* Proof gates */}
               <div className="mb-3">
-                <span className="font-terminal text-xs font-medium uppercase tracking-wider text-accent-warn">
+                <span className="font-terminal text-xs font-medium uppercase tracking-wider text-[#a0a0a0]">
                   Proof Gates Required
                 </span>
                 <ul className="mt-1 space-y-1" data-testid="corridor-proof-gates">
                   {corridor.proofGates.map((gate, idx) => (
                     <li key={idx} className="flex items-start gap-2 text-sm text-secondary">
-                      <span className="mt-1 text-accent-warn">▸</span>
+                      <span className="mt-1 text-[#a0a0a0]">▸</span>
                       <span>{gate}</span>
                     </li>
                   ))}

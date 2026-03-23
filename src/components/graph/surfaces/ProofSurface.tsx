@@ -40,7 +40,7 @@ export function ProofSurface() {
           href="https://docs.tradebetter.app"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex h-10 items-center justify-center rounded-md bg-accent px-6 text-sm font-semibold text-background transition-colors hover:bg-accent-bright"
+          className="inline-flex h-10 items-center justify-center rounded-none bg-white px-6 font-terminal text-sm font-semibold uppercase tracking-[-0.08em] text-[#101010] transition-shadow hover:shadow-[0px_0px_16px_0px_rgba(255,255,255,0.75)]"
         >
           Read the Docs ↗
         </a>

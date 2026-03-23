@@ -1,10 +1,16 @@
 import { MATURITY_LABELS, type MaturityStatus } from "@/content";
 
+/**
+ * Monochrome + green-only status styling (tradebetter-exact design atoms).
+ * Live = green accent. All other states = grayscale only.
+ * The detailed badge rework is in the next feature; this removes competing
+ * accent colors from the token system per VAL-VISUAL-031.
+ */
 const STATUS_STYLES: Record<MaturityStatus, string> = {
   live: "bg-accent-green/15 text-accent-green border-accent-green/30",
-  in_progress: "bg-accent/15 text-accent border-accent/30",
-  planned: "bg-accent-warn/15 text-accent-warn border-accent-warn/30",
-  speculative: "bg-accent-danger/15 text-accent-danger border-accent-danger/30",
+  in_progress: "bg-white/5 text-white border-white/20",
+  planned: "bg-white/5 text-[#a0a0a0] border-white/15",
+  speculative: "bg-white/5 text-[#707070] border-white/10",
 };
 
 /**

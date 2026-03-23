@@ -382,12 +382,12 @@ export default function RoadmapAtlas() {
       {invalidDeepLink && (
         <div
           data-testid="roadmap-invalid-link-fallback"
-          className="rounded-lg border border-accent-warn/30 bg-accent-warn/5 p-4 text-center"
+          className="rounded-lg border border-white/15 bg-white/[0.03] p-4 text-center"
           role="alert"
           ref={fallbackRef}
           tabIndex={-1}
         >
-          <p className="text-sm text-accent-warn">
+          <p className="text-sm text-[#a0a0a0]">
             The roadmap node you linked to wasn&apos;t found. It may have been
             renamed or removed.
           </p>
@@ -397,7 +397,7 @@ export default function RoadmapAtlas() {
           <button
             type="button"
             onClick={collapseAll}
-            className="mt-3 inline-flex items-center rounded border border-accent-warn/30 px-4 py-1.5 font-terminal text-xs text-accent-warn transition-colors hover:border-accent-warn hover:text-foreground"
+            className="mt-3 inline-flex items-center rounded border border-white/15 px-4 py-1.5 font-terminal text-xs text-[#a0a0a0] transition-colors hover:border-white/20 hover:text-foreground"
           >
             Reset &amp; Explore Roadmap
           </button>
@@ -481,13 +481,13 @@ export default function RoadmapAtlas() {
                       ))}
                     {nodes.some((n) => n.status === "in_progress") && (
                       <span
-                        className="h-2 w-2 rounded-full bg-accent-secondary"
+                        className="h-2 w-2 rounded-full bg-[#e6e6e6]"
                         title="Has in-progress items"
                       />
                     )}
                     {nodes.some((n) => n.status === "planned") && (
                       <span
-                        className="h-2 w-2 rounded-full bg-accent-warn"
+                        className="h-2 w-2 rounded-full bg-[#a0a0a0]"
                         title="Has planned items"
                       />
                     )}

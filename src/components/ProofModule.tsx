@@ -65,7 +65,7 @@ export default function ProofModule() {
         <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
           <a
             href="#graph-roadmap"
-            className="inline-flex h-12 items-center justify-center rounded-md bg-accent px-8 text-sm font-semibold text-background transition-colors hover:bg-accent-bright"
+            className="inline-flex h-12 items-center justify-center rounded-none bg-white px-8 font-terminal text-sm font-semibold uppercase tracking-[-0.08em] text-[#101010] transition-shadow hover:shadow-[0px_0px_16px_0px_rgba(255,255,255,0.75)]"
             data-testid="proof-cta-graph-explore"
           >
             Explore the BETTER Atlas →
@@ -74,14 +74,14 @@ export default function ProofModule() {
             href="https://docs.tradebetter.app"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex h-12 items-center justify-center rounded-md border border-border px-8 text-sm font-medium text-secondary transition-colors hover:border-accent hover:text-foreground"
+            className="inline-flex h-12 items-center justify-center rounded-none border border-white px-8 font-terminal text-sm font-medium uppercase tracking-[-0.08em] text-white transition-colors hover:bg-white/10"
             data-testid="proof-cta-primary"
           >
             Read the Docs ↗
           </a>
           <a
             href="#graph-live-now"
-            className="inline-flex h-12 items-center justify-center rounded-md border border-border px-8 text-sm font-medium text-secondary transition-colors hover:border-accent hover:text-foreground"
+            className="inline-flex h-12 items-center justify-center rounded-none border border-white px-8 font-terminal text-sm font-medium uppercase tracking-[-0.08em] text-white transition-colors hover:bg-white/10"
             data-testid="proof-cta-secondary"
           >
             See Full Live Scope

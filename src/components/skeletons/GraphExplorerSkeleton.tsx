@@ -28,7 +28,7 @@ export function GraphExplorerSkeleton() {
 
       {/* Investor path affordance skeleton */}
       <div className="flex items-center gap-3">
-        <div className="h-9 w-44 rounded-md border border-accent/10 bg-accent/5" />
+        <div className="h-9 w-44 rounded-none border border-white/10 bg-white/5" />
       </div>
 
       {/* Node grid skeleton — 4-column grid matching GraphNodeMap */}

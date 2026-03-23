@@ -87,7 +87,7 @@ export default function ScarcityExplainer() {
             <h4 className="mb-2 font-semibold text-foreground">{rule.title}</h4>
             <div className="space-y-2">
               <div>
-                <span className="font-terminal text-xs font-medium uppercase tracking-wider text-accent-warn">
+                <span className="font-terminal text-xs font-medium uppercase tracking-wider text-[#a0a0a0]">
                   Scenario
                 </span>
                 <p className="mt-0.5 text-sm text-secondary">{rule.scenario}</p>

@@ -11,16 +11,16 @@ describe("Section", () => {
     expect(el.tagName).toBe("SECTION");
   });
 
-  it("applies default spacing (py-24)", () => {
+  it("applies default spacing (100px — tradebetter section spacing)", () => {
     render(<Section data-testid="sec">Content</Section>);
     const el = screen.getByTestId("sec");
-    expect(el.className).toContain("py-24");
+    expect(el.className).toContain("py-[100px]");
   });
 
-  it("applies compact spacing (py-16)", () => {
+  it("applies compact spacing (80px)", () => {
     render(<Section spacing="compact" data-testid="sec">Compact</Section>);
     const el = screen.getByTestId("sec");
-    expect(el.className).toContain("py-16");
+    expect(el.className).toContain("py-[80px]");
   });
 
   it("applies hero spacing (py-0)", () => {

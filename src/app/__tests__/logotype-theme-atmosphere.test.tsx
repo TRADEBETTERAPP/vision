@@ -98,9 +98,9 @@ describe("tradebetter theme parity (VAL-VISUAL-000, VAL-VISUAL-021)", () => {
   const globalsPath = path.resolve(__dirname, "../globals.css");
   const globalsCss = fs.readFileSync(globalsPath, "utf-8");
 
-  it("uses near-black foundation from tradebetter (#101010 family)", () => {
-    // Background should be in the near-black range
-    expect(globalsCss).toContain("--bg-primary: #0a0a0c");
+  it("uses exact tradebetter #101010 as the primary background", () => {
+    // Background is exact tradebetter page canvas color
+    expect(globalsCss).toContain("--bg-primary: #101010");
   });
 
   it("uses electric-blue emphasis from tradebetter (#455eff family)", () => {

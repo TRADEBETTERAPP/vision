@@ -15,12 +15,14 @@ const sectionVariants = cva(
   {
     variants: {
       spacing: {
-        /** Standard page section spacing */
-        default: "py-24",
-        /** Tighter spacing for secondary / legend sections */
-        compact: "py-16",
+        /** Standard page section spacing — tradebetter 100px (py-[100px]) */
+        default: "py-[100px]",
+        /** Tighter spacing for secondary / legend sections — 80px */
+        compact: "py-[80px]",
         /** Hero-level generous spacing */
         hero: "py-0",
+        /** Large section spacing — tradebetter 136px */
+        large: "py-[136px]",
       },
       container: {
         /** Standard content width */

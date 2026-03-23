@@ -1,11 +1,13 @@
 /**
  * Button — CVA-based button primitive for the BETTER design system.
  *
- * Variants:
- * - `primary`: BETTER blue filled button (dominant CTA)
- * - `secondary`: border-only button for secondary actions
- * - `ghost`: minimal-chrome button for tertiary / nav actions
- * - `live`: green accent button for live-destination CTAs
+ * tradebetter-exact CTA styling (VAL-VISUAL-031):
+ * - ALL CTAs are SQUARE: border-radius: 0px (brutalist, no rounded corners)
+ * - Monospace text (IBM Plex Mono), UPPERCASE, -0.08em tracking
+ * - Primary: solid white bg, dark text, white glow on hover
+ * - Secondary: transparent bg, white border, no glow
+ * - Ghost: minimal-chrome for tertiary / nav actions
+ * - Live: green-accented for live-destination CTAs
  *
  * Sizes: `sm`, `md`, `lg`
  */
@@ -14,24 +16,24 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  /* base */
-  "inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50",
+  /* base — SQUARE corners (0px radius), monospace, uppercase, tight tracking */
+  "inline-flex items-center justify-center font-terminal font-medium uppercase tracking-[-0.08em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 rounded-none",
   {
     variants: {
       variant: {
         primary:
-          "bg-accent text-background hover:bg-accent-bright font-semibold",
+          "bg-white text-[#101010] hover:shadow-[0px_0px_16px_0px_rgba(255,255,255,0.75)] font-semibold",
         secondary:
-          "border border-border text-secondary hover:border-accent hover:text-foreground",
+          "border border-white text-white hover:bg-white/10",
         ghost:
           "text-secondary hover:text-foreground hover:bg-surface",
         live:
-          "bg-accent-green text-background hover:bg-accent-green/90 font-semibold",
+          "bg-accent-green text-[#101010] hover:bg-accent-green/90 font-semibold",
       },
       size: {
-        sm: "h-8 rounded-md px-3 text-xs",
-        md: "h-10 rounded-md px-5 text-sm",
-        lg: "h-12 rounded-md px-8 text-sm",
+        sm: "h-8 px-3 text-xs",
+        md: "h-10 px-5 text-sm",
+        lg: "h-12 px-8 text-sm",
       },
     },
     defaultVariants: {

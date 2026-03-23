@@ -100,14 +100,14 @@ export function CompactBrandBand() {
       <div className="flex flex-col items-center gap-2 sm:flex-row sm:justify-center">
         <a
           href="#graph-proof"
-          className="inline-flex h-10 items-center justify-center rounded-md bg-accent px-6 text-sm font-semibold text-background transition-colors hover:bg-accent-bright"
+          className="inline-flex h-10 items-center justify-center rounded-none bg-white px-6 font-terminal text-sm font-semibold uppercase tracking-[-0.08em] text-[#101010] transition-shadow hover:shadow-[0px_0px_16px_0px_rgba(255,255,255,0.75)]"
           data-testid="cta-primary"
         >
           See What&apos;s Live
         </a>
         <a
           href="#graph-roadmap"
-          className="inline-flex h-10 items-center justify-center rounded-md border border-border px-6 text-sm font-medium text-secondary transition-colors hover:border-accent hover:text-foreground"
+          className="inline-flex h-10 items-center justify-center rounded-none border border-white px-6 font-terminal text-sm font-medium uppercase tracking-[-0.08em] text-white transition-colors hover:bg-white/10"
           data-testid="cta-secondary"
         >
           Explore the Atlas

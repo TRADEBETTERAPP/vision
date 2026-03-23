@@ -112,7 +112,7 @@ export default function SupplyAllocation() {
                     ✓ Reconciled
                   </span>
                 ) : (
-                  <span className="font-terminal text-xs text-accent-danger">
+                  <span className="font-terminal text-xs text-[#707070]">
                     ✗ Mismatch
                   </span>
                 )}
@@ -126,13 +126,13 @@ export default function SupplyAllocation() {
       <div className="mt-4 flex h-3 w-full overflow-hidden rounded-full bg-surface" data-testid="allocation-bar">
         {TOKEN_ALLOCATIONS.map((alloc, i) => {
           const colors = [
-            "bg-accent",
-            "bg-accent-secondary",
-            "bg-accent-warn",
-            "bg-[#8b5cf6]",
-            "bg-accent-danger",
-            "bg-[#06b6d4]",
-            "bg-[#f59e0b]",
+            "bg-white",
+            "bg-[#c0c0c0]",
+            "bg-[#a0a0a0]",
+            "bg-[#808080]",
+            "bg-[#606060]",
+            "bg-[#404040]",
+            "bg-[#303030]",
           ];
           return (
             <div
@@ -147,13 +147,13 @@ export default function SupplyAllocation() {
       <div className="mt-2 flex flex-wrap gap-3 text-xs text-muted">
         {TOKEN_ALLOCATIONS.map((alloc, i) => {
           const dotColors = [
-            "bg-accent",
-            "bg-accent-secondary",
-            "bg-accent-warn",
-            "bg-[#8b5cf6]",
-            "bg-accent-danger",
-            "bg-[#06b6d4]",
-            "bg-[#f59e0b]",
+            "bg-white",
+            "bg-[#c0c0c0]",
+            "bg-[#a0a0a0]",
+            "bg-[#808080]",
+            "bg-[#606060]",
+            "bg-[#404040]",
+            "bg-[#303030]",
           ];
           return (
             <span key={alloc.label} className="flex items-center gap-1">

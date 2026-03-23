@@ -29,9 +29,9 @@ function returnTypeBadgeClass(returnType: string): string {
     case "direct_revenue":
       return "bg-accent/10 text-accent";
     case "ecosystem_value":
-      return "bg-accent-secondary/10 text-accent-secondary";
+      return "bg-white/[0.06] text-[#e6e6e6]";
     case "hybrid":
-      return "bg-accent-warn/10 text-accent-warn";
+      return "bg-white/5 text-[#a0a0a0]";
     default:
       return "bg-surface text-muted";
   }

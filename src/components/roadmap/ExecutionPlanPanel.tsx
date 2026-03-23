@@ -97,7 +97,7 @@ export default function ExecutionPlanPanel({ plan }: { plan: ExecutionPlan }) {
         <div data-testid="execution-plan-external-workstreams">
           <h5 className="mb-2 flex items-center gap-2 font-terminal text-[10px] font-medium uppercase tracking-widest text-secondary">
             <span
-              className="inline-block h-2 w-2 rounded-full bg-accent-warn"
+              className="inline-block h-2 w-2 rounded-full bg-[#a0a0a0]"
               aria-hidden="true"
             />
             External Workstreams
@@ -109,7 +109,7 @@ export default function ExecutionPlanPanel({ plan }: { plan: ExecutionPlan }) {
             {externalWorkstreams.map((ws, i) => (
               <li
                 key={i}
-                className="rounded border border-accent-warn/20 bg-accent-warn/5 px-3 py-2"
+                className="rounded border border-white/10 bg-white/[0.03] px-3 py-2"
               >
                 <span className="text-xs font-semibold text-foreground">
                   {ws.label}
@@ -133,7 +133,7 @@ export default function ExecutionPlanPanel({ plan }: { plan: ExecutionPlan }) {
             {plan.externalDependencies.map((dep, i) => (
               <li key={i} className="flex items-start gap-2 text-xs text-muted">
                 <span
-                  className="mt-1 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-accent-warn/60"
+                  className="mt-1 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-[#a0a0a0]/60"
                   aria-hidden="true"
                 />
                 {dep}

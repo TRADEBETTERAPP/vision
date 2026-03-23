@@ -55,7 +55,7 @@ function RiskItem({ title, body }: { title: string; body: string }) {
       className="p-4"
       data-testid="risk-item"
     >
-      <h3 className="mb-1 text-sm font-semibold text-accent-warn">{title}</h3>
+      <h3 className="mb-1 text-sm font-semibold text-[#a0a0a0]">{title}</h3>
       <p className="text-sm text-secondary">{body}</p>
     </LiquidMetalCard>
   );

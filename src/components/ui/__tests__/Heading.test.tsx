@@ -5,17 +5,21 @@ import { render, screen } from "@testing-library/react";
 import { Heading } from "@/components/ui";
 
 describe("Heading", () => {
-  it("renders title as an h2 element", () => {
+  it("renders title as an h2 element with uppercase tracking", () => {
     render(<Heading title="Test Title" />);
-    expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent(
-      "Test Title"
-    );
+    const heading = screen.getByRole("heading", { level: 2 });
+    expect(heading).toHaveTextContent("Test Title");
+    // tradebetter-exact: UPPERCASE, -0.06em tracking, pure white
+    expect(heading.className).toContain("uppercase");
+    expect(heading.className).toContain("tracking-");
+    expect(heading.className).toContain("text-white");
+    expect(heading.className).toContain("font-display");
   });
 
   it("renders label when provided", () => {
     render(<Heading label="Section" title="Title" />);
     expect(screen.getByText("Section")).toBeInTheDocument();
-    // Label should have terminal styling
+    // Label should have terminal styling — monospace, uppercase, tight tracking
     expect(screen.getByText("Section").className).toContain("font-terminal");
     expect(screen.getByText("Section").className).toContain("text-accent");
     expect(screen.getByText("Section").className).toContain("uppercase");

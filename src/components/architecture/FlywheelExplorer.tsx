@@ -144,10 +144,10 @@ const FLYWHEEL_NODES: FlywheelNode[] = [
 
 // Category styling
 const CATEGORY_STYLES: Record<string, { bg: string; text: string; label: string }> = {
-  infrastructure: { bg: "bg-accent-secondary/10 border-accent-secondary/30", text: "text-accent-secondary", label: "Infrastructure" },
+  infrastructure: { bg: "bg-white/[0.06] border-white/15", text: "text-[#e6e6e6]", label: "Infrastructure" },
   product: { bg: "bg-accent/10 border-accent/30", text: "text-accent", label: "Product" },
-  revenue: { bg: "bg-accent-warn/10 border-accent-warn/30", text: "text-accent-warn", label: "Revenue" },
-  token: { bg: "bg-accent-danger/10 border-accent-danger/30", text: "text-accent-danger", label: "Token" },
+  revenue: { bg: "bg-white/5 border-white/15", text: "text-[#a0a0a0]", label: "Revenue" },
+  token: { bg: "bg-white/[0.03] border-white/10", text: "text-[#707070]", label: "Token" },
 };
 
 function getNodeTitle(id: string): string {
@@ -274,8 +274,8 @@ export default function FlywheelExplorer() {
             );
             if (feedsFrom.length === 0) return null;
             return (
-              <div className="mt-2 rounded border border-accent-secondary/10 bg-accent-secondary/5 px-3 py-2">
-                <p className="text-xs text-accent-secondary">
+              <div className="mt-2 rounded border border-white/[0.06] bg-white/[0.03] px-3 py-2">
+                <p className="text-xs text-[#e6e6e6]">
                   <span className="mr-1 font-terminal font-semibold">
                     Fed by:
                   </span>
