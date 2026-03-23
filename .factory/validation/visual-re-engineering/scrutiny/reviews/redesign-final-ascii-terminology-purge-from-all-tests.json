@@ -1,0 +1,26 @@
+{
+  "featureId": "redesign-final-ascii-terminology-purge-from-all-tests",
+  "reviewedAt": "2026-03-23T16:24:13Z",
+  "commitId": "798196d",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "pass",
+  "codeReview": {
+    "summary": "Pass. I reviewed both the original failed feature diff (`f9e5671`) and the fix diff (`798196d`), then checked the current test sources. The original rerun left the round-3 blocker in place by keeping ASCII/Hermes wording and negative ASCII assertions in the flagged suites; the fix rewrites those suites to positive approved-stack checks instead. For example, `src/components/visual/__tests__/visual-016-approved-stack.test.tsx:49-167`, `src/components/visual/__tests__/immersive-visual-language.test.tsx:221-268`, `src/app/__tests__/sitewide-atmosphere-and-overlay-consistency.test.tsx:59-109`, and `src/app/__tests__/logotype-theme-atmosphere.test.tsx:132-136` now assert approved shader/film-grain components or files rather than absent ASCII/Hermes layers. `src/components/__tests__/liquid-metal-everywhere.test.tsx:57-92` also now covers `graph/GraphShell.tsx` and `graph/surfaces/EvidenceSurface.tsx` as required. A repo-wide grep across `**/*.test.{ts,tsx,js,jsx}` found no remaining `ASCII`, `Hermes`, `AsciiCanvasRenderer`, or `AsciiBackground` matches; the only case-insensitive `ascii` hit is `src/components/visual/__tests__/film-grain-gif-texture.test.tsx:80` using `Buffer#toString(\"ascii\")` to decode a GIF header, which is unrelated to the deleted visual system. This adequately resolves the prior round-3 blocker.",
+    "issues": []
+  },
+  "sharedStateObservations": [
+    {
+      "area": "knowledge",
+      "observation": "Shared library docs still describe Hermes/ASCII browser-validation expectations even though the mission guidance and frontend skill now say the ASCII system is permanently removed. That stale shared-state wording likely contributed to repeated cleanup churn around deprecated ASCII terminology.",
+      "evidence": "Mission AGENTS says the ASCII layer system is permanently removed and the approved stack is Radiant shader + film grain (`/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/AGENTS.md:37-38,115-126`), and the frontend skill repeats that (`/Users/test/vision/.factory/skills/frontend-experience-worker/SKILL.md:24-25`). But `/Users/test/vision/.factory/library/user-testing.md:16-17,48,52` still asks reviewers to validate Hermes ASCII-video resources and shader/ascii layers, and `/Users/test/vision/.factory/library/environment.md:25` still says the approved path is a real-time ASCII canvas renderer."
+    },
+    {
+      "area": "skills",
+      "observation": "The frontend worker skill still treats failing-test-first and browser validation as blanket requirements, even for pure test-cleanup features with no runtime code change. This fix worker had to mark justified deviations for both, suggesting the skill should explicitly carve out test-only cleanup work.",
+      "evidence": "`/Users/test/vision/.factory/skills/frontend-experience-worker/SKILL.md:33,41-42` requires failing tests first and `agent-browser` validation. In the fix handoff, the worker reports `followedProcedure: false` specifically because this feature only rewrote test assertions and did not change rendered behavior (`/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/handoffs/2026-03-23T16-18-49-452Z__redesign-final-ascii-terminology-purge-from-all-tests__8ab847f1-83a4-4cac-8cc8-98a85531fcde.json:58-69`)."
+    }
+  ],
+  "addressesFailureFrom": "/Users/test/vision/.factory/validation/visual-re-engineering/scrutiny/reviews/redesign-purge-ascii-test-terminology-cleanup.json",
+  "summary": "Pass. The fix removes the exact ASCII/Hermes wording and negative assertions that caused the round-3 failure in the flagged component and app test suites, replaces them with positive approved-stack checks, and expands `liquid-metal-everywhere.test.tsx` coverage to `GraphShell` and `EvidenceSurface`. The prior blocker is resolved."
+}

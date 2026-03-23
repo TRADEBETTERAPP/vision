@@ -1,7 +1,7 @@
 {
   "milestone": "visual-re-engineering",
-  "round": 3,
-  "status": "fail",
+  "round": 4,
+  "status": "pass",
   "validatorsRun": {
     "test": {
       "passed": true,
@@ -20,57 +20,32 @@
     }
   },
   "reviewsSummary": {
-    "total": 4,
-    "passed": 3,
-    "failed": 1,
-    "failedFeatures": [
-      "redesign-purge-ascii-test-terminology-cleanup"
-    ]
+    "total": 1,
+    "passed": 1,
+    "failed": 0,
+    "failedFeatures": []
   },
-  "blockingIssues": [
-    {
-      "featureId": "redesign-purge-ascii-test-terminology-cleanup",
-      "severity": "blocking",
-      "description": "ASCII/Hermes terminology and ASCII-specific negative assertions still remain across component and app visual test suites, so the rerun did not complete the required terminology purge to the approved single-shader-plus-film-grain framing."
-    }
-  ],
+  "blockingIssues": [],
   "appliedUpdates": [
     {
       "target": "library",
-      "description": "Updated `.factory/library/design-system.md` to remove stale green-glow guidance and clarify that `#00ff00` is status-signal-only with no glow utilities or green fills.",
-      "sourceFeature": "redesign-purge-forbidden-blue-green-css-utilities"
+      "description": "Updated `.factory/library/user-testing.md` to remove stale Hermes/ASCII validation expectations and align immersive validation guidance with the approved shader-plus-film-grain stack.",
+      "sourceFeature": "redesign-final-ascii-terminology-purge-from-all-tests"
     },
     {
       "target": "library",
-      "description": "Updated `.factory/library/tradebetter-exact-design-reference.md` to tighten the approved film-grain wording to a vendored animated GIF and to note that BETTER does not carry over a green glow token.",
-      "sourceFeature": "redesign-film-grain-vendored-gif-texture"
-    },
-    {
-      "target": "library",
-      "description": "Updated `.factory/library/tradebetter-comparison-evidence.md` to remove stale blue-border/CTA implications and old ASCII or scanline comparison notes so the shared reference now matches the approved shader-plus-film-grain stack and monochrome UI rules.",
-      "sourceFeature": "redesign-purge-forbidden-blue-green-css-utilities"
+      "description": "Updated `.factory/library/environment.md` to remove outdated Hermes/ASCII environment notes and record the current approved visual stack as one Radiant-derived shader plus a vendored film-grain GIF overlay.",
+      "sourceFeature": "redesign-final-ascii-terminology-purge-from-all-tests"
     }
   ],
   "suggestedGuidanceUpdates": [
     {
       "target": "frontend-experience-worker skill",
-      "suggestion": "Only allow `followedProcedure=true` when the transcript shows the required library/reference reads, failing-test-first evidence when applicable, and browser validation for rendered user-facing changes; otherwise require an explicit deviation entry.",
-      "evidence": "All four rerun reviews noted at least one mismatch between claimed skill adherence and transcript evidence (missing library reads, missing failing-test-first evidence, or missing/incomplete browser validation) while handoffs still marked `followedProcedure=true`.",
+      "suggestion": "Add an explicit exception path for test-only cleanup features so failing-test-first and browser-validation requirements only apply when the feature changes rendered user behavior or runtime code.",
+      "evidence": "The passing review for `redesign-final-ascii-terminology-purge-from-all-tests` found the worker had to mark justified deviations because the feature only rewrote test assertions and terminology, yet the skill still requires failing-test-first plus `agent-browser` validation for all frontend tasks.",
       "isSystemic": true
-    },
-    {
-      "target": "AGENTS.md",
-      "suggestion": "When a cleanup feature says to remove deprecated terminology or references, state explicitly that the purge includes negative assertions/comments in both component-level and app-level test suites, not only shipped runtime code.",
-      "evidence": "The remaining blocking failure in `redesign-purge-ascii-test-terminology-cleanup` came from stale ASCII/Hermes wording and negative assertions surviving in `src/components/visual/__tests__` and `src/app/__tests__` after the worker only replaced one headline test file.",
-      "isSystemic": false
-    },
-    {
-      "target": "AGENTS.md",
-      "suggestion": "Reconcile the liquid-metal card blur rule across mission guidance, feature briefs, and the shared `LiquidMetalCard` implementation so workers are not told both to use blur and to avoid backdrop blur.",
-      "evidence": "The passing card-migration review still recorded that mission AGENTS and library docs say `No backdrop-blur` while `src/components/LiquidMetalCard.tsx` continues to hard-code `blur(10px)`, causing recurring review noise across visual card features.",
-      "isSystemic": false
     }
   ],
   "rejectedObservations": [],
-  "previousRound": ".factory/validation/visual-re-engineering/scrutiny/synthesis.round2.json"
+  "previousRound": ".factory/validation/visual-re-engineering/scrutiny/synthesis.round3.json"
 }

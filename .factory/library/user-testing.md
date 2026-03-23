@@ -13,8 +13,8 @@ Core flows to validate:
 - graph-first mindmap shell entry, node selection, orientation recovery, and non-scroll-first navigation feel
 - guided investor path through the graph so the story reads coherently as a pitch, not a disconnected atlas
 - redesign hero hierarchy, brand dominance, proof visibility, and CTA focus
-- direct use of both Radiant and Hermes ASCII-video source material in the shipped visual system
-- visibly moving Radiant background motion and visibly moving ASCII structure in the enhanced state
+- approved visual stack usage: one Radiant-derived shader plus the vendored film-grain GIF overlay
+- visibly moving Radiant background motion and visible film-grain atmosphere in the enhanced state
 - site-wide persistence of the immersive background treatment beyond the hero
 - tradebetter-faithful color/tone treatment with crisp pure white primary text
 - hero comprehension and live-vs-vision framing
@@ -45,11 +45,11 @@ Core flows to validate:
 - Stay inside the assigned assertion scope and treat the running local Next.js app as shared infrastructure; do not restart it unless the parent validator explicitly asks.
 - Use a non-default browser session name and close it before finishing.
 - Capture concrete evidence for every assertion you evaluate: visible copy, destination behavior, and any console/runtime issues.
-- Explicitly note whether the first viewport reads as one composition, whether BETTER branding is unmistakable, and whether shader/ascii layers improve the surface without obscuring readability.
+- Explicitly note whether the first viewport reads as one composition, whether BETTER branding is unmistakable, and whether the shader-plus-film-grain stack improves the surface without obscuring readability.
 - For the graph-first overhaul, explicitly note whether the experience feels like an explorable mindmap rather than a standard stacked scroll page, and capture the orientation-recovery method the user can rely on.
 - Explicitly note whether the graph also functions as an investor-readable pitch path without forcing the user to hunt across disconnected nodes.
 - For `VAL-ROADMAP-016`, do not stop at the summary Roadmap Gates cards; expand the `Interactive Roadmap Atlas` branch families and click the stage/node controls to inspect the dedicated per-stage execution-plan panels where workstreams, external dependencies, proof gates, and bounded timing windows are rendered.
-- When validating the immersive system, record which concrete Radiant and Hermes ASCII-video source resources are present in the shipped implementation and how they show up on the page.
+- When validating the immersive system, record which concrete Radiant-derived source resource and vendored film-grain asset are present in the shipped implementation and how they show up on the page.
 - Validate that the global atmospheric layer remains visibly present after the hero and across major graph/detail states.
 - Validate that primary text appears as crisp pure white against the dark shell and that secondary text, not the main body copy, carries the grey tone.
 - Validate that token supply is presented as the minted `709,001,940 BETTER` figure from the new Base contract, and that first-vault examples clearly show the `100,000 BETTER` minimum plus the baseline `$25,000` cap.
