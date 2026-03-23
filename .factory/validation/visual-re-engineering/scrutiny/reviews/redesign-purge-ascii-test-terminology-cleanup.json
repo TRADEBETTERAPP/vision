@@ -1,0 +1,39 @@
+{
+  "featureId": "redesign-purge-ascii-test-terminology-cleanup",
+  "reviewedAt": "2026-03-23T16:03:26Z",
+  "commitId": "f9e5671",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "fail",
+  "codeReview": {
+    "summary": "The rerun does replace `purge-dual-shader-and-ascii-refs.test.tsx` with `approved-atmosphere-stack.test.tsx`, and the new file does cover the approved stack categories (shader, film grain, scanlines, vignettes). But it does not fully resolve the prior blocker: ASCII/Hermes terminology and ASCII-specific assertions still remain across the visual test suite, including files the fix touched and app-level visual tests the prior review had already flagged.",
+    "issues": [
+      {
+        "file": "src/components/visual/__tests__/visual-016-approved-stack.test.tsx",
+        "line": 52,
+        "severity": "blocking",
+        "description": "ASCII-specific assertions still remain in the cleaned visual suites. This file still checks for `AsciiCanvasRenderer`/`AsciiBackground` and `ascii-*` test IDs (`:52-78`, `:159-173`), and the same pattern remains in `src/components/visual/__tests__/immersive-visual-language.test.tsx:232-272`, `src/components/visual/__tests__/static-fallback-and-canvas-resilience.test.tsx:121-122`, `src/components/visual/__tests__/direct-source-provenance.test.tsx:99-131`, and `src/components/visual/__tests__/visual-system-integration.test.tsx:36-37`. The feature explicitly required removing ASCII-specific test names, comments, and assertions from the other visual test files, so this rerun only renames the framing while leaving the forbidden assertion vocabulary in place."
+      },
+      {
+        "file": "src/app/__tests__/sitewide-atmosphere-and-overlay-consistency.test.tsx",
+        "line": 59,
+        "severity": "blocking",
+        "description": "App-level visual tests still contain the stale terminology the prior review called out. This suite still says `Radiant/Hermes` and `All ASCII layers have been permanently removed` (`:15`, `:56-59`, `:92-111`), and `src/app/__tests__/logotype-theme-atmosphere.test.tsx:7,132-134` still uses ASCII-specific wording and checks. Because the previous failed review explicitly cited app visual tests as part of the remaining blocker, leaving these files untouched means the fix does not fully resolve the rerun requirement to remove the remaining ASCII/Hermes terminology."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "conventions",
+      "observation": "The shared guidance says ASCII layers are permanently removed, but it does not clearly spell out that cleanup features must also purge negative `Ascii*` assertion strings and stale `Radiant/Hermes` labels from test bodies across both `src/components/visual/__tests__` and `src/app/__tests__`. That ambiguity appears to have contributed to another partial fix.",
+      "evidence": "Mission AGENTS.md removes ASCII from the approved visual stack, the prior review `/Users/test/vision/.factory/validation/visual-re-engineering/scrutiny/reviews/redesign-purge-remaining-dual-shader-and-ascii-refs.json` flagged remaining ASCII references in both component and app tests, yet this rerun still leaves `src/components/visual/__tests__/visual-016-approved-stack.test.tsx:52-78,159-173` and `src/app/__tests__/sitewide-atmosphere-and-overlay-consistency.test.tsx:15,56-59,92-111` with the old vocabulary."
+    },
+    {
+      "area": "skills",
+      "observation": "The worker reported `skillFeedback.followedProcedure=true`, but the transcript skeleton does not show the test-first step required by the frontend skill and does not show any `.factory/library/*.md` reads before editing. The skill or its adherence reporting may need tightening for test-only cleanup features.",
+      "evidence": "`/Users/test/vision/.factory/skills/frontend-experience-worker/SKILL.md` step 1 requires reading relevant library files and step 14 requires writing failing tests first. The transcript skeleton for worker session `db27c1fd-8221-455e-8586-3151886edcfd` shows a green baseline `npm run test`, then direct deletion/creation/editing of test files, then passing validators, with no failing-test execution or library-file reads before implementation; the handoff still marks `followedProcedure: true`."
+    }
+  ],
+  "addressesFailureFrom": "/Users/test/vision/.factory/validation/visual-re-engineering/scrutiny/reviews/redesign-purge-remaining-dual-shader-and-ascii-refs.json",
+  "summary": "Fail. The new `approved-atmosphere-stack.test.tsx` does cover the approved stack categories, but the rerun still leaves ASCII/Hermes terminology and ASCII-specific assertions in multiple visual test files, including app-level suites already cited by the prior failed review."
+}

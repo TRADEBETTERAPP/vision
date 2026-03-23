@@ -46,7 +46,6 @@ implementation guidance.
 - `--accent-primary-dim`: `#3348cc`
 - `--accent-green`: `#00ff00` (exact tradebetter neon green — status dots only)
 - `--border-default`: `#1e1e28`
-- `--border-accent`: `#455eff40` (40% opacity electric blue)
 
 ### Comparison Table
 
@@ -62,7 +61,7 @@ implementation guidance.
 | Green accent (live)     | `#00ff00` (neon green)            | `--accent-green: #00ff00`        | ✅ Exact match — status dots only |
 | Competing accents       | None (only green + blue)          | None (warn/danger removed)       | ✅ Only 2 accents — tradebetter restraint |
 | Border default          | Thin dark borders                 | `--border-default: #1e1e28`      | ✅ Near-invisible dark borders |
-| Border accent           | Blue-tinted borders on focus      | `--border-accent: #455eff40`     | ✅ Electric-blue accent borders |
+| Border accent           | Blue-tinted borders on focus      | Intentionally omitted in BETTER's stricter monochrome UI rules | ⚠️ Deliberate divergence — BETTER keeps `#455eff` atmospheric only |
 
 ## 2. Font Stacks — Side-by-Side
 
@@ -100,25 +99,25 @@ implementation guidance.
 | Border radius           | 0px (fully squared)              | 4px on content surfaces; `rounded-lg` on clickable targets | ✅ Consistent: hard-edged panels, minimal rounding on interactive elements |
 | Module background       | Elevated dark surface on cards    | `bg-surface` (`rgb(24, 24, 30)`) on elevated modules | ✅ Same tonal elevation model |
 | Header border           | Thin dark border bottom           | `1px solid rgb(30, 30, 48)` (measured) | ✅ Near-invisible separator |
-| Accent borders on focus | Blue accent border on interactive | `border-accent` (`#455eff40`) on focus states | ✅ Same electric-blue accent |
+| Accent borders on focus | Blue accent border on interactive | Monochrome borders / white emphasis only | ⚠️ Deliberate divergence — BETTER removed blue UI border accents |
 
 ## 5. Atmospheric/Visual Language — Side-by-Side
 
 | Attribute               | tradebetter.app (extracted)       | BETTER Vision (shipped)          | Match |
 |-------------------------|-----------------------------------|----------------------------------|-------|
-| Background atmosphere   | Dark with subtle lighting effects + scanlines | Vendored Radiant Fluid Amber shader + Hermes ASCII canvas | ✅ Premium atmospheric treatment exceeding tradebetter's own background |
-| Scanline texture        | Terminal-style scan lines visible | `.scanline-overlay` CSS repeating gradient | ✅ Terminal texture continuity |
+| Background atmosphere   | Dark with subtle lighting effects + scanlines | Single Radiant Fluid Amber shader + vendored film grain GIF overlay | ✅ Same cinematic mood via the approved BETTER stack |
+| Texture treatment       | Subtle raster/scanline feel       | Film grain GIF only; no separate scanline or ASCII layers | ✅ Aligned atmosphere under stricter BETTER rules |
 | Visual depth model      | Near-black base with elevated cards | 5-level tonal hierarchy from `#0a0a0c` to `#272732` | ✅ Deeper tonal layering |
-| Motion language         | Minimal — Framer entrance animations | Shader drift + ASCII field + hero entrance (desktop only) | ✅ Restrained, intentional motion |
+| Motion language         | Minimal — Framer entrance animations | Subtle shader drift + film grain + hero entrance (desktop only) | ✅ Restrained, intentional motion |
 
 ## 6. Shell-Wide Consistency (Post Hero Deduplication)
 
 The tradebetter-led theme signals are applied consistently across all updated shell surfaces:
 
 - **Header:** Near-black bg with 80% opacity, IBM Plex Mono nav links at 14px/500, 1px solid `rgb(30, 30, 48)` border-bottom, BETTER logotype asset, `rgb(245, 245, 250)` text
-- **Hero (Graph workspace brand band):** Single poster-like composition integrated into graph workspace (no duplicate standalone hero), BETTER logotype SVG visible at top, near-black background with Radiant/Hermes atmospheric layers (desktop), pure white text, electric-blue accent CTAs
-- **Graph shell / Investor path:** `bg-surface` elevated panels (`rgb(24, 24, 30)`), accent-blue active nav highlights, mono typography for navigation breadcrumbs, investor path gate indicator in accent-primary
-- **Detail panels:** Near-black background with elevated tonal steps, crisp `rgb(245, 245, 250)` text, blue-accent borders on focus, maturity badges with colored backgrounds
+- **Hero (Graph workspace brand band):** Single poster-like composition integrated into graph workspace (no duplicate standalone hero), BETTER logotype SVG visible at top, near-black background with the approved single-shader + film-grain atmosphere (desktop), pure white text, monochrome CTAs
+- **Graph shell / Investor path:** `bg-surface` elevated panels (`rgb(24, 24, 30)`), restrained monochrome active states, mono typography for navigation breadcrumbs, investor path gate indicator kept within the grayscale/green-only UI language
+- **Detail panels:** Near-black background with elevated tonal steps, crisp `rgb(245, 245, 250)` text, monochrome borders on focus, maturity labels using monochrome text plus green live dots
 - **Tokenomics surface:** Token allocation table with accent-primary percentages (`#455eff`), on-chain source citations, consistent tonal hierarchy
 - **Architecture surface:** Stack layers in elevated modules, maturity badges, consistent border treatment
 - **Mobile view:** BETTER logotype visible in header, dark background, near-white text, proper hierarchy preserved
@@ -130,7 +129,7 @@ The tradebetter-led theme signals are applied consistently across all updated sh
 |-------------------------|-----------------------------------|----------------------------------|
 | Mobile motion           | Framer entrance animations only   | CSS `constrained-drift` keyframe (12s gradient shift) — animated but lightweight |
 | Reduced-motion          | Respects `prefers-reduced-motion`  | All animations suppressed via `@media (prefers-reduced-motion)` |
-| Desktop enhanced path   | Subtle lighting effects           | Radiant shader + ASCII canvas (gated behind desktop-class capability check) |
+| Desktop enhanced path   | Subtle lighting effects           | Single Radiant shader + film grain GIF (gated behind desktop-class capability check) |
 
 ## 8. Post-Deduplication Verification
 

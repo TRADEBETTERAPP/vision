@@ -1,0 +1,33 @@
+{
+  "featureId": "redesign-liquid-metal-remaining-panels-migration",
+  "reviewedAt": "2026-03-23T16:03:48.220282Z",
+  "commitId": "cf73a99",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "pass",
+  "codeReview": {
+    "summary": "Pass. The rerun adequately fixes the prior blocking gap: the original commit only removed `.glass-card` references in 16 files, but `cf73a99` migrates the specific remaining panels called out by the failed review, and the current code now wraps those previously missed surfaces in `LiquidMetalCard` (for example `src/components/CaveatFrame.tsx:16-32`, `src/components/tokenomics/FdvRatchetExplainer.tsx:97-168`, `src/components/tokenomics/TokenUtilitySurface.tsx:261-369`, `src/components/roadmap/ExecutionPlanPanel.tsx:45-173`, `src/components/roadmap/RoadmapNodeDetail.tsx:70-75`, `src/components/architecture/FlywheelExplorer.tsx:258-284`, `src/components/architecture/CostBandExplorer.tsx:165-212`, and `src/components/graph/surfaces/EvidenceSurface.tsx:56-71`). A follow-up grep over remaining `rounded`/`border`/`bg-*` usages only found buttons, badges, pills, and form controls rather than un-migrated card/panel surfaces, so the prior blocking issue is resolved. I found one non-blocking regression-coverage gap.",
+    "issues": [
+      {
+        "file": "src/components/__tests__/liquid-metal-everywhere.test.tsx",
+        "line": 59,
+        "severity": "non_blocking",
+        "description": "The updated `liquid-metal-everywhere` suite still hard-codes a partial `expectedFiles` list and omits some surfaces migrated by this fix, including `src/components/graph/GraphShell.tsx:493-513` and `src/components/graph/surfaces/EvidenceSurface.tsx:56-71`. The code is correct, but the test still overstates its 'everywhere' coverage and would miss regressions in those panels."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "conventions",
+      "observation": "The mission and library guidance still say the approved liquid-metal cards must have no backdrop blur, but the shared `LiquidMetalCard` implementation still hard-codes blur. This mismatch keeps recurring across visual review work and should be reconciled in shared guidance or component code.",
+      "evidence": "Mission AGENTS: `/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/AGENTS.md:138` says 'No backdrop-blur. Depth from opacity layers only.' Library docs repeat it at `/Users/test/vision/.factory/library/design-system.md:168` and `/Users/test/vision/.factory/library/tradebetter-exact-design-reference.md:235`, while `src/components/LiquidMetalCard.tsx:127-128` still sets `backdropFilter: \"blur(10px)\"` and `WebkitBackdropFilter: \"blur(10px)\"`."
+    },
+    {
+      "area": "skills",
+      "observation": "The worker handoff overstates browser validation for roadmap detail/execution coverage. The transcript shows the worker could not actually open a roadmap node detail panel, but the handoff still reports roadmap visual audit success and `followedProcedure: true`. The frontend worker skill should make this kind of incomplete browser coverage impossible to report as full adherence.",
+      "evidence": "The skill says to use explicit browser interactions and only fall back to eval-style helpers when needed (`/Users/test/vision/.factory/skills/frontend-experience-worker/SKILL.md:42`). In the transcript skeleton at `/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/worker-transcripts.jsonl:110`, the worker falls back to eval and then states, 'The node didn't open a detail panel...' Yet the handoff still claims roadmap audit success at `/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/handoffs/2026-03-23T15-52-08-756Z__redesign-liquid-metal-remaining-panels-migration__088d470f-14a2-4e31-bd6e-0aeedc7838fb.json:63` and marks `followedProcedure` true at line 87."
+    }
+  ],
+  "addressesFailureFrom": "/Users/test/vision/.factory/validation/visual-re-engineering/scrutiny/reviews/redesign-liquid-metal-cursor-tracking-everywhere-and-accent-card-cleanup.json",
+  "summary": "Pass with one non-blocking coverage issue. `cf73a99` resolves the original blocking migration gaps by moving the previously missed tokenomics, roadmap, architecture, caveat, and evidence panels onto `LiquidMetalCard`, so the prior scrutiny failure is adequately addressed. The remaining concern is that the 'everywhere' regression test still does not truly cover every migrated panel, and the handoff overstated browser proof for roadmap detail/execution surfaces."
+}

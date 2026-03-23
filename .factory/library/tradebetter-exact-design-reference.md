@@ -350,7 +350,7 @@ padding: 24px;
 
 The **entire page** has a film grain texture overlay as the first named element ("Grain Overlay"). This creates a subtle analog/cinematic quality over the digital dark background.
 
-**Implementation**: For BETTER's approved adaptation, treat this as a low-opacity animated film-grain texture layer (GIF or equivalent raster texture) repeated across the viewport. Do **not** interpret the texture as permission to ship a separate scanline layer.
+**Implementation**: For BETTER's approved adaptation, treat this as a low-opacity **vendored animated GIF** film-grain texture layer repeated across the viewport. Do **not** interpret the texture as permission to ship a separate scanline layer or substitute a non-GIF procedural texture.
 
 ### Background Composition (Hero)
 
@@ -826,7 +826,8 @@ ROADMAP // REVENUE // REALISED
 
   /* ====== SHADOWS ====== */
   --glow-white: 0px 0px 16px 0px rgba(255, 255, 255, 0.75); /* primary CTA glow */
-  --glow-green: 0px 0px 12px 0px rgba(0, 255, 0, 0.5);      /* green element glow */
+  /* NOTE: BETTER's approved adaptation does NOT carry over a green glow token.
+     #00ff00 is reserved for status dots/signals only. */
 
   /* ====== GRADIENTS ====== */
   --gradient-blue-glow: linear-gradient(228deg, #455eff00 63%, #455eff);

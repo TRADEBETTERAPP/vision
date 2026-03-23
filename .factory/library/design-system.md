@@ -66,7 +66,9 @@ The experience reads as a **dynamic graph workspace with an investor-readable st
 | Token | Value | Usage |
 |---|---|---|
 | `--glow-white` | `0px 0px 16px 0px rgba(255, 255, 255, 0.75)` | Primary CTA hover glow |
-| `--glow-green` | `0px 0px 12px 0px rgba(0, 255, 0, 0.5)` | Green element glow |
+
+Green glow utilities are **not** part of the approved BETTER adaptation. `#00ff00`
+is reserved for static status dots/signals only.
 
 ### Gradients
 
@@ -78,7 +80,7 @@ The experience reads as a **dynamic graph workspace with an investor-readable st
 ### Color Philosophy
 
 - **Restraint principle**: Only 2 accent colors total. Everything else is grayscale `#101010` → `#ffffff`.
-- **Green = status/signal**: Live dots, confidence scores, "BUY" labels, active indicators.
+- **Green = status/signal only**: Live dots and similarly minimal signal marks. No green fills or glow utilities.
 - **Blue = atmospheric**: Background gradient glows only — never on text or CTAs.
 - **White = hierarchy anchor**: All headings pure white. White is the loudest "color".
 - **5-level gray scale** for subtle text hierarchy: `#404040` → `#575757` → `#707070` → `#a0a0a0` → `#e6e6e6`

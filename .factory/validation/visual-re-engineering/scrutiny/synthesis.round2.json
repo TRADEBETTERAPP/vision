@@ -1,0 +1,104 @@
+{
+  "milestone": "visual-re-engineering",
+  "round": 2,
+  "status": "fail",
+  "validatorsRun": {
+    "test": {
+      "passed": true,
+      "command": "npm --prefix \"/Users/test/vision\" run test",
+      "exitCode": 0
+    },
+    "typecheck": {
+      "passed": true,
+      "command": "npx --prefix \"/Users/test/vision\" tsc --noEmit -p \"/Users/test/vision/tsconfig.json\"",
+      "exitCode": 0
+    },
+    "lint": {
+      "passed": true,
+      "command": "npm --prefix \"/Users/test/vision\" run lint",
+      "exitCode": 0
+    }
+  },
+  "reviewsSummary": {
+    "total": 4,
+    "passed": 0,
+    "failed": 4,
+    "failedFeatures": [
+      "redesign-purge-remaining-dual-shader-and-ascii-refs",
+      "redesign-remove-scanline-enforce-shader-plus-grain-only",
+      "redesign-liquid-metal-cursor-tracking-everywhere-and-accent-card-cleanup",
+      "redesign-token-purge-blue-accent-ui-green-fills-and-body-text-fix"
+    ]
+  },
+  "blockingIssues": [
+    {
+      "featureId": "redesign-purge-remaining-dual-shader-and-ascii-refs",
+      "severity": "blocking",
+      "description": "The rerun still misses the zero-ASCII end state because it adds and retains ASCII-specific test references, including the new purge-dual-shader-and-ascii-refs test."
+    },
+    {
+      "featureId": "redesign-purge-remaining-dual-shader-and-ascii-refs",
+      "severity": "blocking",
+      "description": "Pre-existing visual test suites still contain extensive ASCII and Hermes references, so the original purge blocker remains unresolved."
+    },
+    {
+      "featureId": "redesign-remove-scanline-enforce-shader-plus-grain-only",
+      "severity": "blocking",
+      "description": "FilmGrainOverlay still renders procedural SVG noise instead of the required vendored film-grain GIF texture overlay."
+    },
+    {
+      "featureId": "redesign-liquid-metal-cursor-tracking-everywhere-and-accent-card-cleanup",
+      "severity": "blocking",
+      "description": "Legacy accent-card styling still ships in visible tokenomics, roadmap, and architecture modules instead of the required LiquidMetalCard treatment."
+    },
+    {
+      "featureId": "redesign-liquid-metal-cursor-tracking-everywhere-and-accent-card-cleanup",
+      "severity": "blocking",
+      "description": "Multiple visible supporting panels still bypass LiquidMetalCard, so cursor-tracking metallic sheen is not present across all card surfaces."
+    },
+    {
+      "featureId": "redesign-token-purge-blue-accent-ui-green-fills-and-body-text-fix",
+      "severity": "blocking",
+      "description": "globals.css still defines blue border or glow and green glow UI utilities, so #455eff and #00ff00 remain available outside atmospheric gradients and status-dot contexts."
+    }
+  ],
+  "appliedUpdates": [
+    {
+      "target": "library",
+      "description": "Updated `.factory/library/tradebetter-exact-design-reference.md` so the atmosphere summary now records film grain texture only and explicitly excludes separate scanline layers.",
+      "sourceFeature": "redesign-remove-scanline-enforce-shader-plus-grain-only"
+    },
+    {
+      "target": "library",
+      "description": "Updated `.factory/library/tradebetter-comparison-evidence.md` to mark older blue-accent border and CTA notes as raw tradebetter reference evidence rather than canonical BETTER implementation guidance under the stricter visual-re-engineering color rules.",
+      "sourceFeature": "redesign-token-purge-blue-accent-ui-green-fills-and-body-text-fix"
+    }
+  ],
+  "suggestedGuidanceUpdates": [
+    {
+      "target": "frontend-experience-worker skill",
+      "suggestion": "When a visual fix contract requires an exact asset or implementation class, require workers to add regression coverage that asserts that exact requirement instead of only generic overlay behavior.",
+      "evidence": "The `redesign-remove-scanline-enforce-shader-plus-grain-only` review found that `single-shader-and-film-grain.test.tsx` only checked generic overlay properties, allowing procedural SVG noise to pass even though mission guidance required a film-grain GIF overlay.",
+      "isSystemic": true
+    },
+    {
+      "target": "frontend-experience-worker skill",
+      "suggestion": "Require transcript-visible `agent-browser` activity or an explicit citation of reused browser evidence before workers mark `followedProcedure=true` on user-facing visual changes.",
+      "evidence": "The `redesign-remove-scanline-enforce-shader-plus-grain-only` review found no `agent-browser` session in transcript `85b07877-075a-4008-a451-8bbb32c1bdb9` even though the skill makes browser validation mandatory and the handoff still reported `followedProcedure=true`.",
+      "isSystemic": true
+    },
+    {
+      "target": "AGENTS.md",
+      "suggestion": "Reconcile liquid-metal card blur guidance across mission feature briefs and shared design guidance so workers are not told to both use `blur(10px)` and avoid backdrop blur.",
+      "evidence": "The `redesign-liquid-metal-cursor-tracking-everywhere-and-accent-card-cleanup` review found `features.json` requiring `backdrop-filter: blur(10px)` while mission AGENTS and shared library references say the approved liquid-metal cards should have no backdrop blur.",
+      "isSystemic": false
+    }
+  ],
+  "rejectedObservations": [
+    {
+      "observation": "Clarify whether ASCII-purge fixes must also remove historical ASCII mentions from tests and comments.",
+      "reason": "already-documented"
+    }
+  ],
+  "previousRound": ".factory/validation/visual-re-engineering/scrutiny/synthesis.round1.json"
+}

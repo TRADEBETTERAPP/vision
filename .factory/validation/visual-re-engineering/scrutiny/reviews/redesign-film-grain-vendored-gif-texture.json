@@ -1,0 +1,26 @@
+{
+  "featureId": "redesign-film-grain-vendored-gif-texture",
+  "reviewedAt": "2026-03-23T16:02:20Z",
+  "commitId": "2946b3e",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "pass",
+  "codeReview": {
+    "summary": "Pass. I reviewed both the original failed feature diff (`1a4098129dc1270d9a54f12122f7842701b50fc4`) and the fix diff (`2946b3e`). The original feature correctly removed scanlines but left `FilmGrainOverlay` as procedural SVG noise; this fix replaces that `feTurbulence` implementation with a vendored GIF texture at `/grain.gif`, keeps the required 5% lighten-blended viewport-wide overlay contract, and adds focused tests that assert the layer uses a `.gif` asset rather than SVG filters. That adequately resolves the prior blocking issue.",
+    "issues": []
+  },
+  "sharedStateObservations": [
+    {
+      "area": "knowledge",
+      "observation": "The shared tradebetter reference still uses looser film-grain wording than the mission contract. It says the overlay may be a 'GIF or equivalent raster texture', while the mission AGENTS and this fix feature require a vendored animated GIF specifically. That ambiguity can steer workers toward non-GIF implementations even after the blocker that prompted this rerun.",
+      "evidence": "`/Users/test/vision/.factory/library/tradebetter-exact-design-reference.md:353` says 'GIF or equivalent raster texture', while `/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/AGENTS.md:124-128` and `/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/features.json:2699-2707` require an animated GIF texture / `.gif` asset."
+    },
+    {
+      "area": "skills",
+      "observation": "The worker handoff reports `followedProcedure=true`, but the transcript skeleton does not show the required test-first flow for this feature. The skill requires workers to write failing tests before implementation and cite at least one such expectation in the handoff, yet this session created the GIF generator, generated `public/grain.gif`, and replaced `FilmGrainOverlay.tsx` before creating the new test file, and the handoff cites no pre-implementation failing expectation.",
+      "evidence": "`/Users/test/vision/.factory/skills/frontend-experience-worker/SKILL.md:33` requires failing tests first and a cited failing expectation in the handoff. In `/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/worker-transcripts.jsonl:109`, the session runs baseline tests, creates `scripts/generate-noise-gif.mjs`, generates `public/grain.gif`, and creates `src/components/visual/FilmGrainOverlay.tsx` before creating `src/components/visual/__tests__/film-grain-gif-texture.test.tsx`; the handoff file `/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/handoffs/2026-03-23T15-37-34-515Z__redesign-film-grain-vendored-gif-texture__fb1fbb57-5e8b-44af-a026-49e0e0b31561.json:83` still marks `\"followedProcedure\": true`."
+    }
+  ],
+  "addressesFailureFrom": "/Users/test/vision/.factory/validation/visual-re-engineering/scrutiny/reviews/redesign-remove-scanline-enforce-shader-plus-grain-only.json",
+  "summary": "Pass. The fix directly resolves the prior blocker by replacing `FilmGrainOverlay`'s SVG `feTurbulence` noise with a vendored tiled GIF overlay and adding targeted `.gif`-vs-SVG enforcement tests. I also noted one shared-reference ambiguity around 'GIF or equivalent raster texture' wording and one skill-procedure mismatch around test-first reporting."
+}
