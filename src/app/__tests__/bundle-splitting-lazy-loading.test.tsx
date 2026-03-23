@@ -92,16 +92,33 @@ describe("Dynamic import structure (VAL-VISUAL-027)", () => {
     );
   });
 
-  it("page.tsx dynamically imports ProofModule for below-fold lazy loading", () => {
+  it("LazyProofModule is a client component that dynamically imports ProofModule with ssr:false", () => {
+    const source = readSource(
+      "../../components/LazyProofModule.tsx"
+    );
+
+    // Must be a client component (the whole point of this fix)
+    expect(source).toMatch(/^["']use client["']/m);
+    // Should use next/dynamic import
+    expect(source).toMatch(/dynamic\s*\(/);
+    // Should reference ProofModule in a dynamic import
+    expect(source).toMatch(/import\(.*ProofModule/);
+    // Should disable SSR so the proof module loads entirely on the client
+    expect(source).toMatch(/ssr:\s*false/);
+  });
+
+  it("page.tsx uses LazyProofModule (not a direct dynamic import of ProofModule)", () => {
     const pageSource = readSource("../page.tsx");
 
-    // Should dynamically import ProofModule
-    expect(pageSource).toMatch(/import\(.*ProofModule/);
+    // Should import LazyProofModule
+    expect(pageSource).toMatch(/LazyProofModule/);
     // Should NOT have a static import of the ProofModule component itself
-    // Note: ProofModuleSkeleton is allowed as a static import
     expect(pageSource).not.toMatch(
-      /^import\s+(?!.*Skeleton).*\bProofModule\b.*from\s+["']@\/components\/ProofModule/m
+      /^import\s+(?!.*Lazy)(?!.*Skeleton).*\bProofModule\b.*from/m
     );
+    // Should NOT use dynamic() directly in page.tsx for ProofModule
+    // (dynamic() in a server component is ineffective in Next App Router)
+    expect(pageSource).not.toMatch(/dynamic\s*\(\s*\(\)\s*=>\s*import\(.*ProofModule/);
   });
 
   it("SiteAtmosphere dynamically imports heavy visual components", () => {
@@ -124,6 +141,34 @@ describe("Dynamic import structure (VAL-VISUAL-027)", () => {
     expect(source).toMatch(/import\(.*HeroShaderCanvas/);
     expect(source).toMatch(/import\(.*AsciiCanvasRenderer/);
     expect(source).toMatch(/import\(.*AsciiBackground/);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// 2b. LazyProofModule real lazy behavior — client wrapper shows skeleton
+// ---------------------------------------------------------------------------
+
+describe("LazyProofModule renders loading skeleton before ProofModule loads", () => {
+  it("renders ProofModuleSkeleton as the initial loading state", () => {
+    // Import LazyProofModule directly — because next/dynamic with ssr:false
+    // is mocked in jest (the dynamic component never resolves synchronously),
+    // the loading fallback (ProofModuleSkeleton) should be rendered.
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const { LazyProofModule } = require("@/components/LazyProofModule");
+    render(<LazyProofModule />);
+
+    // The skeleton should be visible (loading state is shown before the
+    // real ProofModule JS has loaded)
+    const skeleton = screen.getByTestId("proof-module-skeleton");
+    expect(skeleton).toBeInTheDocument();
+    expect(skeleton).toHaveAttribute("role", "status");
+    expect(skeleton).toHaveAttribute(
+      "aria-label",
+      "Loading proof section…"
+    );
+
+    // The real proof section should NOT be present yet (it hasn't loaded)
+    expect(screen.queryByTestId("proof-section")).not.toBeInTheDocument();
   });
 });
 

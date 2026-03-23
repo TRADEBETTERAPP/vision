@@ -1,25 +1,20 @@
-import dynamic from "next/dynamic";
 import { HeroVisualSystem } from "@/components/visual";
 import { Section } from "@/components/ui";
 import { CompactBrandBand } from "@/components/graph/CompactBrandBand";
 import { LazyGraphExplorer } from "@/components/graph/LazyGraphExplorer";
-import { ProofModuleSkeleton } from "@/components/skeletons";
+import { LazyProofModule } from "@/components/LazyProofModule";
 
 /**
- * Dynamic imports for below-fold content — aggressive bundle splitting.
+ * Heavy component imports are handled through client-boundary wrappers
+ * that use next/dynamic with ssr:false. This ensures lazy loading is
+ * effective in Next.js App Router (where server-side dynamic() resolves
+ * synchronously and does NOT defer loading).
  *
- * VAL-VISUAL-027: ProofModule (below-fold content) is dynamically imported
- * so it does not block first meaningful paint. The GraphExplorer is loaded
- * via LazyGraphExplorer (a client component that uses next/dynamic with
- * ssr:false) to ensure the graph workspace and its heavy dependencies
- * load entirely on the client after first paint.
+ * VAL-VISUAL-027:
+ * - LazyGraphExplorer wraps GraphExplorer behind a client boundary
+ * - LazyProofModule wraps ProofModule behind a client boundary
+ * Both show skeleton loading states while the real component JS loads.
  */
-const ProofModule = dynamic(
-  () => import("@/components/ProofModule"),
-  {
-    loading: () => <ProofModuleSkeleton />,
-  }
-);
 
 export default function Home() {
   return (
@@ -57,7 +52,7 @@ export default function Home() {
       {/* via the graph shell; this module provides additional trust       */}
       {/* context for users who scroll past the atlas.                    */}
       {/* ---------------------------------------------------------------- */}
-      <ProofModule />
+      <LazyProofModule />
     </div>
   );
 }
