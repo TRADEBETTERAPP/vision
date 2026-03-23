@@ -22,8 +22,11 @@ Worker-facing economic facts and roadmap expansion guidance for BETTER.
 ## Mission-specific roadmap expansion guidance
 - Keep the roadmap aggressive, but do not blur current/live mechanics with planned/speculative mechanics
 - Whale-first design is intentional
-- For this mission, the Q1 2026 first-vault policy surface must make the `100,000 BETTER` minimum and the baseline `$25,000` initial-deposit cap explicit with worked examples
+- For this mission, the Q1 2026 first-vault policy surface must make the `100,000 BETTER` minimum and the baseline `$25,000` **total vault cap** (not per-wallet) explicit with worked examples
+- Vault caps are total vault caps, not per-wallet deposit caps; individual allocations within a vault are determined by the bidding model
 - Beyond explicitly proven gates, the site may show an aggressive inferred whale ladder for social vaults, personal AI-crafted vaults, and related premium products, but those thresholds must read as modeled policy rather than current live rules
+- Social vaults require a minimum of `25,000 BETTER` to qualify
+- Future vault caps are determined on a case-by-case basis depending on strategy, liquidity, and risk parameters
 - Add a sustainable referral-incentive model only if the surface also explains how rewards are funded, capped, and kept non-abusive
 - Cover agent-native mechanics such as bonded agents, delegation, data bounties, premium API lanes, LLM credits, and exclusive whale products
 - Cover revenue layers across consumer, pro, whale, and enterprise segments, and show how each major product family can feed value or revenue back into the broader BETTER ecosystem
@@ -38,6 +41,20 @@ Worker-facing economic facts and roadmap expansion guidance for BETTER.
 - Present **conservative stage-based valuation corridors**, not promised numbers.
 - Tie each corridor to milestone proof gates such as live product proof, revenue proof, audited vault readiness, multi-venue readiness, or recurring software/data revenue.
 - Use comparable categories such as prediction-market infrastructure, AI-native finance tools, and crypto data/software businesses to explain why the corridor changes from one stage to the next.
+
+## Bidding model
+- Vault allocation uses a **bidding model** with a **24-hour bidding window** before each vault opens
+- Allocation weight is **√-weighted** (square-root of staked BETTER), so larger stakers get more capacity but with diminishing returns
+- Each staker's allocation is subject to a **hard cap** derived from the total vault cap and the √-weighted pool
+- There is a **$100 minimum floor** per allocation — no staker receives less than $100 if they qualify at all
+- The bidding model replaces any earlier per-wallet deposit cap concept; the total vault cap is the binding constraint and individual shares are computed from it
+
+## Verified on-chain allocation data
+- **Team allocation:** ~250M BETTER
+- **Treasury allocation:** ~200M BETTER
+- **SERV (OpenServ) allocation:** ~50M BETTER
+- **LP allocation:** ~60.9M BETTER
+- These figures are verified from on-chain data (Base contract + basescan + Dune queries) and supersede earlier percentage-based splits where they conflict
 
 ## Vault-share modeling guidance
 - The first-vault and modeled whale-vault surfaces should let users estimate how their staked BETTER compares to total staked BETTER and how that ratio maps to an estimated share of initial deposit capacity.

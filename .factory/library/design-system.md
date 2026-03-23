@@ -87,6 +87,8 @@ These are now the shipped theme tokens. The tradebetter electric-blue replaces t
 - The immersive Radiant/Hermes atmosphere must remain visible across the full site, not just the hero.
 - The shell should feel graph-first and mindmap-led: users should navigate through focal nodes, detail states, and orientation aids rather than reading a normal section-anchor document.
 - Use the BETTER logotype asset in the header, hero, and mobile-overlay brand surfaces.
+- The **BETTER logotype must be prominent at the top of the graph workspace** — it is the primary brand signal in the graph-first layout, not only in the old standalone hero.
+- **Hero deduplication requirement:** do not ship both a standalone hero section and a separate graph workspace hero/identity node. The graph workspace brand band is the single hero surface; the old standalone hero section must be removed to avoid visual and content duplication.
 - Use a sticky inspector / detail dock and clear orientation controls so the graph stays intelligible while still functioning as a pitch.
 - The graph must support a coherent investor path through thesis, product, proof, moat, business model, roadmap gates, valuation logic, and appendix detail.
 

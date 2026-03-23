@@ -63,7 +63,9 @@ Each tier should capture:
 ## Token policy extensions
 In addition to tier data, the content model should support:
 - canonical contract facts with per-field provenance (contract address, minted supply, decimals, migration/source notes)
-- first-vault qualification rules (minimum BETTER threshold, deposit cap, oversubscription logic, worked examples)
+- first-vault qualification rules (minimum BETTER threshold, **totalVaultCapUsd** — not perWalletDepositCapUsd, oversubscription logic, worked examples)
+- bidding model fields (bidding window duration, √ weight exponent, per-staker cap formula derived from total vault cap and √-weighted pool, minimum floor of $100)
+- multi-vault progression model fields (social vault minimum of 25k BETTER, future vault caps as case-by-case, strategy/liquidity/risk parameters)
 - modeled higher-tier whale-product gates (social vaults, personal AI-crafted vaults, related premium surfaces)
 - referral-incentive policy fields (reward source, caps, anti-abuse framing, maturity/source cues)
 - revenue-return pathways mapping major product offerings back into the broader BETTER ecosystem

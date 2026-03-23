@@ -25,9 +25,12 @@ Use this skill for features dominated by source synthesis, typed content/data mo
 6. If you add or change numbers, thresholds, or claims, update the evidence/source or assumption hooks in the same feature.
 7. If the feature touches roadmap execution detail, valuation framing, or vault-share modeling, separate clearly between canonical current facts, conservative modeled corridors, external dependencies, and internal build-speed assumptions.
 8. For vault or allocation modeling, ensure the UI can explain user stake, total staked BETTER, qualifying pool share, estimated vault-cap share, and deposit-cap rules without collapsing them into one ambiguous number.
-9. Run focused tests while iterating, then run the manifest commands for `lint`, `typecheck`, `test`, and `build`.
-10. Use `agent-browser` to verify the changed surfaces, especially tier ladders, calculators, scenario switching, execution-plan panels, valuation modules, and evidence hooks.
-11. Stop any process you started. In your handoff, call out every changed number/model, every source/assumption surface you touched, and any remaining ambiguity.
+9. If the feature touches vault policy, use the corrected model: $25k TOTAL vault cap (not per-wallet), 100k BETTER universal minimum to qualify, 25k BETTER minimum for social vaults, √-weighted bidding allocation with a $100 floor. Do not use superseded per-wallet cap figures.
+10. On-chain figures must cite Dune queries or basescan as their source. Use the Dune CLI (installed, API key configured via `DUNE_API_KEY` env var) to verify any on-chain claims before publishing them in content or models.
+11. Token use cases must include comparable market sizes, revenue models, and demand implications per the analysis in `.factory/library/use-case-analysis.md`. Do not present a use case without its market-sizing context.
+12. Run focused tests while iterating, then run the manifest commands for `lint`, `typecheck`, `test`, and `build`.
+13. Use `agent-browser` to verify the changed surfaces, especially tier ladders, calculators, scenario switching, execution-plan panels, valuation modules, and evidence hooks.
+14. Stop any process you started. In your handoff, call out every changed number/model, every source/assumption surface you touched, and any remaining ambiguity.
 
 ## Example Handoff
 

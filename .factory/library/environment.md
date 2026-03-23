@@ -23,6 +23,8 @@ Environment variables, external dependencies, and setup notes.
   - `https://github.com/NousResearch/hermes-agent/tree/main/skills/creative/ascii-video`
   - `https://tradebetter.app`
 - Environment note for the Hermes requirement: system `ffmpeg` is not available and local Python is 3.9.x, so the approved direct-source path is a real-time ASCII canvas renderer rather than an offline ffmpeg-based video pipeline.
+- **Dune CLI** is installed and the Dune API key is configured; Dune queries can be used for on-chain data verification and token allocation analysis.
+- **Basescan** is available as an on-chain data source for verifying Base contract state, token allocations, and transaction history.
 - BETTER reference sources are read-only:
   - `/Users/test/tradebetter-docs`
   - `/Users/test/better`

@@ -35,3 +35,10 @@ Intended application architecture and implementation patterns for this mission.
 - Valuation models should be stage-gated and comparable-backed, presenting conservative value corridors tied to proof milestones rather than headline promises.
 - Vault-capacity models should support stake-share estimation: given user stake, total staked BETTER, and vault-cap assumptions, the UI should estimate the user’s implied share of first-vault and modeled whale-vault initial deposit capacity.
 - Heavy visuals must support reduced-motion mode and runtime fallback states without blocking content.
+
+## Performance optimization guidance
+- Use **aggressive code splitting** across all major route boundaries and feature modules.
+- Use **dynamic imports** for the graph workspace and any heavy visualization tooling (e.g. `@xyflow/react`, ELK layout, shader/canvas layers) so they are not in the critical initial bundle.
+- **Lazy-load heavy components** such as scenario engines, detailed roadmap panels, vault calculators, and evidence deep-dives behind user interaction or viewport triggers.
+- Implement **skeleton and progressive loading** patterns: show lightweight placeholder UI immediately while heavy graph/visual content streams in.
+- The old standalone hero section must be **removed** and replaced with a **minimal brand band** integrated into the graph workspace — do not ship both a full hero section and a graph workspace hero node.
