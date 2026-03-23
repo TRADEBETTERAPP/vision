@@ -4,11 +4,14 @@
  * Covers:
  * - VAL-VISUAL-011: Hero motion is intentional and limited (2 motions, no ambient loops)
  * - VAL-VISUAL-012: Shader layer feels authentically Radiant-influenced
- * - VAL-VISUAL-028: All ASCII layers permanently removed
+ * - VAL-VISUAL-028: All ASCII layers permanently removed (replaces old VAL-VISUAL-013/016 ASCII requirement)
  * - VAL-VISUAL-000: Signature visual system is visibly present (upgraded)
  * - VAL-VISUAL-001: Content-first hero renders before effects (preserved)
  * - VAL-VISUAL-003: Reduced-motion preserves hierarchy (preserved)
  * - VAL-VISUAL-004: Runtime fallback handles failures cleanly (preserved)
+ *
+ * Note: VAL-VISUAL-016 (formerly ASCII canvas renderer) now verifies the
+ * approved stack (single shader + film grain). See visual-016-approved-stack.test.tsx.
  */
 import fs from "fs";
 import path from "path";
@@ -215,10 +218,12 @@ describe("VAL-VISUAL-012: Shader feels authentically Radiant-influenced", () => 
 });
 
 // ---------------------------------------------------------------------------
-// VAL-VISUAL-013: ASCII atmosphere is materially present and authentic
+// VAL-VISUAL-028: All ASCII layers permanently removed
+// (Replaces old VAL-VISUAL-013 / VAL-VISUAL-016 ASCII requirement.
+//  The approved stack is now: single shader + film grain — see
+//  visual-016-approved-stack.test.tsx for full VAL-VISUAL-016 coverage.)
 // ---------------------------------------------------------------------------
 
-// VAL-VISUAL-028: All ASCII layers permanently removed
 describe("VAL-VISUAL-028: Zero ASCII code remaining", () => {
   it("no ASCII-related CSS classes exist in globals.css", () => {
     const globalsCss = fs.readFileSync(
