@@ -203,7 +203,7 @@ export default function ScenarioSwitcher() {
               value={tokenBalance}
               onChange={(e) => setTokenBalance(e.target.value)}
               placeholder="e.g. 500000"
-              className="w-full rounded border border-border bg-background px-3 py-2 font-terminal text-sm text-foreground placeholder:text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+              className="w-full rounded border border-border bg-background px-3 py-2 font-terminal text-sm text-foreground placeholder:text-white/60 focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
               data-testid="user-input-token-balance"
             />
           </div>
@@ -222,7 +222,7 @@ export default function ScenarioSwitcher() {
               value={depositAmount}
               onChange={(e) => setDepositAmount(e.target.value)}
               placeholder="e.g. 10000"
-              className="w-full rounded border border-border bg-background px-3 py-2 font-terminal text-sm text-foreground placeholder:text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+              className="w-full rounded border border-border bg-background px-3 py-2 font-terminal text-sm text-foreground placeholder:text-white/60 focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
               data-testid="user-input-deposit-amount"
             />
           </div>

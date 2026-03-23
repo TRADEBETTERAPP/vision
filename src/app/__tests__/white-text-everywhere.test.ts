@@ -48,6 +48,64 @@ describe("VAL-VISUAL-034: All text is white — no grey text", () => {
       expect(violations).toEqual([]);
     });
   });
+
+  describe("No grey placeholder text patterns in components", () => {
+    const greyPlaceholderPatterns = [
+      "placeholder:text-muted",
+      "placeholder:text-secondary",
+      "placeholder:text-[#a0a0a0]",
+      "placeholder:text-[#707070]",
+    ];
+
+    it.each(greyPlaceholderPatterns)(
+      "no %s anywhere in src/components/",
+      (pattern) => {
+        const srcDir = path.join(process.cwd(), "src/components");
+        const files = getAllTsxFiles(srcDir);
+        const violations: string[] = [];
+        for (const file of files) {
+          if (file.includes("__tests__")) continue;
+          const content = fs.readFileSync(file, "utf-8");
+          if (content.includes(pattern)) {
+            violations.push(path.relative(process.cwd(), file));
+          }
+        }
+        expect(violations).toEqual([]);
+      },
+    );
+  });
+
+  describe("No text-muted used as text color on elements in components", () => {
+    it("no className containing 'text-muted' (without placeholder: prefix) in src/components/", () => {
+      const srcDir = path.join(process.cwd(), "src/components");
+      const files = getAllTsxFiles(srcDir);
+      const violations: string[] = [];
+      // Match text-muted used as a direct text color class, not as
+      // placeholder:text-muted (which is caught separately above) and not
+      // inside CSS variable references like var(--text-muted).
+      const textMutedRegex = /(?<!placeholder:)(?<!var\(--)text-muted(?!-foreground)/g;
+      for (const file of files) {
+        if (file.includes("__tests__")) continue;
+        const content = fs.readFileSync(file, "utf-8");
+        const lines = content.split("\n");
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i];
+          // Skip comments and import lines
+          if (line.trim().startsWith("//") || line.trim().startsWith("*") || line.trim().startsWith("import")) continue;
+          // Only check className props and class strings
+          if (!line.includes("className") && !line.includes("class")) continue;
+          if (textMutedRegex.test(line)) {
+            violations.push(
+              `${path.relative(process.cwd(), file)}:${i + 1}`,
+            );
+          }
+          // Reset regex lastIndex for the next iteration
+          textMutedRegex.lastIndex = 0;
+        }
+      }
+      expect(violations).toEqual([]);
+    });
+  });
 });
 
 function getAllTsxFiles(dir: string): string[] {
