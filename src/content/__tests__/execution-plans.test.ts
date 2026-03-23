@@ -54,6 +54,23 @@ describe("Primary Roadmap Stages", () => {
     }
   });
 
+  it("includes ti-data-pipeline-phase2 as a primary stage", () => {
+    expect(primaryIds).toContain("ti-data-pipeline-phase2");
+  });
+
+  it("includes sa-premium-api as a primary stage", () => {
+    expect(primaryIds).toContain("sa-premium-api");
+  });
+
+  it("every visible non-live non-speculative roadmap node is a primary stage", () => {
+    const nonLiveNonSpecNodes = ROADMAP_NODES.filter(
+      (n) => n.status !== "live" && n.status !== "speculative"
+    );
+    for (const node of nonLiveNonSpecNodes) {
+      expect(primaryIds).toContain(node.id);
+    }
+  });
+
   it("primary stages cover all five branch families", () => {
     const families = new Set(
       primaryIds
@@ -125,6 +142,51 @@ describe("Per-Stage Execution Plans", () => {
         // Must have a source cue
         expect(gate.source).toBeDefined();
         expect(gate.source.type).toBeTruthy();
+      }
+    }
+  });
+
+  it("every proof gate specifies an externally observable verification method", () => {
+    // VAL-ROADMAP-016: proof gates must be externally observable, investor-verifiable
+    // Each criterion must reference a concrete external verification method
+    const observabilityPatterns = [
+      /on[- ]chain/i,
+      /block\s*explorer/i,
+      /publicly/i,
+      /public\s/i,
+      /verifiable/i,
+      /verified\s/i,
+      /published/i,
+      /visible\s/i,
+      /queryable/i,
+      /auditable/i,
+      /inspectable/i,
+      /observable/i,
+      /documented/i,
+      /third[- ]party/i,
+      /contract\s+(state|call)/i,
+      /explorer/i,
+      /dashboard.*public/i,
+      /public.*dashboard/i,
+      /public.*url/i,
+      /api\s+endpoint/i,
+      /announcement/i,
+    ];
+
+    for (const plan of EXECUTION_PLANS) {
+      for (const gate of plan.proofGates) {
+        const criterion = gate.criterion;
+        const hasObservabilityLanguage = observabilityPatterns.some((p) =>
+          p.test(criterion)
+        );
+        expect({
+          nodeId: plan.nodeId,
+          gate: gate.label,
+          criterion,
+          hasObservabilityLanguage,
+        }).toEqual(
+          expect.objectContaining({ hasObservabilityLanguage: true })
+        );
       }
     }
   });

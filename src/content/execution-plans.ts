@@ -45,11 +45,13 @@ const PRIMARY_STAGE_IDS: string[] = [
   "ti-ai-rl-phase2",
   "ti-polygon-phase1",
   "ti-low-latency-phase1",
+  "ti-data-pipeline-phase2",
   // Social & Agent Ecosystem
   "sa-openserv-integration",
   "sa-bonded-agents",
   "sa-delegation",
   "sa-research-bounties",
+  "sa-premium-api",
 ];
 
 export function getPrimaryRoadmapStageIds(): string[] {
@@ -302,7 +304,7 @@ export const EXECUTION_PLANS: ExecutionPlan[] = [
       {
         label: "Agent live trading",
         criterion:
-          "At least one autonomous strategy agent executes profitable trades on Polymarket mainnet for ≥ 7 consecutive days without manual intervention",
+          "At least one autonomous strategy agent executes trades on Polymarket mainnet for ≥ 7 consecutive days with on-chain settlement records publicly verifiable in a block explorer, and a published performance log or dashboard showing the agent's P&L over the evaluation period",
         source: {
           type: "scenario_based",
           label: "BETTER Roadmap",
@@ -311,7 +313,7 @@ export const EXECUTION_PLANS: ExecutionPlan[] = [
       {
         label: "Agent delegation",
         criterion:
-          "Users can delegate capital to at least one publicly visible autonomous agent with transparent P&L reporting",
+          "Users can delegate capital to at least one publicly listed autonomous agent, with the agent's bond status queryable on-chain and P&L history visible on a public dashboard accessible to any visitor",
         source: {
           type: "scenario_based",
           label: "BETTER Roadmap",
@@ -364,7 +366,7 @@ export const EXECUTION_PLANS: ExecutionPlan[] = [
       {
         label: "Pilot institutional client",
         criterion:
-          "At least one institutional client signs a paid data-licensing agreement and receives API access with SLA-backed delivery",
+          "At least one institutional client is publicly referenceable (via a published case study, press release, or named partnership announcement) as receiving paid API-delivered prediction-market data with documented SLA-backed delivery over ≥ 30 days",
         source: {
           type: "scenario_based",
           label: "BETTER Roadmap",
@@ -903,7 +905,7 @@ export const EXECUTION_PLANS: ExecutionPlan[] = [
       {
         label: "Proprietary model superiority",
         criterion:
-          "Proprietary BETTER models outperform the Phase 1 baseline on a published accuracy or return metric by ≥ 20% over a 90-day evaluation window",
+          "Proprietary BETTER models outperform the Phase 1 baseline on a published accuracy or return metric by ≥ 20% over a 90-day evaluation window, with the benchmark methodology and results published on a publicly accessible BETTER research page or third-party evaluation platform",
         source: {
           type: "scenario_based",
           label: "BETTER Roadmap",
@@ -912,7 +914,7 @@ export const EXECUTION_PLANS: ExecutionPlan[] = [
       {
         label: "New market coverage",
         criterion:
-          "Proprietary models generate actionable signals for at least 2 prediction-market categories not covered by Phase 1",
+          "Proprietary models generate publicly visible signals for at least 2 prediction-market categories not covered by Phase 1, verifiable through the BETTER Terminal or a public signal feed showing live predictions in those categories",
         source: {
           type: "scenario_based",
           label: "BETTER Roadmap",
@@ -965,7 +967,7 @@ export const EXECUTION_PLANS: ExecutionPlan[] = [
       {
         label: "Node operational",
         criterion:
-          "BETTER-operated Polygon full node achieves ≥ 99.5% uptime over a 30-day period with block height within 3 blocks of network tip",
+          "BETTER-operated Polygon full node achieves ≥ 99.5% uptime over a 30-day period with block height within 3 blocks of network tip, verified through a publicly accessible node status dashboard or monitoring page showing real-time sync status and historical uptime metrics",
         source: {
           type: "scenario_based",
           label: "BETTER Roadmap",
@@ -1024,7 +1026,7 @@ export const EXECUTION_PLANS: ExecutionPlan[] = [
       {
         label: "Latency improvement",
         criterion:
-          "Co-located execution infrastructure demonstrates ≥ 50% median latency reduction on order round-trip compared to non-colocated baseline, measured over ≥ 1,000 orders",
+          "Co-located execution infrastructure demonstrates ≥ 50% median latency reduction on order round-trip compared to non-colocated baseline, measured over ≥ 1,000 orders and documented in a published performance report or public benchmark page with methodology and raw percentile data visible to any visitor",
         source: {
           type: "scenario_based",
           label: "BETTER Roadmap",
@@ -1039,6 +1041,75 @@ export const EXECUTION_PLANS: ExecutionPlan[] = [
     },
     investorSummary:
       "Co-located execution creates a structural speed advantage for BETTER's agent fleet. It's the infrastructure layer that turns marginal signal quality into real P&L advantage.",
+    source: {
+      type: "scenario_based",
+      label: "BETTER Roadmap",
+    },
+  },
+
+  {
+    nodeId: "ti-data-pipeline-phase2",
+    confidenceLabel: "Planned",
+    workstreams: [
+      {
+        label: "Enterprise-grade pipeline architecture",
+        nature: "internal",
+        description:
+          "Design and build institutional-quality data infrastructure with SLA-backed delivery, audit trails, tiered access controls, and API rate management. AI-agent-compressible: automated pipeline scaffolding, test harness generation, and monitoring instrumentation.",
+      },
+      {
+        label: "API documentation & developer portal",
+        nature: "internal",
+        description:
+          "Build comprehensive API documentation, developer portal, and integration guides for institutional clients. Agent-compressible documentation generation.",
+      },
+      {
+        label: "Data quality certification",
+        nature: "external",
+        description:
+          "Validate data pipeline quality against institutional standards through third-party data quality assessment or SOC 2-equivalent compliance process. Not compressible — requires external audit firm scheduling and review.",
+      },
+      {
+        label: "Institutional client beta program",
+        nature: "external",
+        description:
+          "Onboard pilot institutional clients to validate API design, SLA targets, and data product-market fit. Dependent on enterprise sales cycle and relationship-building timelines.",
+      },
+    ],
+    externalDependencies: [
+      "Third-party data quality assessment or SOC 2 compliance process (4–12 weeks)",
+      "Enterprise client pipeline and pilot onboarding cycle (2–4 months)",
+      "AI/RL Phase 2 model maturity providing institutional-credible signal data",
+      "Regulatory clarity on financial data distribution products",
+    ],
+    proofGates: [
+      {
+        label: "Enterprise API publicly documented",
+        criterion:
+          "A publicly accessible developer portal or API documentation site lists BETTER's enterprise data endpoints with versioned schemas, rate-limit tiers, and SLA targets visible to any visitor",
+        source: {
+          type: "scenario_based",
+          label: "BETTER Roadmap",
+        },
+      },
+      {
+        label: "Pilot data delivery verified",
+        criterion:
+          "At least one institutional pilot client receives API-delivered prediction-market data for ≥ 30 consecutive days with publicly referenceable uptime metrics or a published case study confirming SLA-backed delivery",
+        source: {
+          type: "scenario_based",
+          label: "BETTER Roadmap",
+        },
+      },
+    ],
+    timingWindow: {
+      display: "Q1 2027–Q3 2027, 3–6 months after AI/RL Phase 2 model maturity",
+      lowerBound: "2027-Q1",
+      upperBound: "2027-Q3",
+      mainConstraint: "AI/RL Phase 2 model maturity and enterprise pilot onboarding cycle",
+    },
+    investorSummary:
+      "The enterprise-grade data pipeline transforms BETTER's accumulated prediction-market intelligence into a licensable institutional product. It creates the infrastructure layer required for B2B revenue at institutional price points.",
     source: {
       type: "scenario_based",
       label: "BETTER Roadmap",
@@ -1080,7 +1151,7 @@ export const EXECUTION_PLANS: ExecutionPlan[] = [
       {
         label: "Cross-platform agent communication",
         criterion:
-          "At least one BETTER agent sends and receives structured messages via the OpenServ network with round-trip latency < 5 seconds in production",
+          "At least one BETTER agent sends and receives structured messages via the OpenServ network with round-trip latency < 5 seconds in production, verifiable through the public OpenServ agent registry or a published integration announcement confirming BETTER's live agent presence on the network",
         source: {
           type: "canonical",
           label: "BETTER Docs & Whitepaper",
@@ -1256,6 +1327,79 @@ export const EXECUTION_PLANS: ExecutionPlan[] = [
     },
     investorSummary:
       "Research bounties crowdsource prediction-market intelligence improvement. They convert community engagement into data-quality gains that benefit the entire BETTER signal pipeline.",
+    source: {
+      type: "scenario_based",
+      label: "BETTER Roadmap",
+    },
+  },
+  {
+    nodeId: "sa-premium-api",
+    confidenceLabel: "Planned",
+    workstreams: [
+      {
+        label: "Dedicated API lane infrastructure",
+        nature: "internal",
+        description:
+          "Deploy dedicated high-throughput API endpoints with rate-limit differentiation by whale tier, including isolated compute pools and priority queue routing. AI-agent-compressible: automated infrastructure provisioning, load testing, and monitoring setup.",
+      },
+      {
+        label: "Tier-gated access control",
+        nature: "internal",
+        description:
+          "Implement on-chain tier verification at the API gateway layer so only qualifying whale-tier wallets receive premium lane access. Integrates with the whale-tier smart contract.",
+      },
+      {
+        label: "SLA definition & monitoring",
+        nature: "internal",
+        description:
+          "Define and instrument SLA targets (latency percentiles, uptime guarantees, throughput limits) for premium lanes with real-time public status monitoring.",
+      },
+      {
+        label: "Enterprise data pipeline readiness",
+        nature: "external",
+        description:
+          "Premium API lanes depend on the enterprise-grade data pipeline (ti-data-pipeline-phase2) being operational. Not compressible — requires upstream infrastructure maturity.",
+      },
+      {
+        label: "Whale-tier demand validation",
+        nature: "external",
+        description:
+          "Sufficient whale-tier holders must exist and demonstrate demand for premium API access to justify dedicated infrastructure investment. Dependent on whale-tier adoption pace.",
+      },
+    ],
+    externalDependencies: [
+      "Enterprise data pipeline (ti-data-pipeline-phase2) operational readiness",
+      "Whale-tier ladder (tu-whale-tiers) fully deployed with sufficient holder base",
+      "Demand validation from whale-tier holders for premium API access",
+    ],
+    proofGates: [
+      {
+        label: "Premium lane publicly accessible",
+        criterion:
+          "A publicly documented premium API endpoint returns differentiated rate limits and latency for whale-tier-verified wallets versus standard-tier wallets, verifiable by any wallet holder through a public API status page or self-service tier-check endpoint",
+        source: {
+          type: "scenario_based",
+          label: "BETTER Roadmap",
+        },
+      },
+      {
+        label: "Tier-gated throughput verified",
+        criterion:
+          "On-chain tier verification at the API gateway is publicly queryable, and a public status dashboard or API response header exposes the caller's verified tier and corresponding rate-limit allocation",
+        source: {
+          type: "scenario_based",
+          label: "BETTER Roadmap",
+        },
+      },
+    ],
+    timingWindow: {
+      display: "Q2 2027–Q4 2027, 4–8 weeks after enterprise data pipeline and whale-tier maturity",
+      lowerBound: "2027-Q2",
+      upperBound: "2027-Q4",
+      mainConstraint: "Enterprise data pipeline readiness and whale-tier holder critical mass",
+    },
+    investorSummary:
+      "Premium API lanes monetize infrastructure access at whale-tier price points. They create differentiated throughput that rewards larger BETTER positions with tangible execution advantages for agents and integrations.",
     source: {
       type: "scenario_based",
       label: "BETTER Roadmap",
