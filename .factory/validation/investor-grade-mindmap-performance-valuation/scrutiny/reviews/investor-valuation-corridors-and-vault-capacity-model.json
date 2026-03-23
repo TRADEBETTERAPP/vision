@@ -1,0 +1,28 @@
+{
+  "featureId": "investor-valuation-corridors-and-vault-capacity-model",
+  "reviewedAt": "2026-03-23T03:11:16.895805Z",
+  "commitId": "5d68d482628447878629bcb6a0892a606db5021e",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "pass",
+  "codeReview": {
+    "summary": "The feature materially satisfies VAL-TOKEN-015 and VAL-TOKEN-016. The diff adds typed valuation-corridor data and UI with explicit lower/upper FDV bounds, proof-gate lists, comparable-category labels, a live anchor corridor, consistent FDV-plus-minted-supply basis declarations, and per-token price reconciliation. It also adds a stake-to-vault-capacity model with adjustable stake and total-staked inputs, minted-supply ceiling validation, uncertainty-band output, dollar-denominated estimates, first-vault vs modeled-whale-vault scenario framing, and clear policy-vs-modeled labeling. I found one non-blocking rigor gap in the whale-vault path: two displayed whale-vault assumptions are informational only and do not affect the computed estimate.",
+    "issues": [
+      {
+        "file": "src/components/tokenomics/VaultCapacityModel.tsx",
+        "line": 99,
+        "severity": "non_blocking",
+        "description": "The whale-vault calculation still only passes `userStake`, `totalStaked`, `vaultCapacityUsd`, and `perWalletCapUsd` into `computeVaultCapacityEstimate`, so the separately displayed whale-count and stake-distribution assumptions never influence the estimate. Users do see those assumptions in the UI, but they cannot actually inspect how changing them would affect the modeled whale-vault output, which makes the sensitivity framing weaker than advertised."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "skills",
+      "observation": "The worker reported `skillFeedback.followedProcedure=true`, but the transcript skeleton shows the rendered tokenomics UI was implemented before its UI regression test file was written. The current `content-strategy-worker` procedure still matches repo reality, so this looks like an adherence/reporting gap rather than a skill-doc gap.",
+      "evidence": "`/Users/test/vision/.factory/skills/content-strategy-worker/SKILL.md` step 3 requires failing tests first for rendered content behavior. In the transcript skeleton for worker session `39fc6557-85a8-436e-b588-337cff29ce4d`, `src/components/tokenomics/ValuationCorridors.tsx`, `src/components/tokenomics/VaultCapacityModel.tsx`, and the `TokenomicsSection.tsx` wiring are created/edited before `src/components/tokenomics/__tests__/valuation-and-vault-ui.test.tsx` is created."
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "Pass with one non-blocking modeling-rigor issue. The implementation covers the requested valuation-corridor and vault-capacity surfaces with solid typed data and test coverage, but the whale-vault estimate does not currently vary with two of the whale-specific assumptions it presents."
+}

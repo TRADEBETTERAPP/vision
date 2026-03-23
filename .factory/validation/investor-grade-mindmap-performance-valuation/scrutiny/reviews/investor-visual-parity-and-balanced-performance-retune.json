@@ -1,0 +1,40 @@
+{
+  "featureId": "investor-visual-parity-and-balanced-performance-retune",
+  "reviewedAt": "2026-03-23T03:11:35Z",
+  "commitId": "1bb1b029c5f80e8850270c75e7deef25112cc226",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "fail",
+  "codeReview": {
+    "summary": "The retune does land the crisper white text, deeper near-black token ladder, and a real desktop-only gate for the heavy Radiant/Hermes layers, but it does not fully satisfy the feature contract. The constrained fallback is still fully static despite the feature explicitly promising cheaper motion on constrained states, the new VAL-VISUAL-021 coverage stops at comments/token checks instead of producing the required side-by-side tradebetter evidence, and the recorded validation never captures the concrete runtime or deferred-load observations required to prove the performance claims.",
+    "issues": [
+      {
+        "file": "src/app/globals.css",
+        "line": 431,
+        "severity": "blocking",
+        "description": "The constrained-device path still has no actual low-cost motion. The new block is labeled 'Smoother low-cost motion for constrained states', but it only swaps in a stronger static gradient while the earlier rule at lines 416-418 disables transitions, and `HeroVisualSystem` also reports `data-motion-layers=0` for constrained/fallback states (`src/components/visual/HeroVisualSystem.tsx:109-114`). That means mobile/tablet users get a hierarchy-preserving static fallback, not the cheaper-motion fallback promised by the feature description and expected behavior." 
+      },
+      {
+        "file": "src/components/visual/__tests__/capability-gating-and-tonal-hierarchy.test.tsx",
+        "line": 279,
+        "severity": "blocking",
+        "description": "The new VAL-VISUAL-021 'reference evidence' coverage only checks that `globals.css` contains tradebetter comments/token strings and that shell source files use the expected surface tokens. It never produces or stores the explicit side-by-side `tradebetter.app` comparison or extracted-theme comparison required by the feature/validation contract, and a repo search found no committed artifact for those comparisons." 
+      },
+      {
+        "file": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/handoffs/2026-03-23T03-05-44-908Z__investor-visual-parity-and-balanced-performance-retune__5d829524-bf30-45ff-96a9-4e1e4cd201cc.json",
+        "line": 36,
+        "severity": "blocking",
+        "description": "The recorded validation for VAL-VISUAL-025 only captures DOM/state inspection and screenshots. It does not include the required concrete runtime smoothness observation (frame rate, jank, long-task, or equivalent) or an initial-load/deferred-heavy-layer observation that would show the heavy stack did not block meaningful first paint, so the feature's performance claims remain unproven." 
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "skills",
+      "observation": "`frontend-experience-worker` step 4 is too absolute for parity-enforcement follow-ups that intentionally reuse already-extracted tradebetter tokens. This worker read `design-system.md`, skipped fresh `FetchUrl`/`pinchtab` extraction, marked `followedProcedure=true`, and explicitly asked for the rule to be clarified. The skill likely needs a reuse-vs-reextract distinction so adherence reporting is consistent with repo reality.",
+      "evidence": "`/Users/test/vision/.factory/skills/frontend-experience-worker/SKILL.md:23` requires `FetchUrl`, `pinchtab`, and `agent-browser` whenever a feature touches tradebetter-led theme parity. In the saved transcript skeleton for worker session `5d829524-bf30-45ff-96a9-4e1e4cd201cc`, the worker reads `.factory/library/design-system.md` and later uses `agent-browser`, but transcript searches found no `FetchUrl` or `pinchtab` calls. The handoff still reports `followedProcedure=true` and suggests clarifying step 4 at `/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/handoffs/2026-03-23T03-05-44-908Z__investor-visual-parity-and-balanced-performance-retune__5d829524-bf30-45ff-96a9-4e1e4cd201cc.json:156-159`."
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "Fail. The code successfully tightens the shell's text/surface tokens and adds explicit desktop gating for heavy layers, but the feature still misses two core acceptance bars: constrained devices do not get the promised low-cost motion path, and the deliverable/verification trail does not contain the explicit tradebetter comparison evidence or concrete runtime/deferred-load performance observations required by VAL-VISUAL-021 and VAL-VISUAL-025."
+}

@@ -1,0 +1,109 @@
+{
+  "milestone": "investor-grade-mindmap-performance-valuation",
+  "round": 1,
+  "status": "fail",
+  "validatorsRun": {
+    "test": {
+      "passed": true,
+      "command": "npm run test",
+      "exitCode": 0
+    },
+    "typecheck": {
+      "passed": true,
+      "command": "npx tsc --noEmit",
+      "exitCode": 0
+    },
+    "lint": {
+      "passed": true,
+      "command": "npm run lint",
+      "exitCode": 0
+    }
+  },
+  "reviewsSummary": {
+    "total": 4,
+    "passed": 1,
+    "failed": 3,
+    "failedFeatures": [
+      "investor-graph-workspace-default-and-guided-pitch-path",
+      "investor-roadmap-execution-plan-and-timing-model",
+      "investor-visual-parity-and-balanced-performance-retune"
+    ]
+  },
+  "blockingIssues": [
+    {
+      "featureId": "investor-graph-workspace-default-and-guided-pitch-path",
+      "severity": "blocking",
+      "description": "The root landing still renders the hero before the atlas, so the default visible state is hero-first rather than a pure graph workspace as required by VAL-ROADMAP-014 and VAL-CROSS-014."
+    },
+    {
+      "featureId": "investor-graph-workspace-default-and-guided-pitch-path",
+      "severity": "blocking",
+      "description": "The guided investor path labels a Valuation gate but maps it to the `risks` node, so the ordered path does not actually deliver a valuation surface."
+    },
+    {
+      "featureId": "investor-roadmap-execution-plan-and-timing-model",
+      "severity": "blocking",
+      "description": "Two visible planned roadmap stages (`ti-data-pipeline-phase2` and `sa-premium-api`) still have no dedicated execution-plan treatment, so not every primary roadmap stage satisfies VAL-ROADMAP-016."
+    },
+    {
+      "featureId": "investor-roadmap-execution-plan-and-timing-model",
+      "severity": "blocking",
+      "description": "Several proof gates remain concrete but not externally observable, which does not satisfy the falsifiable externally observable proof-gate requirement in VAL-ROADMAP-016."
+    },
+    {
+      "featureId": "investor-visual-parity-and-balanced-performance-retune",
+      "severity": "blocking",
+      "description": "The constrained/mobile path still falls back to a static hierarchy-preserving background instead of the promised cheaper-motion path."
+    },
+    {
+      "featureId": "investor-visual-parity-and-balanced-performance-retune",
+      "severity": "blocking",
+      "description": "The deliverable does not include the explicit side-by-side `tradebetter.app` comparison and extracted-theme evidence required for VAL-VISUAL-021."
+    },
+    {
+      "featureId": "investor-visual-parity-and-balanced-performance-retune",
+      "severity": "blocking",
+      "description": "Recorded validation lacks concrete runtime smoothness and deferred-heavy-layer observations, so the VAL-VISUAL-025 performance claims remain unproven."
+    }
+  ],
+  "appliedUpdates": [
+    {
+      "target": "library",
+      "description": "Extended `.factory/library/testing.md` to note that viewport-first assertions such as a default visible graph workspace need browser/visual or layout-aware verification; DOM order checks alone are insufficient.",
+      "sourceFeature": "investor-graph-workspace-default-and-guided-pitch-path"
+    }
+  ],
+  "suggestedGuidanceUpdates": [
+    {
+      "target": "frontend-experience-worker skill",
+      "suggestion": "Require explicit CTA-destination evidence for graph-first navigation features before workers can claim `followedProcedure=true`.",
+      "evidence": "The review for `investor-graph-workspace-default-and-guided-pitch-path` found the transcript/browser evidence covered scrolling to the atlas and guided-path behavior, but not the required CTA-destination validation, while the handoff still marked procedure adherence as complete.",
+      "isSystemic": false
+    },
+    {
+      "target": "AGENTS.md",
+      "suggestion": "Define how roadmap nodes qualify as `primary` when every primary stage must receive a dedicated execution plan.",
+      "evidence": "`investor-roadmap-execution-plan-and-timing-model` introduced a local `PRIMARY_STAGE_IDS` subset and omitted visible planned nodes `ti-data-pipeline-phase2` and `sa-premium-api`, which left those stages without execution-plan treatment.",
+      "isSystemic": false
+    },
+    {
+      "target": "content-strategy-worker skill",
+      "suggestion": "Tighten test-first and adherence-reporting guidance so implementation-before-tests sessions cannot still report `followedProcedure=true` without an explicit deviation.",
+      "evidence": "Both `investor-roadmap-execution-plan-and-timing-model` and `investor-valuation-corridors-and-vault-capacity-model` were reviewed with transcript evidence showing implementation edits before the new rendered-behavior tests, yet both handoffs reported `followedProcedure=true`.",
+      "isSystemic": true
+    },
+    {
+      "target": "frontend-experience-worker skill",
+      "suggestion": "Clarify when tradebetter parity follow-up features may reuse previously extracted theme evidence versus when they must rerun `FetchUrl`/`pinchtab`, and require an explicit committed side-by-side comparison artifact when parity evidence is part of the contract.",
+      "evidence": "The `investor-visual-parity-and-balanced-performance-retune` review found reused library context plus fresh browser checks, but no fresh `FetchUrl`/`pinchtab` extraction and no committed side-by-side parity artifact, while the handoff still marked `followedProcedure=true`.",
+      "isSystemic": true
+    }
+  ],
+  "rejectedObservations": [
+    {
+      "observation": "The valuation-model review repeated the same `content-strategy-worker` test-first adherence gap already raised by the execution-plan review.",
+      "reason": "duplicate"
+    }
+  ],
+  "previousRound": null
+}

@@ -1,0 +1,39 @@
+{
+  "featureId": "investor-roadmap-execution-plan-and-timing-model",
+  "reviewedAt": "2026-03-23T03:13:04.923236Z",
+  "commitId": "c5de6e8bb7b2524d578a0ec09e8b1c9dc6b14e18",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "fail",
+  "codeReview": {
+    "summary": "The feature adds a substantial per-stage execution-plan dataset, a dedicated panel, and broad test coverage, but it does not fully satisfy VAL-ROADMAP-016. Two planned roadmap stages shown in the roadmap surface still have no execution-plan treatment, and several proof gates are concrete but not externally observable, which is a direct requirement of the validation contract.",
+    "issues": [
+      {
+        "file": "src/content/execution-plans.ts",
+        "line": 27,
+        "severity": "blocking",
+        "description": "`PRIMARY_STAGE_IDS` hard-codes a 20-node subset and omits at least two first-class planned roadmap stages that remain visible in the roadmap surface: `ti-data-pipeline-phase2` (`src/content/roadmap-nodes.ts:614`) and `sa-premium-api` (`src/content/roadmap-nodes.ts:739`). Because `RoadmapNodeDetail` only renders the new panel when `getExecutionPlanForNode(node.id)` finds a matching plan (`src/components/roadmap/RoadmapNodeDetail.tsx:101`, `src/content/execution-plans.ts:1271`), those stages still fall back to the old summary-only detail instead of getting the dedicated workstreams/dependencies/proof-gates/timing treatment required by VAL-ROADMAP-016."
+      },
+      {
+        "file": "src/content/execution-plans.ts",
+        "line": 174,
+        "severity": "blocking",
+        "description": "VAL-ROADMAP-016 requires each proof gate to be framed as a concrete, externally observable success criterion, but several gates still hinge on private/internal events. Examples include allowing audit completion when a firm merely \"provides BETTER\" a report (`src/content/execution-plans.ts:174`), treating a private client signing a data-licensing agreement as the B2B proof gate (`src/content/execution-plans.ts:367`), and treating a paid enterprise pilot with a signed agreement as the enterprise-data proof gate (`src/content/execution-plans.ts:782`). These gates are concrete, but they are not consistently externally observable to investors/users, so the proof-gate framing is still incomplete against the feature contract."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "conventions",
+      "observation": "The shared content guidance asks for execution-plan fields for each major roadmap step, but it never defines how roadmap nodes should be classified as \"primary\" versus support stages. This feature had to invent a local `PRIMARY_STAGE_IDS` list, and that ad hoc list omitted planned nodes that still appear as first-class roadmap stages.",
+      "evidence": "`/Users/test/vision/.factory/library/content-model.md:71-75` requires execution-plan fields for each major roadmap step; `src/content/execution-plans.ts:27` introduces a local `PRIMARY_STAGE_IDS` list; planned nodes `ti-data-pipeline-phase2` and `sa-premium-api` still exist in `src/content/roadmap-nodes.ts:614` and `:739` but receive no plan."
+    },
+    {
+      "area": "skills",
+      "observation": "The `content-strategy-worker` skill says schema/content changes must start with failing tests and that any implementation-before-tests deviation should be reported with `followedProcedure=false`, but this session's transcript shows implementation edits landing before the new failing test while the handoff still reported `followedProcedure: true`.",
+      "evidence": "`/Users/test/vision/.factory/skills/content-strategy-worker/SKILL.md:22-23` requires failing tests first and explicit deviation reporting. In worker session `f915883b-331c-4a84-806e-1d916c2f0fd6`, the transcript skeleton shows \"Now let me add the execution plan types to `types.ts`\" before \"Now let me write the failing tests first\" (substring positions 7534 vs 7999 in `worker-transcripts.jsonl`), while the handoff file `/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/handoffs/2026-03-23T02-38-22-262Z__investor-roadmap-execution-plan-and-timing-model__f915883b-331c-4a84-806e-1d916c2f0fd6.json` records `\"followedProcedure\": true`."
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "Fail. The feature adds strong execution-plan scaffolding and UI wiring, but the roadmap surface still leaves two planned stages without plans and several proof gates are not actually externally observable, so VAL-ROADMAP-016 is not fully satisfied."
+}

@@ -1,0 +1,45 @@
+{
+  "featureId": "investor-graph-workspace-default-and-guided-pitch-path",
+  "reviewedAt": "2026-03-23T03:11:43.777934+00:00",
+  "commitId": "c4a69b9f1a6fdda6d3d92010e8a25cb3dd6c6e71",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "fail",
+  "codeReview": {
+    "summary": "The commit adds the requested shell mechanics: a start/resume affordance, progress UI, sticky inspector, and persistent minimap. However, it still misses two core contract requirements. The root landing remains hero-first instead of opening with the graph workspace as the primary visible surface, and the required valuation gate is implemented as a relabeled jump to the existing Risks surface. I also found a pitch-path/history synchronization bug: hash/back-forward navigation updates the focused node but leaves the guided-path progress state stale.",
+    "issues": [
+      {
+        "file": "src/app/page.tsx",
+        "line": 26,
+        "severity": "blocking",
+        "description": "The root landing still renders the hero section before the graph workspace, with the atlas only starting later at `Section id=\"atlas\"` (`line 133`). That means the default visible surface is still hero-first rather than the live interactive graph workspace required by VAL-ROADMAP-014 / VAL-CROSS-014. The worker's own browser transcript confirms this mismatch: they had to `scroll down 600` before the atlas and investor-path entry affordance were visible."
+      },
+      {
+        "file": "src/content/investor-pitch-path.ts",
+        "line": 103,
+        "severity": "blocking",
+        "description": "Gate 7 is labeled `Valuation`, but it maps to `graphNodeId: \"risks\"`. In the shell, the focused surface title/breadcrumb comes from the graph node metadata, so this step sends users to the existing `Risks & Caveats` node instead of a valuation-specific surface. The ordered path therefore skips the required valuation gate and substitutes a different concept."
+      },
+      {
+        "file": "src/components/graph/GraphShell.tsx",
+        "line": 119,
+        "severity": "non_blocking",
+        "description": "`RESTORE_HASH` only updates `focusedNodeId` / `invalidLink` and leaves `pitchPath.currentGateIndex`, `visitedGates`, and `lastGateIndex` untouched. If a user is in the guided path and uses browser back/forward or any hash-based navigation, the focused node changes but the progress bar, inspector label, and next/previous controls continue to reflect the old gate. The existing cross-surface history tests do not cover pitch-path-active history flows, so this desynchronization is currently untested."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "skills",
+      "observation": "`frontend-experience-worker` compliance is being marked as satisfied without evidence of the required CTA-destination validation for graph-first navigation.",
+      "evidence": "`/Users/test/vision/.factory/skills/frontend-experience-worker/SKILL.md:37` requires workers to explicitly validate every primary hero CTA and shared-chrome CTA destination when replacing section-anchor browsing. In the reviewed transcript (`/Users/test/.factory/artifacts/tool-outputs/grep_tool_cli-call_S5zaZHfSDMup053pkxxd3jFJ-35421954.log`), the recorded browser checks only scroll to the atlas, start the investor path, advance gates, and verify resume/minimap; the handoff still marks `skillFeedback.followedProcedure=true` in `/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/handoffs/2026-03-23T02-24-20-423Z__investor-graph-workspace-default-and-guided-pitch-path__bbcf893c-8e23-4311-a33f-da27f714a5ea.json`."
+    },
+    {
+      "area": "knowledge",
+      "observation": "The current testing guidance does not prevent viewport-level 'default visible surface' assertions from being reduced to simple DOM-order checks.",
+      "evidence": "The validation contract requires a `default-loaded-graph-workspace` screenshot for VAL-ROADMAP-014 (`/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/validation-contract.md:113-115`), but the updated Jest assertions only check DOM order (`/Users/test/vision/src/app/__tests__/proof-led-sequence.test.tsx:63-72`, `/Users/test/vision/src/app/__tests__/root-layout-chrome.test.tsx:77-90`). `/Users/test/vision/.factory/library/testing.md:10` already warns that page-only renders are limited; it may be worth extending shared testing guidance to call out viewport-first claims like 'graph is the primary visible surface' explicitly."
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "Fail. The feature adds the guided-path UI, sticky inspector, minimap, and resume affordance, but it misses two core contract points: the page still lands hero-first instead of graph-first, and the path's valuation step is wired to the Risks surface rather than valuation content. I also noted an untested hash/history sync bug in the guided path state and a skill-adherence evidence gap around CTA destination validation."
+}
