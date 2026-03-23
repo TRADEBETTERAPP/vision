@@ -241,7 +241,7 @@ export const TOKEN_ALLOCATIONS: TokenAllocation[] = [
     source: {
       type: "canonical",
       label: "Basescan (On-Chain)",
-      href: "https://basescan.org/token/0x396FfAd9469e3d3E3fc4061B79accE2Ad0Ce4B9E",
+      href: "https://basescan.org/token/0x396FfAd9469e3d3E3fc4061B79accE2Ad0Ce4B9E?a=0x80e29ff551400fb8313af916a8fa164ca310c0d7",
       note: "Combined LP across 0x80e29f… (~30.75M) and 0x498581… (~30.15M). Verified via Dune erc20_base.evt_Transfer query.",
     },
   },
@@ -252,7 +252,7 @@ export const TOKEN_ALLOCATIONS: TokenAllocation[] = [
     source: {
       type: "canonical",
       label: "Basescan (On-Chain)",
-      href: "https://basescan.org/token/0x396FfAd9469e3d3E3fc4061B79accE2Ad0Ce4B9E",
+      href: "https://basescan.org/token/0x396FfAd9469e3d3E3fc4061B79accE2Ad0Ce4B9E?a=0x2d407b5a24800a058b8f34b04e6b7b18ad0cae16",
       note: "Distributed programmatic funding across 0x2d407b… (~13.1M) and 0x1b33f3… (~12.7M). Verified via Dune erc20_base.evt_Transfer query.",
     },
   },
@@ -273,9 +273,9 @@ export const TOKEN_ALLOCATIONS: TokenAllocation[] = [
     tokens: 81_124_021,
     source: {
       type: "canonical",
-      label: "Dune Analytics (On-Chain)",
-      href: "https://dune.com/queries?q=BETTER+token+0x396FfAd9469e3d3E3fc4061B79accE2Ad0Ce4B9E",
-      note: "Batch of ~200+ smaller transfers at 2026-03-08 21:45:29 UTC. Verified via Dune erc20_base.evt_Transfer query.",
+      label: "Basescan (On-Chain)",
+      href: "https://basescan.org/token/0x396FfAd9469e3d3E3fc4061B79accE2Ad0Ce4B9E?a=0x1bbdc95d322b8fd76e6a00e6c318dfb421d7d322",
+      note: "Batch of ~200+ smaller transfers from deployer 0x1bbdc9… at 2026-03-08 21:45:29 UTC. Verified via Dune erc20_base.evt_Transfer query.",
     },
   },
 ];

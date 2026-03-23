@@ -155,3 +155,63 @@ describe("On-Chain Source Citations (VAL-TOKEN-020)", () => {
     expect(withDuneRef.length).toBeGreaterThan(0);
   });
 });
+
+// ---------------------------------------------------------------------------
+// Row-Specific Direct Links (round-2 scrutiny fix)
+// ---------------------------------------------------------------------------
+
+describe("Row-Specific Direct Wallet Links (round-2 scrutiny)", () => {
+  const GENERIC_TOKEN_PAGE =
+    "https://basescan.org/token/0x396FfAd9469e3d3E3fc4061B79accE2Ad0Ce4B9E";
+
+  it("LP / Liquidity source.href is a direct wallet-specific Basescan link, not the generic token page", () => {
+    const lp = TOKEN_ALLOCATIONS.find((a) => a.label.includes("LP"));
+    expect(lp).toBeDefined();
+    expect(lp!.source.href).toBeDefined();
+    expect(lp!.source.href).not.toBe(GENERIC_TOKEN_PAGE);
+    expect(lp!.source.href).toMatch(/basescan\.org\/token\/.*\?a=0x[a-fA-F0-9]+/);
+  });
+
+  it("Programmatic Funding source.href is a direct wallet-specific Basescan link, not the generic token page", () => {
+    const prog = TOKEN_ALLOCATIONS.find(
+      (a) => a.label.includes("Programmatic") && !a.label.includes("Deployer")
+    );
+    expect(prog).toBeDefined();
+    expect(prog!.source.href).toBeDefined();
+    expect(prog!.source.href).not.toBe(GENERIC_TOKEN_PAGE);
+    expect(prog!.source.href).toMatch(/basescan\.org\/token\/.*\?a=0x[a-fA-F0-9]+/);
+  });
+
+  it("Airdrop / Migration source.href is a direct wallet-specific Basescan link, not a generic Dune search page", () => {
+    const airdrop = TOKEN_ALLOCATIONS.find((a) => a.label.includes("Airdrop"));
+    expect(airdrop).toBeDefined();
+    expect(airdrop!.source.href).toBeDefined();
+    expect(airdrop!.source.href).not.toMatch(/dune\.com\/queries\?q=/);
+    expect(airdrop!.source.href).toMatch(/basescan\.org\/token\/.*\?a=0x[a-fA-F0-9]+/);
+  });
+
+  it("LP / Liquidity href references a known LP wallet address", () => {
+    const lp = TOKEN_ALLOCATIONS.find((a) => a.label.includes("LP"));
+    const href = lp!.source.href!;
+    const hasKnownLp =
+      href.includes("0x80e29ff551400fb8313af916a8fa164ca310c0d7") ||
+      href.includes("0x498581ff718922c3f8e6a244956af099b2652b2b");
+    expect(hasKnownLp).toBe(true);
+  });
+
+  it("Programmatic Funding href references a known programmatic wallet address", () => {
+    const prog = TOKEN_ALLOCATIONS.find(
+      (a) => a.label.includes("Programmatic") && !a.label.includes("Deployer")
+    );
+    const href = prog!.source.href!;
+    const hasKnownProg =
+      href.includes("0x2d407b5a24800a058b8f34b04e6b7b18ad0cae16") ||
+      href.includes("0x1b33f383e297f71c85ae55da5d42aea7a08f1a60");
+    expect(hasKnownProg).toBe(true);
+  });
+
+  it("Airdrop / Migration href references the deployer address for batch-transfer verification", () => {
+    const airdrop = TOKEN_ALLOCATIONS.find((a) => a.label.includes("Airdrop"));
+    expect(airdrop!.source.href).toContain("0x1bbdc95d322b8fd76e6a00e6c318dfb421d7d322");
+  });
+});

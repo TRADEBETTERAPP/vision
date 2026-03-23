@@ -3,7 +3,7 @@
  *
  * Validates that the SupplyAllocation component shows:
  * - On-chain verified allocation categories
- * - Visible source citations with basescan/Dune links
+ * - Visible source citations with direct basescan wallet-address links
  * - Correct Team (~250M) and Treasury (~200M) per on-chain truth
  * - No wrong allocation mapping
  */
@@ -45,12 +45,13 @@ describe("SupplyAllocation — On-Chain Verified Display (VAL-TOKEN-020)", () =>
     expect(basescanLinks.length).toBeGreaterThan(0);
   });
 
-  it("displays Dune source citations as links", () => {
+  it("all allocation source links point to basescan (direct wallet addresses)", () => {
     const links = screen.getAllByRole("link");
-    const duneLinks = links.filter(
-      (l) => l.getAttribute("href")?.includes("dune.com")
+    const basescanAllocationLinks = links.filter(
+      (l) => l.getAttribute("href")?.includes("basescan.org/token/")
     );
-    expect(duneLinks.length).toBeGreaterThan(0);
+    // All 7 allocation rows should link to basescan
+    expect(basescanAllocationLinks.length).toBeGreaterThanOrEqual(7);
   });
 
   it("shows 250,000,000 for Team/Vesting (not 200M)", () => {
