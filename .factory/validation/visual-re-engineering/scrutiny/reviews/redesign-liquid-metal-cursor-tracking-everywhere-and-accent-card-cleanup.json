@@ -1,0 +1,45 @@
+{
+  "featureId": "redesign-liquid-metal-cursor-tracking-everywhere-and-accent-card-cleanup",
+  "reviewedAt": "2026-03-23T15:16:26.858938Z",
+  "commitId": "93117b9cb043e27995ff6674e12c2f9905e9e777",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "fail",
+  "codeReview": {
+    "summary": "Fail. The rerun removes the `.glass-card` utility and converts the 16 files it targeted, so it fixes the first half of the prior failure. But the site still ships visible legacy accent-card/static panel treatments outside that narrow `.glass-card` cleanup, so not every card surface has the LiquidMetal cursor-tracking sheen and the original blocker is not fully resolved.",
+    "issues": [
+      {
+        "file": "src/components/tokenomics/FdvRatchetExplainer.tsx",
+        "line": 96,
+        "severity": "blocking",
+        "description": "The original blocking gap is still present: this visible tokenomics module still renders a legacy `rounded-lg border border-accent/20 bg-accent/5` callout instead of the required LiquidMetal treatment. Similar accent-card remnants remain in `src/components/tokenomics/TokenUtilitySurface.tsx:272` and `:321`, `src/components/roadmap/ExecutionPlanPanel.tsx:47`, `src/components/roadmap/RoadmapNodeDetail.tsx:70`, and `src/components/architecture/FlywheelExplorer.tsx:258`/`:277`. Because this fix was explicitly supposed to remove the remaining old accent-card styling everywhere, it does not fully address the prior scrutiny failure."
+      },
+      {
+        "file": "src/components/architecture/CostBandExplorer.tsx",
+        "line": 166,
+        "severity": "blocking",
+        "description": "Even after the `.glass-card` replacement pass, multiple visible sub-panels still render as static `rounded ... border ... bg-...` boxes instead of `LiquidMetalCard`, so cursor-tracking metallic sheen is still not present across all card surfaces. Examples include `src/components/tokenomics/NonLinearAllocation.tsx:106`, `src/components/graph/surfaces/EvidenceSurface.tsx:66`, and `src/components/CaveatFrame.tsx:16`. This means the rerun still falls short of the orchestrator note that every card surface should carry the interactive liquid-metal treatment."
+      },
+      {
+        "file": "src/components/__tests__/liquid-metal-everywhere.test.tsx",
+        "line": 57,
+        "severity": "non_blocking",
+        "description": "The new regression test overstates its coverage: it claims to check that 'all card-like surfaces' use `LiquidMetalCard`, but it only verifies a fixed list of 16 former `.glass-card` files. That is why the remaining legacy/static panels above can still ship undetected."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "conventions",
+      "observation": "The mission's visual guidance is still internally inconsistent about card blur, and this fix continues the blur-based implementation. Shared guidance says tradebetter card depth should come from opacity only with no backdrop blur, but `LiquidMetalCard` still hard-codes `blur(10px)`.",
+      "evidence": "Mission AGENTS `/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/AGENTS.md:138` says 'No backdrop-blur.' The same rule appears in `/Users/test/vision/.factory/library/design-system.md:168` and `/Users/test/vision/.factory/library/tradebetter-exact-design-reference.md:235`, while `src/components/LiquidMetalCard.tsx:127-128` still applies `backdropFilter: \"blur(10px)\"` and `WebkitBackdropFilter: \"blur(10px)\"`."
+    },
+    {
+      "area": "skills",
+      "observation": "For a sitewide visual parity/card-treatment fix, the frontend worker skill requires design-system/tradebetter-reference review or explicit reuse citation for prior extraction artifacts, but this worker still reported `followedProcedure: true` without that evidence.",
+      "evidence": "`/Users/test/vision/.factory/skills/frontend-experience-worker/SKILL.md:22-23` require reviewing `design-system.md` and using/citing the approved tradebetter extraction workflow when touching theme parity. The handoff at `/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/handoffs/2026-03-23T15-04-33-700Z__redesign-liquid-metal-cursor-tracking-everywhere-and-accent-card-cleanup__abe86e62-c880-4791-80ec-b19c309f78a1.json:79` still sets `followedProcedure` to true, but transcript extraction for session `abe86e62-c880-4791-80ec-b19c309f78a1` found no `design-system.md`, `tradebetter-exact-design-reference`, `FetchUrl`, or `pinchtab` entries."
+    }
+  ],
+  "addressesFailureFrom": "/Users/test/vision/.factory/validation/visual-re-engineering/scrutiny/reviews/redesign-liquid-metal-cards-and-glass-morphism.json",
+  "summary": "Review failed. The fix successfully removes the old `.glass-card` helper and upgrades the 16 files it targeted, but the original scrutiny blocker is only partially fixed: visible legacy accent/static card panels remain in tokenomics, roadmap, architecture, and shared supporting surfaces, so the site still does not give every card surface the cursor-tracking metallic sheen."
+}

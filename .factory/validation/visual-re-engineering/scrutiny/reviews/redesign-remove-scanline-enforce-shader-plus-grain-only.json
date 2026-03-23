@@ -1,0 +1,38 @@
+{
+  "featureId": "redesign-remove-scanline-enforce-shader-plus-grain-only",
+  "reviewedAt": "2026-03-23T15:16:16Z",
+  "commitId": "1a4098129dc1270d9a54f12122f7842701b50fc4",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "fail",
+  "codeReview": {
+    "summary": "The rerun fixes the original scanline blocker: `.scanline-overlay` is gone from `SiteAtmosphere`, `HeroVisualSystem`, `HeroVisualSkeleton`, and `globals.css`, so the prior review's blocking issue is addressed. However, the feature still does not fully match this fix contract's approved two-layer atmosphere because the remaining film-grain layer is not a tradebetter-exact GIF overlay; `FilmGrainOverlay` still renders procedural SVG noise instead of a vendored GIF texture.",
+    "issues": [
+      {
+        "file": "src/components/visual/FilmGrainOverlay.tsx",
+        "line": 24,
+        "severity": "blocking",
+        "description": "The fix contract says the approved atmosphere that remains is a film-grain GIF overlay at 5% opacity (`features.json:2601-2604`), and mission guidance likewise calls for an animated GIF texture (`/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/AGENTS.md:126-127,201`). But this component still renders an inline `<svg>` noise field with `<feTurbulence>` (`:24-52`) instead of a vendored GIF asset, and there is no `.gif` atmosphere asset anywhere in the repo. So while the scanline layers are removed, the shipped stack is still not the exact approved shader-plus-GIF atmosphere." 
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "conventions",
+      "observation": "The exact film-grain-GIF requirement is not encoded in the current automated checks, so a non-GIF procedural noise implementation can pass even when mission guidance and the fix contract require a tradebetter-exact GIF overlay.",
+      "evidence": "`/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/AGENTS.md:38,97,126-127,201` and `features.json:2601-2604` require a film-grain GIF overlay, but `src/components/visual/__tests__/single-shader-and-film-grain.test.tsx:110-140` only checks opacity, blend mode, viewport coverage, and aria-hidden for a generic overlay."
+    },
+    {
+      "area": "knowledge",
+      "observation": "The tradebetter reference library still contains conflicting scanline guidance: one section says BETTER should ship film grain only with no separate scanline layer, while the atmosphere summary table still lists scanlines as part of the stack. That ambiguity likely contributed to the original scanline regression.",
+      "evidence": "`/Users/test/vision/.factory/library/tradebetter-exact-design-reference.md:363-365` says to treat the texture as film grain only and not ship a separate scanline layer, but `:382-389` still lists `Scanlines` in the atmosphere summary table. `design-system.md:301` separately says `~~Scanline CSS textures~~ — replaced by film grain GIF`."
+    },
+    {
+      "area": "skills",
+      "observation": "The frontend worker skill requires `agent-browser` for rendered user-facing visual changes, but this fix transcript shows no `agent-browser` session while the handoff still marks `followedProcedure=true`.",
+      "evidence": "`/Users/test/vision/.factory/skills/frontend-experience-worker/SKILL.md:16,41-42` makes `agent-browser` mandatory. The reviewed `worker-transcripts.jsonl` entry for session `85b07877-075a-4008-a451-8bbb32c1bdb9` contains Read/Grep/Edit/Execute/TodoWrite activity but no `agent-browser`, `FetchUrl`, or `pinchtab` calls, while `/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/handoffs/2026-03-23T14-51-15-586Z__redesign-remove-scanline-enforce-shader-plus-grain-only__85b07877-075a-4008-a451-8bbb32c1bdb9.json:90-92` records `\"followedProcedure\": true`."
+    }
+  ],
+  "addressesFailureFrom": "/Users/test/vision/.factory/validation/visual-re-engineering/scrutiny/reviews/redesign-single-shader-and-film-grain-atmosphere.json",
+  "summary": "Fail. The rerun does remove the prior scanline blocker across the shipped atmosphere stack, but the feature still falls short of the approved end state because the retained film-grain layer is procedural SVG noise rather than the required tradebetter-exact GIF overlay. I also noted one automated-coverage gap around the GIF requirement, one unresolved shared-reference conflict about scanlines, and one skill-compliance gap around mandatory browser validation."
+}

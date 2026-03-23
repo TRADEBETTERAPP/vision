@@ -15,6 +15,13 @@ on both tradebetter.app and the BETTER Vision site at `http://127.0.0.1:3100`.
 (bundle splitting/lazy loading). The prior comparison evidence was invalidated by
 these structural changes; this document provides fresh evidence against the current shell.
 
+**Visual re-engineering note:** This file preserves raw tradebetter extraction evidence,
+including some blue-accent border/CTA behaviors visible on tradebetter itself. It is
+**not** the canonical BETTER implementation rulebook. For the current BETTER mission,
+`#455eff` is approved for atmospheric gradients only and `#00ff00` is approved for
+status dots only; do not reuse older accent-border or blue-CTA notes below as BETTER
+implementation guidance.
+
 ---
 
 ## 1. Color Values — Side-by-Side

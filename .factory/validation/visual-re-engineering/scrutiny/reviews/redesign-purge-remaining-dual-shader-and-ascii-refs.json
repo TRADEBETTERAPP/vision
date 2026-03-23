@@ -1,0 +1,34 @@
+{
+  "featureId": "redesign-purge-remaining-dual-shader-and-ascii-refs",
+  "reviewedAt": "2026-03-23T15:15:35Z",
+  "commitId": "a0d2da1",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "fail",
+  "codeReview": {
+    "summary": "The fix does resolve the original dual-shader blocker: the only non-test `<HeroShaderCanvas />` mount now lives in `src/components/visual/SiteAtmosphere.tsx:97`, and `HeroVisualSystem` no longer mounts the shader. However, the rerun still does not meet the prior review's zero-ASCII requirement. The commit removes two source comments, but it also adds a new ASCII-heavy test file and leaves many existing ASCII-specific test comments/assertions in place, so the repo still contains numerous stale ASCII references.",
+    "issues": [
+      {
+        "file": "src/components/visual/__tests__/purge-dual-shader-and-ascii-refs.test.tsx",
+        "line": 2,
+        "severity": "blocking",
+        "description": "This fix adds a new test file that repeatedly references `ASCII`, `AsciiCanvasRenderer`, `AsciiBackground`, and `ascii-*` strings (`:2-10`, `:46-94`). The original failed review explicitly flagged lingering ASCII references/tests, and the rerun task called for zero remaining ASCII references. Adding another ASCII-heavy test codifies the wrong scope instead of completing the purge."
+      },
+      {
+        "file": "src/components/visual/__tests__/visual-016-approved-stack.test.tsx",
+        "line": 4,
+        "severity": "blocking",
+        "description": "Representative pre-existing test suites still retain extensive ASCII/Hermes references here (`:4-14`, `:54-100`) and in `src/components/visual/__tests__/immersive-visual-language.test.tsx:227-274` plus `src/app/__tests__/sitewide-atmosphere-and-overlay-consistency.test.tsx:15,69-111`. Because the fix only removed two production comments and did not clear these remaining references, it does not fully address the original blocking 'zero ASCII references' failure."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "conventions",
+      "observation": "The codebase still contains many 'ASCII removed' assertions/comments in tests, which creates a conflicting precedent for cleanup work: the skill and feature wording say ASCII references should be gone, but existing tests normalize keeping those strings around. Clarifying whether purge features must eliminate historical ASCII mentions from tests/comments as well as shipped source would prevent the same misunderstanding.",
+      "evidence": "The fix transcript says the worker would 'clean up stale ASCII comments from production source files while keeping the test assertions that verify ASCII is removed'; the repo still contains ASCII-heavy suites such as `src/components/visual/__tests__/visual-016-approved-stack.test.tsx:4-14,54-100` and `src/components/visual/__tests__/immersive-visual-language.test.tsx:227-274`."
+    }
+  ],
+  "addressesFailureFrom": "/Users/test/vision/.factory/validation/visual-re-engineering/scrutiny/reviews/redesign-purge-ascii-and-duplicate-atmosphere.json",
+  "summary": "Fail. The single-shader requirement is now satisfied, but the fix does not finish the original purge because many ASCII references still remain in tests, including the new test file added by this commit."
+}

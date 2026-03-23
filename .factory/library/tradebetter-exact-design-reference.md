@@ -350,7 +350,7 @@ padding: 24px;
 
 The **entire page** has a film grain texture overlay as the first named element ("Grain Overlay"). This creates a subtle analog/cinematic quality over the digital dark background.
 
-**Implementation**: Likely a semi-transparent PNG texture repeated across the viewport, or a CSS repeating gradient mimicking scan lines.
+**Implementation**: For BETTER's approved adaptation, treat this as a low-opacity animated film-grain texture layer (GIF or equivalent raster texture) repeated across the viewport. Do **not** interpret the texture as permission to ship a separate scanline layer.
 
 ### Background Composition (Hero)
 
@@ -383,11 +383,12 @@ Different sections use different background images/panels:
 
 | Layer | Effect | Opacity | Role |
 |---|---|---|---|
-| Film grain PNG | Analog texture | Very subtle | Cinematic warmth |
-| Scanlines | Horizontal lines | ~4% | Terminal monitor feel |
+| Film grain GIF / texture | Analog texture | Very subtle | Cinematic warmth |
 | Electric blue gradient | Directional color wash | Variable (20-100%) | Depth and atmosphere |
 | Dark overlays | Darkening gradients | 65% on images | Text readability |
 | Near-black base | Solid `#101010` | 100% | Foundation |
+
+For the current BETTER mission, the approved atmosphere is exactly **one shader + film grain texture**. Separate scanline layers are out of scope.
 
 ---
 
