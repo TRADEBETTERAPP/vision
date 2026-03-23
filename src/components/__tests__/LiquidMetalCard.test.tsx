@@ -103,4 +103,53 @@ describe("LiquidMetalCard", () => {
     // Tailwind rounded-lg maps to 8px
     expect(card).toHaveClass("rounded-lg");
   });
+
+  it("hover sheen center highlight is at least 0.35 opacity — VAL-VISUAL-030 sheen visibility boost", () => {
+    render(<LiquidMetalCard>Sheen test</LiquidMetalCard>);
+    const card = screen.getByTestId("liquid-metal-card");
+
+    fireEvent.mouseEnter(card);
+    fireEvent.mouseMove(card, { clientX: 50, clientY: 50 });
+
+    const bg = card.style.background;
+    // The radial-gradient center should use rgba(255, 255, 255, X) where X >= 0.35
+    const rgbaMatch = bg.match(
+      /radial-gradient\(.*?rgba\(\s*255\s*,\s*255\s*,\s*255\s*,\s*([\d.]+)\s*\)/
+    );
+    expect(rgbaMatch).not.toBeNull();
+    const opacity = parseFloat(rgbaMatch![1]);
+    expect(opacity).toBeGreaterThanOrEqual(0.35);
+  });
+
+  it("hover sheen includes a secondary metallic ring for depth — VAL-VISUAL-030", () => {
+    render(<LiquidMetalCard>Ring test</LiquidMetalCard>);
+    const card = screen.getByTestId("liquid-metal-card");
+
+    fireEvent.mouseEnter(card);
+    fireEvent.mouseMove(card, { clientX: 50, clientY: 50 });
+
+    const bg = card.style.background;
+    // Expect a secondary metallic ring with a blue-tinted rgba value
+    // e.g. rgba(200, 210, 255, 0.12) or similar
+    expect(bg).toMatch(/rgba\(\s*200\s*,\s*210\s*,\s*255/);
+  });
+
+  it("sheen radial-gradient is materially distinct from the hover base background", () => {
+    render(<LiquidMetalCard>Contrast test</LiquidMetalCard>);
+    const card = screen.getByTestId("liquid-metal-card");
+
+    fireEvent.mouseEnter(card);
+    fireEvent.mouseMove(card, { clientX: 50, clientY: 50 });
+
+    const bg = card.style.background;
+    // The center highlight opacity minus the hover base (0.15) should be >= 0.20
+    // to ensure the sheen is clearly visible, not nearly invisible
+    const rgbaMatch = bg.match(
+      /radial-gradient\(.*?rgba\(\s*255\s*,\s*255\s*,\s*255\s*,\s*([\d.]+)\s*\)/
+    );
+    expect(rgbaMatch).not.toBeNull();
+    const sheenOpacity = parseFloat(rgbaMatch![1]);
+    const hoverBase = 0.15;
+    expect(sheenOpacity - hoverBase).toBeGreaterThanOrEqual(0.20);
+  });
 });

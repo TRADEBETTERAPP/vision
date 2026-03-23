@@ -16,6 +16,8 @@
  *
  * Liquid metal finish:
  *   - Cursor-tracking radial-gradient with metallic white/silver sheen
+ *   - Center highlight: rgba(255, 255, 255, 0.38) — clearly visible over 0.15 base
+ *   - Secondary metallic ring: rgba(200, 210, 255, 0.12) at 40% for depth
  *   - Activated on hover/interaction
  *   - CSS-only, no WebGL
  *
@@ -121,7 +123,7 @@ export const LiquidMetalCard = forwardRef<HTMLElement, Omit<LiquidMetalCardProps
 
     const inlineStyle: React.CSSProperties = {
       background: isHovered
-        ? `radial-gradient(circle at var(--metal-x, 50%) var(--metal-y, 50%), rgba(255, 255, 255, 0.18) 0%, transparent 60%), ${baseBackground}`
+        ? `radial-gradient(circle at var(--metal-x, 50%) var(--metal-y, 50%), rgba(255, 255, 255, 0.38) 0%, rgba(200, 210, 255, 0.12) 40%, transparent 70%), ${baseBackground}`
         : baseBackground,
       border: "1px solid rgba(255, 255, 255, 0.20)",
       backdropFilter: "blur(10px)",
