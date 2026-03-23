@@ -1,0 +1,108 @@
+{
+  "groupId": "visual-034-rerun",
+  "testedAt": "2026-03-23T23:12:39.881454+00:00",
+  "isolation": {
+    "milestone": "readability-fix",
+    "missionDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83",
+    "repoRoot": "/Users/test/vision",
+    "appUrl": "http://127.0.0.1:3100",
+    "surface": "browser",
+    "browserSession": "7a5aa45b14a4__u1",
+    "mode": "headed",
+    "assignedAssertion": "VAL-VISUAL-034",
+    "evidenceDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/evidence/readability-fix/visual-034-rerun",
+    "notes": "Revalidated only VAL-VISUAL-034 against the already-running local app. The updated contract allows intentional contrast-inverted elements such as white CTAs with dark text."
+  },
+  "toolsUsed": [
+    "agent-browser"
+  ],
+  "assertions": [
+    {
+      "id": "VAL-VISUAL-034",
+      "title": "All text is white \u2014 no grey text",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Open the root experience in a headed browser session and inspect the header, hero, BETTER atlas workspace, and early proof cards while sampling visible text colors.",
+          "expected": "All non-inverted body, heading, label, and description text should render as white, with hierarchy coming from size/weight/opacity instead of grey text colors.",
+          "observed": "Representative top-shell text rendered as white or white-with-opacity only: sampled visible text resolved to `rgb(255,255,255)`, `oklab(0.999994 0.0000455677 0.0000200868 / 0.7)`, or `oklab(0.999994 0.0000455677 0.0000200868 / 0.8)`. The top-shell audit found 93 visible text nodes, 0 grey-text violations, and 1 allowed contrast-inverted exception."
+        },
+        {
+          "action": "Navigate to the Tokenomics focus state and inspect table rows, labels, descriptive copy, and controls on a text-heavy detail surface.",
+          "expected": "A representative lower/detail surface should also keep non-inverted text white with no grey body/heading/label text present.",
+          "observed": "The tokenomics detail surface remained white-only for standard text. The audit found 122 visible text nodes and 0 non-exempt grey-text violations across headings, allocation rows, labels, and explanatory copy."
+        },
+        {
+          "action": "Switch to a mobile viewport, open the navigation overlay, and inspect another text-heavy overlay surface.",
+          "expected": "Overlay navigation labels and visible supporting text should still avoid grey body/heading/label text.",
+          "observed": "The mobile overlay also stayed white-only for standard text. The mobile audit found 30 visible text nodes, 0 grey-text violations, and 1 allowed contrast-inverted exception."
+        },
+        {
+          "action": "Confirm whether any remaining dark text belongs only to intentional contrast-inverted elements under the updated contract.",
+          "expected": "Dark text should appear only inside intentional white-surface elements that are explicitly allowed by the updated assertion language.",
+          "observed": "The dark text that remained was intentional and contrast-inverted: the primary `See What's Live` CTA computed to `rgb(16,16,16)` on a `rgb(255,255,255)` button, and full-page inspection also found dark digits inside white circular step/index badges (`bg-accent text-background`). These are allowed exceptions under the updated contract and do not fail the assertion. No actual grey body, heading, label, or description text was observed."
+        },
+        {
+          "action": "Check browser runtime issues after the validation flow.",
+          "expected": "No console errors should appear for this visual assertion rerun.",
+          "observed": "No console errors were reported. The only runtime message captured was a Next.js warning that `/better-logotype.svg` was the LCP image and suggested adding `loading=\"eager\"`; this is a performance advisory, not a text-color failure."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "readability-fix/visual-034-rerun/VAL-VISUAL-034-desktop-top.png",
+          "readability-fix/visual-034-rerun/VAL-VISUAL-034-tokenomics-focus.png",
+          "readability-fix/visual-034-rerun/VAL-VISUAL-034-mobile-overlay.png",
+          "readability-fix/visual-034-rerun/VAL-VISUAL-034-full-page-tokenomics.png"
+        ],
+        "consoleErrors": "none",
+        "consoleWarnings": [
+          "Next.js warning: image `/better-logotype.svg` was detected as the Largest Contentful Paint and suggested adding `loading=\"eager\"`."
+        ],
+        "network": "No requests were captured by the local browser logger during this visual-only validation flow.",
+        "computedStyles": {
+          "topShellDistinctVisibleTextColors": [
+            "rgb(255, 255, 255)",
+            "oklab(0.999994 0.0000455677 0.0000200868 / 0.7)",
+            "oklab(0.999994 0.0000455677 0.0000200868 / 0.8)"
+          ],
+          "allowedContrastInvertedExamples": [
+            {
+              "surface": "primary CTA",
+              "text": "See What's Live",
+              "textColor": "rgb(16, 16, 16)",
+              "backgroundColor": "rgb(255, 255, 255)"
+            },
+            {
+              "surface": "numbered step/index badges",
+              "textColor": "rgb(16, 16, 16)",
+              "backgroundColor": "rgb(255, 255, 255)",
+              "notes": "Observed on white circular chips in the full-page audit; these are intentional contrast-inverted markers, not grey text."
+            }
+          ],
+          "textAudits": {
+            "desktopTop": {
+              "visibleTextNodes": 93,
+              "suspiciousGreyTextNodes": 0,
+              "allowedContrastInvertedNodes": 1
+            },
+            "tokenomicsFocus": {
+              "visibleTextNodes": 122,
+              "suspiciousGreyTextNodes": 0,
+              "allowedContrastInvertedNodes": 0
+            },
+            "mobileOverlay": {
+              "visibleTextNodes": 30,
+              "suspiciousGreyTextNodes": 0,
+              "allowedContrastInvertedNodes": 1
+            }
+          }
+        }
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [],
+  "blockers": [],
+  "summary": "VAL-VISUAL-034 now passes under the updated contract. Across representative desktop, tokenomics/detail, and mobile overlay surfaces, no actual grey body/heading/label text was found; the only dark text observed was inside intentional white contrast-inverted elements such as the primary white CTA and white circular index badges, which are now allowed exceptions."
+}

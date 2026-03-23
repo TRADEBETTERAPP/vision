@@ -1,0 +1,24 @@
+{
+  "milestone": "readability-fix",
+  "round": 1,
+  "status": "fail",
+  "assertionsSummary": {
+    "total": 3,
+    "passed": 2,
+    "failed": 1,
+    "blocked": 0
+  },
+  "passedAssertions": [
+    "VAL-VISUAL-030",
+    "VAL-VISUAL-035"
+  ],
+  "failedAssertions": [
+    {
+      "id": "VAL-VISUAL-034",
+      "reason": "Sampled body, hero, proof, and footer text renders white and prohibited grey text utility classes were absent, but white CTA buttons still render dark text (`rgb(16,16,16)`), so not every text element on the site is white."
+    }
+  ],
+  "blockedAssertions": [],
+  "appliedUpdates": [],
+  "previousRound": null
+}

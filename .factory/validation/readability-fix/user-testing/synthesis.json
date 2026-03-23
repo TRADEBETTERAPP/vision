@@ -1,24 +1,22 @@
 {
   "milestone": "readability-fix",
-  "round": 1,
-  "status": "fail",
+  "round": 2,
+  "status": "pass",
   "assertionsSummary": {
-    "total": 3,
-    "passed": 2,
-    "failed": 1,
+    "total": 1,
+    "passed": 1,
+    "failed": 0,
     "blocked": 0
   },
   "passedAssertions": [
-    "VAL-VISUAL-030",
-    "VAL-VISUAL-035"
+    "VAL-VISUAL-034"
   ],
-  "failedAssertions": [
-    {
-      "id": "VAL-VISUAL-034",
-      "reason": "Sampled body, hero, proof, and footer text renders white and prohibited grey text utility classes were absent, but white CTA buttons still render dark text (`rgb(16,16,16)`), so not every text element on the site is white."
-    }
-  ],
+  "failedAssertions": [],
   "blockedAssertions": [],
   "appliedUpdates": [],
-  "previousRound": null
+  "previousRound": ".factory/validation/readability-fix/user-testing/synthesis.round-1.json",
+  "flowReports": [
+    ".factory/validation/readability-fix/user-testing/flows/visual-034-rerun.json"
+  ],
+  "summary": "VAL-VISUAL-034 now passes under the updated contract. Across representative desktop, tokenomics/detail, and mobile overlay surfaces, no actual grey body/heading/label text was found; the only dark text observed was inside intentional white contrast-inverted elements such as the primary white CTA and white circular index badges, which are now allowed exceptions."
 }
