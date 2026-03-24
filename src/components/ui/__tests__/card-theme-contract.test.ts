@@ -20,6 +20,12 @@ describe("shadcn card theme contract", () => {
     expect(darkBlock?.[1]).toContain("--border: rgba(255, 255, 255, 0.12)");
   });
 
+  it("keeps the base shadcn canvas tokens dark for first paint", () => {
+    const rootBlock = globalsCss.match(/:root\s*\{([\s\S]*?)\n\}/);
+    expect(rootBlock?.[1]).toContain("--background: #101010");
+    expect(rootBlock?.[1]).toContain("--foreground: #ffffff");
+  });
+
   it("keeps dark popover tokens on the same BETTER canvas contract", () => {
     const darkBlock = globalsCss.match(/\.dark\s*\{([\s\S]*?)\n\}/);
     expect(darkBlock?.[1]).toContain("--popover: #101010");
