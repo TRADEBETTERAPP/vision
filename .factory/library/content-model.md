@@ -29,6 +29,8 @@ Each roadmap or economics item should have typed fields for:
 - Core BETTER surfaces such as identity, proof, roadmap, token policy, architecture, evidence, and risks should be representable as connected nodes or clusters with stable IDs.
 - The model should support focal-node selection, orientation recovery, deep-linkable detail states, and clear parent/child or dependency relationships.
 - The model should also support a guided investor route through the graph so users can traverse thesis, product, proof, moat, business model, roadmap gates, valuation logic, and appendix detail without leaving the workspace.
+- `src/content/graph-nodes.ts` stores `related` links directionally per node. If a new surface should be traversable from an existing node's related-links UI, update both nodes' `related` arrays rather than only the new node.
+- `src/components/graph/GraphExplorer.tsx` is expected to keep newly added surface components behind lazy-loading boundaries; adding a new graph surface directly to the initial bundle can violate the later polish/performance contract.
 
 ## Dependency conventions
 - Narrative `ConfidenceFrame.dependencies` values are rendered directly to users, so they must stay as readable user-facing notes rather than internal IDs.

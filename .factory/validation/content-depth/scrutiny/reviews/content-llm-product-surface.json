@@ -1,0 +1,28 @@
+{
+  "featureId": "content-llm-product-surface",
+  "reviewedAt": "2026-03-24T04:52:52.826323Z",
+  "commitId": "ff8938330c7cbe1be5223f7cbc097773d2c5e8ca",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "fail",
+  "codeReview": {
+    "summary": "Reviewed the handoff, transcript skeleton, and commit diff for the LLM Product feature. The implementation adds the new content model, graph node, surface component, and focused tests, and the copy covers the requested RL/parameterization/quantizing methodology, BRAID DAG framing, $29/mo standalone API pricing, holder discounts, OpenRouter credits, and separate-revenue-stream positioning. However, the graph-topology wiring is incomplete: the new node only declares outbound related links, while the existing Tokenomics and Architecture nodes were not updated to point back to LLM Product, so the feature does not fully satisfy the requested graph-edge integration or the node-to-node traversal contract.",
+    "issues": [
+      {
+        "file": "src/content/graph-nodes.ts",
+        "line": 98,
+        "severity": "blocking",
+        "description": "The new LLM Product relationship is only wired one way. `llm-product.related` includes `architecture` and `tokenomics`, but `tokenomics.related` (line 98) and `architecture.related` (line 108 in this commit) were not updated to include `llm-product`. `GraphShell` builds the focused-panel traversal links from the currently focused node's own `related` array, so users cannot navigate from Tokenomics or Architecture into LLM Product via related-node links. That leaves the requested graph edges incomplete and breaks the expected graph reachability for the new surface."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "skills",
+      "observation": "The content-strategy-worker skill tells workers to add “related edges to at least 2 existing nodes,” but it never states that graph relationships are directional in `src/content/graph-nodes.ts` and require reciprocal updates plus traversal coverage on the existing nodes. That omission likely let this one-way edge bug ship.",
+      "evidence": ".factory/skills/content-strategy-worker/SKILL.md:36-41 only mentions adding related edges on the new node; the worker's feature test src/content/__tests__/llm-product.test.ts:5-13 only asserts `llm-product.related`; current reachability coverage in src/components/graph/__tests__/content-depth-reachability.test.tsx:48-52 encodes the missing Tokenomics → LLM Product path."
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "Fail. The surface content itself matches the requested LLM product copy, badges, and card treatment, but the graph integration is incomplete because Tokenomics/Architecture were not wired back to the new node, leaving the LLM Product edge traversal broken."
+}

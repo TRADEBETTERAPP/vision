@@ -1,0 +1,75 @@
+{
+  "milestone": "content-depth",
+  "round": 1,
+  "status": "fail",
+  "validatorsRun": {
+    "test": {
+      "passed": true,
+      "command": "npm --prefix \"/Users/test/vision\" test",
+      "exitCode": 0
+    },
+    "typecheck": {
+      "passed": true,
+      "command": "npm --prefix \"/Users/test/vision\" run typecheck",
+      "exitCode": 0
+    },
+    "lint": {
+      "passed": true,
+      "command": "npm --prefix \"/Users/test/vision\" run lint",
+      "exitCode": 0
+    }
+  },
+  "reviewsSummary": {
+    "total": 7,
+    "passed": 6,
+    "failed": 1,
+    "failedFeatures": [
+      "content-graph-topology-and-labels"
+    ]
+  },
+  "blockingIssues": [
+    {
+      "featureId": "content-graph-topology-and-labels",
+      "severity": "blocking",
+      "description": "The four new content-depth surfaces currently import the custom `BetterCard` wrapper for their shell instead of importing shadcn `Card` primitives directly, while `validation-contract.md` explicitly requires 'shadcn Card components (not custom cards)' for `VAL-CONTENT-018`. The regression test was also rewritten to enforce `BetterCard`, so the current suite no longer protects the stricter contract. Earlier HFT Edge / LLM Product review blockers around reciprocal graph links and lazy loading were fixed later in the milestone and are not the active blocker at HEAD."
+    }
+  ],
+  "appliedUpdates": [
+    {
+      "target": "library",
+      "description": "Updated `.factory/library/content-model.md` to record two factual graph-shell constraints discovered during review: `src/content/graph-nodes.ts` `related` links are directional and must be updated reciprocally for two-way traversal, and new graph surfaces in `src/components/graph/GraphExplorer.tsx` are expected to stay behind lazy-loading boundaries rather than shipping in the initial bundle.",
+      "sourceFeature": "content-hft-edge-surface"
+    }
+  ],
+  "suggestedGuidanceUpdates": [
+    {
+      "target": "content-strategy-worker skill",
+      "suggestion": "When a feature adds graph nodes or graph-backed content surfaces, explicitly require reciprocal updates to existing nodes' `related` arrays and require new surface registrations in `GraphExplorer` to use `dynamic()` / lazy-loading instead of eager imports.",
+      "evidence": "`content-hft-edge-surface` shipped with one-way `hft-edge` relationships plus an eager `HftEdgeSurface` import, and `content-llm-product-surface` repeated the one-way-edge mistake for `llm-product`. Both issues were only corrected later by `content-graph-topology-and-labels` (`src/content/graph-nodes.ts`, `src/components/graph/GraphExplorer.tsx`).",
+      "isSystemic": true
+    },
+    {
+      "target": "content-strategy-worker skill",
+      "suggestion": "Add a narrow baseline-repair exception path: if validators expose a small pre-existing failure unrelated to the assigned feature, allow the worker to record the baseline issue, repair it, rerun validators, and mark `followedProcedure=false` rather than forcing an immediate return or ad hoc deviation.",
+      "evidence": "Both `content-hft-edge-surface` and `content-enrich-existing-surfaces` handoffs reported justified deviations after fixing small pre-existing contract failures before they could leave their assigned work validator-clean.",
+      "isSystemic": true
+    },
+    {
+      "target": "AGENTS.md / validation contract / frontend-experience-worker skill",
+      "suggestion": "Reconcile the repo-wide guidance for graph-surface card shells. The current content-depth contract says new surfaces must use direct shadcn `Card` components 'not custom cards', while the live design-system docs and production pattern treat `BetterCard` as the approved liquid-metal wrapper around shadcn Card. Pick one rule and align the contract, tests, and worker guidance to it.",
+      "evidence": "`validation-contract.md` `VAL-CONTENT-018` forbids custom cards, but `.factory/library/design-system.md` says the liquid-metal styling is preserved through a wrapper around the shadcn Card primitive, and `src/components/graph/surfaces/__tests__/content-surface-card-contract.test.ts` now enforces `BetterCard` imports/usages. Reviewers therefore disagreed about whether the current implementation passes or fails the same requirement.",
+      "isSystemic": true
+    }
+  ],
+  "rejectedObservations": [
+    {
+      "observation": "The baseline-validator exception note from `content-enrich-existing-surfaces` should trigger a separate guidance change from the same note raised in `content-hft-edge-surface`.",
+      "reason": "duplicate; both reviews describe the same procedural gap around small pre-existing validator failures, so one combined guidance recommendation is sufficient."
+    },
+    {
+      "observation": "Treat the original `content-hft-edge-surface` and `content-llm-product-surface` review failures as active milestone blockers for the next rerun.",
+      "reason": "rejected because the current HEAD already includes the reciprocal graph links and dynamic imports added later in `content-graph-topology-and-labels`; those earlier failures are useful historical context but not the remaining blocker that needs a new fix feature."
+    }
+  ],
+  "previousRound": null
+}

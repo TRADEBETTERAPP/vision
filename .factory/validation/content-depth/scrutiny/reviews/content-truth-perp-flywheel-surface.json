@@ -1,0 +1,15 @@
+{
+  "featureId": "content-truth-perp-flywheel-surface",
+  "reviewedAt": "2026-03-24T04:51:58Z",
+  "commitId": "d08214f9d42a5702e36fba7da768309876107805",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "pass",
+  "codeReview": {
+    "summary": "The implementation covers the requested TRUTH-PERP scope end to end: the `truth-perp-flywheel` graph node is registered with the required relationships, the surface is wired into `GraphExplorer`, the content includes HIP-3 / Hyperliquid, `500k HYPE ($11M)`, the `Nasdaq of Truth` synthetic-index framing, the `vBETTER` / `enzyme.finance` ETF premium capture loop, the `30%` buy-and-burn sink, and the three Q1/Q2/Q4 phases, and the rendered surface uses the existing shadcn-backed `BetterCard` pattern with `MaturityBadge` and `EvidenceHook` cues. I did not find feature-specific correctness or coverage defects in the reviewed diff.",
+    "issues": []
+  },
+  "sharedStateObservations": [],
+  "addressesFailureFrom": null,
+  "summary": "Pass. I reviewed the feature entry, handoff, transcript skeleton, skill guidance, and commit `d08214f9d42a5702e36fba7da768309876107805`. The feature satisfies the stated TRUTH-PERP requirements and I found no blocking issues."
+}

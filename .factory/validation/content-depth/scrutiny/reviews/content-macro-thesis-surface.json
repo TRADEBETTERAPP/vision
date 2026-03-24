@@ -1,0 +1,15 @@
+{
+  "featureId": "content-macro-thesis-surface",
+  "reviewedAt": "2026-03-24T04:51:01.335328Z",
+  "commitId": "598f0f7f2a77129188820f741576e53a42760985",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "pass",
+  "codeReview": {
+    "summary": "Reviewed the feature handoff, transcript skeleton, and commit diff for the Macro Thesis surface. The implementation adds the macro-thesis graph node, registers the surface in the graph explorer, introduces a typed content model in src/content, and renders the requested geopolitical, crypto, and prediction-market figures with visible @tradebetterapp attribution, MaturityBadge labels, and shadcn-card-backed content blocks. I did not find any blocking correctness, coverage, or regression issues against the feature description or VAL-CONTENT-001 through VAL-CONTENT-004.",
+    "issues": []
+  },
+  "sharedStateObservations": [],
+  "addressesFailureFrom": null,
+  "summary": "Pass. The reviewed implementation satisfies the Macro Thesis content-depth contract: the graph node is wired in, the surface exposes the required exact figures and references, and attribution/badge/card requirements are met with no blocking issues found."
+}

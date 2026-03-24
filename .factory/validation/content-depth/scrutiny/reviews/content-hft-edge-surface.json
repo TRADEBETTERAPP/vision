@@ -1,0 +1,39 @@
+{
+  "featureId": "content-hft-edge-surface",
+  "reviewedAt": "2026-03-24T04:52:32.319575+00:00",
+  "commitId": "ee3108c74ba477e1d6cf613d123384fa5abf868b",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "fail",
+  "codeReview": {
+    "summary": "The HFT Edge content itself is well covered: the node, surface, exact figures, attribution, badges, and tests are all present. However, the reviewed commit misses two milestone-level contract requirements: it adds one-way graph edges only, and it eagerly imports the new surface instead of lazy-loading it.",
+    "issues": [
+      {
+        "file": "src/content/graph-nodes.ts",
+        "line": 118,
+        "severity": "blocking",
+        "description": "The new `hft-edge` node points at `architecture` and `proof`, but this commit never adds the reverse links on those existing nodes (`proof` still lists only `what-is-better`, `live-now`, `roadmap` at lines 63-69, and `architecture` still lists only `roadmap`, `tokenomics`, `evidence` at lines 103-109). `GraphShell` derives related-node traversal strictly from the focused node's `related` array, so users cannot navigate from Architecture or Proof into HFT Edge via related links. That violates the bidirectional-edge contract in `.factory/validation/cross-area-and-polish-assertions.md` (VAL-CROSS-018) and the graph-reachability expectation for new content nodes."
+      },
+      {
+        "file": "src/components/graph/GraphExplorer.tsx",
+        "line": 19,
+        "severity": "blocking",
+        "description": "`HftEdgeSurface` is imported eagerly and inserted directly into `SURFACE_CONTENT` (lines 19 and 36), so this new content surface ships in the initial graph bundle instead of behind a lazy-loading boundary. `.factory/validation/cross-area-and-polish-assertions.md` requires new surfaces to be code-split (`VAL-POLISH-002`), and the later `Fix content-depth graph reachability and lazy surfaces` follow-up commit indicates this gap was real rather than hypothetical."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "skills",
+      "observation": "`content-strategy-worker` does not currently tell workers that new graph edges must be bidirectional or that new content surfaces must be lazy-loaded, even though those are enforced by the milestone validation contract. That omission likely contributed directly to this feature missing both requirements.",
+      "evidence": "`/Users/test/vision/.factory/skills/content-strategy-worker/SKILL.md` lines 36-41 require adding related edges and a surface component, but say nothing about reverse-edge updates or dynamic imports; compare with `/Users/test/vision/.factory/validation/cross-area-and-polish-assertions.md` VAL-CROSS-018 and VAL-POLISH-002, plus this commit's `src/content/graph-nodes.ts:118` and `src/components/graph/GraphExplorer.tsx:19,36`."
+    },
+    {
+      "area": "skills",
+      "observation": "Baseline-validator handling appears under-specified for small, local regressions that are easy to repair in-session. The worker had to mark `followedProcedure=false` after fixing an unrelated `globals.css` contract issue instead of knowing whether that recovery path was acceptable.",
+      "evidence": "The handoff at `/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/handoffs/2026-03-24T03-52-13-429Z__content-hft-edge-surface__729fb78c-bcd3-4ac2-9305-8a64608ad013.json` records the initial baseline failure at line 18 and the deviation at lines 105-111, where the worker reports fixing `src/app/globals.css` and asks for clarification on whether small baseline repairs are allowed."
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "Fail. The feature includes the requested HFT Edge copy and UI, but the reviewed commit does not satisfy the content-depth graph contract because its new edges are one-way and its new surface is not lazy-loaded."
+}

@@ -1,0 +1,21 @@
+{
+  "featureId": "content-cross-area-flows",
+  "reviewedAt": "2026-03-24T04:51:50.081330Z",
+  "commitId": "c88f4971a509ebe348945da9fe2e8a761c5013ae",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "pass",
+  "codeReview": {
+    "summary": "Reviewed the feature entry, worker transcript skeleton, handoff, and commit c88f4971a509ebe348945da9fe2e8a761c5013ae. The implementation fixes the actual gap this follow-up exposed by switching the four new content-depth surfaces to the shared BetterCard wrapper and restoring the BETTER dark shadcn card tokens in globals.css. In commit context, the required cross-area behaviors are covered: the new nodes remain graph-addressable within two interactions from the overview (src/components/graph/__tests__/content-depth-reachability.test.tsx:59-69; src/content/graph-nodes.ts:43-140), the investor path still links Macro Thesis from the Problem gate before the Wedge next-step control (src/content/graph-nodes.ts:43-60; src/components/graph/GraphShell.tsx:590-634), the new surfaces now use the same interactive shell component as legacy surfaces (src/components/graph/surfaces/MacroThesisSurface.tsx:4-32 and peer files; src/components/graph/surfaces/__tests__/content-surface-card-contract.test.ts:14-18), and the responsive layouts remain single-column below xl for the reviewed surfaces. I did not find blocking correctness or regression issues against the content-cross-area-flows requirements.",
+    "issues": []
+  },
+  "sharedStateObservations": [
+    {
+      "area": "skills",
+      "observation": "The frontend-experience-worker skill still tells content workers to 'Use shadcn Card for all card elements,' but the live repo convention for interactive surface shells is now BetterCard (the liquid-metal wrapper around shadcn Card). That mismatch likely contributed to the styling drift this feature had to correct.",
+      "evidence": ".factory/skills/frontend-experience-worker/SKILL.md:22 says 'Use shadcn Card for all card elements'; src/components/graph/surfaces/__tests__/content-surface-card-contract.test.ts:14-18 now enforces BetterCard imports/usages; src/components/graph/surfaces/MacroThesisSurface.tsx:4-32 shows the current pattern in production code."
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "Pass. The reviewed follow-up correctly aligns the four new content-depth surfaces with the shared BetterCard styling while preserving the already-wired graph reachability, Macro Thesis investor-path linkage, and mobile-friendly surface layouts. No blocking issues found."
+}

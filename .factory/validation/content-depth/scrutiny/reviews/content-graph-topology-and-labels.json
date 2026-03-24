@@ -1,0 +1,34 @@
+{
+  "featureId": "content-graph-topology-and-labels",
+  "reviewedAt": "2026-03-24T04:51:17Z",
+  "commitId": "187ca9c",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "fail",
+  "codeReview": {
+    "summary": "The topology, lazy-loading, mobile-nav, and 2-click reachability work from the reviewed feature are present, and the transcript skeleton shows the worker followed the expected test-first/browser-validation flow. However, the current implementation has regressed the direct-shadcn-card requirement: all four reviewed surfaces now wrap their shell content in the custom BetterCard component again, so the feature no longer satisfies VAL-CONTENT-018 / the expectedBehavior that all new surfaces use shadcn Card.",
+    "issues": [
+      {
+        "file": "src/components/graph/surfaces/MacroThesisSurface.tsx",
+        "line": 4,
+        "severity": "blocking",
+        "description": "The four reviewed content-depth surfaces have been reverted to the custom `BetterCard` wrapper instead of using direct shadcn `Card` primitives for their surface shells (`MacroThesisSurface.tsx:4,10,32`, `HftEdgeSurface.tsx:4,10,32`, `LlmProductSurface.tsx:4,10,32`, `TruthPerpFlywheelSurface.tsx:4,10,32,83`). That violates the feature description and `VAL-CONTENT-018`, which explicitly require these new surfaces to use shadcn Card components rather than custom cards."
+      },
+      {
+        "file": "src/components/graph/surfaces/__tests__/content-surface-card-contract.test.ts",
+        "line": 14,
+        "severity": "non_blocking",
+        "description": "The regression test was rewritten to require `BetterCard` (`\"uses BetterCard for interactive surface shells\"`) instead of rejecting custom-card usage. As written, it no longer protects the feature contract that these four surfaces must use direct shadcn Card primitives, so the regression above can pass unnoticed."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "conventions",
+      "observation": "The project guidance around card usage is internally inconsistent for these content-depth surfaces: the feature contract and worker skill require direct shadcn Card usage, but the design-system doc still blesses a wrapper around shadcn Card. That mismatch likely enabled the later BetterCard regression and the test rewrite that now codifies it.",
+      "evidence": "validation-contract.md:530 says the four surfaces must render inside shadcn Card components 'not custom cards'; .factory/skills/frontend-experience-worker/SKILL.md:22 says 'Use shadcn Card for all card elements'; .factory/library/design-system.md:167 says the liquid-metal styling is preserved via 'a wrapper around the shadcn Card primitive'; src/components/graph/surfaces/__tests__/content-surface-card-contract.test.ts:14-18 now expects BetterCard."
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "Fail: graph edges, lazy imports, mobile-nav exposure, and reachability look correct, but the required direct-shadcn-card implementation for the four new surfaces has regressed to BetterCard wrappers. I wrote the review report to `/Users/test/vision/.factory/validation/content-depth/scrutiny/reviews/content-graph-topology-and-labels.json`."
+}
