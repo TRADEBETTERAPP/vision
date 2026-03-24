@@ -23,6 +23,7 @@ Environment variables, external dependencies, and setup notes.
   - `https://tradebetter.app`
 - Environment note for the current visual stack: the ASCII/Hermes layer has been removed; the approved immersive path is one Radiant-derived shader plus a vendored film-grain GIF overlay.
 - The repo's current shadcn/ui setup is the Base UI-backed v4.1.0 generation (`shadcn`, `@base-ui/react`); `src/components/ui/card.tsx` is a plain `div` wrapper and does not provide Radix `Slot` / `asChild` behavior.
+- `.factory/init.sh` and `.factory/services.yaml` currently force-run `npx shadcn@latest init --defaults --force` plus `npx shadcn@latest add card dialog sheet badge separator --overwrite`; later setup runs can overwrite tracked shadcn UI primitives and may require restoring local edits before continuing.
 - **Dune CLI** is installed and the Dune API key is configured; Dune queries can be used for on-chain data verification and token allocation analysis.
 - **Basescan** is available as an on-chain data source for verifying Base contract state, token allocations, and transaction history.
 - BETTER reference sources are read-only:

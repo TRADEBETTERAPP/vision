@@ -1,0 +1,33 @@
+{
+  "featureId": "shadcn-bettercard-wrap-shadcn-card-primitive",
+  "reviewedAt": "2026-03-24T02:28:02Z",
+  "commitId": "bbd2805",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "pass",
+  "codeReview": {
+    "summary": "Pass. This rerun resolves the original blocker: BetterCard now imports the shipped shadcn Card primitive and renders it as the root element, and the updated BetterCard tests explicitly prove that wrapper path. The follow-up consumer edits also preserve the lost button/details/li behaviors well enough for this targeted fix. I found one non-blocking visual/test-coverage regression: the card radius now falls back to shadcn's rounded-xl corners instead of the mission's 8px card shape, and the updated test no longer asserts the radius.",
+    "issues": [
+      {
+        "file": "src/components/ui/BetterCard.tsx",
+        "line": 136,
+        "severity": "non_blocking",
+        "description": "The fix drops BetterCard's previous rounded-lg override, so migrated cards now inherit the shadcn Card primitive's rounded-xl corners from src/components/ui/card.tsx:15 instead of the mission's required 8px card radius (/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/AGENTS.md:140). The updated radius test in src/components/ui/__tests__/BetterCard.test.tsx:139-143 was relaxed to a presence check, so this visual mismatch is no longer covered."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "skills",
+      "observation": "The frontend-experience-worker procedure still allows workers to claim full compliance without browser-validation evidence, even for UI-changing features. Tighten the skill/handoff contract so `followedProcedure=true` requires an actual `agent-browser` run or an explicit deviation.",
+      "evidence": "/Users/test/vision/.factory/skills/frontend-experience-worker/SKILL.md:16,45-46 require `agent-browser` for rendered user-facing changes; /Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/AGENTS.md:297-311 also require browser validation and evidence when reporting `followedProcedure=true`. In this session, /Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/worker-transcripts.jsonl:133 contains no `agent-browser` invocation, while the handoff marks `followedProcedure` true at /Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/handoffs/2026-03-24T02-22-41-142Z__shadcn-bettercard-wrap-shadcn-card-primitive__1cbe3a27-8b21-462b-a99a-4815754e12f8.json:64 and its verification block only records `commandsRun` at lines 13-14."
+    },
+    {
+      "area": "services",
+      "observation": "The shared init/install path can silently rewrite tracked shadcn files during later migration fixes. Document that side effect or narrow the command so workers do not unknowingly clobber local UI primitives.",
+      "evidence": "/Users/test/vision/.factory/init.sh:19-22 and /Users/test/vision/.factory/services.yaml:2 force-run `npx shadcn@latest init --defaults --force`. In /Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/worker-transcripts.jsonl:133 this feature ran `bash .factory/init.sh`, then later had to restore `src/components/ui/dialog.tsx`, `src/components/ui/sheet.tsx`, `src/components/ui/badge.tsx`, `src/components/ui/card.tsx`, and `components.json.bak` after reporting those files were overwritten."
+    }
+  ],
+  "addressesFailureFrom": "/Users/test/vision/.factory/validation/shadcn-migration/scrutiny/reviews/shadcn-card-migration-core.json",
+  "summary": "Pass. The rerun fixes the original blocking issue by making BetterCard actually render the shipped shadcn Card primitive and by adding a test that proves the wrapper path. I noted one non-blocking corner-radius regression plus two shared-state gaps around browser-validation reporting and the side effects of the shared init/install path."
+}
