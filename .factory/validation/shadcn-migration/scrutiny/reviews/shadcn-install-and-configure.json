@@ -1,0 +1,31 @@
+{
+  "featureId": "shadcn-install-and-configure",
+  "reviewedAt": "2026-03-24T02:07:09.251744+00:00",
+  "commitId": "927929c",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "pass",
+  "codeReview": {
+    "summary": "Reviewed the feature handoff, worker transcript skeleton, commit `927929c`, and the relevant current files. The reviewed commit adds the requested shadcn UI primitives, wires the dark theme tokens exactly as specified in the feature brief, applies the `dark` class in `layout.tsx`, and updates the UI barrel exports. No code-level blocking or non-blocking defects were identified against the feature brief or `VAL-SHADCN-001`.",
+    "issues": []
+  },
+  "sharedStateObservations": [
+    {
+      "area": "conventions",
+      "observation": "The mission guidance and validation contract still describe the shadcn migration in Radix terms, but the installed v4.1.0 `base-nova` components are Base UI based. Future workers/reviewers could be sent looking for the wrong dependency and composition model.",
+      "evidence": "`/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/validation-contract.md:418` says \"Required Radix dependencies in package.json\" and `/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/AGENTS.md:218` prescribes the Radix Slot pattern, while current shadcn primitives import Base UI (`/Users/test/vision/src/components/ui/Button.tsx:3`, `dialog.tsx:4`, `sheet.tsx:4`, `separator.tsx:3`)."
+    },
+    {
+      "area": "skills",
+      "observation": "The frontend worker skill overstates test-first and browser-validation requirements for install/config-only features. In this feature the worker justifiably skipped those steps, but still had to report `followedProcedure=false`, which blurs the line between justified exemptions and real process misses.",
+      "evidence": "`/Users/test/vision/.factory/skills/frontend-experience-worker/SKILL.md:35` requires writing failing tests first and `:45` requires `agent-browser`; the reviewed handoff marks `followedProcedure=false` and explicitly cites skipping those steps for this installation/configuration task (`/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/handoffs/2026-03-24T01-39-59-594Z__shadcn-install-and-configure__111af213-fd9d-4080-955f-ed74d3accfdc.json:59`, `:63`, `:68`)."
+    },
+    {
+      "area": "knowledge",
+      "observation": "Feature provenance is muddy: the handoff says this feature created `components.json`, but the repo history shows the install baseline already existed before commit `927929c`. That makes it harder to understand which feature actually introduced the shadcn install state.",
+      "evidence": "The reviewed handoff says `components.json` was created in this feature (`.../handoffs/2026-03-24T01-39-59-594Z__shadcn-install-and-configure__111af213-fd9d-4080-955f-ed74d3accfdc.json:11`), but `git -C /Users/test/vision show 927929c^:components.json` succeeds and parent `package.json` already contains `@base-ui/react`, `lucide-react`, `shadcn`, and `tw-animate-css`."
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "Pass. The reviewed commit satisfies the feature brief and `VAL-SHADCN-001` with no code-level issues found. I wrote the review report and noted three shared-state gaps around outdated Radix wording, over-strict skill procedure for install/config work, and unclear provenance for the original shadcn install baseline."
+}

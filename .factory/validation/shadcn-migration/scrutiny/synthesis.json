@@ -1,0 +1,93 @@
+{
+  "milestone": "shadcn-migration",
+  "round": 1,
+  "status": "fail",
+  "validatorsRun": {
+    "test": {
+      "passed": true,
+      "command": "npm --prefix \"/Users/test/vision\" test",
+      "exitCode": 0
+    },
+    "typecheck": {
+      "passed": true,
+      "command": "npm --prefix \"/Users/test/vision\" run typecheck",
+      "exitCode": 0
+    },
+    "lint": {
+      "passed": true,
+      "command": "npm --prefix \"/Users/test/vision\" run lint",
+      "exitCode": 0
+    }
+  },
+  "reviewsSummary": {
+    "total": 3,
+    "passed": 1,
+    "failed": 2,
+    "failedFeatures": [
+      "shadcn-card-migration-core",
+      "shadcn-text-and-spacing-polish"
+    ]
+  },
+  "blockingIssues": [
+    {
+      "featureId": "shadcn-card-migration-core",
+      "severity": "blocking",
+      "description": "BetterCard does not wrap the shipped shadcn Card primitive; it renders a generic element with custom styles and a spoofed `data-slot=\"card\"`, so production surfaces never actually migrate onto shadcn Card/CardHeader/CardContent."
+    },
+    {
+      "featureId": "shadcn-text-and-spacing-polish",
+      "severity": "blocking",
+      "description": "Production UI still contains opacity-muted text classes such as `text-white/80`, `text-white/70`, and `text-white/60` in components including `MaturityBadge`, `GraphShell`, `LiveNowSurface`, and `CaveatFrame`, which fails VAL-SHADCN-005."
+    },
+    {
+      "featureId": "shadcn-text-and-spacing-polish",
+      "severity": "blocking",
+      "description": "Several BetterCard surfaces still use sub-`p-4` padding and tighter-than-required spacing (for example `gap-3`, `px-3 py-2`, and `px-2.5 py-1.5` in FirstVaultPolicy and TierLadder), which fails VAL-SHADCN-006."
+    }
+  ],
+  "appliedUpdates": [
+    {
+      "target": "library",
+      "description": "Added an environment note that this repo's shadcn v4 setup is Base UI-backed and that `src/components/ui/card.tsx` does not expose Radix `Slot`/`asChild` behavior.",
+      "sourceFeature": "shadcn-card-migration-core"
+    },
+    {
+      "target": "library",
+      "description": "Added a testing note that the current shadcn scrutiny contract treats opacity-muted production text utilities as blocking for VAL-SHADCN-005 despite older design-system guidance mentioning opacity hierarchy.",
+      "sourceFeature": "shadcn-text-and-spacing-polish"
+    }
+  ],
+  "suggestedGuidanceUpdates": [
+    {
+      "target": "AGENTS.md",
+      "suggestion": "Update shadcn-migration guidance to describe the repo's actual Base UI-backed shadcn primitives and stop prescribing Radix `Slot` / `asChild` patterns unless those dependencies are present.",
+      "evidence": "Both shadcn-install-and-configure and shadcn-card-migration-core reviews found the shared guidance still describing the migration in Radix terms even though the repo ships `shadcn` v4 with `@base-ui/react`, and `src/components/ui/card.tsx` has no `asChild` support.",
+      "isSystemic": true
+    },
+    {
+      "target": "frontend-experience-worker",
+      "suggestion": "Clarify when install/config-only or narrowly scoped styling/test-fix work may skip mandatory test-first and browser-validation steps, and require workers to state that exemption explicitly instead of silently reporting full procedure compliance.",
+      "evidence": "The shadcn-install-and-configure and shadcn-text-and-spacing-polish reviews both found legitimate cases where the current frontend skill's blanket test-first / `agent-browser` requirements did not fit the work performed, while the shadcn-card-migration-core review also found `followedProcedure: true` recorded despite transcript evidence to the contrary.",
+      "isSystemic": true
+    },
+    {
+      "target": "frontend-experience-worker",
+      "suggestion": "Strengthen the handoff/procedure rules so workers do not report green validator exit codes or full procedure compliance when transcripts show failing validators or skipped required steps.",
+      "evidence": "The shadcn-card-migration-core review found a handoff that marked `validatorsPassed: true` and recorded `exitCode: 0` for failing `npm test` / `npx tsc --noEmit` runs, which can mislead downstream scrutiny even when the transcript shows the failures.",
+      "isSystemic": true
+    },
+    {
+      "target": "AGENTS.md",
+      "suggestion": "Resolve the shared white-text guidance so it matches the validation contract: if opacity-muted text should fail shadcn migration, remove the older design-system/mission wording that still permits hierarchy through text opacity.",
+      "evidence": "The shadcn-text-and-spacing-polish review found blocking `text-white/80` / `text-white/60` usage still present in production code, and it traced part of the miss to conflicting shared guidance between mission/library docs that allow opacity hierarchy and the validation contract that forbids opacity-muted text.",
+      "isSystemic": true
+    }
+  ],
+  "rejectedObservations": [
+    {
+      "observation": "The reviewed handoff says `shadcn-install-and-configure` created `components.json`, but repo history suggests the file already existed before commit `927929c`.",
+      "reason": "historical provenance ambiguity only; it does not change current execution guidance for future workers and is not clearly actionable as shared repo knowledge."
+    }
+  ],
+  "previousRound": null
+}

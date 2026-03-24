@@ -1,0 +1,39 @@
+{
+  "featureId": "shadcn-text-and-spacing-polish",
+  "reviewedAt": "2026-03-24T02:07:42Z",
+  "commitId": "6b8ae4e",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "fail",
+  "codeReview": {
+    "summary": "The commit fixes the Button test expectations and updates several shadcn primitive foreground classes, but the feature contract is still unmet. Production code still contains opacity-muted text and many BetterCard surfaces still use sub-p-4 padding / tighter-than-required gaps, so VAL-SHADCN-005 and VAL-SHADCN-006 are not fully satisfied.",
+    "issues": [
+      {
+        "file": "src/components/MaturityBadge.tsx",
+        "line": 13,
+        "severity": "blocking",
+        "description": "Non-live status text is still rendered with opacity-muted classes (`text-white/80` and `text-white/60`), which violates VAL-SHADCN-005 / validation-contract line 434 (`Every text element is white (#ffffff). No grey text, no opacity-based text muting.`). The same unfinished pattern still appears in production surfaces such as `src/components/graph/GraphShell.tsx:647`, `src/components/graph/surfaces/LiveNowSurface.tsx:17`, and `src/components/CaveatFrame.tsx:27`."
+      },
+      {
+        "file": "src/components/tokenomics/FirstVaultPolicy.tsx",
+        "line": 99,
+        "severity": "blocking",
+        "description": "Card spacing/padding normalization is incomplete: this surface still uses `grid gap-3` with multiple `BetterCard` blocks at `px-3 py-2`, plus `space-y-2` / compact card rows at line 150 and line 152. VAL-SHADCN-006 requires minimum `p-4` padding and consistent `gap-4` to `gap-6` spacing between adjacent cards. Another remaining violation is `src/components/tokenomics/TierLadder.tsx:203` (`px-2.5 py-1.5`)."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "conventions",
+      "observation": "The shared guidance is internally inconsistent about whether opacity-muted text is allowed. That likely contributed to this feature stopping after primitive-level fixes while many `text-white/70` / `text-white/60` usages remained in production surfaces.",
+      "evidence": "Mission AGENTS says `ALL text is WHITE` but also says hierarchy comes from opacity (line 173) and non-live statuses are `white/gray text only` (line 179). `.factory/library/design-system.md` likewise allows hierarchy via opacity (lines 37, 86, 130), while `validation-contract.md:434` explicitly forbids `opacity-based text muting`. Current code still reflects the looser interpretation in `src/components/MaturityBadge.tsx:13-14`."
+    },
+    {
+      "area": "skills",
+      "observation": "The worker changed visible UI styling but did not perform the skill-mandated browser validation or record interactive checks. Either the skill should define when browser validation can be skipped for narrow polish/test-fix work, or scrutiny/validation should enforce the existing requirement more strictly.",
+      "evidence": "`/Users/test/vision/.factory/skills/frontend-experience-worker/SKILL.md` marks `agent-browser` mandatory for rendered user-facing changes (lines 16, 45-46). The transcript skeleton for worker session `676905b2-ba6f-46f2-9131-1925e81f57db` contains no `agent-browser` usage, and the handoff JSON's `verification` section lists only command-line validators with no `interactiveChecks`."
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "Review failed: the commit correctly updates Button test expectations and several shadcn foreground classes, but production code still contains opacity-muted text and undersized / tightly spaced BetterCard layouts, so the text-and-spacing contract is not fully satisfied."
+}
