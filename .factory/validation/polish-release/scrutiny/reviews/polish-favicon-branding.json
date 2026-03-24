@@ -1,0 +1,26 @@
+{
+  "featureId": "polish-favicon-branding",
+  "reviewedAt": "2026-03-24T07:16:44Z",
+  "commitId": "1d671df",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "pass",
+  "codeReview": {
+    "summary": "Reviewed the feature entry, handoff, transcript skeleton, Next.js app-icons documentation, and commit 1d671df. The implementation is correctly scoped: it imports the provided BETTER isotype asset unchanged into `src/app/icon.svg`, removes the conflicting default `src/app/favicon.ico`, and uses the supported App Router `icon.svg` file convention so production/Vercel builds emit a branded `<link rel=\"icon\">`. The added regression test covers the new icon file, validates key SVG markers from the provided asset, and confirms the default favicon was removed. I did not find blocking or non-blocking correctness issues in the implementation reviewed.",
+    "issues": []
+  },
+  "sharedStateObservations": [
+    {
+      "area": "knowledge",
+      "observation": "The shared library records the source asset path for the favicon but does not currently record the project-specific Next.js App Router convention (`src/app/icon.svg`) that makes the favicon wiring work. This feature's worker had to consult upstream Next metadata docs before making a one-file branding change, so capturing that convention locally would reduce repeated investigation for future branding/head-metadata tasks.",
+      "evidence": "`.factory/library/environment.md:36` records the read-only source asset path, but there is no corresponding library note about the favicon implementation path. The transcript skeleton for worker `ddd4398b-71a1-4a78-b67a-b00f8ecb8f4c` shows an explicit read of `node_modules/next/dist/docs/01-app/03-api-reference/03-file-conventions/01-metadata/app-icons.md` before implementation, and the upstream doc confirms `app/icon.(ico|jpg|jpeg|png|svg)` support at `node_modules/next/dist/docs/01-app/03-api-reference/03-file-conventions/01-metadata/app-icons.md:25-68`."
+    },
+    {
+      "area": "skills",
+      "observation": "For browser-facing polish tasks, the frontend worker skill may need to point more explicitly at `.factory/library/user-testing.md` and tighten the handoff contract around procedure compliance. In this feature the worker used `npm run dev` for browser validation and added tests after implementation, yet still reported `followedProcedure: true`; the skill currently leaves too much room for release-polish sessions to miss the production-backed browser-validation guidance already documented elsewhere.",
+      "evidence": "`/Users/test/vision/.factory/skills/frontend-experience-worker/SKILL.md:35,45-46` requires writing failing tests first and using `agent-browser` on `http://127.0.0.1:3100`, while `/Users/test/vision/.factory/library/user-testing.md:40-42` adds the mission-specific rule to use the manifest's production-backed `web` service instead of raw `next dev`. The transcript skeleton for worker `ddd4398b-71a1-4a78-b67a-b00f8ecb8f4c` shows `cp ... icon.svg` and `rm /Users/test/vision/src/app/favicon.ico` before creating `src/app/__tests__/favicon-branding.test.ts`, then starts `HOSTNAME=127.0.0.1 PORT=3100 npm run dev -- --hostname 127.0.0.1 --port 3100` for the browser check, while the handoff still records `followedProcedure: true`."
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "Pass. The feature fully implements the requested BETTER favicon branding by importing the provided isotype into `src/app/icon.svg`, removing the default Next favicon, and relying on a documented Next.js file convention that production builds serve correctly. I found no code defects in the implementation, but I recorded shared-state follow-ups around documenting the favicon convention locally and tightening browser-validation/test-first procedure guidance."
+}

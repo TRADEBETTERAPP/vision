@@ -1,0 +1,50 @@
+{
+  "featureId": "polish-immersive-hero-visual-system",
+  "reviewedAt": "2026-03-24T17:20:00Z",
+  "commitId": "c3ddef7c3a997a953f9c19fbeebeee76e398217b",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "fail",
+  "codeReview": {
+    "summary": "The commit adds a real hero visual stack (provider, WebGL canvas, ASCII background, SSR-safe mounting, and tests), but it does not fully satisfy the feature's fallback requirements. Unsupported `matchMedia` environments can still break the hero outright, and the WebGL path only falls back on initialization failures, not on runtime context loss after the shader has started.",
+    "issues": [
+      {
+        "file": "src/components/visual/VisualEffectsProvider.tsx",
+        "line": 46,
+        "severity": "blocking",
+        "description": "`useReducedMotion` calls `window.matchMedia(...)` during state initialization and again in the effect without checking that the API exists or that `addEventListener` is supported. In browsers/webviews that lack that API surface, the hero crashes before any visual fallback can render, which violates the requirement that unsupported environments fail cleanly."
+      },
+      {
+        "file": "src/components/visual/HeroShaderCanvas.tsx",
+        "line": 161,
+        "severity": "blocking",
+        "description": "Runtime fallback is only implemented for initialization-time failures (`getContext`, shader compile/link). After successful startup the canvas never listens for `webglcontextlost`/similar runtime failure signals, so a lost GPU/WebGL context leaves the dead shader layer mounted instead of switching to the CSS fallback path promised by `VAL-VISUAL-004`."
+      },
+      {
+        "file": "src/app/page.tsx",
+        "line": 55,
+        "severity": "non_blocking",
+        "description": "The hero still keeps much of the preexisting generic shell styling (`backdrop-blur-sm` cards, secondary-colored body copy, and `rounded-md` CTAs at lines 55-100), so the feature lands new background layers but only partially upgrades the first viewport into the claimed signature BETTER/HFT visual system."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "skills",
+      "observation": "The mission shared state is internally inconsistent on ASCII. The feature brief still demands an ASCII-video-inspired background, while the mission AGENTS and the frontend skill both say ASCII layers are permanently removed and the approved stack is Radiant + film grain. That contradiction directly encouraged this worker to add `AsciiBackground.tsx` and still report `followedProcedure=true`.",
+      "evidence": "features.json:549-561 requires an ASCII-video-inspired background; mission AGENTS.md:37-38 and 113-128 ban ASCII and require a single Radiant shader plus film grain; frontend-experience-worker/SKILL.md:26-27 repeats the ASCII ban."
+    },
+    {
+      "area": "skills",
+      "observation": "Procedure compliance is not being reported reliably for hero/immersive work. The skill requires design-system/screenshot review plus stronger enhanced-state browser evidence, but this transcript goes from README/testing/user-testing/content-model reads straight into implementation and the handoff only proves the headless fallback path. `skillFeedback.followedProcedure=true` should not have been accepted as-is.",
+      "evidence": "SKILL.md:24-25 and 49-51 require design-system/research review and explicit enhanced-state evidence; the transcript skeleton for session 3304a1bf-dad9-440e-af39-e2c38b51844c shows reads of testing.md, user-testing.md, and content-model.md before edits, but no design-system.md or screenshot review; the handoff notes only that headless Chrome lacked WebGL and exercised fallback."
+    },
+    {
+      "area": "services",
+      "observation": "Browser-validation service usage is documented but not enforced. This worker started `npm run dev` manually for validation even though the shared state already defines a production-backed `web` service and warns validators away from the raw dev-server path.",
+      "evidence": "services.yaml:9-13 defines the `web` service on port 3100; .factory/library/user-testing.md:40-43 says to use the manifest-backed service and rerun headed if headless reports `webglSupport=false`; the transcript skeleton shows `HOSTNAME=127.0.0.1 PORT=3100 npm run dev -- --hostname 127.0.0.1 --port 3100`."
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "Review failed. The feature added the intended hero visual components and test coverage, but two blocking gaps remain in the fallback story: unsupported `matchMedia` environments can still crash the hero, and post-init WebGL failures never transition to the fallback path. I also recorded shared-state inconsistencies around stale ASCII guidance, weak skill-procedure reporting, and unenforced service usage."
+}

@@ -1,0 +1,31 @@
+{
+  "featureId": "polish-production-release-and-deployment",
+  "reviewedAt": "2026-03-24T07:17:31Z",
+  "commitId": "5e31591f50d8f65c7d4db905f72ba319f30b25bc",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "pass",
+  "codeReview": {
+    "summary": "Reviewed the feature metadata, handoff, transcript skeleton, skill instructions, and the release-hardening changes recorded during this feature run (companion commit `60c23a7` plus final commit `5e31591f50d8f65c7d4db905f72ba319f30b25bc`). The implementation restored the BETTER shadcn first-paint/dark token contract in `src/app/globals.css`, replaced the stale hardcoded Vercel alias with an environment-resolved `metadataBase` in `src/app/layout.tsx`, and the handoff documents successful production verification on `https://vision-beryl-one.vercel.app` for root load, `#graph-roadmap` deep-link refresh persistence, docs exit behavior, and deployed commit status. No blocking or non-blocking code defects were identified against the feature brief or `VAL-CROSS-008`.",
+    "issues": []
+  },
+  "sharedStateObservations": [
+    {
+      "area": "skills",
+      "observation": "The frontend release skill does not state whether a worker may repair repository-local regressions discovered during baseline validation before continuing with the release. That omission forced this worker to mark `followedProcedure=false` even though the fixes were directly in scope and required to complete the deployment feature.",
+      "evidence": "`/Users/test/vision/.factory/skills/frontend-experience-worker/SKILL.md:50-51,125-129` describes release validation and when to return, but the reviewed handoff records `followedProcedure=false` only because the worker fixed baseline regressions instead of immediately returning and explicitly asks for that rule clarification (`/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/handoffs/2026-03-24T07-09-17-294Z__polish-production-release-and-deployment__c50634b6-5e74-4d7c-963d-1060b26589d5.json:101-112`)."
+    },
+    {
+      "area": "services",
+      "observation": "`.factory/services.yaml` still advertises an install command that force-runs `shadcn init`, which matches the worker's reported startup footgun and can overwrite customized UI primitives during setup.",
+      "evidence": "`/Users/test/vision/.factory/services.yaml:1-2` still defines `install: npm install && npx shadcn@latest init --defaults --force ...`, while the reviewed handoff notes that startup overwrote tracked shadcn files and deleted `components.json.bak` (`/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/handoffs/2026-03-24T07-09-17-294Z__polish-production-release-and-deployment__c50634b6-5e74-4d7c-963d-1060b26589d5.json:95-99`)."
+    },
+    {
+      "area": "knowledge",
+      "observation": "The shared environment note about shadcn setup is now stale: it still says both `.factory/init.sh` and `.factory/services.yaml` force-run shadcn init/add with overwrite, but the current init script only bootstraps missing artifacts. Future workers could rely on outdated setup guidance.",
+      "evidence": "`/Users/test/vision/.factory/library/environment.md:26` says `.factory/init.sh` and `.factory/services.yaml` both force-run shadcn init/add with overwrite, but the current init script only runs `init` when `components.json` is missing and only adds missing components without `--overwrite` (`/Users/test/vision/.factory/init.sh:23-50`)."
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "Pass. The feature satisfied the production-release brief and I found no code-level defects; only shared-state gaps remain around release-skill guidance and shadcn setup metadata."
+}

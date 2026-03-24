@@ -1,0 +1,34 @@
+{
+  "featureId": "polish-cross-surface-state-and-cta-consistency",
+  "reviewedAt": "2026-03-24T07:18:07.550964Z",
+  "commitId": "d849408",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "fail",
+  "codeReview": {
+    "summary": "Fail. The feature adds useful regression coverage, but two promised contracts are still not actually exercised: the new \"RootLayout shared-chrome\" suite never renders RootLayout/header/footer, and the new preview-eligibility tests do not bind assertions to the Preview Priority field, so they can pass while the UI regresses.",
+    "issues": [
+      {
+        "file": "src/app/__tests__/root-layout-chrome.test.tsx",
+        "line": 29,
+        "severity": "blocking",
+        "description": "This file claims to add RootLayout/shared-chrome regression coverage, but every behavioral assertion renders <Home /> instead of the actual RootLayout, and the footer check only inspects a local string literal at lines 72-77. The feature requirement explicitly called for coverage that exercises RootLayout and its shared header/footer chrome; with the current tests, regressions in layout.tsx's Header/Footer tree (src/app/layout.tsx:77-92, 104-149) would still pass unnoticed."
+      },
+      {
+        "file": "src/components/tokenomics/__tests__/preview-eligibility-copy.test.tsx",
+        "line": 36,
+        "severity": "blocking",
+        "description": "The new preview-eligibility suite does not actually prove that rendered Preview Priority copy exists for each eligible tier. It looks for any generic \"None\"/\"Level N\" token anywhere in the card (lines 36-45, 58-76), while TierLadder renders the same value shapes for Access Priority, Allocation Priority, Preview Priority, and Agent Slots (src/components/tokenomics/TierLadder.tsx:160-163). The Whale/Apex cases at lines 93-106 do not assert rendered copy at all. As written, the tests can stay green even if the Preview Priority field disappears or shows the wrong text, so the promised per-tier preview-copy regression coverage is still missing."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "skills",
+      "observation": "The frontend-experience-worker procedure is too vague for regression-only test work: it requires 'Write failing tests first' but does not explicitly point test-only/shared-chrome tasks to .factory/library/testing.md, which already documents that page-only renders do not validate RootLayout chrome. In this run the worker marked followedProcedure=true, added a Home-only \"RootLayout\" suite, and then recorded that the skill should better handle coverage-focused features.",
+      "evidence": "Skill: .factory/skills/frontend-experience-worker/SKILL.md:20 and :35. Existing testing guidance: .factory/library/testing.md:10-11. Handoff skill feedback: /Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/handoffs/2026-03-21T16-30-21-935Z__polish-cross-surface-state-and-cta-consistency__6956a6f6-4a83-47af-b309-32942f44a8b4.json:193-197. Transcript skeleton never reads testing.md (no matches for 'testing.md' in the session skeleton artifact)."
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "Reviewed commit d849408 and the worker transcript/handoff for polish-cross-surface-state-and-cta-consistency. The change improves test coverage, but it does not yet satisfy two core promises from the feature contract: actual RootLayout/shared-chrome regression coverage and reliable per-tier preview-eligibility rendering coverage. I marked the review as fail and recorded one skill-level shared-state observation."
+}
