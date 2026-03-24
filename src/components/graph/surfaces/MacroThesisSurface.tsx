@@ -1,12 +1,13 @@
 import { MACRO_THESIS_CONTENT } from "@/content";
 import MaturityBadge from "@/components/MaturityBadge";
 import EvidenceHook from "@/components/EvidenceHook";
+import { BetterCard } from "@/components/ui/BetterCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function MacroThesisSurface() {
   return (
     <div className="space-y-6">
-      <Card className="border-white/12 bg-white/[0.04]">
+      <BetterCard>
         <CardHeader className="gap-3">
           <div className="flex flex-wrap items-center gap-2">
             <MaturityBadge status="live" />
@@ -24,11 +25,11 @@ export function MacroThesisSurface() {
             {MACRO_THESIS_CONTENT.overview}
           </p>
         </CardContent>
-      </Card>
+      </BetterCard>
 
       <div className="grid gap-4 xl:grid-cols-3">
         {MACRO_THESIS_CONTENT.claims.map((claim) => (
-          <Card key={claim.id} className="border-white/12 bg-white/[0.04]">
+          <BetterCard key={claim.id}>
             <CardHeader className="gap-3">
               <div className="flex flex-wrap items-center gap-2">
                 <MaturityBadge status={claim.status} />
@@ -76,7 +77,7 @@ export function MacroThesisSurface() {
                 ))}
               </div>
             </CardContent>
-          </Card>
+          </BetterCard>
         ))}
       </div>
     </div>

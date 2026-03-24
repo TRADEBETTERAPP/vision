@@ -11,12 +11,12 @@ describe("content-depth surface card contract", () => {
     "../HftEdgeSurface.tsx",
     "../LlmProductSurface.tsx",
     "../TruthPerpFlywheelSurface.tsx",
-  ])("%s uses shadcn Card primitives directly", (relativePath) => {
+  ])("%s uses BetterCard for interactive surface shells", (relativePath) => {
     const source = readSurface(relativePath);
 
+    expect(source).toMatch(/from ["']@\/components\/ui\/BetterCard["']/);
+    expect(source).toMatch(/<BetterCard/);
     expect(source).toMatch(/from ["']@\/components\/ui\/card["']/);
-    expect(source).toMatch(/<Card/);
-    expect(source).not.toMatch(/BetterCard/);
     expect(source).toMatch(/MaturityBadge/);
   });
 });

@@ -1,12 +1,13 @@
 import { LLM_PRODUCT_CONTENT } from "@/content";
 import MaturityBadge from "@/components/MaturityBadge";
 import EvidenceHook from "@/components/EvidenceHook";
+import { BetterCard } from "@/components/ui/BetterCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function LlmProductSurface() {
   return (
     <div className="space-y-6">
-      <Card className="border-white/12 bg-white/[0.04]">
+      <BetterCard>
         <CardHeader className="gap-3">
           <div className="flex flex-wrap items-center gap-2">
             <MaturityBadge status="planned" />
@@ -24,11 +25,11 @@ export function LlmProductSurface() {
             {LLM_PRODUCT_CONTENT.overview}
           </p>
         </CardContent>
-      </Card>
+      </BetterCard>
 
       <div className="grid gap-4 xl:grid-cols-3">
         {LLM_PRODUCT_CONTENT.sections.map((section) => (
-          <Card key={section.id} className="border-white/12 bg-white/[0.04]">
+          <BetterCard key={section.id}>
             <CardHeader className="gap-3">
               <div className="flex flex-wrap items-center gap-2">
                 <MaturityBadge status={section.status} />
@@ -73,7 +74,7 @@ export function LlmProductSurface() {
                 </div>
               )}
             </CardContent>
-          </Card>
+          </BetterCard>
         ))}
       </div>
     </div>
