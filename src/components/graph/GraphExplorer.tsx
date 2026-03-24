@@ -18,6 +18,7 @@ import { HeroSurface } from "./surfaces/HeroSurface";
 import { MacroThesisSurface } from "./surfaces/MacroThesisSurface";
 import { HftEdgeSurface } from "./surfaces/HftEdgeSurface";
 import { LlmProductSurface } from "./surfaces/LlmProductSurface";
+import { TruthPerpFlywheelSurface } from "./surfaces/TruthPerpFlywheelSurface";
 import { ProofSurface } from "./surfaces/ProofSurface";
 import { LiveNowSurface } from "./surfaces/LiveNowSurface";
 import { RoadmapSurface } from "./surfaces/RoadmapSurface";
@@ -36,6 +37,7 @@ const SURFACE_CONTENT: Record<string, React.ReactNode> = {
   "macro-thesis": <MacroThesisSurface />,
   "hft-edge": <HftEdgeSurface />,
   "llm-product": <LlmProductSurface />,
+  "truth-perp-flywheel": <TruthPerpFlywheelSurface />,
   proof: <ProofSurface />,
   "live-now": <LiveNowSurface />,
   roadmap: <RoadmapSurface />,

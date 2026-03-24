@@ -142,6 +142,15 @@ export type {
   LlmProductMetric,
 } from "./llm-product";
 
+// TRUTH-PERP & Flywheel surface content
+export { TRUTH_PERP_FLYWHEEL_CONTENT } from "./truth-perp-flywheel";
+export type {
+  TruthPerpFlywheelContent,
+  TruthPerpFlywheelSection,
+  TruthPerpFlywheelMetric,
+  TruthPerpFlywheelPhase,
+} from "./truth-perp-flywheel";
+
 // Execution plans
 export {
   EXECUTION_PLANS,

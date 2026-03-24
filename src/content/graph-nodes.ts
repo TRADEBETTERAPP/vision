@@ -130,6 +130,16 @@ export const GRAPH_NODES: GraphNode[] = [
     legacySectionId: "llm-product",
   },
   {
+    id: "truth-perp-flywheel",
+    label: "TRUTH-PERP & Flywheel",
+    description: "Hyperliquid HIP-3 moat, vBETTER premium capture, and the synthetic Nasdaq of Truth end game",
+    icon: "✳",
+    dominantStatus: "planned",
+    related: ["tokenomics", "hft-edge"],
+    category: "analysis",
+    legacySectionId: "truth-perp-flywheel",
+  },
+  {
     id: "valuation",
     label: "Valuation",
     description: "Conservative stage-based valuation corridors and vault-capacity modeling",

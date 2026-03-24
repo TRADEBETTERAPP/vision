@@ -2,6 +2,7 @@ export { HeroSurface } from "./HeroSurface";
 export { MacroThesisSurface } from "./MacroThesisSurface";
 export { HftEdgeSurface } from "./HftEdgeSurface";
 export { LlmProductSurface } from "./LlmProductSurface";
+export { TruthPerpFlywheelSurface } from "./TruthPerpFlywheelSurface";
 export { ProofSurface } from "./ProofSurface";
 export { LiveNowSurface } from "./LiveNowSurface";
 export { RoadmapSurface } from "./RoadmapSurface";
