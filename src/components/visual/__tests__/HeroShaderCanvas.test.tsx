@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import { HeroShaderCanvas } from "../HeroShaderCanvas";
 import { VisualEffectsProvider, useVisualEffects } from "../VisualEffectsProvider";
 
@@ -39,6 +39,12 @@ function createMockWebGLContext() {
 }
 
 describe("HeroShaderCanvas", () => {
+  let contextLostHandler: ((event: { preventDefault: () => void }) => void) | null;
+
+  beforeEach(() => {
+    contextLostHandler = null;
+  });
+
   afterEach(() => {
     // Reset getContext to null (no WebGL) after each test
     HTMLCanvasElement.prototype.getContext = jest.fn().mockReturnValue(null);
@@ -115,6 +121,90 @@ describe("HeroShaderCanvas", () => {
       </VisualEffectsProvider>
     );
     // The fallback triggers inside useEffect, so wait for the re-render
+    await waitFor(() => {
+      expect(screen.getByTestId("is-fallback")).toHaveTextContent("true");
+    });
+  });
+
+  it("triggers fallback when the WebGL context is lost after initialization", async () => {
+    const mockWebGL = createMockWebGLContext();
+
+    HTMLCanvasElement.prototype.getContext = jest
+      .fn()
+      .mockReturnValue(mockWebGL);
+
+    const originalAddEventListener = HTMLCanvasElement.prototype.addEventListener;
+    const originalRemoveEventListener = HTMLCanvasElement.prototype.removeEventListener;
+
+    HTMLCanvasElement.prototype.addEventListener = jest
+      .fn()
+      .mockImplementation(function (
+        this: HTMLCanvasElement,
+        type: string,
+        listener: EventListenerOrEventListenerObject,
+      ) {
+        if (type === "webglcontextlost" && typeof listener === "function") {
+          contextLostHandler = listener as (event: { preventDefault: () => void }) => void;
+        }
+        return originalAddEventListener.call(this, type, listener);
+      });
+
+    HTMLCanvasElement.prototype.removeEventListener = jest
+      .fn()
+      .mockImplementation(function (
+        this: HTMLCanvasElement,
+        type: string,
+        listener: EventListenerOrEventListenerObject,
+      ) {
+        return originalRemoveEventListener.call(this, type, listener);
+      });
+
+    function FallbackChecker() {
+      const ctx = useVisualEffects();
+      return <span data-testid="is-fallback">{String(ctx.fallback)}</span>;
+    }
+
+    render(
+      <VisualEffectsProvider>
+        <HeroShaderCanvas />
+        <FallbackChecker />
+      </VisualEffectsProvider>,
+    );
+
+    expect(screen.getByTestId("hero-shader-canvas")).toBeInTheDocument();
+    expect(contextLostHandler).not.toBeNull();
+
+    act(() => {
+      contextLostHandler?.({ preventDefault: jest.fn() });
+    });
+
+    await waitFor(() => {
+      expect(screen.getByTestId("is-fallback")).toHaveTextContent("true");
+    });
+  });
+
+  it("triggers fallback when rendering throws after initialization", async () => {
+    const mockWebGL = createMockWebGLContext();
+    mockWebGL.drawArrays = jest.fn(() => {
+      throw new Error("runtime WebGL failure");
+    });
+
+    HTMLCanvasElement.prototype.getContext = jest
+      .fn()
+      .mockReturnValue(mockWebGL);
+
+    function FallbackChecker() {
+      const ctx = useVisualEffects();
+      return <span data-testid="is-fallback">{String(ctx.fallback)}</span>;
+    }
+
+    render(
+      <VisualEffectsProvider>
+        <HeroShaderCanvas />
+        <FallbackChecker />
+      </VisualEffectsProvider>,
+    );
+
     await waitFor(() => {
       expect(screen.getByTestId("is-fallback")).toHaveTextContent("true");
     });

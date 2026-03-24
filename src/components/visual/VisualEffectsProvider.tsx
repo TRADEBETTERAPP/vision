@@ -50,21 +50,74 @@ const defaultState: VisualEffectsState = {
 
 const VisualEffectsContext = createContext<VisualEffectsState>(defaultState);
 
+type MediaQueryListLike = {
+  matches: boolean;
+  addEventListener?: (
+    type: string,
+    listener: (event: { matches: boolean }) => void,
+  ) => void;
+  removeEventListener?: (
+    type: string,
+    listener: (event: { matches: boolean }) => void,
+  ) => void;
+  addListener?: (listener: (event: { matches: boolean }) => void) => void;
+  removeListener?: (listener: (event: { matches: boolean }) => void) => void;
+};
+
+function getMediaQueryList(query: string): MediaQueryListLike | null {
+  if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+    return null;
+  }
+
+  try {
+    return window.matchMedia(query);
+  } catch {
+    return null;
+  }
+}
+
+function subscribeToMediaQuery(
+  query: string,
+  listener: (event: { matches: boolean }) => void,
+): () => void {
+  const mql = getMediaQueryList(query);
+  if (!mql) {
+    return () => {};
+  }
+
+  if (typeof mql.addEventListener === "function") {
+    mql.addEventListener("change", listener);
+    return () => mql.removeEventListener?.("change", listener);
+  }
+
+  if (typeof mql.addListener === "function") {
+    mql.addListener(listener);
+    return () => mql.removeListener?.(listener);
+  }
+
+  return () => {};
+}
+
+function matchesMediaQuery(query: string): boolean {
+  return getMediaQueryList(query)?.matches ?? false;
+}
+
 // ---------------------------------------------------------------------------
 // Hook to detect prefers-reduced-motion
 // ---------------------------------------------------------------------------
 
 function useReducedMotion(): boolean {
   const [reduced, setReduced] = useState<boolean>(() => {
-    if (typeof window === "undefined") return false;
-    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    return matchesMediaQuery("(prefers-reduced-motion: reduce)");
   });
 
   useEffect(() => {
-    const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const handler = (e: { matches: boolean }) => setReduced(e.matches);
-    mql.addEventListener("change", handler);
-    return () => mql.removeEventListener("change", handler);
+    return subscribeToMediaQuery(
+      "(prefers-reduced-motion: reduce)",
+      (event) => {
+        setReduced(event.matches);
+      },
+    );
   }, []);
 
   return reduced;
@@ -85,21 +138,27 @@ function useDesktopCapable(reducedMotion: boolean): boolean {
 
   useEffect(() => {
     const check = () => {
-      const finePointer = window.matchMedia("(pointer: fine)").matches;
-      const wideViewport = window.matchMedia("(min-width: 1025px)").matches;
+      const finePointer = matchesMediaQuery("(pointer: fine)");
+      const wideViewport = matchesMediaQuery("(min-width: 1025px)");
       setCapable(finePointer && wideViewport && !reducedMotion);
     };
     // Immediate check on mount
     check();
+
     // Listen for capability changes (e.g., viewport resize, device mode toggle)
-    const pointerMql = window.matchMedia("(pointer: fine)");
-    const widthMql = window.matchMedia("(min-width: 1025px)");
-    const handler = () => check();
-    pointerMql.addEventListener("change", handler);
-    widthMql.addEventListener("change", handler);
+    const handleChange = () => check();
+    const unsubscribePointer = subscribeToMediaQuery(
+      "(pointer: fine)",
+      handleChange,
+    );
+    const unsubscribeWidth = subscribeToMediaQuery(
+      "(min-width: 1025px)",
+      handleChange,
+    );
+
     return () => {
-      pointerMql.removeEventListener("change", handler);
-      widthMql.removeEventListener("change", handler);
+      unsubscribePointer();
+      unsubscribeWidth();
     };
   }, [reducedMotion]);
 

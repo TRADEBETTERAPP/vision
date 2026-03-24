@@ -140,4 +140,65 @@ describe("VisualEffectsProvider", () => {
     });
     expect(screen.getByTestId("fallback")).toHaveTextContent("true");
   });
+
+  it("does not throw when matchMedia is unavailable", () => {
+    Object.defineProperty(window, "matchMedia", {
+      writable: true,
+      configurable: true,
+      value: undefined,
+    });
+
+    expect(() =>
+      render(
+        <VisualEffectsProvider>
+          <StatusDisplay />
+        </VisualEffectsProvider>,
+      ),
+    ).not.toThrow();
+
+    expect(screen.getByTestId("reduced-motion")).toHaveTextContent("false");
+  });
+
+  it("falls back to legacy media query listeners when addEventListener is unavailable", () => {
+    const legacyListeners: Array<(e: { matches: boolean }) => void> = [];
+
+    Object.defineProperty(window, "matchMedia", {
+      writable: true,
+      configurable: true,
+      value: jest.fn().mockImplementation((query: string) => {
+        const isReducedMotion = query === "(prefers-reduced-motion: reduce)";
+        return {
+          matches: false,
+          media: query,
+          addEventListener: undefined,
+          removeEventListener: undefined,
+          onchange: null,
+          addListener: (listener: (e: { matches: boolean }) => void) => {
+            if (isReducedMotion) legacyListeners.push(listener);
+          },
+          removeListener: (listener: (e: { matches: boolean }) => void) => {
+            const index = legacyListeners.indexOf(listener);
+            if (index >= 0) legacyListeners.splice(index, 1);
+          },
+          dispatchEvent: jest.fn(),
+        };
+      }),
+    });
+
+    render(
+      <VisualEffectsProvider>
+        <StatusDisplay />
+      </VisualEffectsProvider>,
+    );
+
+    expect(screen.getByTestId("reduced-motion")).toHaveTextContent("false");
+
+    act(() => {
+      for (const listener of legacyListeners) {
+        listener({ matches: true });
+      }
+    });
+
+    expect(screen.getByTestId("reduced-motion")).toHaveTextContent("true");
+  });
 });

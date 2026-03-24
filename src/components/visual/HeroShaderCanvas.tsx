@@ -83,15 +83,37 @@ export function HeroShaderCanvas() {
     useVisualEffects();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animFrameRef = useRef<number>(0);
+  const cleanupRef = useRef<(() => void) | null>(null);
 
   const initWebGL = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
+    let disposed = false;
+    let fallbackTriggered = false;
+
+    const failToFallback = () => {
+      if (fallbackTriggered) {
+        return;
+      }
+
+      fallbackTriggered = true;
+
+      if (cleanupRef.current) {
+        cleanupRef.current();
+        cleanupRef.current = null;
+      } else {
+        disposed = true;
+        cancelAnimationFrame(animFrameRef.current);
+      }
+
+      triggerFallback();
+    };
+
     const gl =
       canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
     if (!gl) {
-      triggerFallback();
+      failToFallback();
       return;
     }
 
@@ -109,18 +131,22 @@ export function HeroShaderCanvas() {
       RADIANT_FLUID_AMBER_FRAGMENT,
     );
     if (!vert || !frag) {
-      triggerFallback();
+      failToFallback();
       return;
     }
 
     const program = createProgram(webgl, vert, frag);
     if (!program) {
-      triggerFallback();
+      failToFallback();
       return;
     }
 
     // Full-screen triangle (Radiant convention: 3 vertices, not 6)
     const positionBuffer = webgl.createBuffer();
+    if (!positionBuffer) {
+      failToFallback();
+      return;
+    }
     webgl.bindBuffer(webgl.ARRAY_BUFFER, positionBuffer);
     webgl.bufferData(
       webgl.ARRAY_BUFFER,
@@ -131,6 +157,10 @@ export function HeroShaderCanvas() {
     const posLoc = webgl.getAttribLocation(program, "a_pos");
     const timeLoc = webgl.getUniformLocation(program, "u_time");
     const resLoc = webgl.getUniformLocation(program, "u_res");
+    if (posLoc < 0 || !timeLoc || !resLoc) {
+      failToFallback();
+      return;
+    }
 
     webgl.useProgram(program);
     webgl.enableVertexAttribArray(posLoc);
@@ -150,23 +180,49 @@ export function HeroShaderCanvas() {
     resize();
     window.addEventListener("resize", resize);
 
+    const handleContextLost = (event: Event) => {
+      event.preventDefault();
+      failToFallback();
+    };
+
+    canvas.addEventListener("webglcontextlost", handleContextLost);
+
+    const dispose = () => {
+      if (disposed) {
+        return;
+      }
+
+      disposed = true;
+      cancelAnimationFrame(animFrameRef.current);
+      window.removeEventListener("resize", resize);
+      canvas.removeEventListener("webglcontextlost", handleContextLost);
+      webgl.deleteProgram(program);
+      webgl.deleteShader(vert);
+      webgl.deleteShader(frag);
+    };
+
+    cleanupRef.current = dispose;
+
     const render = () => {
+      if (disposed) {
+        return;
+      }
+
       const time = (performance.now() - startTime) / 1000;
-      webgl.uniform1f(timeLoc, time);
-      webgl.drawArrays(webgl.TRIANGLES, 0, 3);
+      try {
+        webgl.uniform1f(timeLoc, time);
+        webgl.drawArrays(webgl.TRIANGLES, 0, 3);
+      } catch {
+        failToFallback();
+        return;
+      }
       animFrameRef.current = requestAnimationFrame(render);
     };
 
     markReady();
     animFrameRef.current = requestAnimationFrame(render);
 
-    return () => {
-      cancelAnimationFrame(animFrameRef.current);
-      window.removeEventListener("resize", resize);
-      webgl.deleteProgram(program);
-      webgl.deleteShader(vert);
-      webgl.deleteShader(frag);
-    };
+    return dispose;
   }, [markReady, triggerFallback]);
 
   useEffect(() => {
@@ -174,6 +230,7 @@ export function HeroShaderCanvas() {
     const cleanup = initWebGL();
     return () => {
       cancelAnimationFrame(animFrameRef.current);
+      cleanupRef.current = null;
       cleanup?.();
     };
   }, [reducedMotion, fallback, initWebGL]);
