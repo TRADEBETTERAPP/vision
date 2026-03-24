@@ -1,0 +1,334 @@
+{
+  "groupId": "shadcn-browser",
+  "testedAt": "2026-03-24T02:56:56.704229+00:00",
+  "isolation": {
+    "milestone": "shadcn-migration",
+    "missionDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83",
+    "repoRoot": "/Users/test/vision",
+    "appUrl": "http://127.0.0.1:3100",
+    "surface": "browser",
+    "browserSession": "shadcn-browser-33dae310",
+    "mode": "headed",
+    "evidenceDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/evidence/shadcn-migration/shadcn-browser",
+    "notes": "Validated only the assigned browser assertions against the already-running local app. The dev server was not restarted, no application code was modified, and the agent-browser session was closed after evidence capture."
+  },
+  "toolsUsed": [
+    "agent-browser"
+  ],
+  "assertionResults": [
+    {
+      "id": "VAL-SHADCN-003",
+      "title": "Cards are near-transparent glass over shader",
+      "status": "fail",
+      "reason": "The glass treatment itself is present across overview, tokenomics, roadmap, and architecture surfaces, but sampled BetterCard surfaces render a ~14px corner radius instead of the required 8px radius.",
+      "steps": [
+        {
+          "action": "Inspect the default graph workspace card grid and the first-view supporting cards at rest.",
+          "expected": "Cards should read as near-transparent glass panels over the blue shader, with 4% white fill, 12% white borders, no backdrop blur, and an 8px radius.",
+          "observed": "The overview cards clearly show the shader through them and compute to `rgba(255,255,255,0.04)` backgrounds with `1px solid rgba(255,255,255,0.12)` borders and no backdrop blur, but the sampled cards render `border-radius: 14px`."
+        },
+        {
+          "action": "Inspect a representative tokenomics surface card and architecture stack card.",
+          "expected": "Detail surfaces should preserve the same transparent glass styling over the shader background.",
+          "observed": "The tokenomics Base Contract card and architecture stack cards keep the same transparent glass base (`rgba(255,255,255,0.04)`), subtle border, and no blur while the shader remains visible behind the content. Their runtime radius also resolves to `14px`."
+        },
+        {
+          "action": "Inspect a roadmap/detail surface card.",
+          "expected": "Roadmap detail cards should match the same glass-over-shader treatment without becoming opaque boxes.",
+          "observed": "Roadmap detail cards keep the transparent shader-visible look and the same 0.04/0.12 styling, but again render with `border-radius: 14px` rather than the contract's 8px target."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "shadcn-migration/shadcn-browser/VAL-SHADCN-overview-desktop.png",
+          "shadcn-migration/shadcn-browser/VAL-SHADCN-tokenomics-focus.png",
+          "shadcn-migration/shadcn-browser/VAL-SHADCN-roadmap-focus.png",
+          "shadcn-migration/shadcn-browser/VAL-SHADCN-architecture-focus.png"
+        ],
+        "consoleErrors": "none",
+        "network": "No requests were captured during this local visual validation flow.",
+        "computedStyles": {
+          "overviewGraphCard": {
+            "backgroundColor": "rgba(255, 255, 255, 0.04)",
+            "border": "1px solid rgba(255, 255, 255, 0.12)",
+            "borderRadius": "14px",
+            "backdropFilter": "none",
+            "padding": "12px 12px 12px 12px"
+          },
+          "tokenomicsDetailCard": {
+            "backgroundColor": "rgba(255, 255, 255, 0.04)",
+            "border": "1px solid rgba(255, 255, 255, 0.12)",
+            "borderRadius": "14px",
+            "backdropFilter": "none",
+            "padding": "8px 12px 8px 12px"
+          },
+          "roadmapDetailCard": {
+            "backgroundColor": "rgba(255, 255, 255, 0.04)",
+            "border": "1px solid rgba(255, 255, 255, 0.12)",
+            "borderRadius": "14px",
+            "backdropFilter": "none",
+            "padding": "20px 20px 20px 20px"
+          },
+          "architectureStackCard": {
+            "backgroundColor": "rgba(255, 255, 255, 0.04)",
+            "border": "1px solid rgba(255, 255, 255, 0.12)",
+            "borderRadius": "14px",
+            "backdropFilter": "none",
+            "padding": "16px 16px 16px 16px"
+          }
+        }
+      },
+      "issues": "Strict contract mismatch on corner radius: sampled shadcn cards are transparent glass over the shader, but they are more rounded than the required 8px."
+    },
+    {
+      "id": "VAL-SHADCN-005",
+      "title": "All text white with size/weight hierarchy",
+      "status": "fail",
+      "reason": "Representative body copy stays white or opacity-based white, but the primary `SEE WHAT'S LIVE` CTA still renders dark text (`rgb(16,16,16)`), so not every text element is white under the strict shadcn assertion.",
+      "steps": [
+        {
+          "action": "Inspect overview body copy, graph-card copy, and representative tokenomics/architecture detail text in browser.",
+          "expected": "All text should render as white or opacity-based white with hierarchy from size, weight, and opacity instead of grey text colors.",
+          "observed": "Overview, tokenomics, and architecture text samples resolved to white/opacity-white values such as `rgb(255,255,255)`, `lab(98.26 0 0)`, and `oklab(... / 0.7)` or `oklab(... / 0.8)`. No grey body text was observed in the sampled detail surfaces."
+        },
+        {
+          "action": "Inspect the primary CTA text styling in the first viewport.",
+          "expected": "The assertion requires every text element to stay white.",
+          "observed": "`SEE WHAT'S LIVE` computes to `color: rgb(16, 16, 16)` on a white background, while the adjacent `EXPLORE THE ATLAS` CTA remains white text on a transparent background."
+        },
+        {
+          "action": "Cross-check other representative detail surfaces for non-white text.",
+          "expected": "Representative tokenomics and architecture surfaces should not introduce grey or dark text.",
+          "observed": "Tokenomics and architecture focus states showed only white/opacity-white text in the sampled visible nodes; the dark-text finding was limited to the overview white CTA."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "shadcn-migration/shadcn-browser/VAL-SHADCN-overview-desktop.png",
+          "shadcn-migration/shadcn-browser/VAL-SHADCN-tokenomics-focus.png",
+          "shadcn-migration/shadcn-browser/VAL-SHADCN-architecture-focus.png"
+        ],
+        "consoleErrors": "none",
+        "network": "No requests were captured during this local visual validation flow.",
+        "computedStyles": {
+          "overviewDistinctTextColors": [
+            "rgb(255, 255, 255)",
+            "lab(98.26 0 0)",
+            "oklab(0.999994 0.0000455677 0.0000200868 / 0.7)",
+            "oklab(0.999994 0.0000455677 0.0000200868 / 0.8)",
+            "rgb(16, 16, 16)"
+          ],
+          "primaryCta": {
+            "text": "SEE WHAT'S LIVE",
+            "color": "rgb(16, 16, 16)",
+            "backgroundColor": "rgb(255, 255, 255)"
+          },
+          "secondaryCta": {
+            "text": "EXPLORE THE ATLAS",
+            "color": "rgb(255, 255, 255)",
+            "backgroundColor": "rgba(0, 0, 0, 0)"
+          },
+          "tokenomicsVisibleTextColors": [
+            "rgb(255, 255, 255)",
+            "lab(98.26 0 0)",
+            "oklab(0.999994 0.0000455677 0.0000200868 / 0.7)"
+          ],
+          "architectureVisibleTextColors": [
+            "rgb(255, 255, 255)",
+            "lab(98.26 0 0)",
+            "oklab(0.999994 0.0000455677 0.0000200868 / 0.7)",
+            "oklab(0.999994 0.0000455677 0.0000200868 / 0.8)"
+          ]
+        }
+      },
+      "issues": "The primary white CTA still uses dark text, so the strict all-text-white rule is not fully met even though representative body/detail copy no longer appears grey."
+    },
+    {
+      "id": "VAL-SHADCN-006",
+      "title": "Proper margins, padding, and spacing",
+      "status": "pass",
+      "reason": "Representative overview, roadmap, tokenomics, and architecture cards show consistent padding and spacing with no overlap or zero-gap adjacency.",
+      "steps": [
+        {
+          "action": "Inspect the overview graph workspace card grid.",
+          "expected": "Primary cards should have at least `p-3`-level internal padding and consistent spacing between adjacent cards.",
+          "observed": "Overview cards render at `12px` padding on all sides with `12px` card-internal gaps, and the first-view grid shows consistent spacing between adjacent cards without overlap."
+        },
+        {
+          "action": "Inspect representative detail surfaces in roadmap, tokenomics, and architecture.",
+          "expected": "Detail cards should preserve coherent spacing and larger primary-card padding while compact subcards may stay smaller.",
+          "observed": "Roadmap detail cards use `20px` padding with `16px` gaps, architecture stack cards use `16px` padding with `16px` gaps, and the tokenomics Base Contract card uses compact `8px 12px` padding appropriate for a smaller info card inside the larger tokenomics surface."
+        },
+        {
+          "action": "Visually check for awkward collisions or zero-margin adjacency across representative surfaces.",
+          "expected": "No cards should collide, overlap, or visually collapse into each other.",
+          "observed": "Across the sampled overview grid and detail panels, card spacing remains visually consistent and readable; no overlap, clipping, or zero-margin adjacency was observed."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "shadcn-migration/shadcn-browser/VAL-SHADCN-overview-desktop.png",
+          "shadcn-migration/shadcn-browser/VAL-SHADCN-tokenomics-focus.png",
+          "shadcn-migration/shadcn-browser/VAL-SHADCN-roadmap-focus.png",
+          "shadcn-migration/shadcn-browser/VAL-SHADCN-architecture-focus.png"
+        ],
+        "consoleErrors": "none",
+        "network": "No requests were captured during this local visual validation flow.",
+        "computedStyles": {
+          "overviewGraphCard": {
+            "padding": "12px 12px 12px 12px",
+            "gap": "12px",
+            "width": "314px",
+            "height": "145px"
+          },
+          "roadmapPrimaryDetailCard": {
+            "padding": "20px 20px 20px 20px",
+            "gap": "16px",
+            "width": "607px"
+          },
+          "architectureStackCard": {
+            "padding": "16px 16px 16px 16px",
+            "gap": "16px",
+            "width": "1230px"
+          },
+          "tokenomicsCompactInfoCard": {
+            "padding": "8px 12px 8px 12px",
+            "gap": "16px"
+          }
+        }
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-SHADCN-007",
+      "title": "Smooth transitions with no jank",
+      "status": "pass",
+      "reason": "Hovered cards transition on `0.2s ease` with unchanged bounding boxes and no visible flicker or layout shift in the sampled overview and roadmap-detail interactions.",
+      "steps": [
+        {
+          "action": "Hover the overview Tokenomics card and compare its box metrics before and after hover.",
+          "expected": "Hover should animate smoothly without changing layout geometry or causing flicker.",
+          "observed": "The overview Tokenomics card stayed at `314 x 145.33` before and after hover while its visual state changed over `0.2s ease`; no jump or layout shift was observed."
+        },
+        {
+          "action": "Hover a larger roadmap detail card and inspect the runtime transition.",
+          "expected": "The cursor-tracking sheen should follow smoothly without visible stutter or broken animation timing.",
+          "observed": "The `AUTONOMOUS STRATEGY AGENTS` roadmap card hovered cleanly with the same `0.2s ease` timing and stable layout; the sheen tracked the pointer position and no flicker or collapsed state was seen in the session."
+        },
+        {
+          "action": "Check the browser runtime log after the hover flows.",
+          "expected": "No console/runtime errors should accompany the transition checks.",
+          "observed": "No console errors were reported after the hover validation flow."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "shadcn-migration/shadcn-browser/VAL-SHADCN-overview-hover-tokenomics.png",
+          "shadcn-migration/shadcn-browser/VAL-SHADCN-roadmap-hover-detail-card.png"
+        ],
+        "consoleErrors": "none",
+        "network": "No requests were captured during this local visual validation flow.",
+        "computedStyles": {
+          "overviewTokenomicsCardBeforeHover": {
+            "rect": {
+              "x": 72.5,
+              "y": 859.578125,
+              "width": 314,
+              "height": 145.328125
+            },
+            "backgroundColor": "rgba(255, 255, 255, 0.04)",
+            "boxShadow": "none"
+          },
+          "overviewTokenomicsCardAfterHover": {
+            "rect": {
+              "x": 72.5,
+              "y": 859.578125,
+              "width": 314,
+              "height": 145.328125
+            },
+            "backgroundColor": "rgba(255, 255, 255, 0.08)",
+            "transitionDuration": "0.2s, 0.2s",
+            "transitionTimingFunction": "ease, ease"
+          },
+          "roadmapDetailCardAfterHover": {
+            "rect": {
+              "x": 720.5,
+              "y": 599.75,
+              "width": 607,
+              "height": 330.25
+            },
+            "backgroundColor": "rgba(255, 255, 255, 0.08)",
+            "transitionDuration": "0.2s, 0.2s",
+            "transitionTimingFunction": "ease, ease"
+          }
+        }
+      },
+      "issues": null
+    }
+  ],
+  "additionalObservations": {
+    "hoverSubtletyRecheck": {
+      "id": "VAL-SHADCN-004",
+      "title": "Cursor-tracking metallic sheen on shadcn cards",
+      "status": "fail",
+      "reason": "The hover sheen is still far brighter than the updated subtlety target. Sampled cards use a `rgba(255,255,255,0.38)` center highlight plus a `rgba(200,210,255,0.12)` secondary ring, and the resulting hotspot becomes one of the brightest elements on the page.",
+      "steps": [
+        {
+          "action": "Hover the overview Tokenomics card in the default graph workspace.",
+          "expected": "The sheen should be restrained and supportive, with a center highlight around 0.12-0.18 max and no sharp brightening under the cursor.",
+          "observed": "The hovered Tokenomics card showed a large bright white hotspot that noticeably brightened the upper-left portion of the card, reading as attention-grabbing rather than barely-there."
+        },
+        {
+          "action": "Hover a roadmap detail card (`AUTONOMOUS STRATEGY AGENTS`) and inspect the result on a larger surface.",
+          "expected": "The larger card should keep the same subtle metallic response without flare-like hotspots.",
+          "observed": "The roadmap detail card produced an even broader bright hotspot across the card face. The card remained smooth, but the sheen was visually dominant rather than quiet."
+        },
+        {
+          "action": "Inspect the hovered cards' computed styles.",
+          "expected": "The contract target is roughly `rgba(255,255,255,0.12)` to `0.18` max for the center highlight and `rgba(200,210,255,0.04-0.08)` for the ring.",
+          "observed": "Both sampled hovers resolved to `background-color: rgba(255,255,255,0.08)` with `background-image: radial-gradient(... rgba(255,255,255,0.38) 0%, rgba(200,210,255,0.12) 40%, transparent 70%)` plus `inset 0 0 30px rgba(255,255,255,0.03)`, which exceeds the updated subtlety targets."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "shadcn-migration/shadcn-browser/VAL-SHADCN-overview-hover-tokenomics.png",
+          "shadcn-migration/shadcn-browser/VAL-SHADCN-roadmap-hover-detail-card.png"
+        ],
+        "consoleErrors": "none",
+        "network": "No requests were captured during this local visual validation flow.",
+        "computedStyles": {
+          "overviewTokenomicsHover": {
+            "backgroundColor": "rgba(255, 255, 255, 0.08)",
+            "backgroundImage": "radial-gradient(circle at 49.8408% 49.8334%, rgba(255, 255, 255, 0.38) 0%, rgba(200, 210, 255, 0.12) 40%, rgba(0, 0, 0, 0) 70%), none",
+            "boxShadow": "rgba(255, 255, 255, 0.03) 0px 0px 30px 0px inset",
+            "transitionDuration": "0.2s, 0.2s",
+            "transitionTimingFunction": "ease, ease"
+          },
+          "roadmapDetailHover": {
+            "backgroundColor": "rgba(255, 255, 255, 0.08)",
+            "backgroundImage": "radial-gradient(circle at 50% 50.0379%, rgba(255, 255, 255, 0.38) 0%, rgba(200, 210, 255, 0.12) 40%, rgba(0, 0, 0, 0) 70%), none",
+            "boxShadow": "rgba(255, 255, 255, 0.03) 0px 0px 30px 0px inset",
+            "transitionDuration": "0.2s, 0.2s",
+            "transitionTimingFunction": "ease, ease"
+          }
+        },
+        "relatedVisualExpectations": [
+          {
+            "id": "VAL-VISUAL-030",
+            "result": "miss",
+            "note": "The base glass-morphism is present, but the hover sheen becomes brighter than the surrounding text/shader instead of staying restrained and refined."
+          },
+          {
+            "id": "VAL-VISUAL-035",
+            "result": "miss",
+            "note": "Cards remain transparent enough for the shader to show through, but the hover response still brightens sharply under the cursor rather than complementing the background quietly."
+          }
+        ]
+      },
+      "issues": "The current BetterCard hover effect is smooth but still too bright and attention-grabbing to satisfy the softened hover-subtlety requirement."
+    }
+  },
+  "frictions": [],
+  "blockers": [],
+  "summary": "Validated the assigned shadcn browser surfaces across the overview workspace plus roadmap, tokenomics, and architecture detail states. Primary assertions: VAL-SHADCN-006 and VAL-SHADCN-007 passed; VAL-SHADCN-003 failed on the strict 8px-radius requirement despite the correct glass transparency; VAL-SHADCN-005 failed because the primary white CTA still renders dark text. Additional revalidation for VAL-SHADCN-004 failed: the hover sheen remains smooth but still uses a bright 0.38 white hotspot / 0.12 ring and would miss the subtle-supportive hover expectations behind VAL-VISUAL-030 and VAL-VISUAL-035."
+}

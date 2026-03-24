@@ -1,0 +1,47 @@
+{
+  "milestone": "shadcn-migration",
+  "round": 1,
+  "status": "fail",
+  "assertionsSummary": {
+    "total": 10,
+    "passed": 4,
+    "failed": 6,
+    "blocked": 0
+  },
+  "passedAssertions": [
+    "VAL-SHADCN-002",
+    "VAL-SHADCN-006",
+    "VAL-SHADCN-007",
+    "VAL-SHADCN-008"
+  ],
+  "failedAssertions": [
+    {
+      "id": "VAL-SHADCN-001",
+      "reason": "shadcn components are present, but globals.css still maps the dark card token to oklch(0.205 0 0) instead of the required 4% white glass token."
+    },
+    {
+      "id": "VAL-SHADCN-003",
+      "reason": "Cards are transparent over the shader, but sampled BetterCard instances render 14px corners instead of the required 8px radius."
+    },
+    {
+      "id": "VAL-SHADCN-004",
+      "reason": "BetterCard hover sheen is still too bright, using a 0.38 white hotspot and 0.12 ring that reads as a loud flare instead of a subtle response."
+    },
+    {
+      "id": "VAL-SHADCN-005",
+      "reason": "The primary 'SEE WHAT'S LIVE' CTA still renders dark text on white, so not every visible text element remains white/opacity-white."
+    },
+    {
+      "id": "VAL-VISUAL-030",
+      "reason": "The liquid-metal hover finish is brighter than surrounding text/shader instead of staying restrained and refined."
+    },
+    {
+      "id": "VAL-VISUAL-035",
+      "reason": "The hover metallic response still creates bright hotspots rather than a quiet, low-contrast complement to the shader background."
+    }
+  ],
+  "blockedAssertions": [],
+  "appliedUpdates": [],
+  "previousRound": null,
+  "preconditionNote": "A new pending implementation feature (shadcn-soften-card-hover-sheen) was added during this run, so the milestone no longer satisfied the original \"all implementation features complete\" precondition by the end of validation."
+}
