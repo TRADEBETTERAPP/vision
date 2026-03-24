@@ -1,0 +1,137 @@
+{
+  "groupId": "macro-thesis-browser",
+  "testedAt": "2026-03-24T05:40:26.762493+00:00",
+  "isolation": {
+    "appUrl": "http://127.0.0.1:3100",
+    "browserSession": "a9dbe1ddea70__u1",
+    "missionDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83",
+    "evidenceDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/evidence/content-depth/macro-thesis-browser"
+  },
+  "toolsUsed": [
+    "agent-browser",
+    "Read",
+    "Grep"
+  ],
+  "assertions": [
+    {
+      "id": "VAL-CONTENT-001",
+      "title": "Macro Thesis graph node and surface exist",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Open the root graph workspace at http://127.0.0.1:3100.",
+          "expected": "A visible Macro Thesis node is present in the graph shell.",
+          "observed": "The default workspace rendered a visible 'Macro Thesis' graph button alongside the other graph nodes."
+        },
+        {
+          "action": "Click the Macro Thesis node from the default state.",
+          "expected": "The app opens a Macro Thesis detail surface focused on the prediction-market investment case.",
+          "observed": "The URL changed to #graph-macro-thesis and the focused surface rendered 'MACRO THESIS' with the subtitle 'Why war, broken hedges, and prediction-market accuracy matter now'."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "content-depth/macro-thesis-browser/home-annotated.png",
+          "content-depth/macro-thesis-browser/macro-thesis-surface-annotated.png"
+        ],
+        "consoleErrors": "none",
+        "network": "GET / -> 200 plus static assets only; no API failures observed during node selection."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CONTENT-002",
+      "title": "Geopolitical risk and portfolio failure data",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Inspect the Macro Thesis surface copy after opening #graph-macro-thesis.",
+          "expected": "The surface includes the required geopolitical shock and portfolio-failure claims/figures.",
+          "observed": "Visible copy included 'US/Israeli strikes hit Iranian military and nuclear targets', '~20% of global oil supply sat exposed at the Strait of Hormuz', and '60/40 diversification cracked'."
+        },
+        {
+          "action": "Verify the market-structure figures on the same surface.",
+          "expected": "The surface includes BTC drawdown/correlation and memecoin-fraud figures.",
+          "observed": "Visible copy included BTC '31.5%' crash, BTC/S&P correlation '0.55', memecoin market-cap '61%' collapse, and rug-farming rate '82.8%'."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "content-depth/macro-thesis-browser/macro-thesis-surface-annotated.png"
+        ],
+        "consoleErrors": "none",
+        "network": "No additional network/API activity was required beyond the already-loaded page assets."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CONTENT-003",
+      "title": "Prediction market superiority data",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Inspect the prediction-market section of the Macro Thesis surface.",
+          "expected": "The surface shows the required superiority metrics and market-size figures.",
+          "observed": "Visible copy listed Brier score '0.0565', one-month accuracy '91.2%', final-hours accuracy '97%', volume growth '130x', '$13B/month' volume, and '$140.63B' cumulative volume."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "content-depth/macro-thesis-browser/macro-thesis-surface-annotated.png"
+        ],
+        "consoleErrors": "none",
+        "network": "No API requests involved; static page content only."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CONTENT-004",
+      "title": "Macro Thesis attribution",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Review the attribution and evidence cues rendered in the Macro Thesis surface.",
+          "expected": "Claims are attributed to @tradebetterapp with visible evidence hooks/cues.",
+          "observed": "The surface visibly rendered '@tradebetterapp Macro Thesis' plus claim-level cues '@tradebetterapp \u2014 A World at War' and '@tradebetterapp \u2014 The world is shifting beneath your feet', giving users clear attribution targets."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "content-depth/macro-thesis-browser/macro-thesis-surface-annotated.png"
+        ],
+        "consoleErrors": "none",
+        "network": "Static content only; no attribution lookup failures observed."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CROSS-016",
+      "title": "Investor pitch path references macro thesis",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "From the default graph workspace, click 'Investor Pitch Path'.",
+          "expected": "The guided investor path opens from the graph workspace.",
+          "observed": "The flow opened on 'What is BETTER' with the investor-path chrome visible."
+        },
+        {
+          "action": "Inspect the path controls before advancing to the wedge.",
+          "expected": "Macro-thesis content is included or linked before the product wedge step.",
+          "observed": "On the investor-path surface, a visible 'Macro Thesis' button appeared before the 'Wedge \u2192' control, and clicking it opened #graph-macro-thesis."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "content-depth/macro-thesis-browser/investor-path-annotated.png",
+          "content-depth/macro-thesis-browser/investor-path-macro-thesis-annotated.png"
+        ],
+        "consoleErrors": "none",
+        "network": "No additional API calls; investor-path traversal used client-side hash navigation only."
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 5 assertions for the Macro Thesis content-depth flow: 5 passed, 0 failed, 0 blocked. The graph exposed the Macro Thesis node, the surface rendered the required @tradebetterapp-attributed figures, and the investor path linked Macro Thesis before the wedge step."
+}

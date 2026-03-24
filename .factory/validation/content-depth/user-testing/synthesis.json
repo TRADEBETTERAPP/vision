@@ -1,0 +1,54 @@
+{
+  "milestone": "content-depth",
+  "round": 1,
+  "status": "fail",
+  "assertionsSummary": {
+    "total": 23,
+    "passed": 22,
+    "failed": 1,
+    "blocked": 0
+  },
+  "passedAssertions": [
+    "VAL-CONTENT-001",
+    "VAL-CONTENT-002",
+    "VAL-CONTENT-003",
+    "VAL-CONTENT-004",
+    "VAL-CROSS-016",
+    "VAL-CONTENT-005",
+    "VAL-CONTENT-006",
+    "VAL-CONTENT-007",
+    "VAL-CONTENT-008",
+    "VAL-CONTENT-016",
+    "VAL-CONTENT-009",
+    "VAL-CONTENT-010",
+    "VAL-CONTENT-011",
+    "VAL-CONTENT-012",
+    "VAL-CONTENT-013",
+    "VAL-CONTENT-014",
+    "VAL-CONTENT-015",
+    "VAL-CONTENT-017",
+    "VAL-CONTENT-018",
+    "VAL-CONTENT-019",
+    "VAL-CROSS-015",
+    "VAL-CROSS-017"
+  ],
+  "failedAssertions": [
+    {
+      "id": "VAL-CROSS-018",
+      "reason": "Layout width is responsive, but the focused-surface navigation controls are too small for touch-first use at 375px."
+    }
+  ],
+  "blockedAssertions": [],
+  "appliedUpdates": [],
+  "previousRound": null,
+  "flowReports": [
+    ".factory/validation/content-depth/user-testing/flows/macro-thesis-browser.json",
+    ".factory/validation/content-depth/user-testing/flows/hft-proof-browser.json",
+    ".factory/validation/content-depth/user-testing/flows/llm-truth-browser.json",
+    ".factory/validation/content-depth/user-testing/flows/graph-integration-browser.json"
+  ],
+  "notes": [
+    "Validated the content-depth milestone against the updated VAL-CONTENT-018 BetterCard-wrapper rule for top-level shells.",
+    "Browser validation ran sequentially (max concurrency 1) against the shared production-backed local web service on http://127.0.0.1:3100."
+  ]
+}

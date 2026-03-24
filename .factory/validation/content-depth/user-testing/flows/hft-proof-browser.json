@@ -1,0 +1,139 @@
+{
+  "groupId": "hft-proof-browser",
+  "testedAt": "2026-03-24T05:44:20.370506+00:00",
+  "isolation": {
+    "appUrl": "http://127.0.0.1:3100",
+    "browserSession": "a9dbe1ddea70__u2",
+    "missionDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83",
+    "evidenceDir": "content-depth/hft-proof-browser"
+  },
+  "toolsUsed": [
+    "agent-browser"
+  ],
+  "assertions": [
+    {
+      "id": "VAL-CONTENT-005",
+      "title": "HFT Edge graph node and surface exist",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Open the BETTER atlas root surface",
+          "expected": "The graph shows an HFT Edge node",
+          "observed": "The root atlas shows an interactive \"HFT Edge\" node/button alongside the other graph destinations."
+        },
+        {
+          "action": "Click the HFT Edge node",
+          "expected": "The intended HFT detail surface opens",
+          "observed": "The page switched to a detail state labeled \"BETTER Atlas \u2192 HFT Edge\" with an \"HFT Edge\" heading and latency-moat summary."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "content-depth/hft-proof-browser/VAL-CONTENT-005-graph-hft-node.png",
+          "content-depth/hft-proof-browser/VAL-CONTENT-005-hft-detail-surface.png"
+        ],
+        "textEvidence": [
+          "content-depth/hft-proof-browser/VAL-CONTENT-006-008-hft-surface-text.txt"
+        ],
+        "consoleErrors": "none",
+        "network": "No assertion-specific API/XHR requests were needed; the browser only fetched the local Next.js app and a client chunk during navigation."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CONTENT-006",
+      "title": "Rust and co-location details",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Inspect the HFT Edge detail surface text",
+          "expected": "The surface names Rust execution, same-rack co-location, and a 0.11ms vs 8ms comparison",
+          "observed": "The HFT surface explicitly states Rust execution, same AWS rack co-location with the Polymarket CLOB, and \"0.11ms vs 8ms\" latency framing."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "content-depth/hft-proof-browser/VAL-CONTENT-005-hft-detail-surface.png"
+        ],
+        "textEvidence": [
+          "content-depth/hft-proof-browser/VAL-CONTENT-006-008-hft-surface-text.txt"
+        ],
+        "consoleErrors": "none",
+        "network": "No relevant API calls; assertion validated from visible copy on the local HFT surface."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CONTENT-007",
+      "title": "Z-Score algorithm and trading pipeline",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Inspect the Z-Score and pipeline sections on HFT Edge",
+          "expected": "The surface includes Z-Score, 35-70x returns, Sharpe >40, FAST15M, LONG, Kelly sizing, and ~60x ROI",
+          "observed": "The HFT surface includes a Z-Score section with \"35-70x\" and \"Sharpe >40\", plus FAST15M and LONG BRAID lanes, Kelly sizing, and a \"~60x\" paper-trade ROI callout."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "content-depth/hft-proof-browser/VAL-CONTENT-005-hft-detail-surface.png"
+        ],
+        "textEvidence": [
+          "content-depth/hft-proof-browser/VAL-CONTENT-006-008-hft-surface-text.txt"
+        ],
+        "consoleErrors": "none",
+        "network": "No relevant API calls; assertion validated from visible copy on the local HFT surface."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CONTENT-008",
+      "title": "Copy trading mechanism details",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Inspect the copy-trading distribution section on HFT Edge",
+          "expected": "The surface describes gas-sponsored execution, UDA, and one-click copy trading",
+          "observed": "The HFT surface explicitly lists \"gas-sponsored\", \"UDA\", and \"one-click copy trading\" in the copy-trading distribution section."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "content-depth/hft-proof-browser/VAL-CONTENT-005-hft-detail-surface.png"
+        ],
+        "textEvidence": [
+          "content-depth/hft-proof-browser/VAL-CONTENT-006-008-hft-surface-text.txt"
+        ],
+        "consoleErrors": "none",
+        "network": "No relevant API calls; assertion validated from visible copy on the local HFT surface."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CONTENT-016",
+      "title": "Proof enriched with terminal details",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Open the Proof & Trust surface from the atlas and inspect the proof copy",
+          "expected": "The proof surface includes terminal copy-trading details for gas-sponsored execution, UDA, and one-click",
+          "observed": "The Proof & Trust surface shows a \"Terminal execution abstraction\" section with bullets for gas-sponsored execution, UDA (Unified Deposit Account), and one-click copy trading."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "content-depth/hft-proof-browser/VAL-CONTENT-016-proof-surface-terminal-details.png"
+        ],
+        "textEvidence": [
+          "content-depth/hft-proof-browser/VAL-CONTENT-016-proof-surface-terminal-details.txt"
+        ],
+        "consoleErrors": "none",
+        "network": "Observed a local Next.js client-chunk fetch during surface navigation; no assertion-specific API/XHR traffic was required."
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 5 assigned assertions on the running local app: VAL-CONTENT-005, 006, 007, 008, and 016 all passed. The HFT Edge node opens the intended detail surface, and both the HFT and Proof surfaces visibly contain the required Rust/co-location/latency, pipeline, and copy-trading details."
+}

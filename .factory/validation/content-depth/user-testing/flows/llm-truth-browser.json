@@ -1,0 +1,137 @@
+{
+  "groupId": "llm-truth-browser",
+  "testedAt": "2026-03-24T05:47:58.564353+00:00",
+  "isolation": {
+    "appUrl": "http://127.0.0.1:3100",
+    "browserSession": "a9dbe1ddea70__u3",
+    "missionDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83",
+    "evidenceDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/evidence/content-depth/llm-truth-browser"
+  },
+  "toolsUsed": [
+    "agent-browser",
+    "curl",
+    "Read"
+  ],
+  "assertions": [
+    {
+      "id": "VAL-CONTENT-009",
+      "title": "LLM Product graph node and surface exist",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Open the root graph workspace at http://127.0.0.1:3100.",
+          "expected": "A visible 'LLM Product' node is present in the graph shell.",
+          "observed": "The default workspace rendered an 'LLM Product' graph button alongside the other atlas nodes."
+        },
+        {
+          "action": "Click the LLM Product node from the default graph state.",
+          "expected": "The app opens the LLM Product detail surface.",
+          "observed": "The URL changed to #graph-llm-product and the focused detail surface rendered 'LLM Product' with the summary 'A prediction-market-native model product with BRAID reasoning built in and sold as a standalone API subscription'."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "content-depth/llm-truth-browser/home-annotated.png",
+          "content-depth/llm-truth-browser/llm-product-surface-annotated.png",
+          "content-depth/llm-truth-browser/llm-product-surface-full.png"
+        ],
+        "consoleErrors": "none",
+        "network": "GET / -> 200 confirmed via curl; node selection used client-side hash navigation with no API failures observed."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CONTENT-010",
+      "title": "LLM methodology and pricing",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Inspect the LLM Product surface copy after opening #graph-llm-product.",
+          "expected": "The surface visibly includes RL / parameterization / quantizing, BRAID reasoning DAG, $29/mo API pricing, $BETTER holder discounts, and OpenRouter credits revenue.",
+          "observed": "Visible copy stated the model is tuned via 'reinforcement learning, parameterization, and quantizing', described 'BRAID reasoning DAG' as the reasoning core, and labeled the monetization as a '$29/mo' standalone API subscription with 'scaling discounts for larger $BETTER holders' plus 'OpenRouter credits' sold on top."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "content-depth/llm-truth-browser/llm-product-surface-annotated.png",
+          "content-depth/llm-truth-browser/llm-product-surface-full.png"
+        ],
+        "consoleErrors": "none",
+        "network": "Static surface content only; no API/network failures observed while inspecting the LLM detail surface."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CONTENT-011",
+      "title": "TRUTH-PERP graph node and surface exist",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Open the root graph workspace at http://127.0.0.1:3100.",
+          "expected": "A visible 'TRUTH-PERP & Flywheel' node is present in the graph shell.",
+          "observed": "The default workspace rendered a 'TRUTH-PERP & Flywheel' graph button in the atlas node list."
+        },
+        {
+          "action": "Open the TRUTH-PERP & Flywheel node from the graph.",
+          "expected": "The app opens the TRUTH-PERP & Flywheel detail surface.",
+          "observed": "The URL changed to #graph-truth-perp-flywheel and the focused surface rendered 'TRUTH-PERP & Flywheel' with the summary 'Hyperliquid HIP-3 capital moat, a synthetic Nasdaq of Truth index, and a buy-and-burn arb loop'."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "content-depth/llm-truth-browser/home-annotated.png",
+          "content-depth/llm-truth-browser/truth-perp-surface-annotated.png",
+          "content-depth/llm-truth-browser/truth-perp-surface-full.png"
+        ],
+        "consoleErrors": "none",
+        "network": "GET / -> 200 confirmed via curl; node selection used local hash navigation with no API failures observed."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CONTENT-012",
+      "title": "HIP-3 and Hyperliquid details",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Inspect the TRUTH-PERP & Flywheel detail surface.",
+          "expected": "The surface visibly includes HIP-3 on Hyperliquid, the 500k HYPE / $11M barrier, and the Nasdaq of Truth framing.",
+          "observed": "Visible copy stated 'HIP-3 on Hyperliquid', described the capital barrier as '500k HYPE ($11M)', and framed TRUTH-PERP as the 'Nasdaq of Truth' synthetic index."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "content-depth/llm-truth-browser/truth-perp-surface-annotated.png",
+          "content-depth/llm-truth-browser/truth-perp-surface-full.png"
+        ],
+        "consoleErrors": "none",
+        "network": "Static content only; no API/network failures observed while reviewing Hyperliquid and HIP-3 details."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CONTENT-013",
+      "title": "Arbitrage flywheel mechanics",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Review the vBETTER and flywheel sections of the TRUTH-PERP surface.",
+          "expected": "The surface visibly includes vBETTER arbitrage, 30% net arb profits to buy & burn, and the three-phase flywheel.",
+          "observed": "Visible copy described 'vBETTER' as the vault token used for 'ETF premium capture', stated '30% net arb profits \u2192 buy & burn', and enumerated the three flywheel stages as 'Phase 1 Vault \u2014 Q1 2026', 'Phase 2 Arbitrage \u2014 Q2 2026', and 'Phase 3 TRUTH-PERP \u2014 Q4 2026'."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "content-depth/llm-truth-browser/truth-perp-surface-annotated.png",
+          "content-depth/llm-truth-browser/truth-perp-surface-full.png"
+        ],
+        "consoleErrors": "none",
+        "network": "Static content only; no API/network failures observed while inspecting the arbitrage flywheel sections."
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 5 assertions for the LLM Product and TRUTH-PERP & Flywheel content-depth flow: 5 passed, 0 failed, 0 blocked. Both graph nodes opened the intended detail surfaces and the required pricing, reasoning, Hyperliquid, vBETTER, buy-and-burn, and three-phase flywheel copy was visibly present without console errors."
+}

@@ -1,0 +1,299 @@
+{
+  "groupId": "graph-integration-browser",
+  "testedAt": "2026-03-24T05:56:19.256267+00:00",
+  "isolation": {
+    "appUrl": "http://127.0.0.1:3100",
+    "browserSession": "a9dbe1ddea70__u4",
+    "missionDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83",
+    "evidenceDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/evidence/content-depth/graph-integration-browser",
+    "repoRoot": "/Users/test/vision"
+  },
+  "toolsUsed": [
+    "agent-browser",
+    "Read",
+    "Grep"
+  ],
+  "assertions": [
+    {
+      "id": "VAL-CONTENT-014",
+      "title": "Architecture enriched with Rust and BRAID consensus",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Open #graph-architecture in the real graph shell",
+          "expected": "Architecture surface shows the new execution-moat enrichment block",
+          "observed": "Focused Architecture surface rendered an 'Execution moat additions' section with the new enrichment cards."
+        },
+        {
+          "action": "Inspect visible Architecture copy",
+          "expected": "Rust stack details and BRAID 4-way consensus show 88% and 100% win-rate figures",
+          "observed": "Visible copy included Rust execution lane details plus BRAID consensus bullets with '88% win rate' and '100% win rate'."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "content-depth/graph-integration-browser/architecture-surface.png"
+        ],
+        "consoleErrors": "none observed; repeated agent-browser errors checks returned no entries while validating Architecture.",
+        "network": "No API/XHR behavior was required for this surface; agent-browser network log returned no captured requests.",
+        "sourceInspection": [
+          "src/components/graph/surfaces/ArchitectureSurface.tsx:21-48 renders the architecture enrichment block with BetterCard shells.",
+          "src/content/enriched-surfaces.ts:16-34 defines the Rust execution lane and BRAID 4-way consensus bullets, including 88% and 100% win rates."
+        ]
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CONTENT-015",
+      "title": "Tokenomics enriched with arbitrage flywheel",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Open #graph-tokenomics in the graph shell",
+          "expected": "Tokenomics surface shows new flywheel revenue additions",
+          "observed": "Focused Tokenomics surface rendered a 'Flywheel revenue additions' section above the broader tokenomics content."
+        },
+        {
+          "action": "Inspect visible Tokenomics enrichment copy",
+          "expected": "Surface explains arbitrage flywheel revenue and buy/sell tax routing",
+          "observed": "Visible copy described vBETTER/TRUTH-PERP arbitrage revenue plus a live '2% buy + 2% sell' treasury tax route."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "content-depth/graph-integration-browser/tokenomics-surface.png"
+        ],
+        "consoleErrors": "none observed; repeated agent-browser errors checks returned no entries while validating Tokenomics.",
+        "network": "No API/XHR behavior was required for this surface; agent-browser network log returned no captured requests.",
+        "sourceInspection": [
+          "src/components/graph/surfaces/TokenomicsSurface.tsx:20-60 renders the tokenomics enrichment cards.",
+          "src/content/enriched-surfaces.ts:39-67 defines the arbitrage-flywheel revenue block and the live buy/sell tax routing block."
+        ]
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CONTENT-017",
+      "title": "New nodes have graph edges to existing topology",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Inspect the default graph workspace",
+          "expected": "The default state shows all four new nodes as part of the atlas topology",
+          "observed": "The default overview exposed clickable graph buttons for Macro Thesis, HFT Edge, LLM Product, and TRUTH-PERP & Flywheel."
+        },
+        {
+          "action": "Open each new node and inspect related-node links",
+          "expected": "Each node shows required connectivity to existing surfaces",
+          "observed": "Macro Thesis related links pointed to What is BETTER + Tokenomics; HFT Edge to Architecture + Proof + TRUTH-PERP; LLM Product to Architecture + Tokenomics; TRUTH-PERP to Tokenomics + HFT Edge."
+        },
+        {
+          "action": "Support the UI check with graph data inspection",
+          "expected": "Source edge data matches the required connectivity contract",
+          "observed": "graph-nodes.ts related arrays matched the contract for all four new nodes."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "content-depth/graph-integration-browser/graph-default-overview-annotated.png",
+          "content-depth/graph-integration-browser/macro-thesis-surface.png",
+          "content-depth/graph-integration-browser/hft-edge-surface.png",
+          "content-depth/graph-integration-browser/llm-product-surface.png",
+          "content-depth/graph-integration-browser/truth-perp-flywheel-surface.png"
+        ],
+        "consoleErrors": "none observed across overview and node-to-node traversal; agent-browser errors checks returned no entries.",
+        "network": "No API/XHR behavior was required for graph traversal; agent-browser network log returned no captured requests.",
+        "sourceInspection": [
+          "src/content/graph-nodes.ts:53-58 sets Macro Thesis related nodes to what-is-better and tokenomics.",
+          "src/content/graph-nodes.ts:120-145 sets HFT Edge related nodes to architecture/proof/truth-perp-flywheel, LLM Product to architecture/tokenomics, and TRUTH-PERP to tokenomics/hft-edge."
+        ]
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CONTENT-018",
+      "title": "All new surfaces use approved BetterCard top-level shells",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Inspect the four new surface components in source",
+          "expected": "Each new content-depth surface uses BetterCard as its top-level shell",
+          "observed": "Macro Thesis, HFT Edge, LLM Product, and TRUTH-PERP surfaces all import BetterCard and render a top-level <BetterCard> wrapper before nested content."
+        },
+        {
+          "action": "Inspect nested card usage in the same files",
+          "expected": "Nested metric/sub-cards may use direct shadcn Card primitives",
+          "observed": "Each surface also imports shadcn Card primitives for nested metric cards, matching the contract that only the top-level shell must be BetterCard."
+        },
+        {
+          "action": "Confirm the real browser surfaces match the expected shell structure",
+          "expected": "Focused surfaces render inside consistent BetterCard-based shells",
+          "observed": "All four focused surfaces rendered with the same glass-card shell treatment visible in the browser screenshots."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "content-depth/graph-integration-browser/macro-thesis-surface.png",
+          "content-depth/graph-integration-browser/hft-edge-surface.png",
+          "content-depth/graph-integration-browser/llm-product-surface.png",
+          "content-depth/graph-integration-browser/truth-perp-flywheel-surface.png"
+        ],
+        "consoleErrors": "none observed while opening each new surface.",
+        "network": "No API/XHR behavior was required for this shell-contract check.",
+        "sourceInspection": [
+          "src/components/graph/surfaces/MacroThesisSurface.tsx:4-32 imports BetterCard and uses a top-level <BetterCard>; nested metric cards use shadcn Card at line 60.",
+          "src/components/graph/surfaces/HftEdgeSurface.tsx:4-32 imports BetterCard and uses a top-level <BetterCard>; nested cards use shadcn Card at lines 47 and 68.",
+          "src/components/graph/surfaces/LlmProductSurface.tsx:4-32 imports BetterCard and uses a top-level <BetterCard>; nested metric cards use shadcn Card at line 47.",
+          "src/components/graph/surfaces/TruthPerpFlywheelSurface.tsx:4-32 imports BetterCard and uses a top-level <BetterCard>; nested metric cards use shadcn Card at line 47."
+        ]
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CONTENT-019",
+      "title": "Maturity labels on all new content",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Open each of the four new surfaces in the graph shell",
+          "expected": "Every new content block carries visible maturity labels",
+          "observed": "Each new surface showed visible MaturityBadge labels on the overview shell and on each section/phase block; DOM text checks counted 5 badges on Macro Thesis, 6 on HFT Edge, 6 on LLM Product, and 8 on TRUTH-PERP."
+        },
+        {
+          "action": "Inspect enriched content on existing surfaces",
+          "expected": "Architecture, Tokenomics, and Proof enrichments also carry maturity labels",
+          "observed": "Architecture, Tokenomics, and Proof enrichment cards each displayed MaturityBadge chips in the browser."
+        },
+        {
+          "action": "Support with source inspection",
+          "expected": "New and enriched surface components explicitly render MaturityBadge",
+          "observed": "Source inspection found MaturityBadge usage in all four new surfaces plus ArchitectureSurface, TokenomicsSurface, and ProofSurface."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "content-depth/graph-integration-browser/macro-thesis-surface.png",
+          "content-depth/graph-integration-browser/hft-edge-surface.png",
+          "content-depth/graph-integration-browser/llm-product-surface.png",
+          "content-depth/graph-integration-browser/truth-perp-flywheel-surface.png",
+          "content-depth/graph-integration-browser/architecture-surface.png",
+          "content-depth/graph-integration-browser/tokenomics-surface.png",
+          "content-depth/graph-integration-browser/proof-surface.png"
+        ],
+        "consoleErrors": "none observed while validating maturity labels on new and enriched surfaces.",
+        "network": "No API/XHR behavior was required for this label check.",
+        "sourceInspection": [
+          "src/components/graph/surfaces/MacroThesisSurface.tsx:13 and 35 render MaturityBadge for the top-level shell and each claim.",
+          "src/components/graph/surfaces/HftEdgeSurface.tsx:13 and 35 render MaturityBadge for the shell and each section.",
+          "src/components/graph/surfaces/LlmProductSurface.tsx:13 and 35 render MaturityBadge for the shell and each section.",
+          "src/components/graph/surfaces/TruthPerpFlywheelSurface.tsx:13, 35, and 86 render MaturityBadge for the shell, sections, and flywheel phases.",
+          "src/components/graph/surfaces/ArchitectureSurface.tsx:37, TokenomicsSurface.tsx:36, and ProofSurface.tsx:25/53 render MaturityBadge on enriched existing-surface blocks."
+        ]
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CROSS-015",
+      "title": "New nodes reachable via graph navigation",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Load the default graph workspace at /",
+          "expected": "New nodes are reachable from the default state without relying on direct hashes",
+          "observed": "The default graph overview visibly exposed direct buttons for all four new nodes in the primary atlas grid."
+        },
+        {
+          "action": "Use real graph navigation to open each new node",
+          "expected": "Each node opens within two clicks from the default state",
+          "observed": "Macro Thesis, HFT Edge, LLM Product, and TRUTH-PERP each opened successfully from the default overview in one click, with the URL updating to the focused #graph-* state."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "content-depth/graph-integration-browser/graph-default-overview-annotated.png",
+          "content-depth/graph-integration-browser/macro-thesis-surface.png",
+          "content-depth/graph-integration-browser/hft-edge-surface.png",
+          "content-depth/graph-integration-browser/llm-product-surface.png",
+          "content-depth/graph-integration-browser/truth-perp-flywheel-surface.png"
+        ],
+        "consoleErrors": "none observed during default-state graph navigation.",
+        "network": "No API/XHR behavior was required for this traversal flow.",
+        "sourceInspection": [
+          "Default graph controls are rendered by GraphShell as graph-node-button elements and the new nodes are registered in src/content/graph-nodes.ts."
+        ]
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CROSS-017",
+      "title": "Seamless navigation between old and new surfaces",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Traverse between existing and new surfaces in the same graph session",
+          "expected": "Switching between old and new surfaces preserves the same shell language and transition behavior",
+          "observed": "Navigation from Architecture \u2192 Tokenomics \u2192 Macro Thesis and back through the graph shell kept the same focused-surface container, typography scale, border treatment, and related-link layout."
+        },
+        {
+          "action": "Compare old/new browser renders and supporting source",
+          "expected": "New surfaces feel visually consistent with older surfaces",
+          "observed": "Architecture/Tokenomics/Proof and the new surfaces all rendered inside the same BetterCard-based graph shell and used the same mono labels, white typography, and translucent nested cards."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "content-depth/graph-integration-browser/architecture-surface.png",
+          "content-depth/graph-integration-browser/tokenomics-surface.png",
+          "content-depth/graph-integration-browser/proof-surface.png",
+          "content-depth/graph-integration-browser/hft-edge-surface.png",
+          "content-depth/graph-integration-browser/llm-product-surface.png",
+          "content-depth/graph-integration-browser/truth-perp-flywheel-surface.png"
+        ],
+        "consoleErrors": "none observed while switching between old and new graph surfaces.",
+        "network": "No API/XHR behavior was required for this styling/transition consistency check.",
+        "sourceInspection": [
+          "src/components/ui/BetterCard.tsx defines the shared shell treatment used across graph surfaces.",
+          "Existing and new surface components in src/components/graph/surfaces all import the same BetterCard wrapper and shadcn card primitives."
+        ]
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CROSS-018",
+      "title": "Mobile responsiveness for new surfaces",
+      "status": "fail",
+      "steps": [
+        {
+          "action": "Set the browser viewport to 375x812 and open each new surface",
+          "expected": "All new surfaces render at 375px width without horizontal overflow",
+          "observed": "Macro Thesis, HFT Edge, LLM Product, and TRUTH-PERP all rendered without document or surface horizontal overflow (docOverflow=0 and surfaceOverflow=0 for each surface)."
+        },
+        {
+          "action": "Measure interactive target sizes on the mobile focused surfaces",
+          "expected": "Tap targets remain touch-friendly on mobile",
+          "observed": "The focused-surface back button measured 28x28px and related-node buttons measured 26px tall across the new surfaces (for example 136x26, 122x26, 107x26, 94x26), which is below a touch-friendly ~44px target."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "content-depth/graph-integration-browser/macro-thesis-mobile.png",
+          "content-depth/graph-integration-browser/hft-edge-mobile.png",
+          "content-depth/graph-integration-browser/llm-product-mobile.png",
+          "content-depth/graph-integration-browser/truth-perp-flywheel-mobile.png"
+        ],
+        "consoleErrors": "none observed during 375px mobile validation.",
+        "network": "No API/XHR behavior was required for this mobile rendering check.",
+        "mobileMeasurements": [
+          "Macro Thesis: docOverflow=0, surfaceOverflow=0, back button 28x28px, related buttons 136x26px and 107x26px.",
+          "HFT Edge: docOverflow=0, surfaceOverflow=0, back button 28x28px, related buttons 122x26px, 129x26px, and 186x26px.",
+          "LLM Product: docOverflow=0, surfaceOverflow=0, back button 28x28px, related buttons 122x26px and 107x26px.",
+          "TRUTH-PERP & Flywheel: docOverflow=0, surfaceOverflow=0, back button 28x28px, related buttons 107x26px and 94x26px."
+        ]
+      },
+      "issues": "Layout width is responsive, but the focused-surface navigation controls are too small for touch-first use at 375px."
+    }
+  ],
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 8 assigned assertions. 7 passed and 1 failed: VAL-CROSS-018 failed because the new surfaces fit within 375px without overflow, but the back/related navigation controls on the mobile focused shell are only 26-28px tall instead of touch-friendly targets."
+}
