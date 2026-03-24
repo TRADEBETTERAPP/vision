@@ -6,6 +6,14 @@ import { BetterLogotype } from "./BetterLogotype";
 
 export { NAV_ITEMS } from "./nav-items";
 
+export const MOBILE_NAV_ITEMS = [
+  ...NAV_ITEMS,
+  { label: "Macro Thesis", href: "#graph-macro-thesis" },
+  { label: "HFT Edge", href: "#graph-hft-edge" },
+  { label: "LLM Product", href: "#graph-llm-product" },
+  { label: "TRUTH-PERP & Flywheel", href: "#graph-truth-perp-flywheel" },
+] as const;
+
 /**
  * Mobile navigation overlay with hamburger toggle.
  * Satisfies VAL-NARR-004: mobile navigation exposes required destinations.
@@ -93,7 +101,7 @@ export default function MobileNav() {
             <div className="mb-4 px-4">
               <BetterLogotype variant="mobile-overlay" data-testid="mobile-overlay-logotype" />
             </div>
-            {NAV_ITEMS.map((item) => (
+            {MOBILE_NAV_ITEMS.map((item) => (
               <a
                 key={item.href}
                 href={item.href}

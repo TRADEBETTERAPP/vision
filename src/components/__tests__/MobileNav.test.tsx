@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import MobileNav, { NAV_ITEMS } from "../MobileNav";
+import MobileNav, { MOBILE_NAV_ITEMS, NAV_ITEMS } from "../MobileNav";
 
 describe("MobileNav", () => {
   it("renders the mobile menu button", () => {
@@ -25,8 +25,8 @@ describe("MobileNav", () => {
     render(<MobileNav />);
     await user.click(screen.getByTestId("mobile-menu-button"));
     const links = screen.getAllByTestId("mobile-nav-link");
-    expect(links.length).toBe(NAV_ITEMS.length);
-    for (const item of NAV_ITEMS) {
+    expect(links.length).toBe(MOBILE_NAV_ITEMS.length);
+    for (const item of MOBILE_NAV_ITEMS) {
       expect(screen.getByText(item.label)).toBeInTheDocument();
     }
   });
@@ -45,7 +45,7 @@ describe("MobileNav", () => {
     render(<MobileNav />);
     await user.click(screen.getByTestId("mobile-menu-button"));
     const links = screen.getAllByTestId("mobile-nav-link");
-    NAV_ITEMS.forEach((item, i) => {
+    MOBILE_NAV_ITEMS.forEach((item, i) => {
       expect(links[i]).toHaveAttribute("href", item.href);
     });
   });
@@ -69,5 +69,18 @@ describe("MobileNav", () => {
         expect(item.label).not.toContain(term);
       }
     }
+  });
+
+  it("adds the four new content-depth nodes to the mobile overlay", () => {
+    const labels = MOBILE_NAV_ITEMS.map((item) => item.label);
+
+    expect(labels).toEqual(
+      expect.arrayContaining([
+        "Macro Thesis",
+        "HFT Edge",
+        "LLM Product",
+        "TRUTH-PERP & Flywheel",
+      ])
+    );
   });
 });

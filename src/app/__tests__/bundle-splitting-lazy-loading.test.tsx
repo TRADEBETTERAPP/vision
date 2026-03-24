@@ -81,6 +81,16 @@ describe("Dynamic import structure (VAL-VISUAL-027)", () => {
     expect(source).toMatch(/ssr:\s*false/);
   });
 
+  it("GraphExplorer lazy-loads each new content-depth surface with next/dynamic", () => {
+    const source = readSource("../../components/graph/GraphExplorer.tsx");
+
+    expect(source).toMatch(/dynamic\s*\(/);
+    expect(source).toMatch(/import\(.*MacroThesisSurface/);
+    expect(source).toMatch(/import\(.*HftEdgeSurface/);
+    expect(source).toMatch(/import\(.*LlmProductSurface/);
+    expect(source).toMatch(/import\(.*TruthPerpFlywheelSurface/);
+  });
+
   it("page.tsx uses LazyGraphExplorer (not a static import of GraphExplorer)", () => {
     const pageSource = readSource("../page.tsx");
 
