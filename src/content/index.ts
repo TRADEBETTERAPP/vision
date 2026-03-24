@@ -125,6 +125,15 @@ export type {
   MacroThesisMetric,
 } from "./macro-thesis";
 
+// HFT edge surface content
+export { HFT_EDGE_CONTENT } from "./hft-edge";
+export type {
+  HftEdgeContent,
+  HftEdgeSection,
+  HftEdgeMetric,
+  HftEdgeFormula,
+} from "./hft-edge";
+
 // Execution plans
 export {
   EXECUTION_PLANS,

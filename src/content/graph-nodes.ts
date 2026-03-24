@@ -110,6 +110,16 @@ export const GRAPH_NODES: GraphNode[] = [
     legacySectionId: "architecture",
   },
   {
+    id: "hft-edge",
+    label: "HFT Edge",
+    description: "Latency moat: Rust execution, same-rack colo, deterministic sizing, and copy trading",
+    icon: "⬢",
+    dominantStatus: "in_progress",
+    related: ["architecture", "proof"],
+    category: "analysis",
+    legacySectionId: "hft-edge",
+  },
+  {
     id: "valuation",
     label: "Valuation",
     description: "Conservative stage-based valuation corridors and vault-capacity modeling",

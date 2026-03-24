@@ -1,5 +1,6 @@
 export { HeroSurface } from "./HeroSurface";
 export { MacroThesisSurface } from "./MacroThesisSurface";
+export { HftEdgeSurface } from "./HftEdgeSurface";
 export { ProofSurface } from "./ProofSurface";
 export { LiveNowSurface } from "./LiveNowSurface";
 export { RoadmapSurface } from "./RoadmapSurface";
