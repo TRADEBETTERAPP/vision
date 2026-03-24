@@ -1,7 +1,7 @@
 {
   "milestone": "polish-release",
-  "round": 1,
-  "status": "fail",
+  "round": 2,
+  "status": "pass",
   "validatorsRun": {
     "test": {
       "passed": true,
@@ -17,90 +17,22 @@
       "passed": true,
       "command": "npm --prefix \"/Users/test/vision\" run lint",
       "exitCode": 0
+    },
+    "build": {
+      "passed": true,
+      "command": "npm --prefix \"/Users/test/vision\" run build",
+      "exitCode": 0
     }
   },
   "reviewsSummary": {
-    "total": 4,
+    "total": 2,
     "passed": 2,
-    "failed": 2,
-    "failedFeatures": [
-      "polish-immersive-hero-visual-system",
-      "polish-cross-surface-state-and-cta-consistency"
-    ]
+    "failed": 0,
+    "failedFeatures": []
   },
-  "blockingIssues": [
-    {
-      "featureId": "polish-immersive-hero-visual-system",
-      "file": "src/components/visual/VisualEffectsProvider.tsx",
-      "line": 46,
-      "severity": "blocking",
-      "description": "`useReducedMotion` assumes `window.matchMedia` and its listener APIs exist, so unsupported environments can throw before fallback UI renders."
-    },
-    {
-      "featureId": "polish-immersive-hero-visual-system",
-      "file": "src/components/visual/HeroShaderCanvas.tsx",
-      "line": 161,
-      "severity": "blocking",
-      "description": "The shader only falls back on initialization failures; runtime WebGL/context-loss failures leave the dead shader mounted instead of switching to the promised fallback path."
-    },
-    {
-      "featureId": "polish-cross-surface-state-and-cta-consistency",
-      "file": "src/app/__tests__/root-layout-chrome.test.tsx",
-      "line": 29,
-      "severity": "blocking",
-      "description": "The new shared-chrome regression suite renders `<Home />` instead of `RootLayout`, so layout.tsx header/footer regressions are not actually covered."
-    },
-    {
-      "featureId": "polish-cross-surface-state-and-cta-consistency",
-      "file": "src/components/tokenomics/__tests__/preview-eligibility-copy.test.tsx",
-      "line": 36,
-      "severity": "blocking",
-      "description": "Preview-eligibility assertions are not tied to the rendered `Preview Priority` field and do not verify Whale/Apex preview copy, so the promised per-tier preview-copy regression coverage is incomplete."
-    }
-  ],
-  "appliedUpdates": [
-    {
-      "target": "library",
-      "description": "Updated `.factory/library/environment.md` to document that App Router favicon branding uses `src/app/icon.svg`.",
-      "sourceFeature": "polish-favicon-branding"
-    },
-    {
-      "target": "library",
-      "description": "Updated `.factory/library/environment.md` to reflect the current shadcn bootstrap split: `.factory/init.sh` only bootstraps missing artifacts, while `.factory/services.yaml` `install` still force-runs `shadcn init --force` and can rewrite tracked setup.",
-      "sourceFeature": "polish-production-release-and-deployment"
-    }
-  ],
-  "suggestedGuidanceUpdates": [
-    {
-      "target": "AGENTS.md",
-      "suggestion": "When later mission guidance supersedes older feature text, add an explicit override note near the affected milestone/features so workers do not follow stale requirements (for example the retired ASCII layer brief versus the approved Radiant + film-grain stack).",
-      "evidence": "The polish hero visual review found the feature brief still demanded an ASCII-video-inspired background while mission AGENTS.md and the frontend skill both banned ASCII and required a single Radiant shader plus film grain, which led directly to conflicting implementation behavior.",
-      "isSystemic": true
-    },
-    {
-      "target": "frontend-experience-worker",
-      "suggestion": "Tighten procedure compliance for browser-facing polish/visual work: require manifest-backed `web` service usage when available, explicit headed/GPU evidence for enhanced-visual validation when relevant, and `followedProcedure=false` whenever required research docs or test-first ordering were skipped.",
-      "evidence": "Multiple polish-release reviews found workers bypassed the manifest-backed service, validated only degraded/headless paths for heavy visuals, or added tests after implementation while still reporting `followedProcedure=true`.",
-      "isSystemic": true
-    },
-    {
-      "target": "frontend-experience-worker",
-      "suggestion": "For regression-only test features, explicitly direct workers to `.factory/library/testing.md` and forbid claiming shared-chrome coverage from page-only renders; require assertions to bind to the specific rendered field under test.",
-      "evidence": "The cross-surface consistency review found a so-called RootLayout regression suite that only rendered `Home`, plus preview-copy assertions that matched generic values elsewhere in the card instead of the `Preview Priority` field.",
-      "isSystemic": true
-    },
-    {
-      "target": "frontend-experience-worker",
-      "suggestion": "Clarify release-task behavior when baseline validation discovers fixable repository-local regressions, including whether workers should repair them before continuing or immediately return to the orchestrator.",
-      "evidence": "The production-release review found the worker had to mark `followedProcedure=false` solely because the skill did not say whether self-healing baseline regressions was permitted during release validation.",
-      "isSystemic": true
-    }
-  ],
-  "rejectedObservations": [
-    {
-      "observation": "Add a new library note about RootLayout/shared-chrome coverage.",
-      "reason": "already-documented in `.factory/library/testing.md`, which already states that page-only component tests do not validate shared layout chrome."
-    }
-  ],
-  "previousRound": null
+  "blockingIssues": [],
+  "appliedUpdates": [],
+  "suggestedGuidanceUpdates": [],
+  "rejectedObservations": [],
+  "previousRound": ".factory/validation/polish-release/scrutiny/synthesis.round1.json"
 }

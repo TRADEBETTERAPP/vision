@@ -1,0 +1,15 @@
+{
+  "featureId": "polish-regression-coverage-integrity-fix",
+  "reviewedAt": "2026-03-24T07:45:54Z",
+  "commitId": "aedfcfbc9af30a5f2235e811c22102ef89325a13",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "pass",
+  "codeReview": {
+    "summary": "Compared the original failed cross-surface review with the fix handoff, transcript skeleton, commit diff, and current test targets. The fix closes both prior blockers: `src/app/__tests__/root-layout-chrome.test.tsx` now invokes `RootLayout` and asserts rendered header/footer chrome instead of a page-only proxy or local string literal, and `src/components/tokenomics/__tests__/preview-eligibility-copy.test.tsx` now scopes assertions to each rendered `Preview Priority` field plus the exact `Strategy Preview Slots` rule copy, including explicit Whale and Apex wording.",
+    "issues": []
+  },
+  "sharedStateObservations": [],
+  "addressesFailureFrom": "/Users/test/vision/.factory/validation/polish-release/scrutiny/reviews/polish-cross-surface-state-and-cta-consistency.json",
+  "summary": "Review passed. This rerun fix adequately addresses the original blocking scrutiny findings by making the shared-chrome suite RootLayout-aware and binding preview-eligibility assertions to the specific rendered field and scarcity copy they were meant to protect."
+}
