@@ -1,65 +1,63 @@
 /**
  * Tests for the BETTER design system Button primitive.
+ *
+ * The Button is the shadcn/ui Button built on @base-ui/react, using CVA
+ * for variants. Tests assert the actual shadcn class names produced by the
+ * component (h-8 default, h-7 sm, h-9 lg, focus-visible:ring-3, etc.).
  */
 import { render, screen } from "@testing-library/react";
 import { Button } from "@/components/ui";
 
 describe("Button", () => {
-  it("renders with default variant (primary) and size (md)", () => {
+  it("renders with default variant (primary) and size", () => {
     render(<Button>Click me</Button>);
     const btn = screen.getByRole("button", { name: "Click me" });
     expect(btn).toBeInTheDocument();
-    // Primary CTA: white bg, square corners (rounded-none)
-    expect(btn.className).toContain("bg-white");
-    expect(btn.className).toContain("h-10");
-    expect(btn.className).toContain("rounded-none");
+    // shadcn default variant: bg-primary, default size h-8
+    expect(btn.className).toContain("bg-primary");
+    expect(btn.className).toContain("h-8");
+    expect(btn.className).toContain("text-primary-foreground");
   });
 
-  it("renders secondary variant with border styling", () => {
+  it("renders secondary variant with secondary styling", () => {
     render(<Button variant="secondary">Secondary</Button>);
     const btn = screen.getByRole("button", { name: "Secondary" });
-    expect(btn.className).toContain("border");
-    expect(btn.className).toContain("text-white");
+    expect(btn.className).toContain("bg-secondary");
+    expect(btn.className).toContain("text-secondary-foreground");
   });
 
   it("renders ghost variant", () => {
     render(<Button variant="ghost">Ghost</Button>);
     const btn = screen.getByRole("button", { name: "Ghost" });
-    expect(btn.className).toContain("text-white");
+    // Ghost variant: no background, hover reveals bg-muted
+    expect(btn.className).toContain("hover:bg-muted");
   });
 
-  it("renders live variant with white background (not green fill)", () => {
-    render(<Button variant="live">Live Action</Button>);
-    const btn = screen.getByRole("button", { name: "Live Action" });
-    // Live CTA uses white bg like primary — green is reserved for status dots only
-    expect(btn.className).toContain("bg-white");
+  it("renders outline variant with border styling", () => {
+    render(<Button variant="outline">Outline</Button>);
+    const btn = screen.getByRole("button", { name: "Outline" });
+    expect(btn.className).toContain("border-border");
+    expect(btn.className).toContain("bg-background");
+  });
+
+  it("does not use green fill for any variant — green is reserved for status dots only", () => {
+    // Default variant must not use accent-green
+    render(<Button>Primary CTA</Button>);
+    const btn = screen.getByRole("button", { name: "Primary CTA" });
     expect(btn.className).not.toContain("bg-accent-green");
+    expect(btn.className).not.toContain("#00ff00");
   });
 
-  it("has SQUARE corners (0px radius) — tradebetter brutalist style", () => {
-    render(<Button>Square CTA</Button>);
-    const btn = screen.getByRole("button", { name: "Square CTA" });
-    expect(btn.className).toContain("rounded-none");
-  });
-
-  it("has uppercase and tight tracking — tradebetter typography", () => {
-    render(<Button>Typed CTA</Button>);
-    const btn = screen.getByRole("button", { name: "Typed CTA" });
-    expect(btn.className).toContain("uppercase");
-    expect(btn.className).toContain("tracking-");
-  });
-
-  it("applies small size", () => {
+  it("applies small size (h-7)", () => {
     render(<Button size="sm">Small</Button>);
     const btn = screen.getByRole("button", { name: "Small" });
-    expect(btn.className).toContain("h-8");
-    expect(btn.className).toContain("text-xs");
+    expect(btn.className).toContain("h-7");
   });
 
-  it("applies large size", () => {
+  it("applies large size (h-9)", () => {
     render(<Button size="lg">Large</Button>);
     const btn = screen.getByRole("button", { name: "Large" });
-    expect(btn.className).toContain("h-12");
+    expect(btn.className).toContain("h-9");
   });
 
   it("forwards custom className via cn merge", () => {
@@ -78,6 +76,7 @@ describe("Button", () => {
   it("includes focus-visible ring for accessibility", () => {
     render(<Button>Accessible</Button>);
     const btn = screen.getByRole("button", { name: "Accessible" });
-    expect(btn.className).toContain("focus-visible:ring-2");
+    // shadcn uses focus-visible:ring-3 (not ring-2)
+    expect(btn.className).toContain("focus-visible:ring-3");
   });
 });

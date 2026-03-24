@@ -67,16 +67,16 @@ describe("Token purge: design-token discipline", () => {
   });
 });
 
-describe("Token purge: Button live variant uses white/monochrome, not green fill", () => {
-  it("Button live variant does not use bg-accent-green", () => {
+describe("Token purge: Button does not use green fill — green reserved for status dots", () => {
+  it("Button source does not contain bg-accent-green", () => {
     const buttonSrc = fs.readFileSync(
       path.join(process.cwd(), "src/components/ui/Button.tsx"),
       "utf-8"
     );
-    // The live variant should NOT have a green background fill
+    // No variant should use a green background fill — green is status-dot-only
     expect(buttonSrc).not.toContain("bg-accent-green");
-    // It should use white background like the primary variant
-    expect(buttonSrc).toContain("live:");
+    // No raw #00ff00 in button styling
+    expect(buttonSrc).not.toContain("#00ff00");
   });
 });
 
