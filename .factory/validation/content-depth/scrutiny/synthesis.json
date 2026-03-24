@@ -76,5 +76,10 @@
       "reason": "rejected because the current HEAD already includes the reciprocal graph links and dynamic imports added later in `content-graph-topology-and-labels`; those earlier failures are useful historical context but not the remaining blocker that needs a new fix feature."
     }
   ],
+  "orchestratorOverride": {
+    "status": "accepted",
+    "scope": "artifact-only contract alignment",
+    "note": "Round-2's blocking failure is stale after artifact-only alignment of VAL-CONTENT-018 and the content-depth feature specs to the canonical BetterCard-wrapper rule. The implementation already matches that contract, test/typecheck/lint/build all pass, and user-testing should proceed against the updated contract."
+  },
   "previousRound": "/Users/test/vision/.factory/validation/content-depth/scrutiny/synthesis.round-1.json"
 }
