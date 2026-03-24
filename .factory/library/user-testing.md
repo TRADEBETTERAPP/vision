@@ -60,3 +60,12 @@ Core flows to validate:
 - When an immersive feature exposes both `fallback` and `reduced-motion` visual states, validate them separately; reduced motion is not sufficient evidence for failure-fallback behavior.
 - For this mission, run only one browser validator at a time because the visual layer can increase runtime cost.
 - Do not modify application code or mission state files from a flow validator; write only the assigned flow report and evidence artifacts.
+
+## Flow Validator Guidance: release-cli
+
+- Use `Execute`, `Read`, and `Grep` for release-verification assertions that depend on git state, build output, bundle/lazy-load inspection, or other non-browser evidence.
+- Treat the production-backed local web service on `http://127.0.0.1:3100` as shared infrastructure; do not restart or stop it from a release-cli flow unless the parent validator explicitly assigns that responsibility.
+- Prefer read-only git validation such as `git status -sb`, `git rev-list --left-right --count origin/main...HEAD`, and `git log -1 --oneline` instead of mutating git commands. Do not commit or push from a flow validator.
+- For lazy-load assertions, capture both source evidence (for example `next/dynamic` usage or equivalent deferred import patterns) and build-output evidence (chunk listing, route size changes, or trace output) in the flow report.
+- For build-quality assertions, record exact commands, exit codes, and whether the command output showed warnings in addition to success.
+- Stay inside the assigned assertion scope and do not edit application code or mission state files; write only the assigned flow report and any evidence files.

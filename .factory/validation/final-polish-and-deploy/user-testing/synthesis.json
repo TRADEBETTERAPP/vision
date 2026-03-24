@@ -1,0 +1,40 @@
+{
+  "milestone": "final-polish-and-deploy",
+  "round": 1,
+  "status": "fail",
+  "assertionsSummary": {
+    "total": 4,
+    "passed": 3,
+    "failed": 1,
+    "blocked": 0
+  },
+  "passedAssertions": [
+    "VAL-POLISH-001",
+    "VAL-POLISH-002",
+    "VAL-POLISH-004"
+  ],
+  "failedAssertions": [
+    {
+      "id": "VAL-POLISH-003",
+      "reason": "GitHub push could not be verified: the repo is not in a clean pushed state because HEAD 45ab584 is 6 commits ahead of remote main 5e31591 and validation also observed local uncommitted validator guidance/report updates."
+    }
+  ],
+  "blockedAssertions": [],
+  "appliedUpdates": [
+    {
+      "target": "user-testing.md",
+      "description": "Added Flow Validator Guidance: release-cli so final-polish release-state assertions can be validated with read-only git/build checks alongside browser validation.",
+      "source": "setup"
+    }
+  ],
+  "previousRound": null,
+  "flowReports": [
+    ".factory/validation/final-polish-and-deploy/user-testing/flows/browser-polish.json",
+    ".factory/validation/final-polish-and-deploy/user-testing/flows/release-cli-polish.json"
+  ],
+  "notes": [
+    "Browser validation ran against the shared production-backed local web service on http://127.0.0.1:3100.",
+    "Browser concurrency stayed at 1 per .factory/library/user-testing.md guidance.",
+    "VAL-POLISH-003 failed on direct git evidence: remote refs/heads/main resolved to 5e31591f50d8f65c7d4db905f72ba319f30b25bc while local HEAD resolved to 45ab5840a5697b020e9994ccd89e9d736311f6ba."
+  ]
+}

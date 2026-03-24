@@ -1,0 +1,137 @@
+{
+  "groupId": "release-cli-polish",
+  "testedAt": "2026-03-24T07:59:56.881257+00:00",
+  "isolation": {
+    "repoRoot": "/Users/test/vision",
+    "sharedAppUrl": "http://127.0.0.1:3100",
+    "missionDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83",
+    "evidenceDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/evidence/final-polish-and-deploy/release-cli-polish",
+    "flowValidatorGuidance": "Flow Validator Guidance: release-cli"
+  },
+  "toolsUsed": [
+    "Read",
+    "Grep",
+    "Execute"
+  ],
+  "assertions": [
+    {
+      "id": "VAL-POLISH-002",
+      "title": "New surfaces lazy-loaded",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Inspect source import patterns in src/components/graph/GraphExplorer.tsx, src/components/graph/LazyGraphExplorer.tsx, and src/app/page.tsx.",
+          "expected": "New surfaces use dynamic() / lazy wrappers instead of static imports in the initial page path.",
+          "observed": "GraphExplorer dynamically imports MacroThesisSurface, HftEdgeSurface, LlmProductSurface, and TruthPerpFlywheelSurface; page.tsx renders LazyGraphExplorer and LazyProofModule through client-boundary wrappers, and LazyGraphExplorer uses next/dynamic with ssr:false."
+        },
+        {
+          "action": "Run npm run build and inspect .next/diagnostics/route-bundle-stats.json plus emitted chunk files.",
+          "expected": "New surface implementations are split out of the / route first-load chunk list so they do not ship in the initial bundle.",
+          "observed": "The / route first-load chunk list contains 10 chunk files and excludes the four content-depth surface chunks. The emitted surface chunks were 0lft90ju3r~q1.js (Macro Thesis, 7121 bytes), 0k1n41qlqs0n-.js (HFT Edge, 6721 bytes), 0an849snf-a6r.js (LLM Product, 5824 bytes), and 05vsxht91loj0.js (TRUTH-PERP & Flywheel, 7206 bytes), all absent from firstLoadChunkPaths."
+        },
+        {
+          "action": "Review build output for direct initial-bundle size evidence.",
+          "expected": "Build output exposes bundle-impact information for the initial route.",
+          "observed": "Next.js diagnostics reported firstLoadUncompressedJsBytes=671528 for / and chunk membership, but did not emit a direct gzipped before/after delta; first-load exclusion was used as the concrete bundle-impact signal."
+        }
+      ],
+      "evidence": {
+        "files": [
+          "final-polish-and-deploy/release-cli-polish/val-polish-002-source-evidence.txt",
+          "final-polish-and-deploy/release-cli-polish/val-polish-002-build-summary.json",
+          "final-polish-and-deploy/release-cli-polish/val-polish-004-build.log"
+        ],
+        "sourceInspection": "GraphExplorer.tsx lines 44-71 show next/dynamic imports for all four new surfaces; LazyGraphExplorer.tsx lines 20-26 show the graph shell behind dynamic(..., { ssr:false }); page.tsx lines 36-55 show lazy wrappers used in the app entry path.",
+        "buildImpact": "All four new surface chunks were emitted separately and excluded from the / route first-load chunk list according to .next/diagnostics/route-bundle-stats.json and chunk inspection.",
+        "consoleErrors": "not applicable",
+        "network": "not applicable"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-POLISH-003",
+      "title": "GitHub push successful",
+      "status": "fail",
+      "steps": [
+        {
+          "action": "Run git -C /Users/test/vision status -sb.",
+          "expected": "Release-ready state shows a clean working tree.",
+          "observed": "git status reported ## main...origin/main [ahead 6] and one modified tracked file: .factory/library/user-testing.md."
+        },
+        {
+          "action": "Run git -C /Users/test/vision rev-list --left-right --count origin/main...HEAD.",
+          "expected": "HEAD is synchronized with origin/main (0\t0) for a completed push state.",
+          "observed": "rev-list returned 0\t6, meaning HEAD is 6 commits ahead of the local origin/main tracking ref and not synchronized."
+        },
+        {
+          "action": "Capture exact local/remote commit evidence with git log -1 --oneline --decorate HEAD and origin/main.",
+          "expected": "HEAD and origin/main point to the same release commit.",
+          "observed": "HEAD is 45ab584 (validation: record polish-release scrutiny rerun pass) while origin/main is 5e31591 (polish: remove hardcoded Vercel metadata alias)."
+        }
+      ],
+      "evidence": {
+        "files": [
+          "final-polish-and-deploy/release-cli-polish/val-polish-003-git-status.txt",
+          "final-polish-and-deploy/release-cli-polish/val-polish-003-git-sync.txt",
+          "final-polish-and-deploy/release-cli-polish/val-polish-003-git-summary.json"
+        ],
+        "consoleErrors": "not applicable",
+        "network": "not applicable"
+      },
+      "issues": "Working tree is not clean and HEAD is ahead of origin/main by 6 commits, so the repo does not satisfy a clean-and-pushed release state."
+    },
+    {
+      "id": "VAL-POLISH-004",
+      "title": "Production build with zero errors",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Run npm run build.",
+          "expected": "Build exits 0 with zero errors or warnings.",
+          "observed": "Exit code 0. Next.js 16.2.1/Turbopack compiled successfully, completed TypeScript, generated static pages, and the log contained no warning/error lines."
+        },
+        {
+          "action": "Run npx tsc --noEmit.",
+          "expected": "TypeScript exits 0 with zero errors or warnings.",
+          "observed": "Exit code 0 with an empty log file, indicating no reported diagnostics."
+        },
+        {
+          "action": "Run npm run lint.",
+          "expected": "ESLint exits 0 with zero errors or warnings.",
+          "observed": "Exit code 0; the log only showed the npm script preamble and eslint invocation, with no warning/error lines."
+        }
+      ],
+      "evidence": {
+        "files": [
+          "final-polish-and-deploy/release-cli-polish/val-polish-004-build.log",
+          "final-polish-and-deploy/release-cli-polish/val-polish-004-build.exitcode",
+          "final-polish-and-deploy/release-cli-polish/val-polish-004-tsc.log",
+          "final-polish-and-deploy/release-cli-polish/val-polish-004-tsc.exitcode",
+          "final-polish-and-deploy/release-cli-polish/val-polish-004-lint.log",
+          "final-polish-and-deploy/release-cli-polish/val-polish-004-lint.exitcode",
+          "final-polish-and-deploy/release-cli-polish/val-polish-004-command-summary.json"
+        ],
+        "commands": [
+          "npm run build",
+          "npx tsc --noEmit",
+          "npm run lint"
+        ],
+        "consoleErrors": "not applicable",
+        "network": "not applicable"
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [
+    {
+      "description": "The Next.js/Turbopack build output did not emit a direct gzipped before/after delta for the initial bundle.",
+      "resolved": true,
+      "resolution": "Used .next/diagnostics/route-bundle-stats.json plus emitted chunk inspection to confirm the new surfaces are split into separate chunks and excluded from the / route first-load chunk list.",
+      "affectedAssertions": [
+        "VAL-POLISH-002"
+      ]
+    }
+  ],
+  "blockers": [],
+  "summary": "Tested 3 assertions: 2 passed and 1 failed. VAL-POLISH-002 passed on source/build chunk-splitting evidence, VAL-POLISH-003 failed because the working tree is dirty and main is ahead of origin/main by 6 commits, and VAL-POLISH-004 passed with npm run build, npx tsc --noEmit, and npm run lint all exiting 0 without warning output."
+}

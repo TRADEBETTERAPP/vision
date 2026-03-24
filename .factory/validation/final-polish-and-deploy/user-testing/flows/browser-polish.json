@@ -1,0 +1,76 @@
+{
+  "groupId": "browser-polish",
+  "testedAt": "2026-03-24T08:01:19.564109+00:00",
+  "isolation": {
+    "appUrl": "http://127.0.0.1:3100",
+    "sessionName": "browser-polish",
+    "missionDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83",
+    "evidenceDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/evidence/final-polish-and-deploy/browser-polish"
+  },
+  "toolsUsed": [
+    "agent-browser",
+    "curl"
+  ],
+  "assertions": [
+    {
+      "id": "VAL-POLISH-001",
+      "title": "No visual regressions on existing surfaces",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Open / in a headed non-default browser session and inspect the graph-first workspace hero, navigation, and node atlas.",
+          "expected": "The shared production-backed app loads with the graph workspace, BETTER logotype, and no broken imports or runtime failures.",
+          "observed": "The app loaded successfully with the BETTER logotype, investor-path control, overview state, and visible node cards over the site-wide atmospheric background; no import/runtime failure banner or broken shell was visible."
+        },
+        {
+          "action": "Traverse the existing major surfaces: What is BETTER, Proof & Trust, Live Now, Roadmap, Tokenomics, Architecture, Valuation, Evidence & Sources, and Risks & Caveats.",
+          "expected": "Each existing surface renders correctly without layout corruption, broken navigation, or styling regressions.",
+          "observed": "All nine existing surfaces opened and rendered readable card/panel layouts with consistent typography, borders, and spacing; roadmap branch families and maturity legend rendered correctly, and no obvious layout shift or broken navigation state was observed."
+        },
+        {
+          "action": "Traverse the four new content-depth surfaces: Macro Thesis, HFT Edge, LLM Product, and TRUTH-PERP & Flywheel.",
+          "expected": "Each new surface appears polished and integrated into the atlas with concrete content and stable layout.",
+          "observed": "All four new surfaces rendered as styled inspector/detail panels with visible maturity state, related-node chips, and dense content cards. Macro Thesis showed the war/hedging and prediction-market metrics, HFT Edge showed Rust/co-location/Z-Score content, LLM Product showed BRAID/$29 API framing, and TRUTH-PERP & Flywheel showed HIP-3/vBETTER/flywheel content without visible corruption."
+        },
+        {
+          "action": "Check runtime health and network response after traversal.",
+          "expected": "No console/runtime errors; app responses succeed.",
+          "observed": "`agent-browser errors` and `agent-browser console` returned no entries. `curl -I http://127.0.0.1:3100/` returned `HTTP/1.1 200 OK`, and in-browser performance entries showed the page loading `/better-logotype.svg`, Next CSS/JS chunks, and font assets from the assigned app origin."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "final-polish-and-deploy/browser-polish/00-home-annotated.png",
+          "final-polish-and-deploy/browser-polish/01-roadmap.png",
+          "final-polish-and-deploy/browser-polish/02-proof-and-trust.png",
+          "final-polish-and-deploy/browser-polish/03-what-is-better.png",
+          "final-polish-and-deploy/browser-polish/04-live-now.png",
+          "final-polish-and-deploy/browser-polish/05-tokenomics.png",
+          "final-polish-and-deploy/browser-polish/06-architecture.png",
+          "final-polish-and-deploy/browser-polish/07-valuation.png",
+          "final-polish-and-deploy/browser-polish/08-evidence-and-sources.png",
+          "final-polish-and-deploy/browser-polish/09-risks-and-caveats.png",
+          "final-polish-and-deploy/browser-polish/10-macro-thesis.png",
+          "final-polish-and-deploy/browser-polish/11-hft-edge.png",
+          "final-polish-and-deploy/browser-polish/12-llm-product.png",
+          "final-polish-and-deploy/browser-polish/13-truth-perp-and-flywheel.png"
+        ],
+        "consoleErrors": "none",
+        "network": "HEAD / -> 200 OK via curl; in-browser resource entries included /better-logotype.svg, Next static CSS/JS chunks, and font assets from http://127.0.0.1:3100"
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [
+    {
+      "description": "Top-level atlas node buttons are contextual to the current view, so after drilling into one surface I re-opened the root URL between captures to reliably access other top-level surfaces.",
+      "resolved": true,
+      "resolution": "Reloaded `http://127.0.0.1:3100/` before each top-level surface capture.",
+      "affectedAssertions": [
+        "VAL-POLISH-001"
+      ]
+    }
+  ],
+  "blockers": [],
+  "summary": "VAL-POLISH-001 passed. I visually validated the graph workspace plus all nine existing major surfaces and the four new content-depth surfaces in the shared browser app on port 3100; no console/runtime errors, broken imports, navigation failures, or obvious layout/styling regressions were observed."
+}
