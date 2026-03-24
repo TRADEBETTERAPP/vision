@@ -176,6 +176,14 @@ background-image: radial-gradient(
 6. **No WebGL**: Cursor-tracking metallic sheen is pure CSS (radial-gradient + mousemove event).
 7. **Left-aligned content** within cards: top-down vertical flow.
 
+### Overlay Surface Continuity
+
+shadcn overlay primitives should stay on the same BETTER surface contract as cards unless a component-specific exception is documented in code:
+
+- `Dialog`, `Sheet`, and `Popover` surfaces use the same near-black canvas family as the main shell (`#101010` / `--bg-primary`).
+- Overlay panels keep white foreground text, the shared `8px` radius, and the same restrained border treatment expected of BETTER cards.
+- Overlay token drift should be treated as a design-system regression, not as component-level customization.
+
 ---
 
 ## Badge & Status System (Simplified)

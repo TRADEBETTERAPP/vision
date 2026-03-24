@@ -1,0 +1,25 @@
+{
+  "featureId": "polish-push-and-build-verification",
+  "reviewedAt": "2026-03-24T06:46:04.922956+00:00",
+  "commitId": "00eb534867fb4db885e20cf642cbc2781bac5ace",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "pass",
+  "codeReview": {
+    "summary": "Reviewed the feature metadata, handoff, transcript skeleton, skill instructions, and commit `00eb534867fb4db885e20cf642cbc2781bac5ace`. The reviewed commit replaces the scaffold README with BETTER-specific content-section and validation docs, restores the `.dark` shadcn token/radius contract in `src/app/globals.css` to match the existing release test, and the handoff records successful `git push`, clean working tree, and green build/lint/typecheck verification. No code-level blocking or non-blocking defects were identified against the feature brief or `VAL-POLISH-003`/`VAL-POLISH-004`.",
+    "issues": []
+  },
+  "sharedStateObservations": [
+    {
+      "area": "skills",
+      "observation": "The frontend release skill still treats release-polish fixes as if they must always introduce a brand-new failing test. In this feature the worker correctly used the already-failing `card-theme-contract` regression to repair the release-blocking theme contract, but still had to mark `followedProcedure=false`. The skill should explicitly allow pre-existing failing regression tests to satisfy the test-first requirement for release/push repair work.",
+      "evidence": "`/Users/test/vision/.factory/skills/frontend-experience-worker/SKILL.md:35` requires a newly written failing test before implementation, while the reviewed handoff records `followedProcedure=false` solely because the worker relied on the already-failing regression test and explicitly suggests clarifying that exception (`/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/handoffs/2026-03-24T05-31-43-684Z__polish-push-and-build-verification__22335b65-b1f9-41fc-b73f-59c643516f50.json:74-89`)."
+    },
+    {
+      "area": "conventions",
+      "observation": "The release feature's README-update requirement is captured only in `features.json`, not in the validation contract section for the final polish milestone. A validator or reviewer who follows only `validation-contract.md` could verify push/build success and still miss the required README refresh.",
+      "evidence": "The feature definition explicitly requires `Update README with new content sections` (`/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/features.json:3442-3458`), but the final-polish contract only specifies GitHub push success and zero-error build/lint/typecheck (`/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/validation-contract.md:565-570`)."
+    }
+  ],
+  "summary": "Pass. The reviewed release-polish commit satisfies the requested README update plus the push/build verification requirements, and I found no code-level defects in the implementation."
+}

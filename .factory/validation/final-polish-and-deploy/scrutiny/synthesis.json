@@ -1,0 +1,62 @@
+{
+  "milestone": "final-polish-and-deploy",
+  "round": 1,
+  "status": "pass",
+  "validatorsRun": {
+    "test": {
+      "passed": true,
+      "command": "npm test",
+      "exitCode": 0
+    },
+    "typecheck": {
+      "passed": true,
+      "command": "npx tsc --noEmit",
+      "exitCode": 0
+    },
+    "lint": {
+      "passed": true,
+      "command": "npm run lint",
+      "exitCode": 0
+    },
+    "build": {
+      "passed": true,
+      "command": "npm run build",
+      "exitCode": 0
+    }
+  },
+  "reviewsSummary": {
+    "total": 2,
+    "passed": 2,
+    "failed": 0,
+    "failedFeatures": []
+  },
+  "blockingIssues": [],
+  "appliedUpdates": [
+    {
+      "target": "library",
+      "description": "Documented that shadcn overlay primitives (Dialog, Sheet, Popover) should stay on the same BETTER near-black, white-foreground, restrained-border, 8px-radius contract as the main card surfaces.",
+      "sourceFeature": "polish-visual-audit-and-regressions"
+    }
+  ],
+  "suggestedGuidanceUpdates": [
+    {
+      "target": "skills",
+      "suggestion": "Clarify the frontend-experience-worker baseline-validation and test-first procedure for release/polish follow-up work: if baseline validation exposes a clearly in-scope regression, workers may repair it using either a focused new failing test or an already-failing scoped regression test before full revalidation, without having to mark the run as a procedure deviation solely for that reason.",
+      "evidence": "Both reviewed features reported successful scoped regression repair work but had to mark `followedProcedure=false` because the current skill wording is stricter than the workflow that actually produced the fix. `polish-visual-audit-and-regressions` used a focused failing contract test plus full reruns after baseline validation exposed the issue, and `polish-push-and-build-verification` relied on the already-failing `card-theme-contract` regression to repair the same release-blocking theme contract.",
+      "isSystemic": true
+    },
+    {
+      "target": "validation-contract.md",
+      "suggestion": "Align the final-polish validation contract with feature-level release requirements by either adding the README-refresh expectation to the milestone contract or explicitly marking it as non-validator scope.",
+      "evidence": "The reviewed release feature `polish-push-and-build-verification` requires `Update README with new content sections` in mission `features.json`, but the final-polish contract section only calls out push/build/lint/typecheck success. A validator following only `validation-contract.md` could miss the README requirement.",
+      "isSystemic": false
+    }
+  ],
+  "rejectedObservations": [
+    {
+      "observation": "The push/build review repeated the same frontend skill issue about pre-existing failing regression tests counting toward test-first repair work.",
+      "reason": "duplicate"
+    }
+  ],
+  "previousRound": null
+}
