@@ -1,0 +1,217 @@
+{
+  "groupId": "shadcn-rerun-browser",
+  "testedAt": "2026-03-24T03:27:43.873284+00:00",
+  "isolation": {
+    "surface": "browser",
+    "appUrl": "http://127.0.0.1:3100",
+    "browserSession": "dfb1042473bd__u1",
+    "missionDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83",
+    "repoRoot": "/Users/test/vision",
+    "evidenceDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83/evidence/shadcn-migration/shadcn-rerun-browser",
+    "rerunScope": [
+      "VAL-SHADCN-001",
+      "VAL-SHADCN-003",
+      "VAL-SHADCN-004",
+      "VAL-SHADCN-005",
+      "VAL-VISUAL-030",
+      "VAL-VISUAL-035"
+    ]
+  },
+  "toolsUsed": [
+    "agent-browser",
+    "Read",
+    "Grep"
+  ],
+  "assertions": [
+    {
+      "id": "VAL-SHADCN-001",
+      "title": "shadcn/ui installed and configured",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Confirm rerun scope against the parent assignment and prior synthesis",
+          "expected": "Exactly the six previously failed shadcn rerun assertions are in scope",
+          "observed": "Rerun scope matched exactly VAL-SHADCN-001, VAL-SHADCN-003, VAL-SHADCN-004, VAL-SHADCN-005, VAL-VISUAL-030, and VAL-VISUAL-035"
+        },
+        {
+          "action": "Inspect shadcn configuration and installed UI primitives",
+          "expected": "components.json exists and Card/Dialog/Sheet primitives are present in the repo",
+          "observed": "components.json is present; src/components/ui/card.tsx, dialog.tsx, and sheet.tsx exist; package.json includes shadcn 4.1.0 plus @base-ui/react for the generated primitives"
+        },
+        {
+          "action": "Inspect dark theme tokens in globals.css",
+          "expected": "The dark theme maps the site to a near-black background, white foreground, and 4% white card token",
+          "observed": "src/app/globals.css .dark sets --background to #101010, --foreground to #ffffff, --card to rgba(255,255,255,0.04), and --card-foreground to #ffffff"
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "shadcn-migration/shadcn-rerun-browser/initial-annotated.png"
+        ],
+        "sourceAudit": [
+          "package.json",
+          "components.json",
+          "src/components/ui/card.tsx",
+          "src/components/ui/dialog.tsx",
+          "src/components/ui/sheet.tsx",
+          "src/app/globals.css"
+        ],
+        "consoleErrors": "none",
+        "network": "none relevant"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-SHADCN-003",
+      "title": "Cards are near-transparent glass over shader",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Inspect representative graph and proof cards at rest",
+          "expected": "Cards use rgba(255,255,255,0.04) glass, rgba(255,255,255,0.12) borders, 8px radius, and no backdrop blur while keeping the shader visible",
+          "observed": "Computed styles on graph node cards and proof cards returned background rgba(255,255,255,0.04), border rgba(255,255,255,0.12), radius 8px, and backdropFilter none"
+        },
+        {
+          "action": "Visually compare cards against the live background",
+          "expected": "The blue shader remains visible through the card surfaces instead of being blocked by opaque panels",
+          "observed": "The default graph and proof card screenshots show the shader texture clearly visible through the glass cards"
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "shadcn-migration/shadcn-rerun-browser/VAL-SHADCN-003-default-cards.png"
+        ],
+        "computedStyles": "graph/proof card samples: bg rgba(255,255,255,0.04); border rgba(255,255,255,0.12); border-radius 8px; backdrop-filter none",
+        "consoleErrors": "none",
+        "network": "none relevant"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-SHADCN-004",
+      "title": "Cursor-tracking metallic sheen on shadcn cards",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Hover representative graph and proof cards",
+          "expected": "Cards track the pointer with a restrained radial sheen",
+          "observed": "Hover updated --metal-x/--metal-y and applied a radial-gradient tied to cursor position on both graph and proof cards"
+        },
+        {
+          "action": "Inspect hover gradient intensity",
+          "expected": "The center highlight stays within the quiet metallic range and the hover base remains subtle",
+          "observed": "Computed hover styles showed rgba(255,255,255,0.16) at the hotspot, rgba(200,210,255,0.06) secondary ring, rgba(255,255,255,0.07) hover base, and only inset 0 0 18px rgba(255,255,255,0.02) box-shadow"
+        },
+        {
+          "action": "Visually assess the hover response",
+          "expected": "The effect is perceptible but not flare-like",
+          "observed": "The sheen stayed low-contrast in screenshots and did not overpower the surrounding text or shader background"
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "shadcn-migration/shadcn-rerun-browser/VAL-SHADCN-004-hover-card-focused.png",
+          "shadcn-migration/shadcn-rerun-browser/VAL-VISUAL-030-proof-card-hover.png"
+        ],
+        "computedStyles": "hover gradient: radial-gradient(... rgba(255,255,255,0.16) 0%, rgba(200,210,255,0.06) 42%, transparent 72%), hover background rgba(255,255,255,0.07), inset shadow rgba(255,255,255,0.02); CSS vars --metal-x/--metal-y update on hover",
+        "consoleErrors": "none",
+        "network": "none relevant"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-SHADCN-005",
+      "title": "All text white with size/weight hierarchy",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Search production components for forbidden grey text utilities",
+          "expected": "No grey text utilities remain on production body, heading, label, or description surfaces",
+          "observed": "No text-[#a0a0a0], text-[#707070], text-gray, text-zinc, text-neutral, or text-slate matches were found in src/components; shared shadcn primitives still use text-muted-foreground, but the dark theme maps --muted-foreground to #ffffff"
+        },
+        {
+          "action": "Sample visible text colors in the running app",
+          "expected": "Visible copy computes to white or white with opacity, except for allowed contrast-inverted CTA text",
+          "observed": "Graph labels, headings, and descriptions computed to rgb(255,255,255) or white with alpha; the primary white CTA computed to rgb(16,16,16) on a white background, which matches the allowed contrast-inverted CTA exception"
+        },
+        {
+          "action": "Check supporting theme tokens",
+          "expected": "The shared theme keeps muted and secondary foreground text white in dark mode",
+          "observed": "src/app/globals.css .dark sets --secondary-foreground and --muted-foreground to #ffffff"
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "shadcn-migration/shadcn-rerun-browser/VAL-SHADCN-005-text-surfaces.png"
+        ],
+        "sourceAudit": [
+          "src/app/globals.css",
+          "src/components/ui/card.tsx",
+          "src/components/ui/dialog.tsx",
+          "src/components/ui/sheet.tsx"
+        ],
+        "computedStyles": "sample runtime colors: rgb(255,255,255), white alpha via oklab(... / 0.7 or 0.8), and allowed CTA contrast inversion rgb(16,16,16) on white",
+        "consoleErrors": "none",
+        "network": "none relevant"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-VISUAL-030",
+      "title": "Liquid metal card finish with glass-morphism",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Inspect proof cards at rest",
+          "expected": "Cards show glass-morphism with semi-transparent white fill and subtle white borders",
+          "observed": "Proof cards rendered with the same 4% white glass base, 12% white border, and 8px corners used across the graph workspace"
+        },
+        {
+          "action": "Hover the proof cards and compare them to surrounding content",
+          "expected": "The liquid-metal response is visible but quieter than the text and atmosphere",
+          "observed": "On hover the cards gained the same restrained 0.16/0.06 radial sheen and stayed softer than the surrounding headings and body copy"
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "shadcn-migration/shadcn-rerun-browser/VAL-SHADCN-003-default-cards.png",
+          "shadcn-migration/shadcn-rerun-browser/VAL-VISUAL-030-proof-card-hover.png"
+        ],
+        "computedStyles": "proof card hover matched BetterCard contract: hotspot rgba(255,255,255,0.16), ring rgba(200,210,255,0.06), hover base rgba(255,255,255,0.07)",
+        "consoleErrors": "none",
+        "network": "none relevant"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-VISUAL-035",
+      "title": "Liquid metal cards complement shader background",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Check default cards against the live shader background",
+          "expected": "Cards remain nearly transparent so the shader shows through them",
+          "observed": "The shader remains materially visible through the default graph and proof card surfaces rather than being hidden by opaque panels"
+        },
+        {
+          "action": "Check hovered cards for low-contrast response",
+          "expected": "Hover keeps a quiet metallic reaction without bright hotspots or flashes",
+          "observed": "The hovered cards stayed at a 0.07 base with a 0.16 hotspot and 0.06 ring, producing a calm metallic response instead of a flare"
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "shadcn-migration/shadcn-rerun-browser/VAL-SHADCN-003-default-cards.png",
+          "shadcn-migration/shadcn-rerun-browser/VAL-VISUAL-030-proof-card-hover.png"
+        ],
+        "computedStyles": "default cards: rgba(255,255,255,0.04); hover cards: rgba(255,255,255,0.07) plus radial gradient rgba(255,255,255,0.16)/rgba(200,210,255,0.06)",
+        "consoleErrors": "none",
+        "network": "none relevant"
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [],
+  "blockers": [],
+  "summary": "Confirmed the rerun scope was exactly the six assigned assertions from the prior synthesis, and all six now pass. The BetterCard/shadcn surfaces now use the required #101010/#ffffff/rgba(255,255,255,0.04) token setup, 8px glass cards over the visible shader, restrained 0.16/0.06 hover sheen, and white or opacity-white text outside the allowed contrast-inverted CTA exception."
+}
