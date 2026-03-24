@@ -7,7 +7,7 @@ commands:
 
 services:
   web:
-    start: HOSTNAME=127.0.0.1 PORT=3100 npm run dev -- --hostname 127.0.0.1 --port 3100
+    start: npm run build && HOSTNAME=127.0.0.1 PORT=3100 npm run start -- --hostname 127.0.0.1 --port 3100
     stop: pids=$(lsof -ti :3100); [ -z "$pids" ] || kill $pids
     healthcheck: curl -sf http://127.0.0.1:3100
     port: 3100
