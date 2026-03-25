@@ -1,0 +1,119 @@
+{
+  "groupId": "deployment-browser",
+  "testedAt": "2026-03-25T02:50:08.427256+00:00",
+  "isolation": {
+    "missionDir": "/Users/test/.factory/missions/33dae310-26cf-4368-9488-64b235b6db83",
+    "localAppUrl": "http://127.0.0.1:3100",
+    "deployedUrl": "https://vision-beryl-one.vercel.app",
+    "browserSession": "2ac371746b6e",
+    "assignedAssertions": [
+      "VAL-VISUAL-010",
+      "VAL-CROSS-008"
+    ]
+  },
+  "toolsUsed": [
+    "agent-browser",
+    "curl"
+  ],
+  "assertions": [
+    {
+      "id": "VAL-VISUAL-010",
+      "title": "Browser tab icon uses the provided BETTER light isotype asset",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Open the local app root at http://127.0.0.1:3100 in the assigned browser session.",
+          "expected": "The local build loads and exposes favicon metadata for the browser tab.",
+          "observed": "The local root loaded cleanly with no console errors and the document title `BETTER \u2014 Vision & Ecosystem Roadmap`."
+        },
+        {
+          "action": "Inspect document head favicon links.",
+          "expected": "A BETTER favicon asset is linked instead of a default framework icon.",
+          "observed": "The page exposed `<link rel=\"icon\">` pointing to `http://127.0.0.1:3100/icon.svg?icon.0_mlv25d95dcr.svg` with `type=image/svg+xml` and `sizes=any`."
+        },
+        {
+          "action": "Fetch the linked favicon asset and compare it against `/Users/test/Downloads/Better_Design/Logo/Better_Isotype_Light.svg`.",
+          "expected": "The served favicon resolves successfully and matches the provided BETTER light isotype asset.",
+          "observed": "`curl` returned HTTP 200 with `content-type: image/svg+xml`, and the SHA-1 hash of the served `/icon.svg` asset exactly matched the provided BETTER isotype source asset."
+        },
+        {
+          "action": "Create visual evidence of the resolved favicon artwork.",
+          "expected": "The captured evidence shows the BETTER light isotype rather than a generic placeholder.",
+          "observed": "The inline preview screenshot shows the white BETTER light isotype from the verified `/icon.svg` asset on a dark background."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "polish-release/deployment-browser/VAL-VISUAL-010-local-root.png",
+          "polish-release/deployment-browser/VAL-VISUAL-010-favicon-preview-inline.png"
+        ],
+        "domHead": "polish-release/deployment-browser/VAL-VISUAL-010-favicon-dom.json",
+        "assetResponseHeaders": "polish-release/deployment-browser/VAL-VISUAL-010-favicon-headers.txt",
+        "assetResponseBody": "polish-release/deployment-browser/VAL-VISUAL-010-favicon-response.svg",
+        "hashComparison": "polish-release/deployment-browser/VAL-VISUAL-010-hash-compare.txt",
+        "consoleErrors": "none"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CROSS-008",
+      "title": "The production site preserves the redesigned entry flow and handles deep links, refreshes, and official exits cleanly",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Open the live deployed root at https://vision-beryl-one.vercel.app.",
+          "expected": "The redesigned landing experience loads coherently with the intended hierarchy and CTA order intact.",
+          "observed": "The live root loaded cleanly with the BETTER hero, proof-led live/planned framing, and the primary `SEE WHAT'S LIVE` CTA appearing before the secondary `EXPLORE THE ATLAS` CTA."
+        },
+        {
+          "action": "Open the valid deep link `#graph-roadmap`.",
+          "expected": "A coherent roadmap-focused state is visible.",
+          "observed": "The live site loaded on `https://vision-beryl-one.vercel.app/#graph-roadmap` with BETTER Atlas breadcrumbing and roadmap-specific controls/tabs visible, indicating the intended roadmap-focused handoff."
+        },
+        {
+          "action": "Refresh the deep link state.",
+          "expected": "The refreshed page preserves a coherent roadmap-focused state rather than breaking or resetting badly.",
+          "observed": "After reload, the URL remained `#graph-roadmap` and the page restored a coherent `ROADMAP` detail state with related chips and adjacent navigation (`Business Model` / `Valuation`)."
+        },
+        {
+          "action": "Follow the official BETTER Docs exit from the live site.",
+          "expected": "The exit opens an official docs destination with no localhost or dead-end behavior.",
+          "observed": "The `Read the Docs \u2197` link opened cleanly to `https://docs.tradebetter.app/` with page title `Introduction - BETTER`; no localhost references or dead ends were encountered."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "polish-release/deployment-browser/VAL-CROSS-008-live-root.png",
+          "polish-release/deployment-browser/VAL-CROSS-008-deep-link.png",
+          "polish-release/deployment-browser/VAL-CROSS-008-deep-link-refresh.png",
+          "polish-release/deployment-browser/VAL-CROSS-008-external-docs-exit.png"
+        ],
+        "video": "polish-release/deployment-browser/VAL-CROSS-008-production-deep-link-and-refresh.webm",
+        "externalDestination": "polish-release/deployment-browser/VAL-CROSS-008-external-docs-url.txt",
+        "network": "Live root/deep-link requests resolved from `https://vision-beryl-one.vercel.app` including `GET /icon.svg?icon.0_mlv25d95dcr.svg`; no failing or localhost requests were observed during the production flow. See `polish-release/deployment-browser/VAL-CROSS-008-network-summary.txt`.",
+        "consoleErrors": "none"
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [
+    {
+      "description": "The host disallowed OS-level browser-chrome capture (`screencapture` failed and assistive-access window inspection was unavailable), so an actual tab-strip screenshot of the favicon could not be taken directly.",
+      "resolved": true,
+      "resolution": "Validated the favicon through DOM head inspection, direct asset fetch, exact hash comparison against the provided BETTER light isotype source file, and an inline visual preview of the same verified SVG asset.",
+      "affectedAssertions": [
+        "VAL-VISUAL-010"
+      ]
+    },
+    {
+      "description": "Opening the raw `/icon.svg` asset directly produced a blank screenshot in the browser automation tool even though the response was valid SVG.",
+      "resolved": true,
+      "resolution": "Captured a separate inline preview page containing the verified SVG markup so the favicon artwork remained visible in screenshot evidence.",
+      "affectedAssertions": [
+        "VAL-VISUAL-010"
+      ]
+    }
+  ],
+  "blockers": [],
+  "summary": "Tested 2 assigned assertions on the local and live browser surfaces: 2 passed, 0 failed, 0 blocked. The local favicon resolves to the provided BETTER light isotype asset, and the deployed site preserved coherent entry, deep-link, refresh, and official docs-exit behavior."
+}

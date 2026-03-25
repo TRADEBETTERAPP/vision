@@ -1,0 +1,28 @@
+{
+  "milestone": "polish-release",
+  "round": 1,
+  "status": "pass",
+  "assertionsSummary": {
+    "total": 2,
+    "passed": 2,
+    "failed": 0,
+    "blocked": 0
+  },
+  "passedAssertions": [
+    "VAL-CROSS-008",
+    "VAL-VISUAL-010"
+  ],
+  "failedAssertions": [],
+  "blockedAssertions": [],
+  "appliedUpdates": [],
+  "previousRound": null,
+  "flowReports": [
+    ".factory/validation/polish-release/user-testing/flows/deployment-browser.json"
+  ],
+  "notes": [
+    "Validated the remaining polish-release deployment assertions from `polish-favicon-branding` and `polish-production-release-and-deployment`.",
+    "Browser validation used the shared production-backed local service on http://127.0.0.1:3100 and the live deployed URL https://vision-beryl-one.vercel.app.",
+    "VAL-VISUAL-010 passed by confirming `/icon.svg` exactly matches the provided BETTER light isotype asset and is linked as the favicon.",
+    "VAL-CROSS-008 passed by confirming the live deployment preserves the redesigned entry flow, survives `#graph-roadmap` deep-link refresh, and exits cleanly to https://docs.tradebetter.app/."
+  ]
+}
